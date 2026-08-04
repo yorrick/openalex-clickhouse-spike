@@ -60,7 +60,6 @@ def _stream_download(
         return destination
     except Exception:
         partial.unlink(missing_ok=True)
-        destination.unlink(missing_ok=True)
         raise
 
 
@@ -74,6 +73,7 @@ def download_one(file: FileRecord, objects_dir: Path) -> Path:
         return destination
 
     failures: list[Exception] = []
+    # One initial attempt followed by exactly three retries at the fixed delays.
     for attempt in range(len(RETRY_DELAYS_SECONDS) + 1):
         try:
             with httpx.Client(follow_redirects=True, timeout=120) as client:

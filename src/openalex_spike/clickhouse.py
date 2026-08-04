@@ -167,9 +167,14 @@ class ClickHouseService:
             )[0]
         result = {}
         for container_port, bindings in inspect["NetworkSettings"]["Ports"].items():
-            if not bindings or len(bindings) != 1:
+            if not bindings:
                 raise RuntimeError(f"unexpected port bindings for {container_port}")
-            result[container_port.split("/", 1)[0]] = bindings[0]["HostIp"]
+            host_ips = {binding["HostIp"] for binding in bindings}
+            if not host_ips <= {"127.0.0.1", "::1"}:
+                raise RuntimeError(f"non-loopback binding for {container_port}: {host_ips}")
+            result[container_port.split("/", 1)[0]] = (
+                "127.0.0.1" if "127.0.0.1" in host_ips else "::1"
+            )
         return result
 
     def execute_script(self, sql: str) -> str:
