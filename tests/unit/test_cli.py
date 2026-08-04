@@ -1,6 +1,19 @@
+from argparse import Namespace
 from pathlib import Path
+import hashlib
+import json
 
-from openalex_spike.cli import build_parser, main, validate_raw_glob
+import pytest
+
+from openalex_spike.cli import (
+    PrerequisiteError,
+    _selected_tier,
+    build_parser,
+    command_stage1,
+    main,
+    validate_raw_glob,
+)
+from openalex_spike.sampling import ALGORITHM
 
 
 def test_cli_exposes_exact_pipeline_commands_and_download_flags():
@@ -29,6 +42,47 @@ def test_cli_exposes_exact_pipeline_commands_and_download_flags():
 
 def test_missing_select_prerequisite_returns_nonzero(tmp_path: Path):
     assert main(["--root", str(tmp_path), "select"]) != 0
+
+
+def test_selected_tier_rejects_stale_algorithm(tmp_path: Path):
+    data = tmp_path / ".data"
+    data.mkdir()
+    (data / "selection.json").write_text(
+        json.dumps({"algorithm": "cumulative-bytes-four-strata-v1", "tiers": {}})
+    )
+
+    with pytest.raises(PrerequisiteError, match="rerun select"):
+        _selected_tier(tmp_path, "stage1")
+
+
+def test_stage1_rejects_download_from_different_selection(tmp_path: Path):
+    data = tmp_path / ".data"
+    state = data / "state"
+    state.mkdir(parents=True)
+    selection_path = data / "selection.json"
+    selection_path.write_text(
+        json.dumps(
+            {
+                "algorithm": ALGORITHM,
+                "stage1_coverage_policy": {},
+                "tiers": {"stage1": {"record_count": 1}},
+            }
+        )
+    )
+    current_sha256 = hashlib.sha256(selection_path.read_bytes()).hexdigest()
+    assert current_sha256 != "stale"
+    (state / "download-stage1.json").write_text(
+        json.dumps({"include_small_dimensions": True, "selection_sha256": "stale"})
+    )
+
+    with pytest.raises(PrerequisiteError, match="does not match"):
+        command_stage1(
+            Namespace(
+                root=tmp_path,
+                include_small_dimensions=True,
+                run_id="test",
+            )
+        )
 
 
 def test_raw_glob_validation_rejects_escape_quotes_and_alternate_roots():

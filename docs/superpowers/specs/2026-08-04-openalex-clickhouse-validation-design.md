@@ -110,6 +110,15 @@ seed inside its stratum, and selects equal byte budgets from all four strata.
 This makes the selection reproducible while preventing one update period from
 dominating the sample.
 
+Algorithm `cumulative-bytes-four-strata-v2` constructs Stage 1 coverage before
+the greedy fill: in each stratum it selects the lowest stable-ranked file whose
+size is no greater than one quarter of the Stage 1 target, then resumes the
+normal furthest-below-quarter selection. The selection document records that
+cap, the eligible and total file counts per stratum, and the four seed files.
+This constraint is necessary because the manifest can contain a single file
+large enough to consume the remaining 1 GiB target before every stratum is
+visited. It is unconditional algorithm behavior, not a runtime fallback.
+
 "Within one selected file of the target" defines only the allowed byte-budget
 overshoot. Given the pinned manifest, algorithm version, and seed, every tier's
 file list is exact and deterministic.
@@ -121,8 +130,17 @@ so the spike must not claim checksum verification.
 
 ### 5.2 Stage 1: correctness sample
 
-- Target approximately 1 GiB of Works data, normally one file from each
-  stratum.
+- Target approximately 1 GiB of Works data with all four strata represented.
+  The allowed one-file overshoot means the actual sample may be materially
+  larger. Across 60 seeds on the pinned manifest, Stage 1 ranges from
+  1,074,513,600 to 2,227,436,005 bytes (1.00 to 2.07 GiB); the configured seed
+  selects 1,259,100,971 bytes (1.17 GiB). The per-file Stage 1 coverage cap is
+  268,435,456 bytes; eligible/total file counts are 666/966, 479/712, 113/464,
+  and 32/304 across strata 0 through 3.
+- The coverage cap conditions the four seed choices on file size and therefore
+  favors smaller files, especially in recent strata. Stage 1 is a smoke and
+  correctness sample; its latency results are not a representative Works
+  performance sample. Stage 2 does not apply this cap.
 - Include the complete, explicitly enumerated 298,706,581-byte entity set from
   section 2.
 - Derive the Stage 1 Authors dimension from distinct authors embedded in the

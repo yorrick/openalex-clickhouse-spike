@@ -9,7 +9,12 @@ import json
 from openalex_spike.manifest import ManifestFile
 
 
-ALGORITHM = "cumulative-bytes-four-strata-v1"
+ALGORITHM = "cumulative-bytes-four-strata-v2"
+STAGE1_BIAS_CAVEAT = (
+    "Stage 1 seeds each stratum with a file no larger than one quarter of its "
+    "target. This size conditioning favors smaller files and makes Stage 1 a "
+    "correctness sample, not a representative performance sample."
+)
 
 
 @dataclass(frozen=True)
@@ -50,6 +55,62 @@ def _stratify(files: Sequence[ManifestFile], seed: str) -> tuple[SelectedFile, .
     return tuple(selected_files)
 
 
+def _stage1_seeds(
+    queues: Mapping[int, Sequence[SelectedFile]], target: int
+) -> tuple[SelectedFile, ...]:
+    """Construct four-stratum coverage without consuming the target in one file."""
+    max_seed_file_bytes = target // 4
+    if max_seed_file_bytes <= 0:
+        raise ValueError("Stage 1 target must be at least four bytes")
+    seeds = []
+    for stratum in range(4):
+        eligible = [
+            file
+            for file in queues[stratum]
+            if file.content_length <= max_seed_file_bytes
+        ]
+        if not eligible:
+            raise ValueError(
+                f"Stage 1 stratum {stratum} has no file at or below "
+                f"the {max_seed_file_bytes}-byte coverage cap"
+            )
+        seeds.append(eligible[0])
+    return tuple(seeds)
+
+
+def stage1_coverage_metadata(
+    files: Sequence[ManifestFile], target: int, seed: str
+) -> dict[str, object]:
+    """Describe the explicit Stage 1 coverage constraint and its sampling bias."""
+    candidates = _stratify(files, seed)
+    queues = {
+        stratum: sorted(
+            (file for file in candidates if file.stratum == stratum),
+            key=lambda file: file.rank,
+        )
+        for stratum in range(4)
+    }
+    max_seed_file_bytes = int(target) // 4
+    seeds = _stage1_seeds(queues, int(target))
+    return {
+        "scope": "first tier only",
+        "max_seed_file_bytes": max_seed_file_bytes,
+        "cap_derivation": "floor(first_tier_target_bytes / 4)",
+        "bias_caveat": STAGE1_BIAS_CAVEAT,
+        "strata": {
+            str(stratum): {
+                "eligible_files": sum(
+                    file.content_length <= max_seed_file_bytes
+                    for file in queues[stratum]
+                ),
+                "total_files": len(queues[stratum]),
+                "seed_file": asdict(seeds[stratum]),
+            }
+            for stratum in range(4)
+        },
+    }
+
+
 def select_nested(
     files: Sequence[ManifestFile], targets: Mapping[str, int], seed: str
 ) -> dict[str, tuple[SelectedFile, ...]]:
@@ -70,6 +131,11 @@ def select_nested(
     current: list[SelectedFile] = []
     used: set[str] = set()
     selected_by_tier: dict[str, tuple[SelectedFile, ...]] = {}
+
+    first_tier_name, first_target = target_items[0]
+    for chosen in _stage1_seeds(queues, int(first_target)):
+        current.append(chosen)
+        used.add(chosen.url)
 
     for tier_name, target in target_items:
         target = int(target)
@@ -101,7 +167,7 @@ def select_nested(
             used.add(chosen.url)
             stratum_bytes[chosen_stratum] += chosen.content_length
 
-        if tier_name == target_items[0][0] and {file.stratum for file in current} != {
+        if tier_name == first_tier_name and {file.stratum for file in current} != {
             0,
             1,
             2,
@@ -124,11 +190,17 @@ def write_selection(
     seed: str,
     manifest_etag: str,
     manifest_sha256: str,
+    manifest_files: Sequence[ManifestFile],
 ) -> None:
+    first_tier, first_target = next(iter(targets.items()))
     document = {
         "algorithm": ALGORITHM,
         "seed": seed,
         "manifest": {"etag": manifest_etag, "sha256": manifest_sha256},
+        "stage1_coverage_policy": {
+            "tier": first_tier,
+            **stage1_coverage_metadata(manifest_files, int(first_target), seed),
+        },
         "tiers": {
             tier: {
                 "target_bytes": int(targets[tier]),

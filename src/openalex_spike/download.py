@@ -163,6 +163,12 @@ def materialize_tier_links(
     for tier, files in selections.items():
         tier_dir = raw_root / "tiers" / tier / entity
         tier_dir.mkdir(parents=True, exist_ok=True)
+        expected_names = {object_paths[file.url].name for file in files}
+        for existing in tier_dir.iterdir():
+            if existing.name not in expected_names:
+                if existing.is_dir():
+                    raise ValueError(f"unexpected directory in generated tier: {existing}")
+                existing.unlink()
         for file in files:
             source = object_paths[file.url]
             destination = tier_dir / source.name

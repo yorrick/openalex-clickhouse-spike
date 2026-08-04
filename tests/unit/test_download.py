@@ -32,6 +32,25 @@ def test_materialized_tiers_share_inode(tmp_path, selected_file):
     assert links[0].stat().st_ino == object_path.stat().st_ino
 
 
+def test_materialized_tier_removes_stale_generated_links(tmp_path, selected_file):
+    object_path = tmp_path / "objects" / "abc.parquet"
+    object_path.parent.mkdir()
+    object_path.write_bytes(b"PAR1fixturePAR1")
+    tier_dir = tmp_path / "tiers" / "small" / "works"
+    tier_dir.mkdir(parents=True)
+    stale = tier_dir / "stale.parquet"
+    stale.write_bytes(b"old")
+
+    materialize_tier_links(
+        tmp_path,
+        {"small": [selected_file]},
+        {selected_file.url: object_path},
+    )
+
+    assert not stale.exists()
+    assert {path.name for path in tier_dir.iterdir()} == {"abc.parquet"}
+
+
 def test_verify_downloads_checks_parquet_rows_and_writes_totals(
     tmp_path, selected_file
 ):

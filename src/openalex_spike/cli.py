@@ -35,7 +35,13 @@ from openalex_spike.manifest import (
     reconcile_pinned_manifests,
 )
 from openalex_spike.report import render_report
-from openalex_spike.sampling import SelectedFile, select_nested, write_selection
+from openalex_spike.sampling import (
+    ALGORITHM,
+    STAGE1_BIAS_CAVEAT,
+    SelectedFile,
+    select_nested,
+    write_selection,
+)
 from openalex_spike.storage import (
     StorageMonitor,
     collect_storage_sample,
@@ -187,6 +193,7 @@ def command_select(args: Namespace) -> int:
         cfg.seed,
         str(metadata["etag"]),
         str(metadata["sha256"]),
+        manifest.files,
     )
     _write_state(
         root,
@@ -216,6 +223,11 @@ def _selected_tier(root: Path, tier: str) -> list[SelectedFile]:
     if not selection_path.exists():
         raise PrerequisiteError(f"missing selection document: {selection_path}")
     raw = json.loads(selection_path.read_text())
+    if raw.get("algorithm") != ALGORITHM:
+        raise PrerequisiteError(
+            f"selection algorithm is {raw.get('algorithm')!r}; "
+            f"rerun select with {ALGORITHM}"
+        )
     if tier not in raw["tiers"]:
         raise PrerequisiteError(f"selection has no tier named {tier}")
     return [SelectedFile(**item) for item in raw["tiers"][tier]["files"]]
@@ -225,6 +237,7 @@ def command_download(args: Namespace) -> int:
     root: Path = args.root
     _require_state(root, "select")
     tier = args.tier
+    selection_sha256 = _sha256_path(root / ".data" / "selection.json")
     works_files = _selected_tier(root, tier)
     manifest_paths = _manifest_paths(root)
     required_entities = set(SELECTED_SMALL_ENTITIES) if args.include_small_dimensions else set()
@@ -272,6 +285,8 @@ def command_download(args: Namespace) -> int:
         root,
         f"download-{tier}",
         tier=tier,
+        selection_algorithm=ALGORITHM,
+        selection_sha256=selection_sha256,
         include_complete_authors=args.include_complete_authors,
         include_small_dimensions=args.include_small_dimensions,
         verification=str(verification_path),
@@ -439,6 +454,14 @@ def command_stage1(args: Namespace) -> int:
         raise PrerequisiteError("Stage 1 dimensions were not downloaded")
     selection_path = root / ".data" / "selection.json"
     selection = json.loads(selection_path.read_text())
+    if selection.get("algorithm") != ALGORITHM:
+        raise PrerequisiteError(
+            f"selection algorithm is {selection.get('algorithm')!r}; "
+            f"rerun select with {ALGORITHM}"
+        )
+    selection_sha256 = _sha256_path(selection_path)
+    if download_state.get("selection_sha256") != selection_sha256:
+        raise PrerequisiteError("Stage 1 download does not match the current selection")
     expected_rows = int(selection["tiers"]["stage1"]["record_count"])
     run_id = args.run_id or datetime.now(timezone.utc).strftime("stage1-%Y%m%dT%H%M%SZ")
     result_root = root / "results" / run_id
@@ -498,7 +521,9 @@ def command_stage1(args: Namespace) -> int:
         report_evidence = {
             "run_id": run_id,
             "inputs": {
-                "selection_sha256": _sha256_path(selection_path),
+                "selection_sha256": selection_sha256,
+                "selection_algorithm": selection["algorithm"],
+                "stage1_coverage_policy": selection["stage1_coverage_policy"],
                 "works_manifest_metadata": json.loads(
                     (
                         root
@@ -527,7 +552,8 @@ def command_stage1(args: Namespace) -> int:
             "local_engine_verdict": "pass",
             "capacity_verdict": "Uncertain",
             "limitations": [
-                "Stage 1 validates correctness and query execution at approximately 1 GiB.",
+                "Stage 1 validates correctness and query execution on a target of approximately 1 GiB; its actual size can exceed that target by one selected file.",
+                STAGE1_BIAS_CAVEAT,
                 "Stage 1 scaling evidence is not a full-size prediction.",
                 "The Docker VM uses 48 GiB because 64 GiB did not boot on this host.",
             ],
@@ -557,6 +583,12 @@ def command_stage2(args: Namespace) -> int:
 
 
 def command_report(args: Namespace) -> int:
+    if args.run:
+        report = args.root / "results" / args.run / "report.md"
+        if not report.exists():
+            raise PrerequisiteError(f"missing report: {report}")
+        print(report)
+        return 0
     state = _require_state(args.root, "stage1")
     print(state["report_md"])
     return 0
@@ -587,6 +619,7 @@ def build_parser() -> ArgumentParser:
     stage2 = subparsers.add_parser("stage2")
     stage2.set_defaults(handler=command_stage2)
     report = subparsers.add_parser("report")
+    report.add_argument("--run")
     report.set_defaults(handler=command_report)
     down = subparsers.add_parser("clickhouse-down")
     down.set_defaults(handler=command_clickhouse_down)

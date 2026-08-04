@@ -362,11 +362,11 @@ def stable_rank(seed: str, url: str) -> str:
     return hashlib.sha256(f"{seed}\0{url}".encode()).hexdigest()
 ```
 
-For each increasing target, start with the preceding tier and add the lowest-ranked unused file from the stratum furthest below one quarter of the target until total bytes meet or exceed the target. The overshoot may not exceed the largest selected file. Raise if Stage 1 cannot include all four strata.
+For Stage 1, first seed every stratum with its lowest-ranked file no larger than one quarter of the Stage 1 target; fail if a stratum has no eligible file. Then, for each increasing target, start with the preceding tier and add the lowest-ranked unused file from the stratum furthest below one quarter of the target until total bytes meet or exceed the target. The overshoot may not exceed the largest selected file. Record the cap, eligibility counts, seed files, and Stage 1 small-file bias. Verify the algorithm over 60 seeds.
 
 - [ ] **Step 4: Serialize an auditable selection document**
 
-Write `selection.json` with algorithm name `cumulative-bytes-four-strata-v1`, seed, manifest ETag/SHA-256, target bytes, actual bytes, record totals, and the ordered `SelectedFile` list per tier. Re-serialize from the same inputs in the test and assert byte equality.
+Write `selection.json` with algorithm name `cumulative-bytes-four-strata-v2`, seed, manifest ETag/SHA-256, Stage 1 coverage policy, target bytes, actual bytes, record totals, and the ordered `SelectedFile` list per tier. Re-serialize from the same inputs in the test and assert byte equality. Reject stale selection documents whose algorithm does not match the running code.
 
 - [ ] **Step 5: Run tests and commit**
 
