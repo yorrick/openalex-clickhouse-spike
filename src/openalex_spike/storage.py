@@ -159,6 +159,10 @@ class StorageMonitor:
         self._thread.join()
         if self._error is not None:
             raise RuntimeError("storage monitor failed") from self._error
+        try:
+            self.samples.append(self.sample())
+        except BaseException as error:
+            raise RuntimeError("storage monitor final sample failed") from error
         return list(self.samples)
 
 

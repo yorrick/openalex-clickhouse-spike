@@ -347,7 +347,9 @@ def _build_stage1_database(
     globs: dict[str, str],
     expected_rows: int,
     result_dir: Path,
-) -> tuple[dict[str, object], list[dict[str, object]]]:
+) -> tuple[
+    dict[str, object], list[dict[str, object]], dict[str, object]
+]:
     sql_dir = root / "sql"
     service.execute_script(f"DROP DATABASE IF EXISTS {_database_identifier(database)}")
     hashes: dict[str, str] = {}
@@ -371,7 +373,16 @@ def _build_stage1_database(
                 sql_dir / filename, database=database, globs=globs
             )
             service.execute_script(sql)
-    finally:
+    except BaseException as load_error:
+        try:
+            monitor.stop()
+        except BaseException as monitor_error:
+            raise ExceptionGroup(
+                "ClickHouse load and storage monitoring both failed",
+                [load_error, monitor_error],
+            )
+        raise
+    else:
         storage_samples = monitor.stop()
     write_storage_samples(result_dir / "storage-samples.json", storage_samples)
     gates, query_evidence, distributions = evaluate_stage1(
@@ -388,7 +399,11 @@ def _build_stage1_database(
     correctness["raw_evidence"] = raw_evidence
     _write_json_atomic(result_dir / "correctness.json", correctness)
     require_all(gates)
-    return correctness, [asdict(sample) for sample in storage_samples]
+    return (
+        correctness,
+        [asdict(sample) for sample in storage_samples],
+        distributions,
+    )
 
 
 def _stage1_seed_work_ids(
@@ -491,11 +506,12 @@ def command_stage1(args: Namespace) -> int:
     )
     databases = ("openalex_stage1_a", "openalex_stage1_b")
     builds = []
+    build_distributions = []
     all_storage_samples: list[dict[str, object]] = []
     try:
         for database in databases:
             print(f"building isolated database {database}", flush=True)
-            correctness, storage_samples = _build_stage1_database(
+            correctness, storage_samples, distributions = _build_stage1_database(
                 service,
                 root=root,
                 database=database,
@@ -504,9 +520,11 @@ def command_stage1(args: Namespace) -> int:
                 result_dir=result_root / database,
             )
             builds.append(correctness)
+            build_distributions.append(distributions)
             all_storage_samples.extend(storage_samples)
         hashes = [str(build["normalized_sha256"]) for build in builds]
-        if hashes[0] != hashes[1]:
+        rebuild_deterministic = hashes[0] == hashes[1]
+        if not rebuild_deterministic:
             raise RuntimeError(f"Stage 1 rebuild hash mismatch: {hashes}")
 
         seed_work_ids = _stage1_seed_work_ids(service, globs["WORKS_GLOB"])
@@ -530,15 +548,20 @@ def command_stage1(args: Namespace) -> int:
             (sample["filesystem_bytes"] for sample in all_storage_samples),
             default=0,
         )
-        referential = builds[1]["distributions"]["referential_coverage"]
-        missing_institution_sample = builds[1]["distributions"][
+        referential = build_distributions[1]["referential_coverage"]
+        missing_institution_sample = build_distributions[1][
             "missing_institution_sample"
         ]
+        blocking_gates_passed = all(
+            bool(gate["passed"]) or not bool(gate["blocking"])
+            for gate in builds[1]["gates"]
+        )
         limitations = [
             "Stage 1 validates correctness and query execution on a target of approximately 1 GiB; its actual size can exceed that target by one selected file.",
             STAGE1_BIAS_CAVEAT,
             "Stage 1 scaling evidence is not a full-size prediction.",
-            "The Docker VM uses 48 GiB because 64 GiB did not boot on this host.",
+            "The Docker Desktop VM has 48 GiB; the ClickHouse container is capped at 32 GiB. A 64-GiB Docker VM did not boot on this host.",
+            f"Only {referential['retained_cited_edges']} of {referential['citation_edges']} citation edges point to another Work inside this partial sample (retention ratio {float(referential['citation_retention_ratio']):.6f}); this is sampling-induced and is not evidence of citation data loss.",
         ]
         if int(referential["missing_institutions"]) > 0:
             limitations.append(
@@ -558,7 +581,7 @@ def command_stage1(args: Namespace) -> int:
             "settings": settings,
             "correctness": {
                 "build_hashes": hashes,
-                "rebuild_deterministic": True,
+                "rebuild_deterministic": rebuild_deterministic,
                 "gates": builds[1]["gates"],
                 "raw_evidence": builds[1]["raw_evidence"],
                 "referential_coverage": referential,
@@ -569,8 +592,13 @@ def command_stage1(args: Namespace) -> int:
             "storage": {
                 "samples": all_storage_samples,
                 "observed_peak_bytes": observed_peak,
+                "sampling_note": "Each build records an initial baseline and a forced final sample. Empty initial table_bytes means no active parts existed yet; empty projection_bytes means the SQL scripts executed by this Stage 1 build create no projections.",
             },
-            "local_engine_verdict": "pass",
+            "local_engine_verdict": (
+                "pass"
+                if blocking_gates_passed and rebuild_deterministic
+                else "fail"
+            ),
             "capacity_verdict": "Uncertain",
             "limitations": limitations,
         }

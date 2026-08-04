@@ -1,5 +1,11 @@
+from threading import Event
+
+import pytest
+
 from openalex_spike.storage import (
     CapacityEstimate,
+    StorageMonitor,
+    StorageSample,
     classify_capacity,
     estimate_works_derived,
     with_headroom,
@@ -24,3 +30,43 @@ def test_capacity_classification_uses_conservative_headroom():
     assert classify_capacity(40_000, available_bytes=50_000) == "Likely fits"
     assert classify_capacity(50_000, available_bytes=50_000) == "Uncertain"
     assert classify_capacity(60_000, available_bytes=50_000) == "Likely exceeds"
+
+
+def test_storage_monitor_forces_a_final_sample():
+    sampled = Event()
+    call_count = 0
+
+    def sample():
+        nonlocal call_count
+        call_count += 1
+        sampled.set()
+        return StorageSample(float(call_count), {}, {}, call_count)
+
+    monitor = StorageMonitor(sample, interval_seconds=60)
+    monitor.start()
+    assert sampled.wait(1)
+    samples = monitor.stop()
+
+    assert len(samples) == 2
+    assert samples[-1].filesystem_bytes == 2
+
+
+def test_storage_monitor_wraps_final_sample_failure():
+    sampled = Event()
+    call_count = 0
+
+    def sample():
+        nonlocal call_count
+        call_count += 1
+        if call_count == 2:
+            raise ValueError("final probe failed")
+        sampled.set()
+        return StorageSample(float(call_count), {}, {}, call_count)
+
+    monitor = StorageMonitor(sample, interval_seconds=60)
+    monitor.start()
+    assert sampled.wait(1)
+
+    with pytest.raises(RuntimeError, match="final sample failed") as captured:
+        monitor.stop()
+    assert isinstance(captured.value.__cause__, ValueError)

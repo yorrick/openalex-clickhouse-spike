@@ -306,9 +306,33 @@ def write_correctness(
         "gates": [asdict(result) for result in results],
         "distributions": distributions,
     }
+    distribution_digests = {
+        name: {
+            "value_kind": (
+                "rows"
+                if isinstance(value, list)
+                else "object"
+                if isinstance(value, dict)
+                else "scalar"
+            ),
+            "item_count": len(value) if isinstance(value, (list, dict)) else 1,
+            "sha256": canonical_result_hash(value),
+        }
+        for name, value in distributions.items()
+    }
     document = {
-        **normalized,
-        "queries": [asdict(query) for query in queries],
+        "gates": normalized["gates"],
+        "distribution_digests": distribution_digests,
+        "queries": [
+            {
+                "name": query.name,
+                "sql": query.sql,
+                "sql_sha256": query.sql_sha256,
+                "result_row_count": len(query.rows),
+                "result_sha256": canonical_result_hash(query.rows),
+            }
+            for query in queries
+        ],
         "normalized_sha256": canonical_result_hash(normalized),
     }
     destination.parent.mkdir(parents=True, exist_ok=True)

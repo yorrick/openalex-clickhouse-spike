@@ -5,9 +5,11 @@ import pytest
 from openalex_spike.correctness import (
     CorrectnessFailure,
     GateResult,
+    QueryEvidence,
     canonical_result_hash,
     evaluate_stage1,
     require_all,
+    write_correctness,
 )
 
 
@@ -29,6 +31,27 @@ def test_canonical_result_hash_ignores_dictionary_order_only():
     second = [{"a": 1, "b": 2}, {"a": 3}]
     assert canonical_result_hash(first) == canonical_result_hash(second)
     assert canonical_result_hash(first) != canonical_result_hash(list(reversed(second)))
+
+
+def test_correctness_artifact_keeps_digests_not_full_result_bodies(tmp_path):
+    rows = [{"value": number} for number in range(100)]
+    output = write_correctness(
+        tmp_path / "correctness.json",
+        [GateResult("rows", True, 100, 100, {})],
+        [QueryEvidence("values", "SELECT value", "sql-sha", rows)],
+        {"values": rows},
+    )
+
+    assert "distributions" not in output
+    assert output["distribution_digests"]["values"] == {
+        "value_kind": "rows",
+        "item_count": 100,
+        "sha256": canonical_result_hash(rows),
+    }
+    assert "rows" not in output["queries"][0]
+    assert output["queries"][0]["result_row_count"] == 100
+    assert output["queries"][0]["result_sha256"] == canonical_result_hash(rows)
+    assert (tmp_path / "correctness.json").stat().st_size < 2_000
 
 
 def _evaluate_with_references(**reference_overrides):
