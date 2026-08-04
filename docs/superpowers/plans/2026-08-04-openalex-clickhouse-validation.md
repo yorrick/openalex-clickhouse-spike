@@ -495,7 +495,7 @@ Use this exact `benchmark.xml`:
 
 - [ ] **Step 3: Implement lifecycle and architecture gates**
 
-`ClickHouseService.up()` sets the two environment variables and runs `docker compose up -d --wait`. Do not force `platform`; let the multi-architecture image resolve for the Docker server. Record the Docker server architecture, resolved image digest/architecture, `uname -m` inside the container, `/proc/cpuinfo`, binfmt/QEMU registrations visible to the Docker VM, port bindings, and resource limits. On this ARM host, fail unless server, image, and container all resolve to ARM64 and no QEMU/Rosetta signal is present. `execute_script()` passes SQL to `clickhouse-client --multiquery` through stdin; it never shell-interpolates file paths.
+`ClickHouseService.up()` sets the two environment variables and runs `docker compose up -d --wait --wait-timeout 40`. Compose defines a native-protocol `SELECT 1` healthcheck so `--wait` does not return merely because the entrypoint process is running. Do not force `platform`; let the multi-architecture image resolve for the Docker server. Record the Docker server architecture, resolved image digest/architecture, `uname -m` inside the container, `/proc/cpuinfo`, binfmt/QEMU registrations visible to the Docker VM, port bindings, and resource limits. On this ARM host, fail unless server, image, and container all resolve to ARM64 and no QEMU/Rosetta signal is present. `execute_script()` passes SQL to `clickhouse-client --multiquery` through stdin; it never shell-interpolates file paths.
 
 - [ ] **Step 4: Start Docker Desktop, run the integration test, and commit**
 

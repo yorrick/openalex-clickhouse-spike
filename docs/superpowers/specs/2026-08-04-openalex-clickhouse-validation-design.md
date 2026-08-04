@@ -95,6 +95,11 @@ the container. Ports bind only to loopback. The benchmark uses
 `clickhouse-client`; DBeaver receives a separate connection smoke test so GUI
 behaviour does not affect timing.
 
+Container startup is ready only after a native-protocol `SELECT 1` healthcheck
+passes. Compose waits for that health status with a 40-second hard timeout;
+container "running" state alone is not sufficient because ClickHouse binds its
+native port after the entrypoint starts.
+
 Raw Parquet remains canonical. Transformations occur in version-controlled SQL
 inside ClickHouse using `INSERT ... SELECT`, `ARRAY JOIN`, and explicit casts.
 No Python row-by-row ETL is part of the design.

@@ -55,7 +55,9 @@ class ClickHouseService:
         environment = os.environ.copy()
         environment["CLICKHOUSE_MEMORY_GB"] = str(memory_gb)
         environment["CLICKHOUSE_CPUS"] = str(cpus)
-        self._compose(["up", "-d", "--wait"], env=environment)
+        self._compose(
+            ["up", "-d", "--wait", "--wait-timeout", "40"], env=environment
+        )
         self._environment = self.environment_evidence()
         architectures = {
             _normalized_architecture(self._environment["host_architecture"]),
