@@ -1,0 +1,12 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:26.3.12.3
+    cpus: "${CLICKHOUSE_CPUS:-16}"
+    mem_limit: "${CLICKHOUSE_MEMORY_GB:-32}g"
+    ports:
+      - "127.0.0.1:8123:8123"
+      - "127.0.0.1:9000:9000"
+    volumes:
+      - ./.data/clickhouse:/var/lib/clickhouse
+      - ./.data/raw:/var/lib/clickhouse/user_files/raw:ro
+      - ./clickhouse/config.d:/etc/clickhouse-server/config.d:ro
