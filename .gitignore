@@ -1,1 +1,8 @@
 .worktrees/
+.data/
+.env
+results/raw-logs/
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
