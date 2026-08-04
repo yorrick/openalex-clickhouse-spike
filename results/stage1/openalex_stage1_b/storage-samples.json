@@ -1,0 +1,37 @@
+[
+  {
+    "filesystem_bytes": 1265422336,
+    "projection_bytes": {},
+    "table_bytes": {},
+    "timestamp": 1785874642.034944
+  },
+  {
+    "filesystem_bytes": 1352687616,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 41464778,
+      "citation_edge": 16189782,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 15247830
+    },
+    "timestamp": 1785874644.026527
+  },
+  {
+    "filesystem_bytes": 1447362560,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 41464778,
+      "citation_edge": 42958993,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 15196343,
+      "work_institution": 10513009,
+      "work_topic": 12874656,
+      "works": 15247830
+    },
+    "timestamp": 1785874645.6831539
+  }
+]
