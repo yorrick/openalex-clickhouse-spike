@@ -231,3 +231,45 @@ class ClickHouseService:
             ]
         )
         return [json.loads(line) for line in output.splitlines() if line]
+
+    def execute_benchmark_query(
+        self,
+        sql: str,
+        *,
+        parameters: dict[str, int],
+        settings: dict[str, int | str],
+        query_id: str,
+    ) -> dict[str, object]:
+        if not re.fullmatch(r"[0-9a-f-]{36}", query_id):
+            raise ValueError(f"invalid benchmark query ID: {query_id}")
+        command = [
+            "exec",
+            "-T",
+            "clickhouse",
+            "clickhouse-client",
+            f"--query_id={query_id}",
+            "--format=Null",
+        ]
+        for name, value in sorted(settings.items()):
+            if not re.fullmatch(r"[a-z_]+", name):
+                raise ValueError(f"invalid ClickHouse setting name: {name}")
+            command.append(f"--{name}={value}")
+        for name, value in sorted(parameters.items()):
+            if not re.fullmatch(r"[a-z_]+", name):
+                raise ValueError(f"invalid ClickHouse parameter name: {name}")
+            command.append(f"--param_{name}={value}")
+        self._compose(command, input_text=sql)
+        self.execute_script("SYSTEM FLUSH LOGS")
+        telemetry = self.query_json(
+            "SELECT "
+            "query_duration_ms / 1000.0 AS elapsed_seconds, read_rows, read_bytes, "
+            "result_rows, memory_usage AS peak_memory_bytes, "
+            "ProfileEvents['ExternalAggregationWriteBytes'] + "
+            "ProfileEvents['ExternalSortWriteBytes'] AS spill_bytes "
+            "FROM system.query_log "
+            f"WHERE query_id = '{query_id}' AND type = 'QueryFinish' "
+            "ORDER BY event_time_microseconds DESC LIMIT 1"
+        )
+        if len(telemetry) != 1:
+            raise RuntimeError(f"missing query_log telemetry for {query_id}")
+        return telemetry[0]

@@ -57,6 +57,28 @@ class BenchmarkClient(Protocol):
     ) -> dict[str, object]: ...
 
 
+class ServiceBenchmarkClient:
+    def __init__(self, service: object, database: str) -> None:
+        self.service = service
+        self.database = database
+
+    def execute(
+        self,
+        query: BenchmarkQuery,
+        *,
+        parameters: dict[str, int],
+        settings: dict[str, int | str],
+        query_id: str,
+    ) -> dict[str, object]:
+        sql = query.sql.replace("openalex_spike", self.database)
+        return self.service.execute_benchmark_query(
+            sql,
+            parameters=parameters,
+            settings=settings,
+            query_id=query_id,
+        )
+
+
 def load_query_catalog(directory: Path | str) -> tuple[BenchmarkQuery, ...]:
     directory = Path(directory)
     catalog = []
