@@ -4,6 +4,7 @@ import pytest
 
 from openalex_spike.storage import (
     CapacityEstimate,
+    DecimatedFilesystemSampler,
     StorageMonitor,
     StorageSample,
     classify_capacity,
@@ -70,3 +71,44 @@ def test_storage_monitor_wraps_final_sample_failure():
     with pytest.raises(RuntimeError, match="final sample failed") as captured:
         monitor.stop()
     assert isinstance(captured.value.__cause__, ValueError)
+
+
+def test_storage_monitor_uses_explicit_exact_final_sample():
+    sampled = Event()
+
+    def sample():
+        sampled.set()
+        return StorageSample(1.0, {}, {}, 10)
+
+    monitor = StorageMonitor(
+        sample,
+        interval_seconds=60,
+        final_sample=lambda: StorageSample(2.0, {}, {}, 20),
+    )
+    monitor.start()
+    assert sampled.wait(1)
+    samples = monitor.stop()
+
+    assert [item.filesystem_bytes for item in samples] == [10, 20]
+
+
+def test_decimated_sampler_reuses_filesystem_value_between_fast_part_polls(
+    tmp_path, monkeypatch
+):
+    clock_values = iter([0.0, 1.0, 31.0])
+    filesystem_calls = []
+    monkeypatch.setattr(
+        "openalex_spike.storage.directory_allocated_bytes",
+        lambda path: filesystem_calls.append(path) or len(filesystem_calls) * 100,
+    )
+    sampler = DecimatedFilesystemSampler(
+        lambda sql: [],
+        database="openalex_stage2",
+        clickhouse_data_dir=tmp_path,
+        clock=lambda: next(clock_values),
+    )
+
+    assert sampler().filesystem_bytes == 100
+    assert sampler().filesystem_bytes == 100
+    assert sampler().filesystem_bytes == 200
+    assert filesystem_calls == [tmp_path, tmp_path]

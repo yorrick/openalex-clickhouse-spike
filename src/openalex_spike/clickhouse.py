@@ -16,6 +16,12 @@ IMAGE = "clickhouse/clickhouse-server:26.3.12.3"
 ARM_ARCHITECTURES = {"aarch64", "arm64"}
 CLICKHOUSE_USER = "openalex"
 CLICKHOUSE_PASSWORD = "openalex-local-only"
+GIB = 1 << 30
+DOCKER_MEMORY_RESERVE_GIB = 4
+
+
+class ResourcePreflightError(RuntimeError):
+    pass
 
 
 def _normalized_architecture(value: str) -> str:
@@ -65,6 +71,7 @@ class ClickHouseService:
         ]
 
     def up(self, memory_gb: int, cpus: int) -> None:
+        self.require_memory_capacity(memory_gib=memory_gb)
         raw_dir = self.project_dir / ".data" / "raw"
         raw_dir.mkdir(parents=True, exist_ok=True)
         environment = os.environ.copy()
@@ -89,6 +96,23 @@ class ClickHouseService:
             raise RuntimeError("ClickHouse ports are not loopback-only")
         if self.query_http_value("SELECT 1") != "1":
             raise RuntimeError("ClickHouse host HTTP readiness gate failed")
+
+    def docker_memory_bytes(self) -> int:
+        return int(self._run(["docker", "info", "--format", "{{.MemTotal}}"]))
+
+    def require_memory_capacity(self, *, memory_gib: int) -> int:
+        if memory_gib <= 0:
+            raise ValueError("ClickHouse memory limit must be positive GiB")
+        available = self.docker_memory_bytes()
+        required = (memory_gib + DOCKER_MEMORY_RESERVE_GIB) * GIB
+        if required > available:
+            raise ResourcePreflightError(
+                f"Docker memory preflight refused {memory_gib} GiB: "
+                f"the container plus {DOCKER_MEMORY_RESERVE_GIB} GiB reserve "
+                f"requires {required:,} bytes, but Docker exposes "
+                f"{available:,} bytes; no lower-memory fallback was attempted"
+            )
+        return available
 
     def down(self) -> None:
         self._compose(["down"])
@@ -153,6 +177,7 @@ class ClickHouseService:
             "published_hosts": self.published_hosts(inspect=inspect),
             "raw_mount_read_only": self.raw_mount_read_only(inspect=inspect),
             "resource_limits": {
+                "docker_memory_bytes": self.docker_memory_bytes(),
                 "memory_bytes": inspect["HostConfig"]["Memory"],
                 "nano_cpus": inspect["HostConfig"]["NanoCpus"],
             },

@@ -17,6 +17,9 @@ evidence, not a full-size capacity prediction.
   did not boot. A later 50-GiB container run needs at least 54 GiB assigned to
   Docker Desktop and must be validated separately.
 - At least 3 GiB of download space plus ClickHouse working space for Stage 1.
+  The pinned Stage 2 input is exactly 98,301,763,421 bytes and its conservative
+  preflight reserves another two input-size equivalents plus 50 GiB before
+  starting the transfer or build.
 
 Raw Parquet, pinned manifests, local ClickHouse state, and raw logs live below
 `.data/` and are not committed. Alliance de recherche numérique du Canada VM
@@ -47,6 +50,27 @@ Stage 1 deliberately guarantees update-period coverage by seeding each of four
 cumulative-byte strata with a file no larger than one quarter of the target.
 That size conditioning favors smaller files, so Stage 1 timings validate query
 execution but are not representative performance or capacity measurements.
+
+## Exact Stage 2 commands
+
+Stage 2 downloads the immutable maximum input once, materializes nested tier
+views with hard links, loads complete Authors and dimensions once, then rebuilds
+the Work-derived tables for the 3.254, 15.118, and 45.233 GB Works tiers.
+
+```bash
+uv run openalex-spike download --tier stage2_large \
+  --include-complete-authors \
+  --include-small-dimensions
+uv run openalex-spike stage2 --memory-gb 32 --run-id stage2
+uv run openalex-spike report --run stage2
+```
+
+The compatibility flag `--memory-gb` is interpreted as GiB. The current Docker
+VM exposes 46.964 GiB, so a 50 GiB run is deliberately unreachable here and
+refused before Compose changes anything. The local 32 GiB result is capped at
+Conditional even if every gate passes. A future 50 GiB run requires a different
+Docker environment with at least 54 GiB configured and a distinct run ID; the
+CLI never falls back to a smaller envelope.
 
 ## SQL access
 

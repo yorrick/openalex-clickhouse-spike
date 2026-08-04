@@ -13,6 +13,7 @@ from openalex_spike.cli import (
     main,
     validate_raw_glob,
 )
+from openalex_spike.clickhouse import ResourcePreflightError
 from openalex_spike.sampling import ALGORITHM
 
 
@@ -38,6 +39,11 @@ def test_cli_exposes_exact_pipeline_commands_and_download_flags():
         "--include-complete-authors",
         "--include-small-dimensions",
     } <= options
+    stage2 = subparsers.choices["stage2"]
+    stage2_options = {
+        option for action in stage2._actions for option in action.option_strings
+    }
+    assert {"--memory-gb", "--tier", "--run-id"} <= stage2_options
 
 
 def test_missing_select_prerequisite_returns_nonzero(tmp_path: Path):
@@ -135,3 +141,30 @@ def test_raw_glob_validation_rejects_escape_quotes_and_alternate_roots():
             pass
         else:
             raise AssertionError(f"accepted unsafe glob: {invalid}")
+
+
+def test_memory_preflight_is_a_clean_cli_error(tmp_path, monkeypatch, capsys):
+    class RefusingService:
+        def __init__(self, root):
+            pass
+
+        def up(self, *, memory_gb, cpus):
+            raise ResourcePreflightError("memory refused without fallback")
+
+    monkeypatch.setattr("openalex_spike.cli.ClickHouseService", RefusingService)
+
+    assert (
+        main(
+            [
+                "--root",
+                str(tmp_path),
+                "clickhouse-up",
+                "--memory-gb",
+                "50",
+            ]
+        )
+        == 2
+    )
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert captured.err == "error: memory refused without fallback\n"

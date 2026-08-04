@@ -58,6 +58,9 @@ def _evaluate_with_references(**reference_overrides):
     referential = {
         "missing_works_for_authors": 0,
         "missing_authors": 0,
+        "distinct_missing_author_ids": 0,
+        "works_with_missing_authors": 0,
+        "author_reference_coverage_ratio": 1.0,
         "institution_bridge_rows": 10,
         "missing_institutions": 2,
         "distinct_missing_institution_ids": 1,

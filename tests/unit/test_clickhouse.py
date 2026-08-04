@@ -4,7 +4,7 @@ from urllib.error import HTTPError
 import pytest
 
 import openalex_spike.clickhouse as clickhouse_module
-from openalex_spike.clickhouse import ClickHouseService
+from openalex_spike.clickhouse import ClickHouseService, ResourcePreflightError
 
 
 def _inspect(host_ips):
@@ -51,6 +51,7 @@ def test_up_uses_bounded_compose_wait(tmp_path, monkeypatch):
     )
     monkeypatch.setattr(service, "environment_evidence", lambda: evidence)
     monkeypatch.setattr(service, "emulation_detected", lambda: False)
+    monkeypatch.setattr(service, "docker_memory_bytes", lambda: 48 * (1 << 30))
     monkeypatch.setattr(
         service,
         "published_hosts",
@@ -64,6 +65,30 @@ def test_up_uses_bounded_compose_wait(tmp_path, monkeypatch):
     assert arguments == ["up", "-d", "--wait", "--wait-timeout", "40"]
     assert kwargs["env"]["CLICKHOUSE_MEMORY_GB"] == "32"
     assert kwargs["env"]["CLICKHOUSE_CPUS"] == "16"
+
+
+def test_memory_preflight_refuses_before_compose_mutation(tmp_path, monkeypatch):
+    service = ClickHouseService(tmp_path)
+    compose_calls = []
+    monkeypatch.setattr(service, "docker_memory_bytes", lambda: 47 * (1 << 30))
+    monkeypatch.setattr(
+        service,
+        "_compose",
+        lambda arguments, **kwargs: compose_calls.append((arguments, kwargs)) or "",
+    )
+
+    with pytest.raises(ResourcePreflightError, match="no lower-memory fallback"):
+        service.up(memory_gb=50, cpus=16)
+
+    assert compose_calls == []
+
+
+def test_memory_preflight_enforces_four_gib_reserve(tmp_path, monkeypatch):
+    service = ClickHouseService(tmp_path)
+    monkeypatch.setattr(service, "docker_memory_bytes", lambda: 47 * (1 << 30))
+
+    with pytest.raises(ResourcePreflightError, match="4 GiB reserve"):
+        service.require_memory_capacity(memory_gib=44)
 
 
 def test_query_http_value_rejects_non_select_statements():

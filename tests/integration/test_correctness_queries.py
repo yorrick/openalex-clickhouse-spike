@@ -14,6 +14,7 @@ def test_fixture_rebuilds_have_identical_correctness_hashes():
     sql_dir = service.project_dir / "sql"
     replacements = {
         "WORKS_GLOB": "fixtures/works/*.parquet",
+        "AUTHORS_GLOB": "fixtures/authors/*.parquet",
         "INSTITUTIONS_GLOB": "fixtures/institutions/*.parquet",
         "SOURCES_GLOB": "fixtures/sources/*.parquet",
         "TOPICS_GLOB": "fixtures/topics/*.parquet",

@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from threading import Event, Thread
-from time import sleep, time
+from time import monotonic, time
 from typing import Callable
 import json
 import os
@@ -101,6 +101,7 @@ def collect_storage_sample(
     *,
     database: str,
     clickhouse_data_dir: Path,
+    filesystem_bytes: int | None = None,
 ) -> StorageSample:
     part_rows = query_json(
         "SELECT table, sum(bytes_on_disk) AS bytes "
@@ -118,8 +119,57 @@ def collect_storage_sample(
         projection_bytes={
             str(row["table"]): int(row["bytes"]) for row in projection_rows
         },
-        filesystem_bytes=directory_allocated_bytes(clickhouse_data_dir),
+        filesystem_bytes=(
+            directory_allocated_bytes(clickhouse_data_dir)
+            if filesystem_bytes is None
+            else filesystem_bytes
+        ),
     )
+
+
+class DecimatedFilesystemSampler:
+    """Poll ClickHouse parts frequently and the host filesystem less often."""
+
+    def __init__(
+        self,
+        query_json: Callable[[str], list[dict[str, object]]],
+        *,
+        database: str,
+        clickhouse_data_dir: Path,
+        filesystem_interval_seconds: float = 30.0,
+        clock: Callable[[], float] = monotonic,
+    ) -> None:
+        self.query_json = query_json
+        self.database = database
+        self.clickhouse_data_dir = clickhouse_data_dir
+        self.filesystem_interval_seconds = filesystem_interval_seconds
+        self.clock = clock
+        self._last_filesystem_at: float | None = None
+        self._filesystem_bytes: int | None = None
+
+    def __call__(self) -> StorageSample:
+        now = self.clock()
+        if (
+            self._last_filesystem_at is None
+            or now - self._last_filesystem_at >= self.filesystem_interval_seconds
+        ):
+            self._filesystem_bytes = directory_allocated_bytes(
+                self.clickhouse_data_dir
+            )
+            self._last_filesystem_at = now
+        return collect_storage_sample(
+            self.query_json,
+            database=self.database,
+            clickhouse_data_dir=self.clickhouse_data_dir,
+            filesystem_bytes=self._filesystem_bytes,
+        )
+
+    def final(self) -> StorageSample:
+        return collect_storage_sample(
+            self.query_json,
+            database=self.database,
+            clickhouse_data_dir=self.clickhouse_data_dir,
+        )
 
 
 class StorageMonitor:
@@ -128,9 +178,11 @@ class StorageMonitor:
         sample: Callable[[], StorageSample],
         *,
         interval_seconds: float = 1.0,
+        final_sample: Callable[[], StorageSample] | None = None,
     ) -> None:
         self.sample = sample
         self.interval_seconds = interval_seconds
+        self.final_sample = final_sample or sample
         self.samples: list[StorageSample] = []
         self._stop = Event()
         self._error: BaseException | None = None
@@ -160,7 +212,7 @@ class StorageMonitor:
         if self._error is not None:
             raise RuntimeError("storage monitor failed") from self._error
         try:
-            self.samples.append(self.sample())
+            self.samples.append(self.final_sample())
         except BaseException as error:
             raise RuntimeError("storage monitor final sample failed") from error
         return list(self.samples)

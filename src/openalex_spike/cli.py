@@ -4,6 +4,7 @@ from argparse import ArgumentParser, Namespace
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
+from time import monotonic
 import hashlib
 import json
 import os
@@ -11,11 +12,13 @@ import re
 import sys
 
 from openalex_spike.benchmark import (
+    BenchmarkQuery,
     ServiceBenchmarkClient,
     load_query_catalog,
     run_sequential,
 )
-from openalex_spike.clickhouse import ClickHouseService
+from openalex_spike.clickhouse import ClickHouseService, ResourcePreflightError
+from openalex_spike.concurrency import run_closed_loop, summarize_concurrency
 from openalex_spike.config import ExperimentConfig
 from openalex_spike.correctness import (
     evaluate_stage1,
@@ -26,6 +29,7 @@ from openalex_spike.download import (
     download_files,
     materialize_supporting_entities,
     materialize_tier_links,
+    object_path,
     verify_downloads,
 )
 from openalex_spike.manifest import (
@@ -43,9 +47,25 @@ from openalex_spike.sampling import (
     write_selection,
 )
 from openalex_spike.storage import (
+    DecimatedFilesystemSampler,
     StorageMonitor,
     collect_storage_sample,
     write_storage_samples,
+)
+from openalex_spike.stage2 import (
+    STAGE2_TIERS,
+    Stage2PrerequisiteError,
+    artifact_hashes,
+    build_run_identity,
+    file_sha256,
+    maximum_input_bytes,
+    nested_stage2_tiers,
+    require_free_space,
+    require_resume_identity,
+    required_build_free_bytes,
+    required_download_free_bytes,
+    stage2_local_verdict,
+    verify_artifact_hashes,
 )
 
 
@@ -68,6 +88,15 @@ def _write_json_atomic(destination: Path, document: object) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = destination.with_name(f"{destination.name}.tmp")
     temporary.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n")
+    os.replace(temporary, destination)
+
+
+def _write_jsonl_atomic(destination: Path, rows: list[dict[str, object]]) -> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(f"{destination.name}.tmp")
+    with temporary.open("w") as output:
+        for row in rows:
+            output.write(json.dumps(row, sort_keys=True) + "\n")
     os.replace(temporary, destination)
 
 
@@ -238,7 +267,11 @@ def command_download(args: Namespace) -> int:
     _require_state(root, "select")
     tier = args.tier
     selection_sha256 = _sha256_path(root / ".data" / "selection.json")
-    works_files = _selected_tier(root, tier)
+    tier_names = nested_stage2_tiers(tier)
+    works_selections = {
+        tier_name: _selected_tier(root, tier_name) for tier_name in tier_names
+    }
+    works_files = works_selections[tier]
     manifest_paths = _manifest_paths(root)
     required_entities = set(SELECTED_SMALL_ENTITIES) if args.include_small_dimensions else set()
     if args.include_complete_authors:
@@ -256,27 +289,59 @@ def command_download(args: Namespace) -> int:
         for file in manifests[entity].files
     ]
     all_files = [*works_files, *supporting_files]
+    raw_root = root / ".data" / "raw"
+    if (
+        tier == "stage2_large"
+        and args.include_complete_authors
+        and args.include_small_dimensions
+    ):
+        selection = json.loads((root / ".data" / "selection.json").read_text())
+        pin_state = _require_state(root, "pin-manifests")
+        maximum_raw_bytes = maximum_input_bytes(selection, pin_state)
+        unique_files = {file.url: file for file in all_files}
+        remaining = sum(
+            file.content_length
+            for file in unique_files.values()
+            if not object_path(raw_root / "objects", file.url).exists()
+        )
+        required = required_download_free_bytes(
+            remaining_object_bytes=remaining,
+            maximum_raw_input_bytes=maximum_raw_bytes,
+        )
+        available = require_free_space(
+            root,
+            required_bytes=required,
+            purpose="the Stage 2 download and ClickHouse build",
+        )
+        print(
+            f"Stage 2 disk preflight passed: {available:,} bytes free; "
+            f"conservative requirement {required:,} bytes",
+            flush=True,
+        )
     print(
         f"downloading/verifying {len(all_files)} selected files "
         f"({sum(file.content_length for file in all_files):,} bytes)",
         flush=True,
     )
-    raw_root = root / ".data" / "raw"
     object_paths = download_files(all_files, raw_root / "objects")
-    groups: dict[str, list] = {f"{tier}/works": works_files}
-    for entity in sorted(required_entities):
-        groups[f"{tier}/{entity}"] = list(manifests[entity].files)
+    groups: dict[str, list] = {
+        f"{tier_name}/works": files
+        for tier_name, files in works_selections.items()
+    }
+    for tier_name in tier_names:
+        for entity in sorted(required_entities):
+            groups[f"{tier_name}/{entity}"] = list(manifests[entity].files)
     verification_path = root / ".data" / f"download-verification-{tier}.json"
     verification = verify_downloads(groups, object_paths, verification_path)
     materialize_tier_links(
         raw_root,
-        {tier: works_files},
+        works_selections,
         object_paths,
         entity="works",
     )
     materialize_supporting_entities(
         raw_root,
-        [tier],
+        tier_names,
         manifests,
         object_paths,
         include_complete_authors=args.include_complete_authors,
@@ -619,11 +684,777 @@ def command_stage1(args: Namespace) -> int:
         service.down()
 
 
+STAGE2_WORK_TABLES = (
+    "citation_edge",
+    "work_topic",
+    "work_institution",
+    "work_author",
+    "works",
+)
+
+
+def _stage2_globs(tier: str) -> dict[str, str]:
+    return {
+        "WORKS_GLOB": f"tiers/{tier}/works/*.parquet",
+        "AUTHORS_GLOB": f"tiers/{tier}/authors/*.parquet",
+        "INSTITUTIONS_GLOB": f"tiers/{tier}/institutions/*.parquet",
+        "SOURCES_GLOB": f"tiers/{tier}/sources/*.parquet",
+        "TOPICS_GLOB": f"tiers/{tier}/topics/*.parquet",
+    }
+
+
+def _stage2_database(run_id: str) -> str:
+    normalized = re.sub(r"[^a-z0-9]+", "_", run_id.lower()).strip("_")
+    if not normalized:
+        raise ValueError("Stage 2 run ID must contain a letter or number")
+    digest = hashlib.sha256(run_id.encode()).hexdigest()[:8]
+    return _database_identifier(f"openalex_stage2_{normalized[:24]}_{digest}")
+
+
+def _stage2_rendered_sql_hashes(
+    root: Path, *, database: str, tiers: tuple[str, ...]
+) -> dict[str, str]:
+    sql_dir = root / "sql"
+    hashes = {}
+    base_globs = _stage2_globs("stage2_large")
+    for filename in (
+        "00_schema.sql",
+        "11_load_complete_authors.sql",
+        "12_load_small_dimensions.sql",
+        "30_reverse_projection.sql",
+    ):
+        _, hashes[filename] = render_sql_template(
+            sql_dir / filename, database=database, globs=base_globs
+        )
+    for tier in tiers:
+        globs = _stage2_globs(tier)
+        for filename in ("05_raw_evidence.sql", "20_load_works.sql"):
+            _, hashes[f"{tier}/{filename}"] = render_sql_template(
+                sql_dir / filename, database=database, globs=globs
+            )
+    return hashes
+
+
+def _stage2_monitor(
+    service: ClickHouseService, *, root: Path, database: str
+) -> StorageMonitor:
+    sampler = DecimatedFilesystemSampler(
+        service.query_json,
+        database=database,
+        clickhouse_data_dir=root / ".data" / "clickhouse",
+        filesystem_interval_seconds=30.0,
+    )
+    return StorageMonitor(
+        sampler,
+        interval_seconds=1.0,
+        final_sample=sampler.final,
+    )
+
+
+def _prepare_stage2_dimensions(
+    service: ClickHouseService,
+    *,
+    root: Path,
+    database: str,
+    expected_counts: dict[str, int],
+    result_dir: Path,
+) -> tuple[dict[str, int], list[dict[str, object]]]:
+    globs = _stage2_globs("stage2_large")
+    sql_dir = root / "sql"
+    service.execute_script(f"DROP DATABASE IF EXISTS {database}")
+    schema, _ = render_sql_template(
+        sql_dir / "00_schema.sql", database=database, globs=globs
+    )
+    service.execute_script(schema)
+    monitor = _stage2_monitor(service, root=root, database=database)
+    monitor.start()
+    try:
+        for filename in (
+            "11_load_complete_authors.sql",
+            "12_load_small_dimensions.sql",
+        ):
+            sql, _ = render_sql_template(
+                sql_dir / filename, database=database, globs=globs
+            )
+            service.execute_script(sql)
+    except BaseException as load_error:
+        try:
+            monitor.stop()
+        except BaseException as monitor_error:
+            raise ExceptionGroup(
+                "Stage 2 dimension load and storage monitoring both failed",
+                [load_error, monitor_error],
+            )
+        raise
+    else:
+        samples = monitor.stop()
+    rows = service.query_json(
+        "SELECT "
+        f"(SELECT count() FROM {database}.authors) AS authors, "
+        f"(SELECT uniqExact(author_id) FROM {database}.authors) AS unique_authors, "
+        f"(SELECT count() FROM {database}.institutions) AS institutions, "
+        f"(SELECT count() FROM {database}.sources) AS sources, "
+        f"(SELECT count() FROM {database}.topics) AS topics"
+    )[0]
+    counts = {name: int(value) for name, value in rows.items()}
+    if counts["authors"] != counts["unique_authors"]:
+        raise RuntimeError(f"complete Authors IDs are not unique: {counts}")
+    for entity in ("authors", "institutions", "sources", "topics"):
+        if counts[entity] != expected_counts[entity]:
+            raise RuntimeError(
+                f"Stage 2 {entity} row mismatch: "
+                f"{counts[entity]} != {expected_counts[entity]}"
+            )
+    sample_rows = [asdict(sample) for sample in samples]
+    write_storage_samples(result_dir / "storage-samples.json", samples)
+    _write_json_atomic(result_dir / "counts.json", counts)
+    return counts, sample_rows
+
+
+def _validate_stage2_dimensions(
+    service: ClickHouseService,
+    *,
+    database: str,
+    expected_counts: dict[str, int],
+) -> None:
+    exists = service.query_value(f"SELECT existsDatabase('{database}')")
+    if exists != "1":
+        raise Stage2PrerequisiteError(
+            "resumable Stage 2 database is missing; use an explicit new --run-id"
+        )
+    rows = service.query_json(
+        "SELECT "
+        f"(SELECT count() FROM {database}.authors) AS authors, "
+        f"(SELECT count() FROM {database}.institutions) AS institutions, "
+        f"(SELECT count() FROM {database}.sources) AS sources, "
+        f"(SELECT count() FROM {database}.topics) AS topics"
+    )[0]
+    actual = {name: int(value) for name, value in rows.items()}
+    if actual != expected_counts:
+        raise Stage2PrerequisiteError(
+            f"resumable Stage 2 dimensions changed: {actual} != {expected_counts}; "
+            "use an explicit new --run-id"
+        )
+
+
+def _reset_stage2_work_tables(
+    service: ClickHouseService, *, database: str
+) -> None:
+    statements = [
+        f"ALTER TABLE {database}.citation_edge DROP PROJECTION IF EXISTS by_cited"
+    ]
+    statements.extend(
+        f"TRUNCATE TABLE {database}.{table}" for table in STAGE2_WORK_TABLES
+    )
+    service.execute_script(";\n".join(statements) + ";")
+
+
+def _stage2_profile(
+    service: ClickHouseService,
+    *,
+    database: str,
+    works_glob: str,
+) -> dict[str, object]:
+    works_glob = validate_raw_glob(works_glob)
+    coverage = service.query_json(
+        "SELECT "
+        f"(SELECT count() FROM {database}.works) AS works, "
+        f"(SELECT count() FROM {database}.work_author) AS authorships, "
+        f"(SELECT uniqExact(author_id) FROM {database}.work_author) AS matched_authors, "
+        f"(SELECT count() FROM {database}.authors) AS complete_authors, "
+        "if(works = 0, 0., authorships / works) AS authorships_per_work, "
+        "if(complete_authors = 0, 0., matched_authors / complete_authors) "
+        "AS matched_author_fraction"
+    )[0]
+    degree = service.query_json(
+        "SELECT quantileExact(0.5)(referenced_works_count) AS median, "
+        "quantileExact(0.95)(referenced_works_count) AS p95, "
+        "max(referenced_works_count) AS maximum "
+        f"FROM file('{works_glob}', Parquet)"
+    )[0]
+    marginals = {}
+    expressions = {
+        "publication_year": "toString(publication_year)",
+        "work_type": "work_type",
+        "primary_topic_id": "toString(primary_topic_id)",
+        "is_xpac": "toString(is_xpac)",
+    }
+    for name, expression in expressions.items():
+        marginals[name] = service.query_json(
+            f"SELECT {expression} AS value, count() AS works "
+            f"FROM {database}.works GROUP BY value ORDER BY value"
+        )
+    return {
+        "coverage": coverage,
+        "reference_degree": degree,
+        "marginals": marginals,
+    }
+
+
+def _load_stage2_tier(
+    service: ClickHouseService,
+    *,
+    root: Path,
+    database: str,
+    tier: str,
+    expected_rows: int,
+    result_dir: Path,
+) -> tuple[dict[str, object], dict[str, object], list[dict[str, object]]]:
+    globs = _stage2_globs(tier)
+    _reset_stage2_work_tables(service, database=database)
+    raw_evidence, raw_hash = _raw_evidence(
+        service, root / "sql", database, globs
+    )
+    monitor = _stage2_monitor(service, root=root, database=database)
+    monitor.start()
+    try:
+        works_sql, works_hash = render_sql_template(
+            root / "sql" / "20_load_works.sql",
+            database=database,
+            globs=globs,
+        )
+        service.execute_script(works_sql)
+    except BaseException as load_error:
+        try:
+            monitor.stop()
+        except BaseException as monitor_error:
+            raise ExceptionGroup(
+                f"{tier} load and storage monitoring both failed",
+                [load_error, monitor_error],
+            )
+        raise
+    else:
+        samples = monitor.stop()
+    write_storage_samples(result_dir / "storage-samples.json", samples)
+    gates, query_evidence, distributions = evaluate_stage1(
+        service.query_json,
+        database=database,
+        works_glob=globs["WORKS_GLOB"],
+        expected_manifest_rows=expected_rows,
+        raw_evidence=raw_evidence,
+    )
+    correctness = write_correctness(
+        result_dir / "correctness.json", gates, query_evidence, distributions
+    )
+    correctness["sql_sha256"] = {
+        **raw_hash,
+        "20_load_works.sql": works_hash,
+    }
+    correctness["raw_evidence"] = raw_evidence
+    _write_json_atomic(result_dir / "correctness.json", correctness)
+    require_all(gates)
+    profile = _stage2_profile(
+        service,
+        database=database,
+        works_glob=globs["WORKS_GLOB"],
+    )
+    _write_json_atomic(result_dir / "profile.json", profile)
+    return correctness, profile, [asdict(sample) for sample in samples]
+
+
+def _projection_catalog(phase: str) -> tuple[BenchmarkQuery, ...]:
+    definitions = (
+        (
+            "incoming",
+            "one_hop",
+            "SELECT citing_work_id FROM openalex_spike.citation_edge "
+            "WHERE cited_work_id = {seed_work_id:UInt64}",
+            True,
+        ),
+        (
+            "outgoing",
+            "one_hop",
+            "SELECT cited_work_id FROM openalex_spike.citation_edge "
+            "WHERE citing_work_id = {seed_work_id:UInt64}",
+            True,
+        ),
+        (
+            "citations_by_year",
+            "routine",
+            "SELECT citing_year, cited_work_id, count() AS citations "
+            "FROM openalex_spike.citation_edge GROUP BY citing_year, cited_work_id "
+            "ORDER BY citations DESC, cited_work_id LIMIT 1000",
+            False,
+        ),
+    )
+    return tuple(
+        BenchmarkQuery(
+            name=f"projection_{phase}_{name}",
+            filename=f"projection_{name}.sql",
+            query_class=query_class,
+            diagnostic=False,
+            sql=sql,
+            requires_seed=requires_seed,
+        )
+        for name, query_class, sql, requires_seed in definitions
+    )
+
+
+def _run_projection_experiment(
+    service: ClickHouseService,
+    *,
+    root: Path,
+    database: str,
+    memory_gib: int,
+    seed_work_ids: tuple[int, int, int],
+    result_dir: Path,
+) -> dict[str, object]:
+    cfg = _config(root)
+
+    def restart() -> None:
+        service.down()
+        service.up(memory_gb=memory_gib, cpus=cfg.cpus)
+
+    client = lambda: ServiceBenchmarkClient(service, database)
+    projection_definitions = int(
+        service.query_value(
+            "SELECT count() FROM system.projections "
+            f"WHERE database = '{database}' AND table = 'citation_edge' "
+            "AND name = 'by_cited'"
+        )
+    )
+    if projection_definitions != 0:
+        raise RuntimeError(
+            "projection baseline requires by_cited to be absent before measurement"
+        )
+    before = run_sequential(
+        _projection_catalog("before"),
+        client,
+        restart,
+        cfg.envelopes[memory_gib],
+        seed_work_ids=seed_work_ids,
+    )
+    monitor = _stage2_monitor(service, root=root, database=database)
+    monitor.start()
+    started = monotonic()
+    try:
+        projection_sql, projection_hash = render_sql_template(
+            root / "sql" / "30_reverse_projection.sql",
+            database=database,
+            globs=_stage2_globs("stage2_large"),
+        )
+        service.execute_script(projection_sql)
+    except BaseException as projection_error:
+        try:
+            monitor.stop()
+        except BaseException as monitor_error:
+            raise ExceptionGroup(
+                "projection build and storage monitoring both failed",
+                [projection_error, monitor_error],
+            )
+        raise
+    else:
+        projection_samples = monitor.stop()
+    build_seconds = monotonic() - started
+    after = run_sequential(
+        _projection_catalog("after"),
+        client,
+        restart,
+        cfg.envelopes[memory_gib],
+        seed_work_ids=seed_work_ids,
+    )
+    write_storage_samples(
+        result_dir / "projection-storage-samples.json", projection_samples
+    )
+    result = {
+        "sql_sha256": projection_hash,
+        "build_seconds": build_seconds,
+        "before": [asdict(record) for record in before],
+        "after": [asdict(record) for record in after],
+        "storage_samples": [asdict(sample) for sample in projection_samples],
+    }
+    _write_json_atomic(result_dir / "projection.json", result)
+    return result
+
+
+def _stage2_checkpoint_path(root: Path, run_id: str) -> Path:
+    digest = hashlib.sha256(run_id.encode()).hexdigest()[:12]
+    return _state_path(root, f"stage2-{digest}")
+
+
+def _write_stage2_checkpoint(path: Path, document: dict[str, object]) -> None:
+    _write_json_atomic(
+        path,
+        {
+            **document,
+            "command": "stage2",
+            "command_version": COMMAND_VERSION,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        },
+    )
+
+
 def command_stage2(args: Namespace) -> int:
-    state = _require_state(args.root, "stage1")
-    if not state.get("passed"):
+    root: Path = args.root
+    stage1_state = _require_state(root, "stage1")
+    if not stage1_state.get("passed"):
         raise PrerequisiteError("Stage 2 requires a passing Stage 1 state")
-    raise PrerequisiteError("Stage 2 execution is not part of the current Stage 1 run")
+    cfg = _config(root)
+    memory_gib = int(args.memory_gb)
+    if memory_gib not in cfg.envelopes:
+        raise PrerequisiteError(
+            f"Stage 2 memory envelope must be one of {sorted(cfg.envelopes)} GiB"
+        )
+    tiers = (args.tier,) if args.tier else STAGE2_TIERS
+    run_id = args.run_id or "stage2"
+    database = _stage2_database(run_id)
+    selection_path = root / ".data" / "selection.json"
+    selection = json.loads(selection_path.read_text())
+    selection_sha256 = file_sha256(selection_path)
+    download_path = _state_path(root, "download-stage2_large")
+    download_state = _require_state(root, "download-stage2_large")
+    if not download_state.get("include_complete_authors"):
+        raise PrerequisiteError("Stage 2 requires complete Authors")
+    if not download_state.get("include_small_dimensions"):
+        raise PrerequisiteError("Stage 2 requires the approved small dimensions")
+    if download_state.get("selection_sha256") != selection_sha256:
+        raise PrerequisiteError("Stage 2 download does not match the selection")
+    expected_groups = {
+        f"{tier}/{entity}"
+        for tier in STAGE2_TIERS
+        for entity in ("works", "authors", *SELECTED_SMALL_ENTITIES)
+    }
+    if not expected_groups <= set(download_state.get("groups", {})):
+        raise PrerequisiteError(
+            "Stage 2 maximum download was not materialized into every nested tier"
+        )
+    pin_state = _require_state(root, "pin-manifests")
+    maximum_raw_bytes = maximum_input_bytes(selection, pin_state)
+    required = required_build_free_bytes(
+        maximum_raw_input_bytes=maximum_raw_bytes
+    )
+    available = require_free_space(
+        root,
+        required_bytes=required,
+        purpose="the Stage 2 ClickHouse build",
+    )
+    print(
+        f"Stage 2 disk preflight passed: {available:,} bytes free; "
+        f"conservative requirement {required:,} bytes",
+        flush=True,
+    )
+    rendered_hashes = _stage2_rendered_sql_hashes(
+        root, database=database, tiers=tiers
+    )
+    identity = build_run_identity(
+        run_id=run_id,
+        memory_gib=memory_gib,
+        tiers=tiers,
+        selection_sha256=selection_sha256,
+        download_state_sha256=file_sha256(download_path),
+        config_sha256=file_sha256(root / "config" / "experiment.toml"),
+        rendered_sql_sha256=rendered_hashes,
+    )
+    result_root = root / "results" / run_id
+    checkpoint_path = _stage2_checkpoint_path(root, run_id)
+    checkpoint = (
+        json.loads(checkpoint_path.read_text())
+        if checkpoint_path.exists()
+        else {
+            "identity": identity,
+            "database": database,
+            "dimensions_complete": False,
+            "completed_tiers": [],
+            "tiers": {},
+            "status": "in_progress",
+        }
+    )
+    require_resume_identity(checkpoint["identity"], identity)
+    if checkpoint["database"] != database:
+        raise Stage2PrerequisiteError("Stage 2 checkpoint database changed")
+    for tier in checkpoint["completed_tiers"]:
+        verify_artifact_hashes(
+            checkpoint["tiers"][tier]["artifact_sha256"], root=result_root
+        )
+
+    expected_dimension_counts = {
+        entity: int(pin_state["entities"][entity]["record_count"])
+        for entity in ("authors", "institutions", "sources", "topics")
+    }
+    service = ClickHouseService(root)
+    service.up(memory_gb=memory_gib, cpus=cfg.cpus)
+    environment = service.write_environment_evidence(
+        result_root / "environment.json"
+    )
+    try:
+        if checkpoint["dimensions_complete"]:
+            _validate_stage2_dimensions(
+                service,
+                database=database,
+                expected_counts=checkpoint["dimension_counts"],
+            )
+        else:
+            counts, samples = _prepare_stage2_dimensions(
+                service,
+                root=root,
+                database=database,
+                expected_counts=expected_dimension_counts,
+                result_dir=result_root / "dimensions",
+            )
+            checkpoint["dimensions_complete"] = True
+            checkpoint["dimension_counts"] = {
+                name: counts[name] for name in expected_dimension_counts
+            }
+            checkpoint["dimension_storage_samples"] = samples
+            _write_stage2_checkpoint(checkpoint_path, checkpoint)
+
+        if "seed_work_ids" not in checkpoint:
+            checkpoint["seed_work_ids"] = list(
+                _stage1_seed_work_ids(
+                    service, _stage2_globs("stage2_small")["WORKS_GLOB"]
+                )
+            )
+            _write_stage2_checkpoint(checkpoint_path, checkpoint)
+        seed_work_ids = tuple(int(value) for value in checkpoint["seed_work_ids"])
+        catalog = load_query_catalog(root / "sql" / "queries")
+
+        for tier in tiers:
+            if tier in checkpoint["completed_tiers"]:
+                print(f"resuming after completed tier {tier}", flush=True)
+                continue
+            tier_dir = result_root / "tiers" / f"{tier}-memory{memory_gib}gib"
+            expected_rows = int(selection["tiers"][tier]["record_count"])
+            print(
+                f"building {tier}: {expected_rows:,} Works at {memory_gib} GiB",
+                flush=True,
+            )
+            correctness, profile, storage_samples = _load_stage2_tier(
+                service,
+                root=root,
+                database=database,
+                tier=tier,
+                expected_rows=expected_rows,
+                result_dir=tier_dir,
+            )
+
+            def restart() -> None:
+                service.down()
+                service.up(memory_gb=memory_gib, cpus=cfg.cpus)
+
+            sequential = run_sequential(
+                catalog,
+                lambda: ServiceBenchmarkClient(service, database),
+                restart,
+                cfg.envelopes[memory_gib],
+                seed_work_ids=seed_work_ids,
+            )
+            sequential_rows = [asdict(record) for record in sequential]
+            _write_json_atomic(tier_dir / "sequential.json", sequential_rows)
+            restart()
+            container_before = service.container_id()
+            concurrent_records, first_error = run_closed_loop(
+                catalog,
+                lambda _: ServiceBenchmarkClient(service, database),
+                cfg.envelopes[memory_gib],
+                seed_work_ids=seed_work_ids,
+                minimum_samples=cfg.thresholds.minimum_samples,
+                maximum_seconds=cfg.thresholds.maximum_seconds,
+            )
+            container_after = service.container_id()
+            server_restarted = container_before != container_after
+            concurrent_summary = summarize_concurrency(
+                concurrent_records,
+                minimum_samples=cfg.thresholds.minimum_samples,
+                first_error=first_error,
+            )
+            concurrent_summary["server_restarted"] = server_restarted
+            concurrent_rows = [asdict(record) for record in concurrent_records]
+            _write_json_atomic(tier_dir / "concurrent-summary.json", concurrent_summary)
+            query_rows = [
+                {"tier": tier, "memory_gib": memory_gib, "mode": "sequential", **row}
+                for row in sequential_rows
+            ] + [
+                {"tier": tier, "memory_gib": memory_gib, "mode": "concurrent", **row}
+                for row in concurrent_rows
+            ]
+            projection = None
+            if tier == "stage2_large":
+                projection = _run_projection_experiment(
+                    service,
+                    root=root,
+                    database=database,
+                    memory_gib=memory_gib,
+                    seed_work_ids=seed_work_ids,
+                    result_dir=tier_dir,
+                )
+                query_rows.extend(
+                    {
+                        "tier": tier,
+                        "memory_gib": memory_gib,
+                        "mode": "projection_before",
+                        **row,
+                    }
+                    for row in projection["before"]
+                )
+                query_rows.extend(
+                    {
+                        "tier": tier,
+                        "memory_gib": memory_gib,
+                        "mode": "projection_after",
+                        **row,
+                    }
+                    for row in projection["after"]
+                )
+            _write_jsonl_atomic(tier_dir / "query-log.jsonl", query_rows)
+            tier_summary = {
+                "tier": tier,
+                "memory_gib": memory_gib,
+                "expected_work_rows": expected_rows,
+                "correctness": correctness,
+                "profile": profile,
+                "sequential": sequential_rows,
+                "concurrent": concurrent_summary,
+                "storage_samples": storage_samples,
+                "projection": projection,
+                "local_verdict": stage2_local_verdict(
+                    memory_gib=memory_gib,
+                    first_error=first_error,
+                    server_restarted=server_restarted,
+                ),
+            }
+            summary_path = tier_dir / "summary.json"
+            _write_json_atomic(summary_path, tier_summary)
+            artifacts = [
+                path
+                for path in tier_dir.iterdir()
+                if path.is_file()
+            ]
+            checkpoint["tiers"][tier] = {
+                "summary": str(summary_path.relative_to(result_root)),
+                "artifact_sha256": artifact_hashes(artifacts, root=result_root),
+            }
+            checkpoint["completed_tiers"].append(tier)
+            _write_stage2_checkpoint(checkpoint_path, checkpoint)
+
+        tier_summaries = {
+            tier: json.loads(
+                (result_root / checkpoint["tiers"][tier]["summary"]).read_text()
+            )
+            for tier in tiers
+        }
+        query_log_rows = []
+        disk_rows = []
+        for tier, summary in tier_summaries.items():
+            tier_dir = result_root / "tiers" / f"{tier}-memory{memory_gib}gib"
+            query_log_rows.extend(
+                json.loads(line)
+                for line in (tier_dir / "query-log.jsonl").read_text().splitlines()
+                if line
+            )
+            disk_rows.extend(
+                {
+                    "tier": tier,
+                    "memory_gib": memory_gib,
+                    "phase": "load",
+                    **sample,
+                }
+                for sample in summary["storage_samples"]
+            )
+            if summary["projection"]:
+                disk_rows.extend(
+                    {
+                        "tier": tier,
+                        "memory_gib": memory_gib,
+                        "phase": "projection",
+                        **sample,
+                    }
+                    for sample in summary["projection"]["storage_samples"]
+                )
+        _write_jsonl_atomic(result_root / "query-log.jsonl", query_log_rows)
+        _write_jsonl_atomic(result_root / "disk-samples.jsonl", disk_rows)
+        first_errors = [
+            summary["concurrent"]["first_error"]
+            for summary in tier_summaries.values()
+            if summary["concurrent"]["first_error"]
+        ]
+        restarted = any(
+            summary["concurrent"]["server_restarted"]
+            for summary in tier_summaries.values()
+        )
+        report_evidence = {
+            "run_id": run_id,
+            "inputs": {
+                "selection_sha256": selection_sha256,
+                "selection_algorithm": selection["algorithm"],
+                "maximum_raw_input_bytes": maximum_raw_bytes,
+                "tiers": {
+                    tier: {
+                        "content_length": sum(
+                            int(item["content_length"])
+                            for item in selection["tiers"][tier]["files"]
+                        ),
+                        "record_count": int(
+                            selection["tiers"][tier]["record_count"]
+                        ),
+                    }
+                    for tier in tiers
+                },
+                "complete_authors_bytes": int(
+                    pin_state["entities"]["authors"]["content_length"]
+                ),
+                "seed_work_ids": list(seed_work_ids),
+                "run_identity": identity,
+            },
+            "environment": environment,
+            "correctness": {
+                tier: summary["correctness"] for tier, summary in tier_summaries.items()
+            },
+            "sequential": {
+                tier: summary["sequential"] for tier, summary in tier_summaries.items()
+            },
+            "concurrent": {
+                tier: summary["concurrent"] for tier, summary in tier_summaries.items()
+            },
+            "storage": {
+                "dimension_samples": checkpoint["dimension_storage_samples"],
+                "tiers": {
+                    tier: summary["storage_samples"]
+                    for tier, summary in tier_summaries.items()
+                },
+                "capacity_model_status": "not yet validated at full corpus scale",
+            },
+            "profiles": {
+                tier: summary["profile"] for tier, summary in tier_summaries.items()
+            },
+            "projection": tier_summaries.get("stage2_large", {}).get("projection"),
+            "errors": {
+                "concurrent_first_errors": first_errors,
+                "server_restarted": restarted,
+            },
+            "local_engine_verdict": stage2_local_verdict(
+                memory_gib=memory_gib,
+                first_error=first_errors[0] if first_errors else None,
+                server_restarted=restarted,
+            ),
+            "capacity_verdict": "Uncertain",
+            "limitations": [
+                f"This local Stage 2 run uses a 32 GiB ClickHouse container because the captured Docker VM exposes only {int(environment['resource_limits']['docker_memory_bytes']) / (1 << 30):.3f} GiB; the 50 GiB acceptance arm is unreachable here and the local verdict is capped at Conditional.",
+                "The 50 GiB option requires a different Docker environment with at least 54 GiB configured; no automatic memory downgrade exists.",
+                "The OpenAlex manifests publish byte lengths and record counts but no content checksum; verification checks size and Parquet footer row counts and does not claim cryptographic object integrity.",
+                "The Works samples are stratified by updated_date and are not a population-representative sample.",
+                "Local Apple Silicon and local SSD latency is not extrapolated to an Alliance x86 VM with network-backed storage.",
+                "The 50 GiB and Alliance performance envelopes remain unvalidated.",
+            ],
+        }
+        report_json, report_md = render_report(result_root, report_evidence)
+        checkpoint["status"] = "complete"
+        checkpoint["report_json"] = str(report_json)
+        checkpoint["report_md"] = str(report_md)
+        _write_stage2_checkpoint(checkpoint_path, checkpoint)
+        _write_state(
+            root,
+            "stage2",
+            passed=report_evidence["local_engine_verdict"] != "fail",
+            run_id=run_id,
+            memory_gib=memory_gib,
+            report_json=str(report_json),
+            report_md=str(report_md),
+            checkpoint=str(checkpoint_path),
+        )
+        print(f"Stage 2 complete; report: {report_md}", flush=True)
+        return 0
+    finally:
+        service.down()
 
 
 def command_report(args: Namespace) -> int:
@@ -661,6 +1492,15 @@ def build_parser() -> ArgumentParser:
     stage1.add_argument("--run-id")
     stage1.set_defaults(handler=command_stage1)
     stage2 = subparsers.add_parser("stage2")
+    stage2.add_argument(
+        "--memory-gb",
+        type=int,
+        choices=(32, 50),
+        default=32,
+        help="ClickHouse container limit in GiB (compatibility flag spelling)",
+    )
+    stage2.add_argument("--tier", choices=STAGE2_TIERS)
+    stage2.add_argument("--run-id")
     stage2.set_defaults(handler=command_stage2)
     report = subparsers.add_parser("report")
     report.add_argument("--run")
@@ -675,6 +1515,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         return int(args.handler(args))
-    except (PrerequisiteError, ValueError) as error:
+    except (
+        PrerequisiteError,
+        ResourcePreflightError,
+        Stage2PrerequisiteError,
+        ValueError,
+    ) as error:
         print(f"error: {error}", file=sys.stderr)
         return 2

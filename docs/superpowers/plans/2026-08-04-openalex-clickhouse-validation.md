@@ -1193,17 +1193,17 @@ git commit -m "test: validate OpenAlex Stage 1 in ClickHouse"
 - [ ] **Step 1: Download and verify the maximum nested selection**
 
 Run: `uv run openalex-spike download --tier stage2_large --include-complete-authors --include-small-dimensions`  
-Expected: approximately 98.1 GB for the pinned 2026-06-26 manifest; exact bytes and rows match the selection and manifests.
+Expected: exactly 98,301,763,421 bytes for the pinned 2026-06-26 manifests and selections; exact bytes and rows match the selection and manifests.
 
-- [ ] **Step 2: Run the 50 GB scaling curve**
+- [ ] **Step 2: Run the local 32 GiB scaling curve**
 
-Run: `uv run openalex-spike clickhouse-up --memory-gb 50 && uv run openalex-spike stage2 --memory-gb 50`  
-Expected: 3/15/45 GB tiers complete in order, correctness remains passing, sequential metrics and scaling slopes are recorded, three-client classes reach 50 samples or receive a Conditional cap, and two-hop is diagnostic only.
+Run: `uv run openalex-spike stage2 --memory-gb 32 --run-id stage2`
+Expected: 3/15/45 GB tiers complete in order, correctness remains passing, sequential metrics and scaling evidence are recorded, three-client classes reach 50 samples or receive a Conditional cap, and two-hop is diagnostic only. The current Docker VM exposes 46.964 GiB, so the 50 GiB arm is unreachable and the overall local verdict is capped at Conditional before execution.
 
-- [ ] **Step 3: Run the 32 GB sensitivity envelope**
+- [ ] **Step 3: Preserve the explicit future 50 GiB arm**
 
-Run: `uv run openalex-spike stage2 --memory-gb 32 --tier stage2_large`  
-Expected: the 45 GB tier records the 32 GB envelope with its distinct per-query/spill settings and does not overwrite 50 GB results.
+Run later on a different environment configured with at least 54 GiB of Docker memory: `uv run openalex-spike stage2 --memory-gb 50 --run-id stage2-50gib`
+Expected locally: the memory preflight refuses this command before Compose mutation and does not downgrade. The Alliance/x86 environment remains unvalidated.
 
 - [ ] **Step 4: Build and measure the reverse projection**
 
