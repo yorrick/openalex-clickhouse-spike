@@ -1,0 +1,4 @@
+<clickhouse>
+  <!-- Host publication is loopback-only; SQL protocols still require credentials. -->
+  <listen_host>0.0.0.0</listen_host>
+</clickhouse>

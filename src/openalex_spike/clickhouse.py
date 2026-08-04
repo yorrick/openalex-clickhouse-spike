@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+from base64 import b64encode
+from urllib.error import HTTPError
+from urllib.request import Request, urlopen
 import json
 import os
 import platform
@@ -11,6 +14,8 @@ import subprocess
 
 IMAGE = "clickhouse/clickhouse-server:26.3.12.3"
 ARM_ARCHITECTURES = {"aarch64", "arm64"}
+CLICKHOUSE_USER = "openalex"
+CLICKHOUSE_PASSWORD = "openalex-local-only"
 
 
 def _normalized_architecture(value: str) -> str:
@@ -49,6 +54,16 @@ class ClickHouseService:
     def _compose(self, arguments: list[str], **kwargs: Any) -> str:
         return self._run(["docker", "compose", *arguments], **kwargs)
 
+    def _client_command(self, *arguments: str) -> list[str]:
+        return [
+            "clickhouse-client",
+            "--user",
+            CLICKHOUSE_USER,
+            "--password",
+            CLICKHOUSE_PASSWORD,
+            *arguments,
+        ]
+
     def up(self, memory_gb: int, cpus: int) -> None:
         raw_dir = self.project_dir / ".data" / "raw"
         raw_dir.mkdir(parents=True, exist_ok=True)
@@ -72,6 +87,8 @@ class ClickHouseService:
         expected_hosts = {"8123": "127.0.0.1", "9000": "127.0.0.1"}
         if self.published_hosts() != expected_hosts:
             raise RuntimeError("ClickHouse ports are not loopback-only")
+        if self.query_http_value("SELECT 1") != "1":
+            raise RuntimeError("ClickHouse host HTTP readiness gate failed")
 
     def down(self) -> None:
         self._compose(["down"])
@@ -197,7 +214,7 @@ class ClickHouseService:
 
     def execute_script(self, sql: str) -> str:
         return self._compose(
-            ["exec", "-T", "clickhouse", "clickhouse-client", "--multiquery"],
+            ["exec", "-T", "clickhouse", *self._client_command("--multiquery")],
             input_text=sql,
         )
 
@@ -209,13 +226,41 @@ class ClickHouseService:
                 "exec",
                 "-T",
                 "clickhouse",
-                "clickhouse-client",
-                "--format",
-                "TabSeparatedRaw",
-                "--query",
-                sql,
+                *self._client_command(
+                    "--format",
+                    "TabSeparatedRaw",
+                    "--query",
+                    sql,
+                ),
             ]
         )
+
+    def query_http_value(self, sql: str) -> str:
+        if not re.match(r"^\s*SELECT\b", sql, flags=re.IGNORECASE):
+            raise ValueError("query_http_value accepts SELECT statements only")
+        request = Request(
+            "http://127.0.0.1:8123/",
+            data=f"{sql} FORMAT TabSeparatedRaw".encode(),
+            headers={
+                "Authorization": "Basic "
+                + b64encode(
+                    f"{CLICKHOUSE_USER}:{CLICKHOUSE_PASSWORD}".encode()
+                ).decode()
+            },
+            method="POST",
+        )
+        try:
+            with urlopen(request, timeout=5) as response:
+                if response.status != 200:
+                    raise RuntimeError(
+                        f"ClickHouse HTTP query failed with status {response.status}"
+                    )
+                return response.read().decode().strip()
+        except HTTPError as error:
+            detail = error.read().decode(errors="replace").strip()
+            raise RuntimeError(
+                f"ClickHouse HTTP query failed with status {error.code}: {detail}"
+            ) from error
 
     def query_json(self, sql: str) -> list[dict[str, object]]:
         if not re.match(r"^\s*(SELECT|WITH)\b", sql, flags=re.IGNORECASE):
@@ -225,11 +270,12 @@ class ClickHouseService:
                 "exec",
                 "-T",
                 "clickhouse",
-                "clickhouse-client",
-                "--format",
-                "JSONEachRow",
-                "--query",
-                sql,
+                *self._client_command(
+                    "--format",
+                    "JSONEachRow",
+                    "--query",
+                    sql,
+                ),
             ]
         )
         return [json.loads(line) for line in output.splitlines() if line]
@@ -248,9 +294,7 @@ class ClickHouseService:
             "exec",
             "-T",
             "clickhouse",
-            "clickhouse-client",
-            f"--query_id={query_id}",
-            "--format=Null",
+            *self._client_command(f"--query_id={query_id}", "--format=Null"),
         ]
         for name, value in sorted(settings.items()):
             if not re.fullmatch(r"[a-z_]+", name):

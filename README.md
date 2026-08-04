@@ -56,9 +56,19 @@ on `127.0.0.1:9000` and `127.0.0.1:8123`. From the repository, an immediate
 SQL shell is available with:
 
 ```bash
-docker compose exec clickhouse clickhouse-client --database openalex_stage1_b
+docker compose exec clickhouse clickhouse-client \
+  --user openalex \
+  --password openalex-local-only \
+  --database openalex_stage1_b
 ```
 
 The analytical schema contains Works, Authors, Institutions, Sources, Topics,
 authorship and affiliation bridges, Work-topic links, and deduplicated citation
 edges suitable for aggregations, entity joins, and one-/two-hop network queries.
+
+DBeaver's ClickHouse JDBC driver uses the HTTP interface. Configure it with
+host `127.0.0.1`, port `8123`, database `openalex_stage1_b`, user `openalex`, and
+password `openalex-local-only`. Port `9000` is the native protocol used by
+`clickhouse-client`, not the DBeaver connection. Both host ports are
+loopback-only. These committed credentials are deliberately limited to this
+local validation environment and must not be reused for a shared deployment.

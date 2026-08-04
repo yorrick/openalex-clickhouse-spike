@@ -1,5 +1,9 @@
+from io import BytesIO
+from urllib.error import HTTPError
+
 import pytest
 
+import openalex_spike.clickhouse as clickhouse_module
 from openalex_spike.clickhouse import ClickHouseService
 
 
@@ -52,6 +56,7 @@ def test_up_uses_bounded_compose_wait(tmp_path, monkeypatch):
         "published_hosts",
         lambda: {"8123": "127.0.0.1", "9000": "127.0.0.1"},
     )
+    monkeypatch.setattr(service, "query_http_value", lambda sql: "1")
 
     service.up(memory_gb=32, cpus=16)
 
@@ -59,3 +64,27 @@ def test_up_uses_bounded_compose_wait(tmp_path, monkeypatch):
     assert arguments == ["up", "-d", "--wait", "--wait-timeout", "40"]
     assert kwargs["env"]["CLICKHOUSE_MEMORY_GB"] == "32"
     assert kwargs["env"]["CLICKHOUSE_CPUS"] == "16"
+
+
+def test_query_http_value_rejects_non_select_statements():
+    service = ClickHouseService()
+    with pytest.raises(ValueError, match="SELECT"):
+        service.query_http_value("DROP DATABASE openalex_spike")
+
+
+def test_query_http_value_wraps_http_errors(monkeypatch):
+    service = ClickHouseService()
+
+    def raise_http_error(*args, **kwargs):
+        raise HTTPError(
+            "http://127.0.0.1:8123/",
+            401,
+            "Unauthorized",
+            {},
+            BytesIO(b"authentication failed"),
+        )
+
+    monkeypatch.setattr(clickhouse_module, "urlopen", raise_http_error)
+
+    with pytest.raises(RuntimeError, match="status 401: authentication failed"):
+        service.query_http_value("SELECT 1")
