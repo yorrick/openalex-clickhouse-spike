@@ -1,0 +1,22 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:26.3.12.3
+    cpus: "${CLICKHOUSE_CPUS:-16}"
+    mem_limit: "${CLICKHOUSE_MEMORY_GB:-32}g"
+    environment:
+      CLICKHOUSE_DO_NOT_CHOWN: "1"
+      CLICKHOUSE_USER: "openalex"
+      CLICKHOUSE_PASSWORD: "openalex-local-only"
+    ports:
+      - "127.0.0.1:8123:8123"
+      - "127.0.0.1:9000:9000"
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--host", "127.0.0.1", "--user", "openalex", "--password", "openalex-local-only", "--query", "SELECT 1"]
+      start_period: 2s
+      interval: 1s
+      timeout: 1s
+      retries: 45
+    volumes:
+      - ./.data/clickhouse:/var/lib/clickhouse
+      - ./.data/raw:/raw:ro
+      - ./clickhouse/config.d:/etc/clickhouse-server/config.d:ro

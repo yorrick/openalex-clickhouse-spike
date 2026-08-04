@@ -1,0 +1,11 @@
+{
+  "date": "2026-06-26",
+  "format": "parquet",
+  "meta": {"record_count": 649096577, "content_length": 783555949110},
+  "entities": [
+    {"entity": "works", "record_count": 510372821, "content_length": 724970323127, "files": []},
+    {"entity": "authors", "record_count": 119129660, "content_length": 52769910496, "files": []},
+    {"entity": "awards", "record_count": 18991361, "content_length": 5517008906, "files": []},
+    {"entity": "selected-small-entities", "record_count": 2735, "content_length": 298706581, "files": []}
+  ]
+}
