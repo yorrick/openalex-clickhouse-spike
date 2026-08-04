@@ -52,6 +52,22 @@ def test_fixture_rebuilds_have_identical_correctness_hashes():
                 distributions,
             )
             require_all(gates)
+            missing_institutions = next(
+                gate for gate in gates if gate.name == "missing_institutions"
+            )
+            assert missing_institutions.actual == 1
+            assert missing_institutions.passed is False
+            assert missing_institutions.blocking is False
+            assert distributions["referential_coverage"][
+                "institution_reference_coverage_ratio"
+            ] == pytest.approx(2 / 3)
+            assert distributions["missing_institution_sample"] == [
+                {
+                    "institution_id": 99,
+                    "display_name": "Removed Institute",
+                    "raw_bridge_rows": 1,
+                }
+            ]
             hashes.append(output["normalized_sha256"])
         assert hashes[0] == hashes[1]
     finally:

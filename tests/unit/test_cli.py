@@ -85,6 +85,40 @@ def test_stage1_rejects_download_from_different_selection(tmp_path: Path):
         )
 
 
+def test_stage1_requires_manifest_identities_before_build(tmp_path: Path):
+    data = tmp_path / ".data"
+    state = data / "state"
+    state.mkdir(parents=True)
+    selection_path = data / "selection.json"
+    selection_path.write_text(
+        json.dumps(
+            {
+                "algorithm": ALGORITHM,
+                "stage1_coverage_policy": {},
+                "tiers": {"stage1": {"record_count": 1}},
+            }
+        )
+    )
+    selection_sha256 = hashlib.sha256(selection_path.read_bytes()).hexdigest()
+    (state / "download-stage1.json").write_text(
+        json.dumps(
+            {
+                "include_small_dimensions": True,
+                "selection_sha256": selection_sha256,
+            }
+        )
+    )
+
+    with pytest.raises(PrerequisiteError, match="missing pinned works manifest"):
+        command_stage1(
+            Namespace(
+                root=tmp_path,
+                include_small_dimensions=True,
+                run_id="test",
+            )
+        )
+
+
 def test_raw_glob_validation_rejects_escape_quotes_and_alternate_roots():
     assert validate_raw_glob("tiers/stage1/works/*.parquet") == (
         "tiers/stage1/works/*.parquet"

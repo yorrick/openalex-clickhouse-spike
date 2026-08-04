@@ -39,7 +39,9 @@ uv run openalex-spike clickhouse-down
 `stage1` builds the same real input twice in isolated databases, runs blocking
 correctness gates, compares normalized result hashes, and executes the fixed
 seven-query bibliometric smoke suite. Any malformed-ID, row-reconciliation,
-referential, rebuild-hash, architecture, or query failure stops the run.
+blocking internal-reference, rebuild-hash, architecture, or query failure stops
+the run. External snapshot coverage gaps are measured and disclosed without
+dropping their bridge rows.
 
 Stage 1 deliberately guarantees update-period coverage by seeding each of four
 cumulative-byte strata with a file no larger than one quarter of the target.

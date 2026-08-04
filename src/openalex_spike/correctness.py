@@ -26,6 +26,7 @@ class GateResult:
     expected: int | str
     actual: int | str
     evidence: dict[str, object]
+    blocking: bool = True
 
 
 @dataclass(frozen=True)
@@ -40,7 +41,7 @@ QueryJson = Callable[[str], list[dict[str, object]]]
 
 
 def require_all(results: list[GateResult]) -> None:
-    failed = [result for result in results if not result.passed]
+    failed = [result for result in results if result.blocking and not result.passed]
     if failed:
         raise CorrectnessFailure(failed)
 
@@ -186,14 +187,39 @@ def evaluate_stage1(
         f"SELECT "
         f"(SELECT count() FROM {database}.work_author wa LEFT ANTI JOIN {database}.works w ON wa.work_id=w.work_id) AS missing_works_for_authors, "
         f"(SELECT count() FROM {database}.work_author wa LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id) AS missing_authors, "
+        f"(SELECT count() FROM {database}.work_institution) AS institution_bridge_rows, "
         f"(SELECT count() FROM {database}.work_institution wi LEFT ANTI JOIN {database}.institutions i ON wi.institution_id=i.institution_id) AS missing_institutions, "
+        f"(SELECT uniqExact(wi.institution_id) FROM {database}.work_institution wi LEFT ANTI JOIN {database}.institutions i ON wi.institution_id=i.institution_id) AS distinct_missing_institution_ids, "
+        f"(SELECT uniqExact(wi.work_id) FROM {database}.work_institution wi LEFT ANTI JOIN {database}.institutions i ON wi.institution_id=i.institution_id) AS works_with_missing_institutions, "
+        f"(SELECT uniqExact(wi.author_id) FROM {database}.work_institution wi LEFT ANTI JOIN {database}.institutions i ON wi.institution_id=i.institution_id) AS authors_with_missing_institutions, "
+        f"if(institution_bridge_rows = 0, 1., (institution_bridge_rows - missing_institutions) / institution_bridge_rows) AS institution_reference_coverage_ratio, "
+        f"(SELECT count() FROM {database}.work_topic) AS topic_bridge_rows, "
         f"(SELECT count() FROM {database}.work_topic wt LEFT ANTI JOIN {database}.topics t ON wt.topic_id=t.topic_id) AS missing_topics, "
-        f"(SELECT count() FROM {database}.citation_edge ce INNER JOIN {database}.works w ON ce.cited_work_id=w.work_id) AS retained_cited_edges",
+        f"(SELECT uniqExact(wt.topic_id) FROM {database}.work_topic wt LEFT ANTI JOIN {database}.topics t ON wt.topic_id=t.topic_id) AS distinct_missing_topic_ids, "
+        f"if(topic_bridge_rows = 0, 1., (topic_bridge_rows - missing_topics) / topic_bridge_rows) AS topic_reference_coverage_ratio, "
+        f"(SELECT count() FROM {database}.citation_edge) AS citation_edges, "
+        f"(SELECT count() FROM {database}.citation_edge ce INNER JOIN {database}.works w ON ce.cited_work_id=w.work_id) AS retained_cited_edges, "
+        f"if(citation_edges = 0, 1., retained_cited_edges / citation_edges) AS citation_retention_ratio",
     )[0]
+    missing_institution_sample = _run_query(
+        query_json,
+        evidence,
+        "missing_institution_sample",
+        f"WITH missing_ids AS ("
+        f"SELECT DISTINCT wi.institution_id FROM {database}.work_institution wi "
+        f"LEFT ANTI JOIN {database}.institutions i ON wi.institution_id=i.institution_id"
+        f") SELECT openalex_numeric_id(raw_institution.id) AS institution_id, "
+        f"any(raw_institution.display_name) AS display_name, "
+        f"count() AS raw_bridge_rows "
+        f"FROM file('{works_glob}', Parquet) "
+        f"ARRAY JOIN authorships AS authorship "
+        f"ARRAY JOIN authorship.institutions AS raw_institution "
+        f"WHERE openalex_numeric_id(raw_institution.id) IN missing_ids "
+        f"GROUP BY institution_id ORDER BY raw_bridge_rows DESC, institution_id LIMIT 25",
+    )
     for name in (
         "missing_works_for_authors",
         "missing_authors",
-        "missing_institutions",
         "missing_topics",
     ):
         gates.append(
@@ -205,6 +231,22 @@ def evaluate_stage1(
                 {"query": "referential_coverage"},
             )
         )
+    gates.append(
+        GateResult(
+            "missing_institutions",
+            int(referential["missing_institutions"]) == 0,
+            0,
+            int(referential["missing_institutions"]),
+            {
+                "query": "referential_coverage",
+                "distinct_missing_ids": int(
+                    referential["distinct_missing_institution_ids"]
+                ),
+                "sample_query": "missing_institution_sample",
+            },
+            blocking=False,
+        )
+    )
 
     primary_keys = {
         "works": "work_id",
@@ -248,6 +290,7 @@ def evaluate_stage1(
             f"GROUP BY authorships ORDER BY authorships",
         ),
         "referential_coverage": referential,
+        "missing_institution_sample": missing_institution_sample,
         "materialized_counts": materialized,
     }
     return gates, evidence, distributions

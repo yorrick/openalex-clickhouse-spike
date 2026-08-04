@@ -236,7 +236,16 @@ Stage 1 must satisfy all gates before Stage 2:
 8. Referential coverage is reported for every bridge. Missing cited Works are
    expected in a partial Works sample and are not silently discarded.
    Report citation-edge retention as the fraction whose cited ID is present in
-   the sampled `works` table.
+   the sampled `works` table. `work_author` links to sampled Works and derived
+   Authors are closed by construction and therefore remain blocking zero-gap
+   checks. Topics cross an independent snapshot and its loader additionally
+   rejects incomplete hierarchy rows; a Topic gap can therefore indicate a
+   fixable transformation loss and remains blocking until its cause is
+   classified. Institution links also cross independent Works and Institutions
+   snapshots, but that loader has no extra exclusion predicate: preserve and
+   report unmatched raw links, distinct IDs, affected Works/Authors, coverage
+   ratio, and a capped ID/name sample, but do not invent placeholders or
+   silently discard them. Record both manifest dates and digests.
 9. At each nested Works tier, report authorships per Work, matched-Author
    fraction, and distributions over publication year, work type, primary
    topic, and `is_xpac`. Report whether these distributions converge as sample

@@ -40,7 +40,10 @@ def _write_parquet_fixtures(raw_root: Path) -> None:
                     },
                     "author_position": "first",
                     "is_corresponding": True,
-                    "institutions": [{"id": "https://openalex.org/I1"}],
+                    "institutions": [
+                        {"id": "https://openalex.org/I1", "display_name": "Institute One"},
+                        {"id": "https://openalex.org/I99", "display_name": "Removed Institute"},
+                    ],
                 }
             ],
             "topics": [{"id": "https://openalex.org/T1", "score": 0.9}],
@@ -178,7 +181,7 @@ def test_transformations_materialize_exact_fixture_counts():
             "(SELECT count() FROM openalex_spike.citation_edge)]) "
             "FROM openalex_spike.works"
         ).splitlines()
-        assert counts == ["2", "2", "2", "2", "2"]
+        assert counts == ["2", "2", "3", "2", "2"]
         assert service.query_value(
             "SELECT toString(is_xpac) FROM openalex_spike.works WHERE work_id = 2"
         ) == "true"

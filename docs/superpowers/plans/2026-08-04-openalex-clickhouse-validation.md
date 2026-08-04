@@ -840,7 +840,11 @@ Define one named `GateSpec` per design gate. Include these exact checks:
 - `uniqExactIf(openalex_numeric_id(id), id IS NOT NULL)` equals the count of
   non-null canonical IDs for every loaded entity;
 - left anti-join counts and percentages report bridge referential coverage and
-  retained citation edges;
+  retained citation edges; closed Work/Author gaps are blocking, Topic gaps
+  remain blocking because the Topics transformation has hierarchy exclusion
+  predicates that must be ruled out, while independently pinned Institution
+  gaps are explicit non-blocking observations with a capped raw ID/name sample
+  and both manifest identities;
 - authorships per Work, matched-Author fraction, and year/type/topic/XPAC
   distributions are emitted per tier;
 - selector file-list bytes and order reproduce exactly;

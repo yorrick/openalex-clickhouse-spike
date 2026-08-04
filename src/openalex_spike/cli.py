@@ -463,6 +463,18 @@ def command_stage1(args: Namespace) -> int:
     if download_state.get("selection_sha256") != selection_sha256:
         raise PrerequisiteError("Stage 1 download does not match the current selection")
     expected_rows = int(selection["tiers"]["stage1"]["record_count"])
+    manifest_identities = {}
+    for entity in ("works", "institutions"):
+        manifest_path = root / ".data" / "manifests" / f"{entity}-manifest.json"
+        metadata_path = manifest_path.with_name(f"{manifest_path.name}.metadata.json")
+        if not manifest_path.exists() or not metadata_path.exists():
+            raise PrerequisiteError(
+                f"missing pinned {entity} manifest identity: {manifest_path}"
+            )
+        manifest_identities[entity] = {
+            "date": json.loads(manifest_path.read_text())["date"],
+            **json.loads(metadata_path.read_text()),
+        }
     run_id = args.run_id or datetime.now(timezone.utc).strftime("stage1-%Y%m%dT%H%M%SZ")
     result_root = root / "results" / run_id
     globs = {
@@ -518,20 +530,27 @@ def command_stage1(args: Namespace) -> int:
             (sample["filesystem_bytes"] for sample in all_storage_samples),
             default=0,
         )
+        referential = builds[1]["distributions"]["referential_coverage"]
+        missing_institution_sample = builds[1]["distributions"][
+            "missing_institution_sample"
+        ]
+        limitations = [
+            "Stage 1 validates correctness and query execution on a target of approximately 1 GiB; its actual size can exceed that target by one selected file.",
+            STAGE1_BIAS_CAVEAT,
+            "Stage 1 scaling evidence is not a full-size prediction.",
+            "The Docker VM uses 48 GiB because 64 GiB did not boot on this host.",
+        ]
+        if int(referential["missing_institutions"]) > 0:
+            limitations.append(
+                f"The canonical Institutions snapshot does not resolve {referential['missing_institutions']} of {referential['institution_bridge_rows']} Work-institution bridge rows ({referential['distinct_missing_institution_ids']} distinct IDs; coverage ratio {float(referential['institution_reference_coverage_ratio']):.6f}). The raw links are preserved and analyses must use LEFT JOIN when unmatched affiliations matter."
+            )
         report_evidence = {
             "run_id": run_id,
             "inputs": {
                 "selection_sha256": selection_sha256,
                 "selection_algorithm": selection["algorithm"],
                 "stage1_coverage_policy": selection["stage1_coverage_policy"],
-                "works_manifest_metadata": json.loads(
-                    (
-                        root
-                        / ".data"
-                        / "manifests"
-                        / "works-manifest.json.metadata.json"
-                    ).read_text()
-                ),
+                "entity_manifests": manifest_identities,
                 "expected_work_rows": expected_rows,
                 "seed_work_ids": seed_work_ids,
             },
@@ -542,6 +561,8 @@ def command_stage1(args: Namespace) -> int:
                 "rebuild_deterministic": True,
                 "gates": builds[1]["gates"],
                 "raw_evidence": builds[1]["raw_evidence"],
+                "referential_coverage": referential,
+                "missing_institution_sample": missing_institution_sample,
             },
             "sequential": sequential_json,
             "concurrent": {"status": "not run in Stage 1"},
@@ -551,12 +572,7 @@ def command_stage1(args: Namespace) -> int:
             },
             "local_engine_verdict": "pass",
             "capacity_verdict": "Uncertain",
-            "limitations": [
-                "Stage 1 validates correctness and query execution on a target of approximately 1 GiB; its actual size can exceed that target by one selected file.",
-                STAGE1_BIAS_CAVEAT,
-                "Stage 1 scaling evidence is not a full-size prediction.",
-                "The Docker VM uses 48 GiB because 64 GiB did not boot on this host.",
-            ],
+            "limitations": limitations,
         }
         report_json, report_md = render_report(result_root, report_evidence)
         _write_state(
