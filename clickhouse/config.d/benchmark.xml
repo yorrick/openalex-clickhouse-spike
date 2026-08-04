@@ -1,4 +1,5 @@
 <clickhouse>
+  <user_files_path>/raw/</user_files_path>
   <query_log replace="1">
     <database>system</database>
     <table>query_log</table>

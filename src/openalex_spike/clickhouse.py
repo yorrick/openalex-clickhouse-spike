@@ -120,7 +120,8 @@ class ClickHouseService:
                 "-c",
                 "if [ -d /proc/sys/fs/binfmt_misc ]; then "
                 "for f in /proc/sys/fs/binfmt_misc/*; do "
-                "[ -f \"$f\" ] && { echo ===$f; cat \"$f\"; }; done; fi",
+                "if [ -f \"$f\" ]; then echo ===$f; cat \"$f\" || exit 1; fi; "
+                "done; fi; exit 0",
             ]
         )
         return {
@@ -131,6 +132,7 @@ class ClickHouseService:
             "container_cpuinfo": cpuinfo,
             "binfmt_registrations": binfmt,
             "published_hosts": self.published_hosts(inspect=inspect),
+            "raw_mount_read_only": self.raw_mount_read_only(inspect=inspect),
             "resource_limits": {
                 "memory_bytes": inspect["HostConfig"]["Memory"],
                 "nano_cpus": inspect["HostConfig"]["NanoCpus"],
@@ -159,6 +161,20 @@ class ClickHouseService:
             }
         ) != 1
         return architecture_mismatch or "qemu" in signals or "rosetta" in signals
+
+    def raw_mount_read_only(self, *, inspect: dict[str, Any] | None = None) -> bool:
+        if inspect is None:
+            inspect = json.loads(
+                self._run(["docker", "inspect", self.container_id()])
+            )[0]
+        raw_mounts = [
+            mount for mount in inspect["Mounts"] if mount["Destination"] == "/raw"
+        ]
+        return (
+            len(raw_mounts) == 1
+            and raw_mounts[0]["Type"] == "bind"
+            and raw_mounts[0]["RW"] is False
+        )
 
     def published_hosts(self, *, inspect: dict[str, Any] | None = None) -> dict[str, str]:
         if inspect is None:
