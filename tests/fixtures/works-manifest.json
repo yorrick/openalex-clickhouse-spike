@@ -1,0 +1,25 @@
+{
+  "date": "2026-06-26",
+  "format": "parquet",
+  "entity": "works",
+  "record_count": 16,
+  "content_length": 10000,
+  "files": [
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-01-01/part_0_0.parquet", "meta": {"content_length": 250, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-01-01/part_0_1.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-01-01/part_0_2.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-01-01/part_0_3.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-04-01/part_1_0.parquet", "meta": {"content_length": 250, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-04-01/part_1_1.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-04-01/part_1_2.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-04-01/part_1_3.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-07-01/part_2_0.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-07-01/part_2_1.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-07-01/part_2_2.parquet", "meta": {"content_length": 250, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-07-01/part_2_3.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-10-01/part_3_0.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-10-01/part_3_1.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-10-01/part_3_2.parquet", "meta": {"content_length": 750, "record_count": 1}},
+    {"url": "s3://openalex/data/parquet/works/updated_date=2022-10-01/part_3_3.parquet", "meta": {"content_length": 250, "record_count": 1}}
+  ]
+}
