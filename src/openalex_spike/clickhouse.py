@@ -214,3 +214,20 @@ class ClickHouseService:
                 sql,
             ]
         )
+
+    def query_json(self, sql: str) -> list[dict[str, object]]:
+        if not re.match(r"^\s*(SELECT|WITH)\b", sql, flags=re.IGNORECASE):
+            raise ValueError("query_json accepts SELECT/WITH statements only")
+        output = self._compose(
+            [
+                "exec",
+                "-T",
+                "clickhouse",
+                "clickhouse-client",
+                "--format",
+                "JSONEachRow",
+                "--query",
+                sql,
+            ]
+        )
+        return [json.loads(line) for line in output.splitlines() if line]
