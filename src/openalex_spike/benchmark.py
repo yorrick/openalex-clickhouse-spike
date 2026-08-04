@@ -57,7 +57,8 @@ class BenchmarkClient(Protocol):
     ) -> dict[str, object]: ...
 
 
-def load_query_catalog(directory: Path) -> tuple[BenchmarkQuery, ...]:
+def load_query_catalog(directory: Path | str) -> tuple[BenchmarkQuery, ...]:
+    directory = Path(directory)
     catalog = []
     for name, (filename, query_class, diagnostic) in QUERY_CONTRACT.items():
         sql = (directory / filename).read_text()
