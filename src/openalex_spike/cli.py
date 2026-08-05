@@ -65,7 +65,9 @@ from openalex_spike.stage2 import (
     required_build_free_bytes,
     required_download_free_bytes,
     stage2_local_verdict,
+    stage2_performance_verdict,
     verify_artifact_hashes,
+    worst_stage2_verdict,
 )
 
 
@@ -1104,19 +1106,234 @@ def _write_stage2_checkpoint(path: Path, document: dict[str, object]) -> None:
     )
 
 
+def _finalize_stage2_report(
+    *,
+    root: Path,
+    result_root: Path,
+    checkpoint_path: Path,
+    checkpoint: dict[str, object],
+    run_id: str,
+    memory_gib: int,
+    tiers: tuple[str, ...],
+    cfg: ExperimentConfig,
+    selection: dict[str, object],
+    selection_sha256: str,
+    pin_state: dict[str, object],
+    maximum_raw_bytes: int,
+    environment: dict[str, object],
+    identity: dict[str, object],
+    evaluation_mode: str,
+    write_derived_logs: bool,
+) -> int:
+    tier_summaries = {
+        tier: json.loads(
+            (result_root / checkpoint["tiers"][tier]["summary"]).read_text()
+        )
+        for tier in tiers
+    }
+    for tier, summary in tier_summaries.items():
+        if int(summary["memory_gib"]) != memory_gib:
+            raise Stage2PrerequisiteError(
+                f"{tier} summary memory does not match checkpoint identity"
+            )
+
+    if write_derived_logs:
+        query_log_rows = []
+        disk_rows = []
+        for tier, summary in tier_summaries.items():
+            tier_dir = result_root / "tiers" / f"{tier}-memory{memory_gib}gib"
+            query_log_rows.extend(
+                json.loads(line)
+                for line in (tier_dir / "query-log.jsonl").read_text().splitlines()
+                if line
+            )
+            disk_rows.extend(
+                {
+                    "tier": tier,
+                    "memory_gib": memory_gib,
+                    "phase": "load",
+                    **sample,
+                }
+                for sample in summary["storage_samples"]
+            )
+            if summary["projection"]:
+                disk_rows.extend(
+                    {
+                        "tier": tier,
+                        "memory_gib": memory_gib,
+                        "phase": "projection",
+                        **sample,
+                    }
+                    for sample in summary["projection"]["storage_samples"]
+                )
+        _write_jsonl_atomic(result_root / "query-log.jsonl", query_log_rows)
+        _write_jsonl_atomic(result_root / "disk-samples.jsonl", disk_rows)
+
+    performance_by_tier = {
+        tier: stage2_performance_verdict(summary["concurrent"], cfg.thresholds)
+        for tier, summary in tier_summaries.items()
+    }
+    aggregate_performance = worst_stage2_verdict(
+        list(performance_by_tier.values())
+    )
+    local_verdict = stage2_local_verdict(
+        memory_gib=memory_gib,
+        performance_verdict=aggregate_performance,
+    )
+    first_errors = [
+        summary["concurrent"]["first_error"]
+        for summary in tier_summaries.values()
+        if summary["concurrent"]["first_error"]
+    ]
+    restarted = any(
+        summary["concurrent"]["server_restarted"]
+        for summary in tier_summaries.values()
+    )
+    report_evidence = {
+        "run_id": run_id,
+        "inputs": {
+            "selection_sha256": selection_sha256,
+            "selection_algorithm": selection["algorithm"],
+            "maximum_raw_input_bytes": maximum_raw_bytes,
+            "tiers": {
+                tier: {
+                    "content_length": sum(
+                        int(item["content_length"])
+                        for item in selection["tiers"][tier]["files"]
+                    ),
+                    "record_count": int(selection["tiers"][tier]["record_count"]),
+                }
+                for tier in tiers
+            },
+            "complete_authors_bytes": int(
+                pin_state["entities"]["authors"]["content_length"]
+            ),
+            "seed_work_ids": list(checkpoint["seed_work_ids"]),
+            "run_identity": identity,
+        },
+        "environment": environment,
+        "correctness": {
+            tier: summary["correctness"] for tier, summary in tier_summaries.items()
+        },
+        "sequential": {
+            tier: summary["sequential"] for tier, summary in tier_summaries.items()
+        },
+        "concurrent": {
+            tier: summary["concurrent"] for tier, summary in tier_summaries.items()
+        },
+        "performance": {
+            "latency_threshold_seconds": {
+                "routine": {
+                    "pass": cfg.thresholds.pass_routine_p95_seconds,
+                    "conditional": cfg.thresholds.conditional_routine_p95_seconds,
+                },
+                "join": {
+                    "pass": cfg.thresholds.pass_join_p95_seconds,
+                    "conditional": cfg.thresholds.conditional_join_p95_seconds,
+                },
+            },
+            "per_tier_verdict": performance_by_tier,
+            "aggregate_verdict": aggregate_performance,
+            "boundary_semantics": (
+                "p95 equal to a ceiling remains in that band; only values above "
+                "the ceiling move to the next severity"
+            ),
+            "undersampling_semantics": (
+                "classes below the minimum sample count are excluded from latency "
+                "grading and cap the tier at Conditional; nearest-rank p95 is retained"
+            ),
+            "one_hop_latency_criterion": (
+                "not configured; one-hop remains gated for errors and sample count"
+            ),
+        },
+        "verdict_evaluation": {
+            "mode": evaluation_mode,
+            "source": "SHA-256-pinned completed tier summaries",
+        },
+        "storage": {
+            "dimension_samples": checkpoint["dimension_storage_samples"],
+            "tiers": {
+                tier: summary["storage_samples"]
+                for tier, summary in tier_summaries.items()
+            },
+            "capacity_model_status": "not yet validated at full corpus scale",
+        },
+        "profiles": {
+            tier: summary["profile"] for tier, summary in tier_summaries.items()
+        },
+        "projection": tier_summaries.get("stage2_large", {}).get("projection"),
+        "errors": {
+            "concurrent_first_errors": first_errors,
+            "server_restarted": restarted,
+        },
+        "local_engine_verdict": local_verdict,
+        "capacity_verdict": "Uncertain",
+        "limitations": [
+            f"This local Stage 2 run uses a 32 GiB ClickHouse container because the captured Docker VM exposes only {int(environment['resource_limits']['docker_memory_bytes']) / (1 << 30):.3f} GiB; the 50 GiB acceptance arm is unreachable here and the local verdict is capped at Conditional.",
+            "The 50 GiB option requires a different Docker environment with at least 54 GiB configured; no automatic memory downgrade exists.",
+            "The OpenAlex manifests publish byte lengths and record counts but no content checksum; verification checks size and Parquet footer row counts and does not claim cryptographic object integrity.",
+            "The Works samples are stratified by updated_date and are not a population-representative sample.",
+            "Local Apple Silicon and local SSD latency is not extrapolated to an Alliance x86 VM with network-backed storage.",
+            "The 50 GiB and Alliance performance envelopes remain unvalidated.",
+        ]
+        + [
+            f"{tier}: the canonical Authors snapshot leaves {summary['correctness']['referential_coverage']['missing_authors']} of {summary['correctness']['referential_coverage']['author_bridge_rows']} Work-author bridge rows unresolved, including {summary['correctness']['referential_coverage']['null_author_rows']} documented NULL-author rows and {summary['correctness']['referential_coverage']['deleted_author_rows']} documented deleted-author rows. The ordinary unresolved count is {summary['correctness']['referential_coverage']['ordinary_missing_author_rows']} of {summary['correctness']['referential_coverage']['ordinary_authorship_rows']} (coverage {float(summary['correctness']['referential_coverage']['ordinary_author_reference_coverage_ratio']):.10f}; blocking floor {cfg.thresholds.minimum_ordinary_author_reference_coverage:.6f}). Raw links are preserved; use LEFT JOIN when unmatched authorships matter."
+            for tier, summary in tier_summaries.items()
+            if int(summary["correctness"]["referential_coverage"]["missing_authors"])
+            > 0
+        ],
+    }
+    report_json, report_md = render_report(result_root, report_evidence)
+    checkpoint["status"] = "complete"
+    checkpoint["report_json"] = str(report_json)
+    checkpoint["report_md"] = str(report_md)
+    _write_stage2_checkpoint(checkpoint_path, checkpoint)
+    _write_state(
+        root,
+        "stage2",
+        passed=local_verdict != "fail",
+        run_id=run_id,
+        memory_gib=memory_gib,
+        report_json=str(report_json),
+        report_md=str(report_md),
+        checkpoint=str(checkpoint_path),
+    )
+    print(f"Stage 2 complete; report: {report_md}", flush=True)
+    return 0
+
+
 def command_stage2(args: Namespace) -> int:
     root: Path = args.root
     stage1_state = _require_state(root, "stage1")
     if not stage1_state.get("passed"):
         raise PrerequisiteError("Stage 2 requires a passing Stage 1 state")
     cfg = _config(root)
-    memory_gib = int(args.memory_gb)
+    run_id = args.run_id or "stage2"
+    checkpoint_path = _stage2_checkpoint_path(root, run_id)
+    report_only_checkpoint = None
+    if args.report_only:
+        if not checkpoint_path.exists():
+            raise Stage2PrerequisiteError(
+                f"missing Stage 2 checkpoint for report-only: {checkpoint_path}"
+            )
+        report_only_checkpoint = json.loads(checkpoint_path.read_text())
+        memory_gib = int(report_only_checkpoint["identity"]["memory_gib"])
+        tiers = tuple(str(tier) for tier in report_only_checkpoint["identity"]["tiers"])
+        if args.memory_gb is not None and int(args.memory_gb) != memory_gib:
+            raise Stage2PrerequisiteError(
+                "report-only memory must match the checkpoint identity"
+            )
+        if args.tier is not None and (args.tier,) != tiers:
+            raise Stage2PrerequisiteError(
+                "report-only tiers must match the checkpoint identity"
+            )
+    else:
+        memory_gib = int(args.memory_gb or 32)
+        tiers = (args.tier,) if args.tier else STAGE2_TIERS
     if memory_gib not in cfg.envelopes:
         raise PrerequisiteError(
             f"Stage 2 memory envelope must be one of {sorted(cfg.envelopes)} GiB"
         )
-    tiers = (args.tier,) if args.tier else STAGE2_TIERS
-    run_id = args.run_id or "stage2"
     database = _stage2_database(run_id)
     selection_path = root / ".data" / "selection.json"
     selection = json.loads(selection_path.read_text())
@@ -1140,19 +1357,20 @@ def command_stage2(args: Namespace) -> int:
         )
     pin_state = _require_state(root, "pin-manifests")
     maximum_raw_bytes = maximum_input_bytes(selection, pin_state)
-    required = required_build_free_bytes(
-        maximum_raw_input_bytes=maximum_raw_bytes
-    )
-    available = require_free_space(
-        root,
-        required_bytes=required,
-        purpose="the Stage 2 ClickHouse build",
-    )
-    print(
-        f"Stage 2 disk preflight passed: {available:,} bytes free; "
-        f"conservative requirement {required:,} bytes",
-        flush=True,
-    )
+    if not args.report_only:
+        required = required_build_free_bytes(
+            maximum_raw_input_bytes=maximum_raw_bytes
+        )
+        available = require_free_space(
+            root,
+            required_bytes=required,
+            purpose="the Stage 2 ClickHouse build",
+        )
+        print(
+            f"Stage 2 disk preflight passed: {available:,} bytes free; "
+            f"conservative requirement {required:,} bytes",
+            flush=True,
+        )
     rendered_hashes = _stage2_rendered_sql_hashes(
         root, database=database, tiers=tiers
     )
@@ -1166,11 +1384,12 @@ def command_stage2(args: Namespace) -> int:
         rendered_sql_sha256=rendered_hashes,
     )
     result_root = root / "results" / run_id
-    checkpoint_path = _stage2_checkpoint_path(root, run_id)
-    checkpoint = (
-        json.loads(checkpoint_path.read_text())
-        if checkpoint_path.exists()
-        else {
+    if report_only_checkpoint is not None:
+        checkpoint = report_only_checkpoint
+    elif checkpoint_path.exists():
+        checkpoint = json.loads(checkpoint_path.read_text())
+    else:
+        checkpoint = {
             "identity": identity,
             "database": database,
             "dimensions_complete": False,
@@ -1178,13 +1397,44 @@ def command_stage2(args: Namespace) -> int:
             "tiers": {},
             "status": "in_progress",
         }
-    )
     require_resume_identity(checkpoint["identity"], identity)
     if checkpoint["database"] != database:
         raise Stage2PrerequisiteError("Stage 2 checkpoint database changed")
     for tier in checkpoint["completed_tiers"]:
         verify_artifact_hashes(
             checkpoint["tiers"][tier]["artifact_sha256"], root=result_root
+        )
+    if args.report_only:
+        if checkpoint.get("status") != "complete":
+            raise Stage2PrerequisiteError(
+                "report-only requires a complete Stage 2 checkpoint"
+            )
+        if set(checkpoint["completed_tiers"]) != set(tiers):
+            raise Stage2PrerequisiteError(
+                "report-only requires every checkpoint identity tier to be complete"
+            )
+        environment_path = result_root / "environment.json"
+        if not environment_path.exists():
+            raise Stage2PrerequisiteError(
+                f"report-only is missing environment evidence: {environment_path}"
+            )
+        return _finalize_stage2_report(
+            root=root,
+            result_root=result_root,
+            checkpoint_path=checkpoint_path,
+            checkpoint=checkpoint,
+            run_id=run_id,
+            memory_gib=memory_gib,
+            tiers=tiers,
+            cfg=cfg,
+            selection=selection,
+            selection_sha256=selection_sha256,
+            pin_state=pin_state,
+            maximum_raw_bytes=maximum_raw_bytes,
+            environment=json.loads(environment_path.read_text()),
+            identity=identity,
+            evaluation_mode="postprocessed_from_sha256_pinned_tier_artifacts",
+            write_derived_logs=False,
         )
 
     expected_dimension_counts = {
@@ -1319,6 +1569,9 @@ def command_stage2(args: Namespace) -> int:
                     for row in projection["after"]
                 )
             _write_jsonl_atomic(tier_dir / "query-log.jsonl", query_rows)
+            performance_verdict = stage2_performance_verdict(
+                concurrent_summary, cfg.thresholds
+            )
             tier_summary = {
                 "tier": tier,
                 "memory_gib": memory_gib,
@@ -1327,12 +1580,12 @@ def command_stage2(args: Namespace) -> int:
                 "profile": profile,
                 "sequential": sequential_rows,
                 "concurrent": concurrent_summary,
+                "performance_verdict": performance_verdict,
                 "storage_samples": storage_samples,
                 "projection": projection,
                 "local_verdict": stage2_local_verdict(
                     memory_gib=memory_gib,
-                    first_error=first_error,
-                    server_restarted=server_restarted,
+                    performance_verdict=performance_verdict,
                 ),
             }
             summary_path = tier_dir / "summary.json"
@@ -1349,143 +1602,25 @@ def command_stage2(args: Namespace) -> int:
             checkpoint["completed_tiers"].append(tier)
             _write_stage2_checkpoint(checkpoint_path, checkpoint)
 
-        tier_summaries = {
-            tier: json.loads(
-                (result_root / checkpoint["tiers"][tier]["summary"]).read_text()
-            )
-            for tier in tiers
-        }
-        query_log_rows = []
-        disk_rows = []
-        for tier, summary in tier_summaries.items():
-            tier_dir = result_root / "tiers" / f"{tier}-memory{memory_gib}gib"
-            query_log_rows.extend(
-                json.loads(line)
-                for line in (tier_dir / "query-log.jsonl").read_text().splitlines()
-                if line
-            )
-            disk_rows.extend(
-                {
-                    "tier": tier,
-                    "memory_gib": memory_gib,
-                    "phase": "load",
-                    **sample,
-                }
-                for sample in summary["storage_samples"]
-            )
-            if summary["projection"]:
-                disk_rows.extend(
-                    {
-                        "tier": tier,
-                        "memory_gib": memory_gib,
-                        "phase": "projection",
-                        **sample,
-                    }
-                    for sample in summary["projection"]["storage_samples"]
-                )
-        _write_jsonl_atomic(result_root / "query-log.jsonl", query_log_rows)
-        _write_jsonl_atomic(result_root / "disk-samples.jsonl", disk_rows)
-        first_errors = [
-            summary["concurrent"]["first_error"]
-            for summary in tier_summaries.values()
-            if summary["concurrent"]["first_error"]
-        ]
-        restarted = any(
-            summary["concurrent"]["server_restarted"]
-            for summary in tier_summaries.values()
-        )
-        report_evidence = {
-            "run_id": run_id,
-            "inputs": {
-                "selection_sha256": selection_sha256,
-                "selection_algorithm": selection["algorithm"],
-                "maximum_raw_input_bytes": maximum_raw_bytes,
-                "tiers": {
-                    tier: {
-                        "content_length": sum(
-                            int(item["content_length"])
-                            for item in selection["tiers"][tier]["files"]
-                        ),
-                        "record_count": int(
-                            selection["tiers"][tier]["record_count"]
-                        ),
-                    }
-                    for tier in tiers
-                },
-                "complete_authors_bytes": int(
-                    pin_state["entities"]["authors"]["content_length"]
-                ),
-                "seed_work_ids": list(seed_work_ids),
-                "run_identity": identity,
-            },
-            "environment": environment,
-            "correctness": {
-                tier: summary["correctness"] for tier, summary in tier_summaries.items()
-            },
-            "sequential": {
-                tier: summary["sequential"] for tier, summary in tier_summaries.items()
-            },
-            "concurrent": {
-                tier: summary["concurrent"] for tier, summary in tier_summaries.items()
-            },
-            "storage": {
-                "dimension_samples": checkpoint["dimension_storage_samples"],
-                "tiers": {
-                    tier: summary["storage_samples"]
-                    for tier, summary in tier_summaries.items()
-                },
-                "capacity_model_status": "not yet validated at full corpus scale",
-            },
-            "profiles": {
-                tier: summary["profile"] for tier, summary in tier_summaries.items()
-            },
-            "projection": tier_summaries.get("stage2_large", {}).get("projection"),
-            "errors": {
-                "concurrent_first_errors": first_errors,
-                "server_restarted": restarted,
-            },
-            "local_engine_verdict": stage2_local_verdict(
-                memory_gib=memory_gib,
-                first_error=first_errors[0] if first_errors else None,
-                server_restarted=restarted,
-            ),
-            "capacity_verdict": "Uncertain",
-            "limitations": [
-                f"This local Stage 2 run uses a 32 GiB ClickHouse container because the captured Docker VM exposes only {int(environment['resource_limits']['docker_memory_bytes']) / (1 << 30):.3f} GiB; the 50 GiB acceptance arm is unreachable here and the local verdict is capped at Conditional.",
-                "The 50 GiB option requires a different Docker environment with at least 54 GiB configured; no automatic memory downgrade exists.",
-                "The OpenAlex manifests publish byte lengths and record counts but no content checksum; verification checks size and Parquet footer row counts and does not claim cryptographic object integrity.",
-                "The Works samples are stratified by updated_date and are not a population-representative sample.",
-                "Local Apple Silicon and local SSD latency is not extrapolated to an Alliance x86 VM with network-backed storage.",
-                "The 50 GiB and Alliance performance envelopes remain unvalidated.",
-            ]
-            + [
-                f"{tier}: the canonical Authors snapshot leaves {summary['correctness']['referential_coverage']['missing_authors']} of {summary['correctness']['referential_coverage']['author_bridge_rows']} Work-author bridge rows unresolved, including {summary['correctness']['referential_coverage']['null_author_rows']} documented NULL-author rows and {summary['correctness']['referential_coverage']['deleted_author_rows']} documented deleted-author rows. The ordinary unresolved count is {summary['correctness']['referential_coverage']['ordinary_missing_author_rows']} of {summary['correctness']['referential_coverage']['ordinary_authorship_rows']} (coverage {float(summary['correctness']['referential_coverage']['ordinary_author_reference_coverage_ratio']):.10f}; blocking floor {cfg.thresholds.minimum_ordinary_author_reference_coverage:.6f}). Raw links are preserved; use LEFT JOIN when unmatched authorships matter."
-                for tier, summary in tier_summaries.items()
-                if int(
-                    summary["correctness"]["referential_coverage"][
-                        "missing_authors"
-                    ]
-                )
-                > 0
-            ],
-        }
-        report_json, report_md = render_report(result_root, report_evidence)
-        checkpoint["status"] = "complete"
-        checkpoint["report_json"] = str(report_json)
-        checkpoint["report_md"] = str(report_md)
-        _write_stage2_checkpoint(checkpoint_path, checkpoint)
-        _write_state(
-            root,
-            "stage2",
-            passed=report_evidence["local_engine_verdict"] != "fail",
+        return _finalize_stage2_report(
+            root=root,
+            result_root=result_root,
+            checkpoint_path=checkpoint_path,
+            checkpoint=checkpoint,
             run_id=run_id,
             memory_gib=memory_gib,
-            report_json=str(report_json),
-            report_md=str(report_md),
-            checkpoint=str(checkpoint_path),
+            tiers=tiers,
+            cfg=cfg,
+            selection=selection,
+            selection_sha256=selection_sha256,
+            pin_state=pin_state,
+            maximum_raw_bytes=maximum_raw_bytes,
+            environment=environment,
+            identity=identity,
+            evaluation_mode="in_run",
+            write_derived_logs=True,
         )
-        print(f"Stage 2 complete; report: {report_md}", flush=True)
-        return 0
+
     finally:
         service.down()
 
@@ -1529,11 +1664,12 @@ def build_parser() -> ArgumentParser:
         "--memory-gb",
         type=int,
         choices=(32, 50),
-        default=32,
+        default=None,
         help="ClickHouse container limit in GiB (compatibility flag spelling)",
     )
     stage2.add_argument("--tier", choices=STAGE2_TIERS)
     stage2.add_argument("--run-id")
+    stage2.add_argument("--report-only", action="store_true")
     stage2.set_defaults(handler=command_stage2)
     report = subparsers.add_parser("report")
     report.add_argument("--run")

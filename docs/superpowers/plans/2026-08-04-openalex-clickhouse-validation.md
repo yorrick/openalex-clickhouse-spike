@@ -1054,6 +1054,25 @@ but exclude it from verdict evaluation and cap the non-error verdict at
 Conditional. Preserve raw per-query records in JSONL so statistics are
 reproducible.
 
+The pinned latency thresholds are executable verdict criteria, not descriptive
+configuration. For sufficiently sampled routine and join classes, p95 at or
+below the Pass ceiling is Pass, above Pass but at or below the Conditional
+ceiling is Conditional, and above Conditional is Fail. A forced query error or
+server restart is Fail. The existing under-sampling `verdict_cap` is consumed as
+the single Conditional cap. One-hop remains gated for errors and sample count,
+but has no latency ceiling because none is configured. Aggregate severity is
+the worst per-tier verdict; the 32 GiB arm then caps a non-Fail local verdict at
+Conditional. Unknown memory envelopes are rejected rather than graded.
+
+`stage2 --report-only` may recompute this pure verdict over a completed run
+without rerunning measurements. It reads the checkpoint only from
+`.data/state/stage2-<sha256(run-id)[:12]>.json`, takes memory and tier scope from
+that identity, verifies every tier artifact hash, requires `status=complete`
+and every identity tier complete, and branches before ClickHouse startup. It
+reads rather than overwrites `environment.json`, rewrites only final report and
+state artifacts, and records that the verdict was postprocessed from
+SHA-256-pinned tier summaries. Partial runs are refused.
+
 - [ ] **Step 4: Run tests and commit**
 
 Run: `uv run pytest tests/unit/test_concurrency.py -q`  

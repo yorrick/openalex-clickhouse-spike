@@ -6,6 +6,8 @@ from typing import Mapping, Sequence
 import hashlib
 import json
 
+from openalex_spike.config import VerdictThresholds
+
 
 STAGE2_TIERS = ("stage2_small", "stage2_medium", "stage2_large")
 GIB = 1 << 30
@@ -131,11 +133,70 @@ def verify_artifact_hashes(
             )
 
 
-def stage2_local_verdict(
-    *, memory_gib: int, first_error: str | None, server_restarted: bool
+VERDICT_SEVERITY = {"pass": 0, "conditional": 1, "fail": 2}
+
+
+def worst_stage2_verdict(verdicts: Sequence[str]) -> str:
+    if not verdicts:
+        raise ValueError("at least one Stage 2 verdict is required")
+    try:
+        return max(verdicts, key=VERDICT_SEVERITY.__getitem__)
+    except KeyError as error:
+        raise ValueError(f"unsupported Stage 2 verdict: {error.args[0]}") from error
+
+
+def stage2_performance_verdict(
+    summary: Mapping[str, object], thresholds: VerdictThresholds
 ) -> str:
-    if first_error or server_restarted:
+    forced = summary.get("forced_verdict")
+    cap = summary.get("verdict_cap")
+    if forced not in {None, "fail"}:
+        raise ValueError(f"unsupported forced verdict: {forced}")
+    if cap not in {"pass", "conditional", "fail"}:
+        raise ValueError(f"unsupported concurrency verdict cap: {cap}")
+    if forced == "fail" or cap == "fail" or bool(summary.get("server_restarted")):
         return "fail"
-    if memory_gib == 32:
+
+    classes = summary.get("classes")
+    if not isinstance(classes, Mapping):
+        raise ValueError("concurrency summary is missing class evidence")
+    verdict = "conditional" if cap == "conditional" else "pass"
+    latency_thresholds = {
+        "routine": (
+            thresholds.pass_routine_p95_seconds,
+            thresholds.conditional_routine_p95_seconds,
+        ),
+        "join": (
+            thresholds.pass_join_p95_seconds,
+            thresholds.conditional_join_p95_seconds,
+        ),
+    }
+    for query_class, (pass_ceiling, conditional_ceiling) in latency_thresholds.items():
+        evidence = classes.get(query_class)
+        if not isinstance(evidence, Mapping):
+            raise ValueError(f"concurrency summary is missing {query_class} evidence")
+        if bool(evidence.get("insufficient_sample")):
+            continue
+        p95 = evidence.get("p95_seconds")
+        if p95 is None:
+            raise ValueError(f"sampled {query_class} class has no p95")
+        duration = float(p95)
+        if duration > conditional_ceiling:
+            return "fail"
+        if duration > pass_ceiling:
+            verdict = "conditional"
+    return verdict
+
+
+def stage2_local_verdict(*, memory_gib: int, performance_verdict: str) -> str:
+    if memory_gib not in {32, 50}:
+        raise Stage2PrerequisiteError(
+            f"unsupported Stage 2 memory envelope: {memory_gib} GiB"
+        )
+    if performance_verdict not in VERDICT_SEVERITY:
+        raise ValueError(f"unsupported performance verdict: {performance_verdict}")
+    if performance_verdict == "fail":
+        return "fail"
+    if memory_gib == 32 or performance_verdict == "conditional":
         return "conditional"
     return "pass"
