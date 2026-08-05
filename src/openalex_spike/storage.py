@@ -21,6 +21,13 @@ class StorageSample:
     table_bytes: dict[str, int]
     projection_bytes: dict[str, int]
     filesystem_bytes: int
+    filesystem_vanished_files: int = 0
+
+
+@dataclass(frozen=True)
+class DirectoryUsage:
+    allocated_bytes: int
+    vanished_files: int
 
 
 def estimate_works_derived(
@@ -85,15 +92,28 @@ def layout_bytes(
     return (base_bytes + projection_bytes) * concurrent_generations
 
 
-def directory_allocated_bytes(path: Path) -> int:
+def directory_allocated_usage(path: Path) -> DirectoryUsage:
     total = 0
+    vanished_files = 0
     if not path.exists():
-        return 0
-    for root, _, files in os.walk(path):
+        return DirectoryUsage(allocated_bytes=0, vanished_files=0)
+
+    def raise_walk_error(error: OSError) -> None:
+        raise error
+
+    for root, _, files in os.walk(path, onerror=raise_walk_error):
         for filename in files:
-            stat = (Path(root) / filename).stat()
+            try:
+                stat = (Path(root) / filename).stat()
+            except FileNotFoundError:
+                vanished_files += 1
+                continue
             total += stat.st_blocks * 512
-    return total
+    return DirectoryUsage(allocated_bytes=total, vanished_files=vanished_files)
+
+
+def directory_allocated_bytes(path: Path) -> int:
+    return directory_allocated_usage(path).allocated_bytes
 
 
 def collect_storage_sample(
@@ -101,7 +121,7 @@ def collect_storage_sample(
     *,
     database: str,
     clickhouse_data_dir: Path,
-    filesystem_bytes: int | None = None,
+    filesystem_usage: DirectoryUsage | None = None,
 ) -> StorageSample:
     part_rows = query_json(
         "SELECT table, sum(bytes_on_disk) AS bytes "
@@ -113,17 +133,15 @@ def collect_storage_sample(
         "FROM system.projection_parts WHERE active AND database = "
         f"'{database}' GROUP BY table ORDER BY table"
     )
+    usage = filesystem_usage or directory_allocated_usage(clickhouse_data_dir)
     return StorageSample(
         timestamp=time(),
         table_bytes={str(row["table"]): int(row["bytes"]) for row in part_rows},
         projection_bytes={
             str(row["table"]): int(row["bytes"]) for row in projection_rows
         },
-        filesystem_bytes=(
-            directory_allocated_bytes(clickhouse_data_dir)
-            if filesystem_bytes is None
-            else filesystem_bytes
-        ),
+        filesystem_bytes=usage.allocated_bytes,
+        filesystem_vanished_files=usage.vanished_files,
     )
 
 
@@ -145,7 +163,7 @@ class DecimatedFilesystemSampler:
         self.filesystem_interval_seconds = filesystem_interval_seconds
         self.clock = clock
         self._last_filesystem_at: float | None = None
-        self._filesystem_bytes: int | None = None
+        self._filesystem_usage: DirectoryUsage | None = None
 
     def __call__(self) -> StorageSample:
         now = self.clock()
@@ -153,7 +171,7 @@ class DecimatedFilesystemSampler:
             self._last_filesystem_at is None
             or now - self._last_filesystem_at >= self.filesystem_interval_seconds
         ):
-            self._filesystem_bytes = directory_allocated_bytes(
+            self._filesystem_usage = directory_allocated_usage(
                 self.clickhouse_data_dir
             )
             self._last_filesystem_at = now
@@ -161,7 +179,7 @@ class DecimatedFilesystemSampler:
             self.query_json,
             database=self.database,
             clickhouse_data_dir=self.clickhouse_data_dir,
-            filesystem_bytes=self._filesystem_bytes,
+            filesystem_usage=self._filesystem_usage,
         )
 
     def final(self) -> StorageSample:

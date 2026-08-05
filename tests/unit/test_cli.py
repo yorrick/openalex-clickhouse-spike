@@ -11,6 +11,7 @@ from openalex_spike.cli import (
     Stage2Execution,
     _resolve_stage2_execution,
     _selected_tier,
+    _stage2_storage_payload,
     build_parser,
     command_stage1,
     main,
@@ -57,6 +58,73 @@ def test_cli_exposes_exact_pipeline_commands_and_download_flags():
         "--query-threads",
         "--maximum-seconds",
     } <= stage2_options
+
+
+def test_v2_storage_payload_normalizes_mixed_provenance_samples():
+    old_sample = {
+        "timestamp": 1.0,
+        "table_bytes": {},
+        "projection_bytes": {},
+        "filesystem_bytes": 10,
+    }
+    new_sample = {**old_sample, "filesystem_vanished_files": 2}
+    checkpoint = {"dimension_storage_samples": [old_sample]}
+    summaries = {
+        "stage2_small": {"storage_samples": [new_sample], "projection": None},
+        "stage2_large": {
+            "storage_samples": [new_sample],
+            "projection": {"storage_samples": [old_sample]},
+        },
+    }
+
+    payload = _stage2_storage_payload(
+        checkpoint,
+        summaries,
+        legacy_identity=False,
+    )
+
+    populations = [
+        payload["storage"]["dimension_samples"],
+        *payload["storage"]["tiers"].values(),
+        payload["projection"]["storage_samples"],
+    ]
+    assert all(
+        "filesystem_vanished_files" in sample
+        for population in populations
+        for sample in population
+    )
+    assert payload["storage"]["dimension_samples"][0][
+        "filesystem_vanished_files"
+    ] == 0
+    assert payload["storage"]["tiers"]["stage2_small"][0][
+        "filesystem_vanished_files"
+    ] == 2
+
+
+def test_legacy_storage_payload_preserves_original_sample_shape():
+    sample = {
+        "timestamp": 1.0,
+        "table_bytes": {},
+        "projection_bytes": {},
+        "filesystem_bytes": 10,
+    }
+    checkpoint = {"dimension_storage_samples": [sample]}
+    summaries = {
+        "stage2_large": {
+            "storage_samples": [sample],
+            "projection": {"storage_samples": [sample]},
+        }
+    }
+
+    payload = _stage2_storage_payload(
+        checkpoint,
+        summaries,
+        legacy_identity=True,
+    )
+
+    assert payload["storage"]["dimension_samples"] == [sample]
+    assert payload["storage"]["tiers"]["stage2_large"] == [sample]
+    assert payload["projection"]["storage_samples"] == [sample]
 
 
 def test_missing_select_prerequisite_returns_nonzero(tmp_path: Path):

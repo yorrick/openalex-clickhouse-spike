@@ -1215,6 +1215,51 @@ def _write_stage2_checkpoint(path: Path, document: dict[str, object]) -> None:
     )
 
 
+def _normalized_storage_samples(
+    samples: list[dict[str, object]], *, legacy_identity: bool
+) -> list[dict[str, object]]:
+    if legacy_identity:
+        return samples
+    return [
+        {"filesystem_vanished_files": 0, **sample}
+        for sample in samples
+    ]
+
+
+def _stage2_storage_payload(
+    checkpoint: dict[str, object],
+    tier_summaries: dict[str, dict[str, object]],
+    *,
+    legacy_identity: bool,
+) -> dict[str, object]:
+    projection = tier_summaries.get("stage2_large", {}).get("projection")
+    if projection is not None:
+        projection = {
+            **projection,
+            "storage_samples": _normalized_storage_samples(
+                projection["storage_samples"],
+                legacy_identity=legacy_identity,
+            ),
+        }
+    return {
+        "storage": {
+            "dimension_samples": _normalized_storage_samples(
+                checkpoint["dimension_storage_samples"],
+                legacy_identity=legacy_identity,
+            ),
+            "tiers": {
+                tier: _normalized_storage_samples(
+                    summary["storage_samples"],
+                    legacy_identity=legacy_identity,
+                )
+                for tier, summary in tier_summaries.items()
+            },
+            "capacity_model_status": "not yet validated at full corpus scale",
+        },
+        "projection": projection,
+    }
+
+
 def _finalize_stage2_report(
     *,
     root: Path,
@@ -1269,7 +1314,10 @@ def _finalize_stage2_report(
                     "phase": "load",
                     **sample,
                 }
-                for sample in summary["storage_samples"]
+                for sample in _normalized_storage_samples(
+                    summary["storage_samples"],
+                    legacy_identity=legacy_identity,
+                )
             )
             if summary["projection"]:
                 disk_rows.extend(
@@ -1279,7 +1327,10 @@ def _finalize_stage2_report(
                         "phase": "projection",
                         **sample,
                     }
-                    for sample in summary["projection"]["storage_samples"]
+                    for sample in _normalized_storage_samples(
+                        summary["projection"]["storage_samples"],
+                        legacy_identity=legacy_identity,
+                    )
                 )
         _write_jsonl_atomic(result_root / "query-log.jsonl", query_log_rows)
         _write_jsonl_atomic(result_root / "disk-samples.jsonl", disk_rows)
@@ -1393,18 +1444,9 @@ def _finalize_stage2_report(
             "mode": evaluation_mode,
             "source": "SHA-256-pinned completed tier summaries",
         },
-        "storage": {
-            "dimension_samples": checkpoint["dimension_storage_samples"],
-            "tiers": {
-                tier: summary["storage_samples"]
-                for tier, summary in tier_summaries.items()
-            },
-            "capacity_model_status": "not yet validated at full corpus scale",
-        },
         "profiles": {
             tier: summary["profile"] for tier, summary in tier_summaries.items()
         },
-        "projection": tier_summaries.get("stage2_large", {}).get("projection"),
         "errors": {
             "concurrent_first_errors": first_errors,
             "server_restarted": restarted,
@@ -1418,6 +1460,11 @@ def _finalize_stage2_report(
             if int(summary["correctness"]["referential_coverage"]["missing_authors"])
             > 0
         ],
+        **_stage2_storage_payload(
+            checkpoint,
+            tier_summaries,
+            legacy_identity=legacy_identity,
+        ),
     }
     if not legacy_identity:
         report_evidence["execution"] = asdict(execution)

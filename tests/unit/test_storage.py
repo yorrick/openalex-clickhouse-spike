@@ -1,3 +1,4 @@
+from pathlib import Path
 from threading import Event
 
 import pytest
@@ -5,9 +6,12 @@ import pytest
 from openalex_spike.storage import (
     CapacityEstimate,
     DecimatedFilesystemSampler,
+    DirectoryUsage,
     StorageMonitor,
     StorageSample,
     classify_capacity,
+    collect_storage_sample,
+    directory_allocated_usage,
     estimate_works_derived,
     with_headroom,
 )
@@ -92,14 +96,118 @@ def test_storage_monitor_uses_explicit_exact_final_sample():
     assert [item.filesystem_bytes for item in samples] == [10, 20]
 
 
+def test_storage_sample_new_telemetry_is_positionally_compatible():
+    sample = StorageSample(1.0, {}, {}, 10)
+
+    assert sample.filesystem_vanished_files == 0
+
+
+def test_directory_usage_counts_only_children_that_vanish_after_listing(
+    tmp_path, monkeypatch
+):
+    stable = tmp_path / "stable.bin"
+    stable.write_bytes(b"stable")
+    vanished = tmp_path / "vanished.bin"
+    original_stat = Path.stat
+
+    monkeypatch.setattr(
+        "openalex_spike.storage.os.walk",
+        lambda path, onerror: [(str(tmp_path), [], [stable.name, vanished.name])],
+    )
+
+    def stat(path, *args, **kwargs):
+        if path == vanished:
+            raise FileNotFoundError(path)
+        return original_stat(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "stat", stat)
+
+    usage = directory_allocated_usage(tmp_path)
+
+    assert usage == DirectoryUsage(
+        allocated_bytes=original_stat(stable).st_blocks * 512,
+        vanished_files=1,
+    )
+
+
+def test_directory_usage_does_not_suppress_permission_errors(tmp_path, monkeypatch):
+    protected = tmp_path / "protected.bin"
+    protected.write_bytes(b"protected")
+    original_stat = Path.stat
+    monkeypatch.setattr(
+        "openalex_spike.storage.os.walk",
+        lambda path, onerror: [(str(tmp_path), [], [protected.name])],
+    )
+
+    def stat(path, *args, **kwargs):
+        if path == protected:
+            raise PermissionError(path)
+        return original_stat(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "stat", stat)
+
+    with pytest.raises(PermissionError):
+        directory_allocated_usage(tmp_path)
+
+
+def test_directory_usage_does_not_suppress_walk_errors(tmp_path, monkeypatch):
+    def failed_walk(path, onerror):
+        onerror(FileNotFoundError(path))
+        return []
+
+    monkeypatch.setattr("openalex_spike.storage.os.walk", failed_walk)
+
+    with pytest.raises(FileNotFoundError):
+        directory_allocated_usage(tmp_path)
+
+
+def test_storage_monitor_final_sample_records_vanished_file(tmp_path, monkeypatch):
+    vanished = tmp_path / "merged-part.bin"
+    original_stat = Path.stat
+    monkeypatch.setattr(
+        "openalex_spike.storage.os.walk",
+        lambda path, onerror: [(str(tmp_path), [], [vanished.name])],
+    )
+
+    def stat(path, *args, **kwargs):
+        if path == vanished:
+            raise FileNotFoundError(path)
+        return original_stat(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "stat", stat)
+    sampled = Event()
+
+    def sample():
+        sampled.set()
+        return StorageSample(1.0, {}, {}, 0)
+
+    monitor = StorageMonitor(
+        sample,
+        interval_seconds=60,
+        final_sample=lambda: collect_storage_sample(
+            lambda sql: [],
+            database="openalex_stage2",
+            clickhouse_data_dir=tmp_path,
+        ),
+    )
+    monitor.start()
+    assert sampled.wait(1)
+
+    samples = monitor.stop()
+
+    assert samples[-1].filesystem_bytes == 0
+    assert samples[-1].filesystem_vanished_files == 1
+
+
 def test_decimated_sampler_reuses_filesystem_value_between_fast_part_polls(
     tmp_path, monkeypatch
 ):
     clock_values = iter([0.0, 1.0, 31.0])
     filesystem_calls = []
     monkeypatch.setattr(
-        "openalex_spike.storage.directory_allocated_bytes",
-        lambda path: filesystem_calls.append(path) or len(filesystem_calls) * 100,
+        "openalex_spike.storage.directory_allocated_usage",
+        lambda path: filesystem_calls.append(path)
+        or DirectoryUsage(len(filesystem_calls) * 100, len(filesystem_calls)),
     )
     sampler = DecimatedFilesystemSampler(
         lambda sql: [],
@@ -108,7 +216,14 @@ def test_decimated_sampler_reuses_filesystem_value_between_fast_part_polls(
         clock=lambda: next(clock_values),
     )
 
-    assert sampler().filesystem_bytes == 100
-    assert sampler().filesystem_bytes == 100
-    assert sampler().filesystem_bytes == 200
+    first = sampler()
+    cached = sampler()
+    refreshed = sampler()
+
+    assert (first.filesystem_bytes, first.filesystem_vanished_files) == (100, 1)
+    assert (cached.filesystem_bytes, cached.filesystem_vanished_files) == (100, 1)
+    assert (refreshed.filesystem_bytes, refreshed.filesystem_vanished_files) == (
+        200,
+        2,
+    )
     assert filesystem_calls == [tmp_path, tmp_path]

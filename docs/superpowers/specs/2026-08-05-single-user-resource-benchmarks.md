@@ -153,3 +153,41 @@ uv run openalex-spike stage2 \
 - All existing correctness gates pass at every tier.
 - Reports disclose the exact resource envelope and compare medians, p95s,
   maximums, memory, spills, errors, and restarts with `stage2-v2`.
+
+## Run A storage-sampling incident and resume design
+
+The first Run A attempt completed its dimension load and the small-tier SQL
+load, then failed in the storage monitor's exact final host-filesystem scan.
+`os.walk` had listed a ClickHouse part file that a background merge removed
+before `Path.stat` reached it. The resulting `FileNotFoundError` was a
+time-of-check/time-of-use race in benchmark telemetry, not a ClickHouse query
+or load failure. The checkpoint remains `in_progress`, has complete dimensions,
+and records no completed tier. Exact-command resume therefore reuses the
+dimensions and restarts the small tier after the existing work-table reset.
+
+The user approved one narrowly scoped concurrency rule for allocated-size
+sampling:
+
+- represent a scan as both `allocated_bytes` and `vanished_files`;
+- after a child file has been returned by `os.walk`, catch only
+  `FileNotFoundError` from that child's `stat`, exclude the now-absent file from
+  the instantaneous total, and increment `vanished_files`;
+- make `os.walk` traversal errors explicit, and continue propagating
+  `PermissionError` and every other I/O error;
+- add `filesystem_vanished_files` as the last `StorageSample` field with a
+  default of zero, preserving existing positional construction;
+- cache the complete scan result in the decimated sampler so cached byte and
+  vanished-file values always come from the same scan;
+- for every storage-sample population reaching a version-2 report, normalize
+  persisted pre-change samples by adding a zero value when the field is absent;
+  this explicitly includes `checkpoint["dimension_storage_samples"]`, which
+  Run A retains across resume, as well as tier and projection samples; preserve
+  legacy version-1 report bytes and leave Stage 1 report shaping untouched;
+- test vanished-child accounting, non-suppression of permission and traversal
+  errors, positional compatibility, final-sample behavior, decimated-cache
+  coherence, and a version-2 mixed-provenance report whose dimension, tier,
+  and projection sample populations all expose the same telemetry keys.
+
+This is not a general retry or filesystem-error fallback. It gives a precise
+meaning to one expected race while retaining visible telemetry about it and
+failing on all errors outside that definition.
