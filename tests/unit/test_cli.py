@@ -11,6 +11,7 @@ from openalex_spike.cli import (
     Stage2Execution,
     _resolve_stage2_execution,
     _selected_tier,
+    _stage2_merge_activity_payload,
     _stage2_storage_payload,
     _validate_stage2_dimensions,
     build_parser,
@@ -134,6 +135,40 @@ def test_legacy_storage_payload_preserves_original_sample_shape():
     assert payload["storage"]["dimension_samples"] == [sample]
     assert payload["storage"]["tiers"]["stage2_large"] == [sample]
     assert payload["projection"]["storage_samples"] == [sample]
+
+
+def test_merge_activity_payload_preserves_legacy_and_rejects_mixed_schemas():
+    legacy_summaries = {
+        "stage2_small": {},
+        "stage2_medium": {},
+    }
+    assert _stage2_merge_activity_payload({}, legacy_summaries) is None
+
+    with pytest.raises(Stage2PrerequisiteError, match="mix telemetry schemas"):
+        _stage2_merge_activity_payload(
+            {},
+            {
+                "stage2_small": {"merge_activity": {"status": "complete"}},
+                "stage2_medium": {},
+            },
+        )
+
+    with pytest.raises(Stage2PrerequisiteError, match="evidence is missing"):
+        _stage2_merge_activity_payload(
+            {"telemetry_schema_version": 1},
+            legacy_summaries,
+        )
+
+    assert _stage2_merge_activity_payload(
+        {"telemetry_schema_version": 1},
+        {
+            "stage2_small": {"merge_activity": {"status": "complete"}},
+            "stage2_medium": {"merge_activity": {"status": "complete"}},
+        },
+    ) == {
+        "stage2_small": {"status": "complete"},
+        "stage2_medium": {"status": "complete"},
+    }
 
 
 def test_resume_dimension_validation_uses_supported_database_catalog_query():

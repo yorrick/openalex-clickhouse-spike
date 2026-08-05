@@ -11,6 +11,10 @@ import os
 import re
 import sys
 
+from openalex_spike.activity import (
+    collect_merge_activity,
+    summarize_merge_activity,
+)
 from openalex_spike.benchmark import (
     BenchmarkQuery,
     ServiceBenchmarkClient,
@@ -73,6 +77,7 @@ from openalex_spike.stage2 import (
 
 
 COMMAND_VERSION = "0.1.0"
+STAGE2_TELEMETRY_SCHEMA_VERSION = 1
 
 
 class PrerequisiteError(RuntimeError):
@@ -1270,6 +1275,31 @@ def _stage2_storage_payload(
     }
 
 
+def _stage2_merge_activity_payload(
+    checkpoint: dict[str, object],
+    tier_summaries: dict[str, dict[str, object]],
+) -> dict[str, object] | None:
+    presence = ["merge_activity" in summary for summary in tier_summaries.values()]
+    expects_activity = (
+        checkpoint.get("telemetry_schema_version")
+        == STAGE2_TELEMETRY_SCHEMA_VERSION
+    )
+    if any(presence) and not all(presence):
+        raise Stage2PrerequisiteError(
+            "Stage 2 tier summaries mix telemetry schemas"
+        )
+    if expects_activity and not all(presence):
+        raise Stage2PrerequisiteError(
+            "Stage 2 telemetry evidence is missing from a completed tier"
+        )
+    if not presence or not all(presence):
+        return None
+    return {
+        tier: summary["merge_activity"]
+        for tier, summary in tier_summaries.items()
+    }
+
+
 def _finalize_stage2_report(
     *,
     root: Path,
@@ -1476,6 +1506,11 @@ def _finalize_stage2_report(
             legacy_identity=legacy_identity,
         ),
     }
+    merge_activity_payload = _stage2_merge_activity_payload(
+        checkpoint, tier_summaries
+    )
+    if merge_activity_payload is not None:
+        report_evidence["merge_activity"] = merge_activity_payload
     if not legacy_identity:
         report_evidence["execution"] = asdict(execution)
     report_json, report_md = render_report(result_root, report_evidence)
@@ -1592,12 +1627,22 @@ def command_stage2(args: Namespace) -> int:
         checkpoint = {
             "identity": identity,
             "database": database,
+            "telemetry_schema_version": STAGE2_TELEMETRY_SCHEMA_VERSION,
             "dimensions_complete": False,
             "completed_tiers": [],
             "tiers": {},
             "status": "in_progress",
         }
     require_resume_identity(checkpoint["identity"], identity)
+    if (
+        not args.report_only
+        and checkpoint.get("telemetry_schema_version")
+        != STAGE2_TELEMETRY_SCHEMA_VERSION
+    ):
+        raise Stage2PrerequisiteError(
+            "resuming across the Stage 2 telemetry schema change is unsupported; "
+            "use a new --run-id"
+        )
     if checkpoint["database"] != database:
         raise Stage2PrerequisiteError("Stage 2 checkpoint database changed")
     for tier in checkpoint["completed_tiers"]:
@@ -1728,6 +1773,32 @@ def command_stage2(args: Namespace) -> int:
                 worker_count=execution.workers,
                 query_threads=execution.query_threads,
             )
+            timed_records = [
+                record
+                for record in concurrent_records
+                if record.error is None
+                and record.started_at_unix_us > 0
+                and record.finished_at_unix_us >= record.started_at_unix_us
+            ]
+            if not timed_records:
+                raise Stage2PrerequisiteError(
+                    "resource comparison produced no server-timed query evidence"
+                )
+            merge_activity = collect_merge_activity(
+                service,
+                phase_start_unix_us=min(
+                    record.started_at_unix_us for record in timed_records
+                ),
+                phase_end_unix_us=max(
+                    record.finished_at_unix_us for record in timed_records
+                ),
+                benchmark_database=database,
+            )
+            _write_json_atomic(tier_dir / "merge-activity.json", merge_activity)
+            merge_activity_summary = summarize_merge_activity(
+                merge_activity,
+                benchmark_database=database,
+            )
             container_after = service.container_id()
             server_restarted = container_before != container_after
             concurrent_summary = summarize_concurrency(
@@ -1736,6 +1807,7 @@ def command_stage2(args: Namespace) -> int:
                 first_error=first_error,
             )
             concurrent_summary["server_restarted"] = server_restarted
+            concurrent_summary["merge_activity"] = merge_activity_summary
             if not legacy_identity:
                 concurrent_summary["execution"] = asdict(execution)
             concurrent_rows = [asdict(record) for record in concurrent_records]
@@ -1801,6 +1873,7 @@ def command_stage2(args: Namespace) -> int:
                 "profile": profile,
                 "sequential": sequential_rows,
                 "concurrent": concurrent_summary,
+                "merge_activity": merge_activity_summary,
                 "performance_verdict": performance_verdict,
                 "storage_samples": storage_samples,
                 "projection": projection,
@@ -1816,7 +1889,7 @@ def command_stage2(args: Namespace) -> int:
             artifacts = [
                 path
                 for path in tier_dir.iterdir()
-                if path.is_file()
+                if path.is_file() and path.suffix != ".tmp"
             ]
             checkpoint["tiers"][tier] = {
                 "summary": str(summary_path.relative_to(result_root)),

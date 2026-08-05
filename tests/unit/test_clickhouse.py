@@ -131,3 +131,46 @@ def test_query_http_value_wraps_http_errors(monkeypatch):
 
     with pytest.raises(RuntimeError, match="status 401: authentication failed"):
         service.query_http_value("SELECT 1")
+
+
+def test_benchmark_query_collects_server_timestamps_and_wait_counters(monkeypatch):
+    service = ClickHouseService()
+    telemetry_sql = []
+    monkeypatch.setattr(service, "_compose", lambda *args, **kwargs: "")
+    monkeypatch.setattr(service, "execute_script", lambda sql: None)
+    monkeypatch.setattr(
+        service,
+        "query_json",
+        lambda sql: telemetry_sql.append(sql)
+        or [
+            {
+                "elapsed_seconds": 1.0,
+                "started_at_unix_us": 1,
+                "finished_at_unix_us": 2,
+            }
+        ],
+    )
+
+    telemetry = service.execute_benchmark_query(
+        "SELECT 1",
+        parameters={},
+        settings={"max_threads": 1},
+        query_id="12345678-1234-1234-1234-123456789abc",
+    )
+
+    assert telemetry["started_at_unix_us"] == 1
+    assert len(telemetry_sql) == 1
+    sql = telemetry_sql[0]
+    for expression in (
+        "query_start_time_microseconds",
+        "event_time_microseconds",
+        "OSCPUVirtualTimeMicroseconds",
+        "OSCPUWaitMicroseconds",
+        "DiskReadElapsedMicroseconds",
+        "SynchronousReadWaitMicroseconds",
+        "ThreadPoolReaderPageCacheMissBytes",
+        "ThreadPoolReaderPageCacheMissElapsedMicroseconds",
+        "OSReadBytes",
+        "ReadBufferFromFileDescriptorReadBytes",
+    ):
+        assert expression in sql

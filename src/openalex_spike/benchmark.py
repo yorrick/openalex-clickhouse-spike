@@ -36,6 +36,7 @@ class SequentialRecord:
     query_class: str
     query_id: str
     run_kind: str
+    run_number: int
     gating: bool
     elapsed_seconds: float
     read_rows: int
@@ -44,6 +45,19 @@ class SequentialRecord:
     peak_memory_bytes: int
     spill_bytes: int
     seed_work_id: int | None
+    started_at_unix_us: int
+    finished_at_unix_us: int
+    real_time_us: int
+    user_time_us: int
+    system_time_us: int
+    os_cpu_virtual_time_us: int
+    os_cpu_wait_time_us: int
+    disk_read_elapsed_us: int
+    synchronous_read_wait_us: int
+    page_cache_miss_bytes: int
+    page_cache_miss_elapsed_us: int
+    os_read_bytes: int
+    file_descriptor_read_bytes: int
 
 
 class BenchmarkClient(Protocol):
@@ -157,6 +171,7 @@ def run_sequential(
                     query_class=query.query_class,
                     query_id=query_id,
                     run_kind=run_kind,
+                    run_number=run_number,
                     gating=not query.diagnostic,
                     elapsed_seconds=float(telemetry["elapsed_seconds"]),
                     read_rows=int(telemetry["read_rows"]),
@@ -165,6 +180,27 @@ def run_sequential(
                     peak_memory_bytes=int(telemetry["peak_memory_bytes"]),
                     spill_bytes=int(telemetry["spill_bytes"]),
                     seed_work_id=seed_work_id,
+                    started_at_unix_us=int(telemetry["started_at_unix_us"]),
+                    finished_at_unix_us=int(telemetry["finished_at_unix_us"]),
+                    real_time_us=int(telemetry["real_time_us"]),
+                    user_time_us=int(telemetry["user_time_us"]),
+                    system_time_us=int(telemetry["system_time_us"]),
+                    os_cpu_virtual_time_us=int(
+                        telemetry["os_cpu_virtual_time_us"]
+                    ),
+                    os_cpu_wait_time_us=int(telemetry["os_cpu_wait_time_us"]),
+                    disk_read_elapsed_us=int(telemetry["disk_read_elapsed_us"]),
+                    synchronous_read_wait_us=int(
+                        telemetry["synchronous_read_wait_us"]
+                    ),
+                    page_cache_miss_bytes=int(telemetry["page_cache_miss_bytes"]),
+                    page_cache_miss_elapsed_us=int(
+                        telemetry["page_cache_miss_elapsed_us"]
+                    ),
+                    os_read_bytes=int(telemetry["os_read_bytes"]),
+                    file_descriptor_read_bytes=int(
+                        telemetry["file_descriptor_read_bytes"]
+                    ),
                 )
             )
     return records
