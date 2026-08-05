@@ -1217,37 +1217,37 @@ git commit -m "test: validate OpenAlex Stage 1 in ClickHouse"
 ## Task 13: Execute the 98 GB multi-scale performance stage
 
 **Files:**
-- Create: `results/stage2/report.json`
-- Create: `results/stage2/report.md`
-- Create: `results/stage2/query-log.jsonl`
-- Create: `results/stage2/disk-samples.jsonl`
+- Create: `results/stage2-v2/report.json`
+- Create: `results/stage2-v2/report.md`
+- Create: `results/stage2-v2/query-log.jsonl`
+- Create: `results/stage2-v2/disk-samples.jsonl`
 
-- [ ] **Step 1: Download and verify the maximum nested selection**
+- [x] **Step 1: Download and verify the maximum nested selection**
 
 Run: `uv run openalex-spike download --tier stage2_large --include-complete-authors --include-small-dimensions`  
 Expected: exactly 98,301,763,421 bytes for the pinned 2026-06-26 manifests and selections; exact bytes and rows match the selection and manifests.
 
-- [ ] **Step 2: Run the local 32 GiB scaling curve**
+- [x] **Step 2: Run the local 32 GiB scaling curve**
 
-Run: `uv run openalex-spike stage2 --memory-gb 32 --run-id stage2`
-Expected: 3/15/45 GB tiers complete in order, correctness remains passing, sequential metrics and scaling evidence are recorded, three-client classes reach 50 samples or receive a Conditional cap, and two-hop is diagnostic only. The current Docker VM exposes 46.964 GiB, so the 50 GiB arm is unreachable and the overall local verdict is capped at Conditional before execution.
+Run: `uv run openalex-spike stage2 --memory-gb 32 --run-id stage2-v2`
+Expected: 3/15/45 GB tiers complete in order, correctness remains passing, sequential metrics and scaling evidence are recorded, three-client classes reach 50 samples or receive a Conditional cap, and two-hop is diagnostic only. The current Docker VM exposes 46.964 GiB, so the 50 GiB arm is unreachable and any otherwise-Pass 32 GiB local verdict is capped at Conditional. The measured 32 GiB run received Fail because the large-tier join p95 exceeded the Conditional latency ceiling.
 
 - [ ] **Step 3: Preserve the explicit future 50 GiB arm**
 
 Run later on a different environment configured with at least 54 GiB of Docker memory: `uv run openalex-spike stage2 --memory-gb 50 --run-id stage2-50gib`
 Expected locally: the memory preflight refuses this command before Compose mutation and does not downgrade. The Alliance/x86 environment remains unvalidated.
 
-- [ ] **Step 4: Build and measure the reverse projection**
+- [x] **Step 4: Build and measure the reverse projection**
 
 Run the planned projection variant and repeat q05/q07. Expected: build time, peak/final disk, and before/after metrics are present.
 
-- [ ] **Step 5: Generate, inspect, and commit compact evidence**
+- [x] **Step 5: Generate, inspect, and commit compact evidence**
 
-Run: `uv run openalex-spike report --run stage2`  
+Run: `uv run openalex-spike report --run stage2-v2`
 Expected: report distinguishes local engine verdict, storage capacity result, and unvalidated Alliance claims.
 
 ```bash
-git add results/stage2
+git add results/stage2-v2
 git commit -m "test: benchmark OpenAlex ClickHouse sample"
 ```
 

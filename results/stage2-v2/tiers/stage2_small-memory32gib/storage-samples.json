@@ -1,0 +1,56 @@
+[
+  {
+    "filesystem_bytes": 14470103040,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3371374672,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785899922.53851
+  },
+  {
+    "filesystem_bytes": 14470103040,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3371374672,
+      "citation_edge": 101557351,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 43832861
+    },
+    "timestamp": 1785899923.745089
+  },
+  {
+    "filesystem_bytes": 14470103040,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3371374672,
+      "citation_edge": 107586178,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 40605412,
+      "works": 43832861
+    },
+    "timestamp": 1785899924.9497888
+  },
+  {
+    "filesystem_bytes": 15428153344,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3371374672,
+      "citation_edge": 107586178,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 40605412,
+      "work_institution": 23580788,
+      "work_topic": 38948393,
+      "works": 43832861
+    },
+    "timestamp": 1785899925.620755
+  }
+]

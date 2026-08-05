@@ -1,0 +1,115 @@
+[
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {},
+    "timestamp": 1785899903.990342
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 288824495
+    },
+    "timestamp": 1785899905.201231
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 540159124
+    },
+    "timestamp": 1785899906.412123
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 809468159
+    },
+    "timestamp": 1785899907.619893
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1090176525
+    },
+    "timestamp": 1785899908.822328
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1340831062
+    },
+    "timestamp": 1785899910.026846
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1622335662
+    },
+    "timestamp": 1785899911.241597
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1898614701
+    },
+    "timestamp": 1785899912.463697
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2173676045
+    },
+    "timestamp": 1785899913.69887
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2419672870
+    },
+    "timestamp": 1785899914.923947
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2692530306
+    },
+    "timestamp": 1785899916.159415
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2946284065
+    },
+    "timestamp": 1785899917.3731961
+  },
+  {
+    "filesystem_bytes": 4880502784,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3195664210
+    },
+    "timestamp": 1785899918.592119
+  },
+  {
+    "filesystem_bytes": 13851217920,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3400380453,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785899919.708231
+  }
+]

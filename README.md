@@ -61,16 +61,42 @@ the Work-derived tables for the 3.254, 15.118, and 45.233 GB Works tiers.
 uv run openalex-spike download --tier stage2_large \
   --include-complete-authors \
   --include-small-dimensions
-uv run openalex-spike stage2 --memory-gb 32 --run-id stage2
-uv run openalex-spike report --run stage2
+uv run openalex-spike stage2 --memory-gb 32 --run-id stage2-v2
+uv run openalex-spike report --run stage2-v2
+```
+
+After a completed run, the Stage 2 verdict can be regenerated from its pinned
+artifacts without starting Docker:
+
+```bash
+uv run openalex-spike stage2 --run-id stage2-v2 --report-only
 ```
 
 The compatibility flag `--memory-gb` is interpreted as GiB. The current Docker
 VM exposes 46.964 GiB, so a 50 GiB run is deliberately unreachable here and
 refused before Compose changes anything. The local 32 GiB result is capped at
-Conditional even if every gate passes. A future 50 GiB run requires a different
-Docker environment with at least 54 GiB configured and a distinct run ID; the
-CLI never falls back to a smaller envelope.
+Conditional even if every gate passes. The observed run is a Fail because the
+large tier exceeds the configured latency ceilings, not because of that cap. A
+future 50 GiB run requires a different Docker environment with at least 54 GiB
+configured and a distinct run ID; the CLI never falls back to a smaller
+envelope.
+
+## Stage 2 result
+
+The pinned [`stage2-v2` report](results/stage2-v2/report.md) covers 98.302 GB of
+raw Parquet, including 31,885,241 Works in the largest tier. All blocking
+correctness gates passed, all three query classes reached their minimum sample
+count, and ClickHouse recorded no query error or server restart. Small and
+medium received Pass verdicts. The large tier received Fail: under three
+concurrent workers, routine-query p95 was 16.874 seconds against the 15-second
+Pass ceiling, while join-query p95 was 140.781 seconds against the 120-second
+Conditional ceiling. One-hop citation p95 was 0.476 seconds.
+
+This validates the raw-Parquet-to-ClickHouse path, normalized bibliometric
+tables, SQL joins, and citation traversal at the tested volume. It does not yet
+validate the unoptimized large tier for interactive concurrent joins. The next
+technical experiment should target physical layout or pre-aggregation for the
+slow join queries and compare against this immutable baseline.
 
 ## SQL access
 
