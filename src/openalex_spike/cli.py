@@ -1227,7 +1227,11 @@ def _normalized_storage_samples(
     if legacy_identity:
         return samples
     return [
-        {"filesystem_vanished_files": 0, **sample}
+        {
+            "filesystem_vanished_files": 0,
+            "filesystem_vanished_directories": 0,
+            **sample,
+        }
         for sample in samples
     ]
 

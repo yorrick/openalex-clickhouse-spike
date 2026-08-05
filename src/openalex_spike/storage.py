@@ -22,12 +22,14 @@ class StorageSample:
     projection_bytes: dict[str, int]
     filesystem_bytes: int
     filesystem_vanished_files: int = 0
+    filesystem_vanished_directories: int = 0
 
 
 @dataclass(frozen=True)
 class DirectoryUsage:
     allocated_bytes: int
     vanished_files: int
+    vanished_directories: int = 0
 
 
 def estimate_works_derived(
@@ -95,13 +97,25 @@ def layout_bytes(
 def directory_allocated_usage(path: Path) -> DirectoryUsage:
     total = 0
     vanished_files = 0
+    vanished_directories = 0
     if not path.exists():
-        return DirectoryUsage(allocated_bytes=0, vanished_files=0)
+        return DirectoryUsage(
+            allocated_bytes=0,
+            vanished_files=0,
+            vanished_directories=0,
+        )
+    scan_root = path.absolute()
 
-    def raise_walk_error(error: OSError) -> None:
+    def handle_walk_error(error: OSError) -> None:
+        nonlocal vanished_directories
+        if isinstance(error, FileNotFoundError) and error.filename is not None:
+            vanished_path = Path(error.filename).absolute()
+            if vanished_path != scan_root and scan_root in vanished_path.parents:
+                vanished_directories += 1
+                return
         raise error
 
-    for root, _, files in os.walk(path, onerror=raise_walk_error):
+    for root, _, files in os.walk(path, onerror=handle_walk_error):
         for filename in files:
             try:
                 stat = (Path(root) / filename).stat()
@@ -109,7 +123,11 @@ def directory_allocated_usage(path: Path) -> DirectoryUsage:
                 vanished_files += 1
                 continue
             total += stat.st_blocks * 512
-    return DirectoryUsage(allocated_bytes=total, vanished_files=vanished_files)
+    return DirectoryUsage(
+        allocated_bytes=total,
+        vanished_files=vanished_files,
+        vanished_directories=vanished_directories,
+    )
 
 
 def directory_allocated_bytes(path: Path) -> int:
@@ -142,6 +160,7 @@ def collect_storage_sample(
         },
         filesystem_bytes=usage.allocated_bytes,
         filesystem_vanished_files=usage.vanished_files,
+        filesystem_vanished_directories=usage.vanished_directories,
     )
 
 

@@ -94,8 +94,16 @@ def test_v2_storage_payload_normalizes_mixed_provenance_samples():
         for population in populations
         for sample in population
     )
+    assert all(
+        "filesystem_vanished_directories" in sample
+        for population in populations
+        for sample in population
+    )
     assert payload["storage"]["dimension_samples"][0][
         "filesystem_vanished_files"
+    ] == 0
+    assert payload["storage"]["dimension_samples"][0][
+        "filesystem_vanished_directories"
     ] == 0
     assert payload["storage"]["tiers"]["stage2_small"][0][
         "filesystem_vanished_files"

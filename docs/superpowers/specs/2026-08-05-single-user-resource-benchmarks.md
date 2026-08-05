@@ -172,10 +172,14 @@ sampling:
 - after a child file has been returned by `os.walk`, catch only
   `FileNotFoundError` from that child's `stat`, exclude the now-absent file from
   the instantaneous total, and increment `vanished_files`;
-- make `os.walk` traversal errors explicit, and continue propagating
-  `PermissionError` and every other I/O error;
+- when `os.walk` reports `FileNotFoundError` for a descendant directory that
+  vanished before traversal, increment a separate `vanished_directories`
+  counter and let the walker skip that now-absent directory; a missing root,
+  `PermissionError`, and every other I/O error still propagate;
 - add `filesystem_vanished_files` as the last `StorageSample` field with a
-  default of zero, preserving existing positional construction;
+  default of zero, followed by `filesystem_vanished_directories` with the same
+  default, preserving existing positional construction while keeping leaf and
+  subtree races diagnostically distinct;
 - cache the complete scan result in the decimated sampler so cached byte and
   vanished-file values always come from the same scan;
 - for every storage-sample population reaching a version-2 report, normalize
@@ -188,6 +192,7 @@ sampling:
   coherence, and a version-2 mixed-provenance report whose dimension, tier,
   and projection sample populations all expose the same telemetry keys.
 
-This is not a general retry or filesystem-error fallback. It gives a precise
-meaning to one expected race while retaining visible telemetry about it and
-failing on all errors outside that definition.
+This is not a general retry or filesystem-error fallback. It gives precise
+meanings to the two expected races observed against ClickHouse-managed parts,
+retains visible telemetry about each, and fails on all errors outside those
+definitions. No retry or merge-quiescing behavior is introduced.
