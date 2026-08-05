@@ -12,6 +12,7 @@ from openalex_spike.cli import (
     _resolve_stage2_execution,
     _selected_tier,
     _stage2_storage_payload,
+    _validate_stage2_dimensions,
     build_parser,
     command_stage1,
     main,
@@ -125,6 +126,74 @@ def test_legacy_storage_payload_preserves_original_sample_shape():
     assert payload["storage"]["dimension_samples"] == [sample]
     assert payload["storage"]["tiers"]["stage2_large"] == [sample]
     assert payload["projection"]["storage_samples"] == [sample]
+
+
+def test_resume_dimension_validation_uses_supported_database_catalog_query():
+    class Service:
+        def __init__(self):
+            self.existence_sql = ""
+
+        def query_value(self, sql):
+            self.existence_sql = sql
+            return "1"
+
+        def query_json(self, sql):
+            return [
+                {
+                    "authors": 4,
+                    "institutions": 3,
+                    "sources": 2,
+                    "topics": 1,
+                }
+            ]
+
+    service = Service()
+
+    _validate_stage2_dimensions(
+        service,
+        database="openalex_stage2_resume_12345678",
+        expected_counts={
+            "authors": 4,
+            "institutions": 3,
+            "sources": 2,
+            "topics": 1,
+        },
+    )
+
+    assert service.existence_sql == (
+        "SELECT count() FROM system.databases "
+        "WHERE name = 'openalex_stage2_resume_12345678'"
+    )
+    assert "existsDatabase" not in service.existence_sql
+
+
+def test_resume_dimension_validation_fails_closed_for_missing_database():
+    class Service:
+        def query_value(self, sql):
+            return "0"
+
+        def query_json(self, sql):
+            raise AssertionError("dimension tables must not be read")
+
+    with pytest.raises(Stage2PrerequisiteError, match="database is missing"):
+        _validate_stage2_dimensions(
+            Service(),
+            database="openalex_stage2_missing_12345678",
+            expected_counts={},
+        )
+
+
+def test_resume_dimension_validation_rejects_unsafe_database_identifier():
+    class Service:
+        def query_value(self, sql):
+            raise AssertionError("unsafe identifier must fail before SQL")
+
+    with pytest.raises(ValueError, match="invalid database identifier"):
+        _validate_stage2_dimensions(
+            Service(),
+            database="openalex_stage2_x' OR 1=1",
+            expected_counts={},
+        )
 
 
 def test_missing_select_prerequisite_returns_nonzero(tmp_path: Path):

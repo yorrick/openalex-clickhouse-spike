@@ -936,8 +936,14 @@ def _validate_stage2_dimensions(
     database: str,
     expected_counts: dict[str, int],
 ) -> None:
-    exists = service.query_value(f"SELECT existsDatabase('{database}')")
-    if exists != "1":
+    database = _database_identifier(database)
+    exists = int(
+        service.query_value(
+            "SELECT count() FROM system.databases "
+            f"WHERE name = '{database}'"
+        )
+    )
+    if exists != 1:
         raise Stage2PrerequisiteError(
             "resumable Stage 2 database is missing; use an explicit new --run-id"
         )
