@@ -32,15 +32,24 @@ class ConcurrentRecord:
     elapsed_seconds: float
     max_threads: int
     error: str | None
+    read_rows: int = 0
+    read_bytes: int = 0
+    peak_memory_bytes: int = 0
+    spill_bytes: int = 0
 
 
 def build_worker_schedules(
-    catalog: Sequence[BenchmarkQuery],
+    catalog: Sequence[BenchmarkQuery], *, workers: int = 3
 ) -> tuple[tuple[BenchmarkQuery, ...], ...]:
+    if workers <= 0:
+        raise ValueError("concurrency workers must be positive")
     gated = tuple(query for query in catalog if not query.diagnostic)
     if not gated:
         raise ValueError("concurrency catalog has no gating queries")
-    return tuple(gated[offset:] + gated[:offset] for offset in range(3))
+    return tuple(
+        gated[offset % len(gated) :] + gated[: offset % len(gated)]
+        for offset in range(workers)
+    )
 
 
 def run_closed_loop(
@@ -51,16 +60,22 @@ def run_closed_loop(
     seed_work_ids: tuple[int, int, int],
     minimum_samples: int,
     maximum_seconds: float,
+    worker_count: int = 3,
+    query_threads: int = 8,
     clock: Callable[[], float] = monotonic,
 ) -> tuple[list[ConcurrentRecord], str | None]:
-    schedules = build_worker_schedules(catalog)
+    if worker_count <= 0:
+        raise ValueError("concurrency worker count must be positive")
+    if query_threads <= 0:
+        raise ValueError("concurrent query threads must be positive")
+    schedules = build_worker_schedules(catalog, workers=worker_count)
     deadline = clock() + maximum_seconds
     stop = Event()
     lock = Lock()
     output: Queue[ConcurrentRecord] = Queue()
     counts = {query_class: 0 for query_class in GATED_CLASSES}
     first_error: list[str] = []
-    settings = envelope_settings(envelope, max_threads=8)
+    settings = envelope_settings(envelope, max_threads=query_threads)
 
     def all_classes_complete() -> bool:
         return all(counts[name] >= minimum_samples for name in GATED_CLASSES)
@@ -97,6 +112,10 @@ def run_closed_loop(
                     elapsed_seconds=float(telemetry["elapsed_seconds"]),
                     max_threads=int(settings["max_threads"]),
                     error=None,
+                    read_rows=int(telemetry["read_rows"]),
+                    read_bytes=int(telemetry["read_bytes"]),
+                    peak_memory_bytes=int(telemetry["peak_memory_bytes"]),
+                    spill_bytes=int(telemetry["spill_bytes"]),
                 )
                 output.put(record)
                 with lock:
@@ -121,8 +140,10 @@ def run_closed_loop(
                 return
             iteration += 1
 
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        futures = [executor.submit(worker, worker_id) for worker_id in range(3)]
+    with ThreadPoolExecutor(max_workers=worker_count) as executor:
+        futures = [
+            executor.submit(worker, worker_id) for worker_id in range(worker_count)
+        ]
         for future in futures:
             future.result()
 
@@ -146,11 +167,12 @@ def summarize_concurrency(
 ) -> dict[str, object]:
     class_summary = {}
     for query_class in GATED_CLASSES:
-        durations = [
-            record.elapsed_seconds
+        successful = [
+            record
             for record in records
             if record.query_class == query_class and record.error is None
         ]
+        durations = [record.elapsed_seconds for record in successful]
         class_summary[query_class] = {
             "count": len(durations),
             "median_seconds": (
@@ -158,6 +180,12 @@ def summarize_concurrency(
             ),
             "p95_seconds": _nearest_rank_p95(durations) if durations else None,
             "maximum_seconds": max(durations) if durations else None,
+            "peak_memory_bytes": max(
+                (record.peak_memory_bytes for record in successful), default=0
+            ),
+            "spill_bytes": sum(record.spill_bytes for record in successful),
+            "read_rows": sum(record.read_rows for record in successful),
+            "read_bytes": sum(record.read_bytes for record in successful),
             "insufficient_sample": len(durations) < minimum_samples,
         }
     if first_error:

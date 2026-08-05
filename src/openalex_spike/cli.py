@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from time import monotonic
@@ -61,6 +61,7 @@ from openalex_spike.stage2 import (
     maximum_input_bytes,
     nested_stage2_tiers,
     require_free_space,
+    require_complete_concurrency_samples,
     require_resume_identity,
     required_build_free_bytes,
     required_download_free_bytes,
@@ -76,6 +77,111 @@ COMMAND_VERSION = "0.1.0"
 
 class PrerequisiteError(RuntimeError):
     pass
+
+
+@dataclass(frozen=True)
+class Stage2Execution:
+    cpus: int
+    workers: int
+    query_threads: int
+    maximum_seconds: int
+
+    def validate(self) -> Stage2Execution:
+        if min(
+            self.cpus,
+            self.workers,
+            self.query_threads,
+            self.maximum_seconds,
+        ) <= 0:
+            raise PrerequisiteError("Stage 2 execution values must be positive")
+        if self.query_threads > self.cpus:
+            raise PrerequisiteError(
+                "Stage 2 query threads cannot exceed the container CPU limit"
+            )
+        return self
+
+
+LEGACY_STAGE2_EXECUTION = Stage2Execution(
+    cpus=16,
+    workers=3,
+    query_threads=8,
+    maximum_seconds=3600,
+)
+STAGE2_EXECUTION_ARGUMENTS = {
+    "cpus": "cpus",
+    "workers": "workers",
+    "query_threads": "query_threads",
+    "maximum_seconds": "maximum_seconds",
+}
+
+
+def _explicit_stage2_execution(args: Namespace) -> dict[str, int]:
+    return {
+        field: int(value)
+        for field, argument in STAGE2_EXECUTION_ARGUMENTS.items()
+        if (value := getattr(args, argument, None)) is not None
+    }
+
+
+def _execution_from_identity(identity: dict[str, object]) -> Stage2Execution:
+    if int(identity.get("identity_version", 0)) != 2:
+        raise Stage2PrerequisiteError("unsupported Stage 2 identity version")
+    execution = identity.get("execution")
+    if not isinstance(execution, dict):
+        raise Stage2PrerequisiteError("Stage 2 identity is missing execution values")
+    try:
+        return Stage2Execution(
+            cpus=int(execution["cpus"]),
+            workers=int(execution["workers"]),
+            query_threads=int(execution["query_threads"]),
+            maximum_seconds=int(execution["maximum_seconds"]),
+        ).validate()
+    except KeyError as error:
+        raise Stage2PrerequisiteError(
+            f"Stage 2 identity is missing execution value: {error.args[0]}"
+        ) from error
+
+
+def _resolve_stage2_execution(
+    args: Namespace,
+    cfg: ExperimentConfig,
+    recorded_checkpoint: dict[str, object] | None,
+) -> tuple[Stage2Execution, bool]:
+    explicit = _explicit_stage2_execution(args)
+    if recorded_checkpoint is not None:
+        recorded_identity = recorded_checkpoint.get("identity")
+        if not isinstance(recorded_identity, dict):
+            raise Stage2PrerequisiteError("Stage 2 checkpoint identity is invalid")
+        if "identity_version" not in recorded_identity:
+            if explicit:
+                raise Stage2PrerequisiteError(
+                    "legacy Stage 2 checkpoints do not accept CPU, worker, "
+                    "query-thread, or duration options"
+                )
+            return LEGACY_STAGE2_EXECUTION, True
+        recorded = _execution_from_identity(recorded_identity)
+        recorded_values = asdict(recorded)
+        mismatched = sorted(
+            name
+            for name, value in explicit.items()
+            if value != recorded_values[name]
+        )
+        if mismatched:
+            raise Stage2PrerequisiteError(
+                "Stage 2 execution values do not match checkpoint: "
+                + ", ".join(mismatched)
+            )
+        return recorded, False
+
+    execution = Stage2Execution(
+        cpus=int(explicit.get("cpus", cfg.cpus)),
+        workers=int(explicit.get("workers", 3)),
+        query_threads=int(explicit.get("query_threads", 8)),
+        maximum_seconds=int(
+            explicit.get("maximum_seconds", cfg.thresholds.maximum_seconds)
+        ),
+    ).validate()
+    return execution, False
 
 
 def _project_root() -> Path:
@@ -1018,6 +1124,7 @@ def _run_projection_experiment(
     root: Path,
     database: str,
     memory_gib: int,
+    cpus: int,
     seed_work_ids: tuple[int, int, int],
     result_dir: Path,
 ) -> dict[str, object]:
@@ -1025,7 +1132,7 @@ def _run_projection_experiment(
 
     def restart() -> None:
         service.down()
-        service.up(memory_gb=memory_gib, cpus=cfg.cpus)
+        service.up(memory_gb=memory_gib, cpus=cpus)
 
     client = lambda: ServiceBenchmarkClient(service, database)
     projection_definitions = int(
@@ -1045,6 +1152,7 @@ def _run_projection_experiment(
         restart,
         cfg.envelopes[memory_gib],
         seed_work_ids=seed_work_ids,
+        max_threads=cpus,
     )
     monitor = _stage2_monitor(service, root=root, database=database)
     monitor.start()
@@ -1074,6 +1182,7 @@ def _run_projection_experiment(
         restart,
         cfg.envelopes[memory_gib],
         seed_work_ids=seed_work_ids,
+        max_threads=cpus,
     )
     write_storage_samples(
         result_dir / "projection-storage-samples.json", projection_samples
@@ -1122,6 +1231,8 @@ def _finalize_stage2_report(
     maximum_raw_bytes: int,
     environment: dict[str, object],
     identity: dict[str, object],
+    execution: Stage2Execution,
+    legacy_identity: bool,
     evaluation_mode: str,
     write_derived_logs: bool,
 ) -> int:
@@ -1135,6 +1246,10 @@ def _finalize_stage2_report(
         if int(summary["memory_gib"]) != memory_gib:
             raise Stage2PrerequisiteError(
                 f"{tier} summary memory does not match checkpoint identity"
+            )
+        if not legacy_identity and summary.get("execution") != asdict(execution):
+            raise Stage2PrerequisiteError(
+                f"{tier} summary execution does not match checkpoint identity"
             )
 
     if write_derived_logs:
@@ -1189,6 +1304,32 @@ def _finalize_stage2_report(
         summary["concurrent"]["server_restarted"]
         for summary in tier_summaries.values()
     )
+    if legacy_identity:
+        limitations = [
+            f"This local Stage 2 run uses a 32 GiB ClickHouse container because the captured Docker VM exposes only {int(environment['resource_limits']['docker_memory_bytes']) / (1 << 30):.3f} GiB; the 50 GiB acceptance arm is unreachable here and the local verdict is capped at Conditional.",
+            "The 50 GiB option requires a different Docker environment with at least 54 GiB configured; no automatic memory downgrade exists.",
+            "The OpenAlex manifests publish byte lengths and record counts but no content checksum; verification checks size and Parquet footer row counts and does not claim cryptographic object integrity.",
+            "The Works samples are stratified by updated_date and are not a population-representative sample.",
+            "Local Apple Silicon and local SSD latency is not extrapolated to an Alliance x86 VM with network-backed storage.",
+            "The 50 GiB and Alliance performance envelopes remain unvalidated.",
+        ]
+    else:
+        if memory_gib == 32:
+            memory_limitations = [
+                f"This local Stage 2 run uses a 32 GiB ClickHouse container because the captured Docker VM exposes only {int(environment['resource_limits']['docker_memory_bytes']) / (1 << 30):.3f} GiB; a successful local verdict is capped at Conditional.",
+                "The 50 GiB option requires Docker to expose at least 54 GiB; no automatic memory downgrade exists.",
+                "The 50 GiB performance envelope remains unvalidated.",
+            ]
+        else:
+            memory_limitations = [
+                f"This local Stage 2 run executed the requested 50 GiB ClickHouse container with {execution.cpus} CPUs, {execution.workers} concurrent worker(s), and {execution.query_threads} query threads; no resource fallback was attempted.",
+            ]
+        limitations = memory_limitations + [
+            "The OpenAlex manifests publish byte lengths and record counts but no content checksum; verification checks size and Parquet footer row counts and does not claim cryptographic object integrity.",
+            "The Works samples are stratified by updated_date and are not a population-representative sample.",
+            "Local Apple Silicon and local SSD latency is not extrapolated to an Alliance x86 VM with network-backed storage.",
+            "The Alliance performance envelope remains unvalidated.",
+        ]
     report_evidence = {
         "run_id": run_id,
         "inputs": {
@@ -1241,6 +1382,8 @@ def _finalize_stage2_report(
             "undersampling_semantics": (
                 "classes below the minimum sample count are excluded from latency "
                 "grading and cap the tier at Conditional; nearest-rank p95 is retained"
+                if legacy_identity
+                else "under-sampling is a hard resource-comparison failure"
             ),
             "one_hop_latency_criterion": (
                 "not configured; one-hop remains gated for errors and sample count"
@@ -1268,14 +1411,7 @@ def _finalize_stage2_report(
         },
         "local_engine_verdict": local_verdict,
         "capacity_verdict": "Uncertain",
-        "limitations": [
-            f"This local Stage 2 run uses a 32 GiB ClickHouse container because the captured Docker VM exposes only {int(environment['resource_limits']['docker_memory_bytes']) / (1 << 30):.3f} GiB; the 50 GiB acceptance arm is unreachable here and the local verdict is capped at Conditional.",
-            "The 50 GiB option requires a different Docker environment with at least 54 GiB configured; no automatic memory downgrade exists.",
-            "The OpenAlex manifests publish byte lengths and record counts but no content checksum; verification checks size and Parquet footer row counts and does not claim cryptographic object integrity.",
-            "The Works samples are stratified by updated_date and are not a population-representative sample.",
-            "Local Apple Silicon and local SSD latency is not extrapolated to an Alliance x86 VM with network-backed storage.",
-            "The 50 GiB and Alliance performance envelopes remain unvalidated.",
-        ]
+        "limitations": limitations
         + [
             f"{tier}: the canonical Authors snapshot leaves {summary['correctness']['referential_coverage']['missing_authors']} of {summary['correctness']['referential_coverage']['author_bridge_rows']} Work-author bridge rows unresolved, including {summary['correctness']['referential_coverage']['null_author_rows']} documented NULL-author rows and {summary['correctness']['referential_coverage']['deleted_author_rows']} documented deleted-author rows. The ordinary unresolved count is {summary['correctness']['referential_coverage']['ordinary_missing_author_rows']} of {summary['correctness']['referential_coverage']['ordinary_authorship_rows']} (coverage {float(summary['correctness']['referential_coverage']['ordinary_author_reference_coverage_ratio']):.10f}; blocking floor {cfg.thresholds.minimum_ordinary_author_reference_coverage:.6f}). Raw links are preserved; use LEFT JOIN when unmatched authorships matter."
             for tier, summary in tier_summaries.items()
@@ -1283,11 +1419,14 @@ def _finalize_stage2_report(
             > 0
         ],
     }
+    if not legacy_identity:
+        report_evidence["execution"] = asdict(execution)
     report_json, report_md = render_report(result_root, report_evidence)
     checkpoint["status"] = "complete"
     checkpoint["report_json"] = str(report_json)
     checkpoint["report_md"] = str(report_md)
     _write_stage2_checkpoint(checkpoint_path, checkpoint)
+    state_execution = {} if legacy_identity else asdict(execution)
     _write_state(
         root,
         "stage2",
@@ -1297,6 +1436,7 @@ def _finalize_stage2_report(
         report_json=str(report_json),
         report_md=str(report_md),
         checkpoint=str(checkpoint_path),
+        **state_execution,
     )
     print(f"Stage 2 complete; report: {report_md}", flush=True)
     return 0
@@ -1310,15 +1450,16 @@ def command_stage2(args: Namespace) -> int:
     cfg = _config(root)
     run_id = args.run_id or "stage2"
     checkpoint_path = _stage2_checkpoint_path(root, run_id)
-    report_only_checkpoint = None
+    recorded_checkpoint = (
+        json.loads(checkpoint_path.read_text()) if checkpoint_path.exists() else None
+    )
     if args.report_only:
-        if not checkpoint_path.exists():
+        if recorded_checkpoint is None:
             raise Stage2PrerequisiteError(
                 f"missing Stage 2 checkpoint for report-only: {checkpoint_path}"
             )
-        report_only_checkpoint = json.loads(checkpoint_path.read_text())
-        memory_gib = int(report_only_checkpoint["identity"]["memory_gib"])
-        tiers = tuple(str(tier) for tier in report_only_checkpoint["identity"]["tiers"])
+        memory_gib = int(recorded_checkpoint["identity"]["memory_gib"])
+        tiers = tuple(str(tier) for tier in recorded_checkpoint["identity"]["tiers"])
         if args.memory_gb is not None and int(args.memory_gb) != memory_gib:
             raise Stage2PrerequisiteError(
                 "report-only memory must match the checkpoint identity"
@@ -1330,6 +1471,9 @@ def command_stage2(args: Namespace) -> int:
     else:
         memory_gib = int(args.memory_gb or 32)
         tiers = (args.tier,) if args.tier else STAGE2_TIERS
+    execution, legacy_identity = _resolve_stage2_execution(
+        args, cfg, recorded_checkpoint
+    )
     if memory_gib not in cfg.envelopes:
         raise PrerequisiteError(
             f"Stage 2 memory envelope must be one of {sorted(cfg.envelopes)} GiB"
@@ -1382,12 +1526,11 @@ def command_stage2(args: Namespace) -> int:
         download_state_sha256=file_sha256(download_path),
         config_sha256=file_sha256(root / "config" / "experiment.toml"),
         rendered_sql_sha256=rendered_hashes,
+        execution=None if legacy_identity else asdict(execution),
     )
     result_root = root / "results" / run_id
-    if report_only_checkpoint is not None:
-        checkpoint = report_only_checkpoint
-    elif checkpoint_path.exists():
-        checkpoint = json.loads(checkpoint_path.read_text())
+    if recorded_checkpoint is not None:
+        checkpoint = recorded_checkpoint
     else:
         checkpoint = {
             "identity": identity,
@@ -1433,6 +1576,8 @@ def command_stage2(args: Namespace) -> int:
             maximum_raw_bytes=maximum_raw_bytes,
             environment=json.loads(environment_path.read_text()),
             identity=identity,
+            execution=execution,
+            legacy_identity=legacy_identity,
             evaluation_mode="postprocessed_from_sha256_pinned_tier_artifacts",
             write_derived_logs=False,
         )
@@ -1442,7 +1587,7 @@ def command_stage2(args: Namespace) -> int:
         for entity in ("authors", "institutions", "sources", "topics")
     }
     service = ClickHouseService(root)
-    service.up(memory_gb=memory_gib, cpus=cfg.cpus)
+    service.up(memory_gb=memory_gib, cpus=execution.cpus)
     environment = service.write_environment_evidence(
         result_root / "environment.json"
     )
@@ -1502,7 +1647,7 @@ def command_stage2(args: Namespace) -> int:
 
             def restart() -> None:
                 service.down()
-                service.up(memory_gb=memory_gib, cpus=cfg.cpus)
+                service.up(memory_gb=memory_gib, cpus=execution.cpus)
 
             sequential = run_sequential(
                 catalog,
@@ -1510,6 +1655,7 @@ def command_stage2(args: Namespace) -> int:
                 restart,
                 cfg.envelopes[memory_gib],
                 seed_work_ids=seed_work_ids,
+                max_threads=execution.cpus,
             )
             sequential_rows = [asdict(record) for record in sequential]
             _write_json_atomic(tier_dir / "sequential.json", sequential_rows)
@@ -1521,7 +1667,9 @@ def command_stage2(args: Namespace) -> int:
                 cfg.envelopes[memory_gib],
                 seed_work_ids=seed_work_ids,
                 minimum_samples=cfg.thresholds.minimum_samples,
-                maximum_seconds=cfg.thresholds.maximum_seconds,
+                maximum_seconds=execution.maximum_seconds,
+                worker_count=execution.workers,
+                query_threads=execution.query_threads,
             )
             container_after = service.container_id()
             server_restarted = container_before != container_after
@@ -1531,6 +1679,8 @@ def command_stage2(args: Namespace) -> int:
                 first_error=first_error,
             )
             concurrent_summary["server_restarted"] = server_restarted
+            if not legacy_identity:
+                concurrent_summary["execution"] = asdict(execution)
             concurrent_rows = [asdict(record) for record in concurrent_records]
             _write_json_atomic(tier_dir / "concurrent-summary.json", concurrent_summary)
             query_rows = [
@@ -1540,6 +1690,19 @@ def command_stage2(args: Namespace) -> int:
                 {"tier": tier, "memory_gib": memory_gib, "mode": "concurrent", **row}
                 for row in concurrent_rows
             ]
+            # Preserve raw sequential/concurrent evidence before any strict v2
+            # abort. A successful tier rewrites this file below with projection rows.
+            _write_jsonl_atomic(tier_dir / "query-log.jsonl", query_rows)
+            if not legacy_identity:
+                if first_error:
+                    raise Stage2PrerequisiteError(
+                        f"resource comparison query failed: {first_error}"
+                    )
+                if server_restarted:
+                    raise Stage2PrerequisiteError(
+                        "resource comparison detected a ClickHouse restart"
+                    )
+                require_complete_concurrency_samples(concurrent_summary)
             projection = None
             if tier == "stage2_large":
                 projection = _run_projection_experiment(
@@ -1547,6 +1710,7 @@ def command_stage2(args: Namespace) -> int:
                     root=root,
                     database=database,
                     memory_gib=memory_gib,
+                    cpus=execution.cpus,
                     seed_work_ids=seed_work_ids,
                     result_dir=tier_dir,
                 )
@@ -1588,6 +1752,8 @@ def command_stage2(args: Namespace) -> int:
                     performance_verdict=performance_verdict,
                 ),
             }
+            if not legacy_identity:
+                tier_summary["execution"] = asdict(execution)
             summary_path = tier_dir / "summary.json"
             _write_json_atomic(summary_path, tier_summary)
             artifacts = [
@@ -1617,6 +1783,8 @@ def command_stage2(args: Namespace) -> int:
             maximum_raw_bytes=maximum_raw_bytes,
             environment=environment,
             identity=identity,
+            execution=execution,
+            legacy_identity=legacy_identity,
             evaluation_mode="in_run",
             write_derived_logs=True,
         )
@@ -1667,6 +1835,10 @@ def build_parser() -> ArgumentParser:
         default=None,
         help="ClickHouse container limit in GiB (compatibility flag spelling)",
     )
+    stage2.add_argument("--cpus", type=int, default=None)
+    stage2.add_argument("--workers", type=int, default=None)
+    stage2.add_argument("--query-threads", type=int, default=None)
+    stage2.add_argument("--maximum-seconds", type=int, default=None)
     stage2.add_argument("--tier", choices=STAGE2_TIERS)
     stage2.add_argument("--run-id")
     stage2.add_argument("--report-only", action="store_true")

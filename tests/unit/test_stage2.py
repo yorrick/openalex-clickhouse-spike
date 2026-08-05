@@ -7,6 +7,7 @@ from openalex_spike.stage2 import (
     Stage2PrerequisiteError,
     build_run_identity,
     nested_stage2_tiers,
+    require_complete_concurrency_samples,
     require_resume_identity,
     required_build_free_bytes,
     required_download_free_bytes,
@@ -56,6 +57,37 @@ def test_resume_identity_includes_memory_config_and_rendered_sql():
     changed = build_run_identity(**{**base, "config_sha256": "config-b"})
     with pytest.raises(Stage2PrerequisiteError, match="new --run-id"):
         require_resume_identity(recorded, changed)
+
+
+def test_versioned_identity_pins_every_execution_resource():
+    base = {
+        "run_id": "resource-run",
+        "memory_gib": 50,
+        "tiers": ["stage2_large"],
+        "selection_sha256": "selection",
+        "download_state_sha256": "download",
+        "config_sha256": "config",
+        "rendered_sql_sha256": {"schema": "sql"},
+    }
+    execution = {
+        "cpus": 16,
+        "workers": 1,
+        "query_threads": 8,
+        "maximum_seconds": 18_000,
+    }
+    legacy = build_run_identity(**base)
+    current = build_run_identity(**base, execution=execution)
+
+    assert "identity_version" not in legacy
+    assert current["identity_version"] == 2
+    assert current["execution"] == execution
+    for field in execution:
+        changed = build_run_identity(
+            **base,
+            execution={**execution, field: execution[field] + 1},
+        )
+        with pytest.raises(Stage2PrerequisiteError, match="new --run-id"):
+            require_resume_identity(current, changed)
 
 
 def _thresholds() -> VerdictThresholds:
@@ -160,6 +192,15 @@ def test_one_hop_has_no_invented_latency_ceiling():
         )
         == "pass"
     )
+
+
+def test_resource_comparison_rejects_under_sampled_evidence():
+    with pytest.raises(Stage2PrerequisiteError, match="under-sampled.*one_hop"):
+        require_complete_concurrency_samples(
+            _concurrent_summary(insufficient="one_hop")
+        )
+
+    require_complete_concurrency_samples(_concurrent_summary())
 
 
 def test_worst_tier_preserves_a_single_restart_failure():

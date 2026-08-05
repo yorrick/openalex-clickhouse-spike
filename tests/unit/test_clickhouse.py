@@ -52,6 +52,7 @@ def test_up_uses_bounded_compose_wait(tmp_path, monkeypatch):
     monkeypatch.setattr(service, "environment_evidence", lambda: evidence)
     monkeypatch.setattr(service, "emulation_detected", lambda: False)
     monkeypatch.setattr(service, "docker_memory_bytes", lambda: 48 * (1 << 30))
+    monkeypatch.setattr(service, "docker_cpu_count", lambda: 16)
     monkeypatch.setattr(
         service,
         "published_hosts",
@@ -89,6 +90,23 @@ def test_memory_preflight_enforces_four_gib_reserve(tmp_path, monkeypatch):
 
     with pytest.raises(ResourcePreflightError, match="4 GiB reserve"):
         service.require_memory_capacity(memory_gib=44)
+
+
+def test_cpu_preflight_refuses_before_compose_mutation(tmp_path, monkeypatch):
+    service = ClickHouseService(tmp_path)
+    compose_calls = []
+    monkeypatch.setattr(service, "docker_memory_bytes", lambda: 56 * (1 << 30))
+    monkeypatch.setattr(service, "docker_cpu_count", lambda: 16)
+    monkeypatch.setattr(
+        service,
+        "_compose",
+        lambda arguments, **kwargs: compose_calls.append((arguments, kwargs)) or "",
+    )
+
+    with pytest.raises(ResourcePreflightError, match="18 CPUs.*Docker exposes 16"):
+        service.up(memory_gb=50, cpus=18)
+
+    assert compose_calls == []
 
 
 def test_query_http_value_rejects_non_select_statements():

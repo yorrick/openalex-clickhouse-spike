@@ -91,6 +91,7 @@ def build_run_identity(
     download_state_sha256: str,
     config_sha256: str,
     rendered_sql_sha256: Mapping[str, str],
+    execution: Mapping[str, int] | None = None,
 ) -> dict[str, object]:
     document: dict[str, object] = {
         "run_id": run_id,
@@ -101,6 +102,19 @@ def build_run_identity(
         "config_sha256": config_sha256,
         "rendered_sql_sha256": dict(sorted(rendered_sql_sha256.items())),
     }
+    if execution is not None:
+        expected = {"cpus", "workers", "query_threads", "maximum_seconds"}
+        if set(execution) != expected:
+            raise ValueError(
+                f"execution identity must contain exactly {sorted(expected)}"
+            )
+        normalized_execution = {
+            name: int(execution[name]) for name in sorted(expected)
+        }
+        if any(value <= 0 for value in normalized_execution.values()):
+            raise ValueError("execution identity values must be positive")
+        document["identity_version"] = 2
+        document["execution"] = normalized_execution
     encoded = json.dumps(document, separators=(",", ":"), sort_keys=True).encode()
     document["sha256"] = hashlib.sha256(encoded).hexdigest()
     return document
@@ -112,6 +126,23 @@ def require_resume_identity(
     if recorded != current:
         raise Stage2PrerequisiteError(
             "Stage 2 resume identity changed; use an explicit new --run-id"
+        )
+
+
+def require_complete_concurrency_samples(summary: Mapping[str, object]) -> None:
+    classes = summary.get("classes")
+    if not isinstance(classes, Mapping):
+        raise Stage2PrerequisiteError("concurrency evidence is missing class summaries")
+    under_sampled = sorted(
+        str(name)
+        for name, evidence in classes.items()
+        if not isinstance(evidence, Mapping)
+        or bool(evidence.get("insufficient_sample", True))
+    )
+    if under_sampled:
+        raise Stage2PrerequisiteError(
+            "resource comparison is under-sampled for: "
+            + ", ".join(under_sampled)
         )
 
 

@@ -72,6 +72,7 @@ class ClickHouseService:
 
     def up(self, memory_gb: int, cpus: int) -> None:
         self.require_memory_capacity(memory_gib=memory_gb)
+        self.require_cpu_capacity(cpus=cpus)
         raw_dir = self.project_dir / ".data" / "raw"
         raw_dir.mkdir(parents=True, exist_ok=True)
         environment = os.environ.copy()
@@ -100,6 +101,9 @@ class ClickHouseService:
     def docker_memory_bytes(self) -> int:
         return int(self._run(["docker", "info", "--format", "{{.MemTotal}}"]))
 
+    def docker_cpu_count(self) -> int:
+        return int(self._run(["docker", "info", "--format", "{{.NCPU}}"]))
+
     def require_memory_capacity(self, *, memory_gib: int) -> int:
         if memory_gib <= 0:
             raise ValueError("ClickHouse memory limit must be positive GiB")
@@ -111,6 +115,17 @@ class ClickHouseService:
                 f"the container plus {DOCKER_MEMORY_RESERVE_GIB} GiB reserve "
                 f"requires {required:,} bytes, but Docker exposes "
                 f"{available:,} bytes; no lower-memory fallback was attempted"
+            )
+        return available
+
+    def require_cpu_capacity(self, *, cpus: int) -> int:
+        if cpus <= 0:
+            raise ValueError("ClickHouse CPU limit must be positive")
+        available = self.docker_cpu_count()
+        if cpus > available:
+            raise ResourcePreflightError(
+                f"Docker CPU preflight refused {cpus} CPUs: "
+                f"Docker exposes {available}; no lower-CPU fallback was attempted"
             )
         return available
 
@@ -178,6 +193,7 @@ class ClickHouseService:
             "raw_mount_read_only": self.raw_mount_read_only(inspect=inspect),
             "resource_limits": {
                 "docker_memory_bytes": self.docker_memory_bytes(),
+                "docker_cpus": self.docker_cpu_count(),
                 "memory_bytes": inspect["HostConfig"]["Memory"],
                 "nano_cpus": inspect["HostConfig"]["NanoCpus"],
             },

@@ -6,7 +6,10 @@ import json
 import pytest
 
 from openalex_spike.cli import (
+    LEGACY_STAGE2_EXECUTION,
     PrerequisiteError,
+    Stage2Execution,
+    _resolve_stage2_execution,
     _selected_tier,
     build_parser,
     command_stage1,
@@ -14,7 +17,9 @@ from openalex_spike.cli import (
     validate_raw_glob,
 )
 from openalex_spike.clickhouse import ResourcePreflightError
+from openalex_spike.config import ExperimentConfig
 from openalex_spike.sampling import ALGORITHM
+from openalex_spike.stage2 import Stage2PrerequisiteError
 
 
 def test_cli_exposes_exact_pipeline_commands_and_download_flags():
@@ -43,11 +48,86 @@ def test_cli_exposes_exact_pipeline_commands_and_download_flags():
     stage2_options = {
         option for action in stage2._actions for option in action.option_strings
     }
-    assert {"--memory-gb", "--tier", "--run-id"} <= stage2_options
+    assert {
+        "--memory-gb",
+        "--tier",
+        "--run-id",
+        "--cpus",
+        "--workers",
+        "--query-threads",
+        "--maximum-seconds",
+    } <= stage2_options
 
 
 def test_missing_select_prerequisite_returns_nonzero(tmp_path: Path):
     assert main(["--root", str(tmp_path), "select"]) != 0
+
+
+def _execution_config() -> ExperimentConfig:
+    return ExperimentConfig.load(Path("config/experiment.toml"))
+
+
+def test_legacy_stage2_checkpoint_rejects_new_execution_options():
+    checkpoint = {"identity": {"run_id": "legacy"}}
+    args = Namespace(
+        cpus=16,
+        workers=None,
+        query_threads=None,
+        maximum_seconds=None,
+        report_only=True,
+    )
+
+    with pytest.raises(Stage2PrerequisiteError, match="legacy Stage 2 checkpoints"):
+        _resolve_stage2_execution(args, _execution_config(), checkpoint)
+
+
+@pytest.mark.parametrize("report_only", [False, True])
+def test_v2_resume_reads_execution_from_checkpoint_and_checks_overrides(
+    report_only: bool,
+):
+    execution = Stage2Execution(16, 1, 8, 18_000)
+    checkpoint = {
+        "identity": {
+            "identity_version": 2,
+            "execution": {
+                "cpus": execution.cpus,
+                "workers": execution.workers,
+                "query_threads": execution.query_threads,
+                "maximum_seconds": execution.maximum_seconds,
+            },
+        }
+    }
+    args = Namespace(
+        cpus=None,
+        workers=None,
+        query_threads=None,
+        maximum_seconds=None,
+        report_only=report_only,
+    )
+
+    assert _resolve_stage2_execution(args, _execution_config(), checkpoint) == (
+        execution,
+        False,
+    )
+    args.workers = 3
+    with pytest.raises(Stage2PrerequisiteError, match="do not match"):
+        _resolve_stage2_execution(args, _execution_config(), checkpoint)
+
+
+def test_fresh_stage2_defaults_create_a_v2_execution():
+    args = Namespace(
+        cpus=None,
+        workers=None,
+        query_threads=None,
+        maximum_seconds=None,
+        report_only=False,
+    )
+
+    execution, legacy = _resolve_stage2_execution(
+        args, _execution_config(), None
+    )
+    assert execution == LEGACY_STAGE2_EXECUTION
+    assert legacy is False
 
 
 def test_selected_tier_rejects_stale_algorithm(tmp_path: Path):
