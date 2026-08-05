@@ -8,6 +8,18 @@ import json
 import re
 
 
+OPENALEX_NULL_AUTHOR_ID = 9_999_999_999
+OPENALEX_DELETED_AUTHOR_ID = 5_317_838_346
+OPENALEX_SPECIAL_AUTHOR_IDS = (
+    OPENALEX_NULL_AUTHOR_ID,
+    OPENALEX_DELETED_AUTHOR_ID,
+)
+OPENALEX_SPECIAL_AUTHOR_DOCUMENTATION = (
+    "https://help.openalex.org/hc/en-us/articles/"
+    "28763618477975-Why-are-some-authors-assigned-to-NULL-AUTHOR-ID-A9999999999"
+)
+
+
 class CorrectnessFailure(RuntimeError):
     def __init__(self, failed: list["GateResult"]) -> None:
         self.failed = failed
@@ -23,8 +35,8 @@ class CorrectnessFailure(RuntimeError):
 class GateResult:
     name: str
     passed: bool
-    expected: int | str
-    actual: int | str
+    expected: int | float | str
+    actual: int | float | str
     evidence: dict[str, object]
     blocking: bool = True
 
@@ -87,9 +99,17 @@ def evaluate_stage1(
     works_glob: str,
     expected_manifest_rows: int,
     raw_evidence: dict[str, int],
+    minimum_ordinary_author_reference_coverage: float = 0.999,
 ) -> tuple[list[GateResult], list[QueryEvidence], dict[str, object]]:
     database = _identifier(database)
     works_glob = _glob(works_glob)
+    if not 0 <= minimum_ordinary_author_reference_coverage <= 1:
+        raise ValueError(
+            "minimum ordinary Author reference coverage must be between 0 and 1"
+        )
+    special_author_ids = ",".join(
+        str(author_id) for author_id in OPENALEX_SPECIAL_AUTHOR_IDS
+    )
     evidence: list[QueryEvidence] = []
     gates: list[GateResult] = []
 
@@ -186,7 +206,18 @@ def evaluate_stage1(
         "referential_coverage",
         f"SELECT "
         f"(SELECT count() FROM {database}.work_author wa LEFT ANTI JOIN {database}.works w ON wa.work_id=w.work_id) AS missing_works_for_authors, "
+        f"(SELECT count() FROM {database}.work_author) AS author_bridge_rows, "
         f"(SELECT count() FROM {database}.work_author wa LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id) AS missing_authors, "
+        f"(SELECT uniqExact(wa.author_id) FROM {database}.work_author wa LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id) AS distinct_missing_author_ids, "
+        f"(SELECT uniqExact(wa.work_id) FROM {database}.work_author wa LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id) AS works_with_missing_authors, "
+        f"if(author_bridge_rows = 0, 1., 1 - missing_authors / author_bridge_rows) AS author_reference_coverage_ratio, "
+        f"(SELECT count() FROM {database}.work_author WHERE author_id={OPENALEX_NULL_AUTHOR_ID}) AS null_author_rows, "
+        f"(SELECT count() FROM {database}.work_author WHERE author_id={OPENALEX_DELETED_AUTHOR_ID}) AS deleted_author_rows, "
+        f"(SELECT count() FROM {database}.work_author WHERE author_id NOT IN ({special_author_ids})) AS ordinary_authorship_rows, "
+        f"(SELECT count() FROM {database}.work_author wa LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id WHERE wa.author_id NOT IN ({special_author_ids})) AS ordinary_missing_author_rows, "
+        f"(SELECT uniqExact(wa.author_id) FROM {database}.work_author wa LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id WHERE wa.author_id NOT IN ({special_author_ids})) AS distinct_ordinary_missing_author_ids, "
+        f"(SELECT uniqExact(wa.work_id) FROM {database}.work_author wa LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id WHERE wa.author_id NOT IN ({special_author_ids})) AS works_with_ordinary_missing_authors, "
+        f"if(ordinary_authorship_rows = 0, 1., 1 - ordinary_missing_author_rows / ordinary_authorship_rows) AS ordinary_author_reference_coverage_ratio, "
         f"(SELECT count() FROM {database}.work_institution) AS institution_bridge_rows, "
         f"(SELECT count() FROM {database}.work_institution wi LEFT ANTI JOIN {database}.institutions i ON wi.institution_id=i.institution_id) AS missing_institutions, "
         f"(SELECT uniqExact(wi.institution_id) FROM {database}.work_institution wi LEFT ANTI JOIN {database}.institutions i ON wi.institution_id=i.institution_id) AS distinct_missing_institution_ids, "
@@ -201,6 +232,23 @@ def evaluate_stage1(
         f"(SELECT count() FROM {database}.citation_edge ce INNER JOIN {database}.works w ON ce.cited_work_id=w.work_id) AS retained_cited_edges, "
         f"if(citation_edges = 0, 1., retained_cited_edges / citation_edges) AS citation_retention_ratio",
     )[0]
+    missing_author_sample = _run_query(
+        query_json,
+        evidence,
+        "missing_author_sample",
+        f"WITH missing_ids AS ("
+        f"SELECT DISTINCT wa.author_id FROM {database}.work_author wa "
+        f"LEFT ANTI JOIN {database}.authors a ON wa.author_id=a.author_id"
+        f") SELECT openalex_numeric_id(authorship.author.id) AS author_id, "
+        f"multiIf(author_id={OPENALEX_NULL_AUTHOR_ID}, 'null_author', "
+        f"author_id={OPENALEX_DELETED_AUTHOR_ID}, 'deleted_author', 'ordinary') AS classification, "
+        f"arraySlice(arraySort(groupUniqArray(ifNull(authorship.author.display_name, ''))), 1, 5) AS display_names, "
+        f"count() AS raw_bridge_rows "
+        f"FROM file('{works_glob}', Parquet) "
+        f"ARRAY JOIN authorships AS authorship "
+        f"WHERE openalex_numeric_id(authorship.author.id) IN missing_ids "
+        f"GROUP BY author_id ORDER BY raw_bridge_rows DESC, author_id LIMIT 25",
+    )
     missing_institution_sample = _run_query(
         query_json,
         evidence,
@@ -217,11 +265,7 @@ def evaluate_stage1(
         f"WHERE openalex_numeric_id(raw_institution.id) IN missing_ids "
         f"GROUP BY institution_id ORDER BY raw_bridge_rows DESC, institution_id LIMIT 25",
     )
-    for name in (
-        "missing_works_for_authors",
-        "missing_authors",
-        "missing_topics",
-    ):
+    for name in ("missing_works_for_authors", "missing_topics"):
         gates.append(
             GateResult(
                 name,
@@ -231,6 +275,61 @@ def evaluate_stage1(
                 {"query": "referential_coverage"},
             )
         )
+    gates.append(
+        GateResult(
+            "missing_authors",
+            int(referential["missing_authors"]) == 0,
+            0,
+            int(referential["missing_authors"]),
+            {
+                "query": "referential_coverage",
+                "distinct_missing_ids": int(
+                    referential["distinct_missing_author_ids"]
+                ),
+                "affected_works": int(referential["works_with_missing_authors"]),
+                "overall_coverage": float(
+                    referential["author_reference_coverage_ratio"]
+                ),
+                "null_author_rows": int(referential["null_author_rows"]),
+                "deleted_author_rows": int(referential["deleted_author_rows"]),
+                "special_author_ids": list(OPENALEX_SPECIAL_AUTHOR_IDS),
+                "special_author_documentation": OPENALEX_SPECIAL_AUTHOR_DOCUMENTATION,
+                "sample_query": "missing_author_sample",
+            },
+            blocking=False,
+        )
+    )
+    ordinary_coverage = float(
+        referential["ordinary_author_reference_coverage_ratio"]
+    )
+    gates.append(
+        GateResult(
+            "ordinary_author_reference_coverage",
+            ordinary_coverage >= minimum_ordinary_author_reference_coverage,
+            f">={minimum_ordinary_author_reference_coverage:.6f}",
+            ordinary_coverage,
+            {
+                "query": "referential_coverage",
+                "ordinary_authorship_rows": int(
+                    referential["ordinary_authorship_rows"]
+                ),
+                "ordinary_missing_rows": int(
+                    referential["ordinary_missing_author_rows"]
+                ),
+                "distinct_ordinary_missing_ids": int(
+                    referential["distinct_ordinary_missing_author_ids"]
+                ),
+                "affected_works": int(
+                    referential["works_with_ordinary_missing_authors"]
+                ),
+                "excluded_special_author_ids": list(OPENALEX_SPECIAL_AUTHOR_IDS),
+                "zero_denominator_convention": (
+                    "coverage is 1 only when ordinary_authorship_rows is zero; "
+                    "authors_bridge_reconciles independently pins total bridge rows"
+                ),
+            },
+        )
+    )
     gates.append(
         GateResult(
             "missing_institutions",
@@ -290,6 +389,7 @@ def evaluate_stage1(
             f"GROUP BY authorships ORDER BY authorships",
         ),
         "referential_coverage": referential,
+        "missing_author_sample": missing_author_sample,
         "missing_institution_sample": missing_institution_sample,
         "materialized_counts": materialized,
     }

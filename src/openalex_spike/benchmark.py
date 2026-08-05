@@ -119,9 +119,12 @@ def run_sequential(
     envelope: QueryEnvelope,
     *,
     seed_work_ids: tuple[int, int, int],
+    max_threads: int = 16,
 ) -> list[SequentialRecord]:
+    if max_threads <= 0:
+        raise ValueError("sequential query threads must be positive")
     records = []
-    settings = envelope_settings(envelope, max_threads=16)
+    settings = envelope_settings(envelope, max_threads=max_threads)
     for query in catalog:
         restart()
         client = client_factory()

@@ -13,7 +13,7 @@ DATABASE = "openalex_spike"
 
 def _write_parquet_fixtures(raw_root: Path) -> None:
     fixtures = raw_root / "fixtures"
-    for entity in ("works", "institutions", "sources", "topics"):
+    for entity in ("works", "authors", "institutions", "sources", "topics"):
         (fixtures / entity).mkdir(parents=True, exist_ok=True)
 
     works = [
@@ -74,6 +74,23 @@ def _write_parquet_fixtures(raw_root: Path) -> None:
         },
     ]
     pq.write_table(pa.Table.from_pylist(works), fixtures / "works" / "fixture.parquet")
+    pq.write_table(
+        pa.Table.from_pylist(
+            [
+                {
+                    "id": "https://openalex.org/A1",
+                    "display_name": "Ada Author",
+                    "orcid": "https://orcid.org/0000-0001",
+                },
+                {
+                    "id": "https://openalex.org/A2",
+                    "display_name": "Bob Bibliometrician",
+                    "orcid": None,
+                },
+            ]
+        ),
+        fixtures / "authors" / "fixture.parquet",
+    )
     pq.write_table(
         pa.Table.from_pylist(
             [
@@ -150,6 +167,7 @@ def test_transformations_materialize_exact_fixture_counts():
     sql_dir = service.project_dir / "sql"
     replacements = {
         "WORKS_GLOB": "fixtures/works/*.parquet",
+        "AUTHORS_GLOB": "fixtures/authors/*.parquet",
         "INSTITUTIONS_GLOB": "fixtures/institutions/*.parquet",
         "SOURCES_GLOB": "fixtures/sources/*.parquet",
         "TOPICS_GLOB": "fixtures/topics/*.parquet",
@@ -185,7 +203,19 @@ def test_transformations_materialize_exact_fixture_counts():
         assert service.query_value(
             "SELECT toString(is_xpac) FROM openalex_spike.works WHERE work_id = 2"
         ) == "true"
+        service.execute_script("TRUNCATE TABLE openalex_spike.authors")
+        service.execute_script(
+            _render(sql_dir / "11_load_complete_authors.sql", replacements)
+        )
+        assert service.query_value(
+            "SELECT groupArray(author_id) FROM openalex_spike.authors"
+        ) == "[1,2]"
         service.execute_script(_render(sql_dir / "30_reverse_projection.sql", replacements))
+        assert service.query_value(
+            "SELECT count() FROM system.mutations "
+            "WHERE database = 'openalex_spike' AND table = 'citation_edge' "
+            "AND NOT is_done"
+        ) == "0"
     finally:
         service.execute_script(f"DROP DATABASE IF EXISTS {DATABASE}")
         service.down()

@@ -16,6 +16,12 @@ IMAGE = "clickhouse/clickhouse-server:26.3.12.3"
 ARM_ARCHITECTURES = {"aarch64", "arm64"}
 CLICKHOUSE_USER = "openalex"
 CLICKHOUSE_PASSWORD = "openalex-local-only"
+GIB = 1 << 30
+DOCKER_MEMORY_RESERVE_GIB = 4
+
+
+class ResourcePreflightError(RuntimeError):
+    pass
 
 
 def _normalized_architecture(value: str) -> str:
@@ -65,6 +71,8 @@ class ClickHouseService:
         ]
 
     def up(self, memory_gb: int, cpus: int) -> None:
+        self.require_memory_capacity(memory_gib=memory_gb)
+        self.require_cpu_capacity(cpus=cpus)
         raw_dir = self.project_dir / ".data" / "raw"
         raw_dir.mkdir(parents=True, exist_ok=True)
         environment = os.environ.copy()
@@ -89,6 +97,37 @@ class ClickHouseService:
             raise RuntimeError("ClickHouse ports are not loopback-only")
         if self.query_http_value("SELECT 1") != "1":
             raise RuntimeError("ClickHouse host HTTP readiness gate failed")
+
+    def docker_memory_bytes(self) -> int:
+        return int(self._run(["docker", "info", "--format", "{{.MemTotal}}"]))
+
+    def docker_cpu_count(self) -> int:
+        return int(self._run(["docker", "info", "--format", "{{.NCPU}}"]))
+
+    def require_memory_capacity(self, *, memory_gib: int) -> int:
+        if memory_gib <= 0:
+            raise ValueError("ClickHouse memory limit must be positive GiB")
+        available = self.docker_memory_bytes()
+        required = (memory_gib + DOCKER_MEMORY_RESERVE_GIB) * GIB
+        if required > available:
+            raise ResourcePreflightError(
+                f"Docker memory preflight refused {memory_gib} GiB: "
+                f"the container plus {DOCKER_MEMORY_RESERVE_GIB} GiB reserve "
+                f"requires {required:,} bytes, but Docker exposes "
+                f"{available:,} bytes; no lower-memory fallback was attempted"
+            )
+        return available
+
+    def require_cpu_capacity(self, *, cpus: int) -> int:
+        if cpus <= 0:
+            raise ValueError("ClickHouse CPU limit must be positive")
+        available = self.docker_cpu_count()
+        if cpus > available:
+            raise ResourcePreflightError(
+                f"Docker CPU preflight refused {cpus} CPUs: "
+                f"Docker exposes {available}; no lower-CPU fallback was attempted"
+            )
+        return available
 
     def down(self) -> None:
         self._compose(["down"])
@@ -153,6 +192,8 @@ class ClickHouseService:
             "published_hosts": self.published_hosts(inspect=inspect),
             "raw_mount_read_only": self.raw_mount_read_only(inspect=inspect),
             "resource_limits": {
+                "docker_memory_bytes": self.docker_memory_bytes(),
+                "docker_cpus": self.docker_cpu_count(),
                 "memory_bytes": inspect["HostConfig"]["Memory"],
                 "nano_cpus": inspect["HostConfig"]["NanoCpus"],
             },

@@ -1,0 +1,29 @@
+{
+  "classes": {
+    "join": {
+      "count": 155,
+      "insufficient_sample": false,
+      "maximum_seconds": 20.061,
+      "median_seconds": 4.49,
+      "p95_seconds": 19.099
+    },
+    "one_hop": {
+      "count": 51,
+      "insufficient_sample": false,
+      "maximum_seconds": 0.13,
+      "median_seconds": 0.004,
+      "p95_seconds": 0.106
+    },
+    "routine": {
+      "count": 99,
+      "insufficient_sample": false,
+      "maximum_seconds": 4.997,
+      "median_seconds": 0.101,
+      "p95_seconds": 4.802
+    }
+  },
+  "first_error": null,
+  "forced_verdict": null,
+  "server_restarted": false,
+  "verdict_cap": "pass"
+}

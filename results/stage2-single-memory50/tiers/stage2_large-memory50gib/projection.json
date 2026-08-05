@@ -1,0 +1,854 @@
+{
+  "after": [
+    {
+      "elapsed_seconds": 0.013,
+      "gating": true,
+      "peak_memory_bytes": 330128,
+      "query_class": "one_hop",
+      "query_id": "6c8c7d8d-8dfb-55be-a6a2-b27cdc6a5347",
+      "query_name": "projection_after_incoming",
+      "read_bytes": 524288,
+      "read_rows": 65536,
+      "result_rows": 0,
+      "run_kind": "post_restart_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.023,
+      "gating": true,
+      "peak_memory_bytes": 815558,
+      "query_class": "one_hop",
+      "query_id": "b2ae5c47-eadb-51c0-a781-7976a02dade6",
+      "query_name": "projection_after_incoming",
+      "read_bytes": 599656,
+      "read_rows": 65536,
+      "result_rows": 2,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.007,
+      "gating": true,
+      "peak_memory_bytes": 243960,
+      "query_class": "one_hop",
+      "query_id": "a781283f-be45-5495-8f16-58708e12b775",
+      "query_name": "projection_after_incoming",
+      "read_bytes": 524288,
+      "read_rows": 65536,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.004,
+      "gating": true,
+      "peak_memory_bytes": 235576,
+      "query_class": "one_hop",
+      "query_id": "c7115594-5c85-5f66-bf50-5c8e803ce271",
+      "query_name": "projection_after_incoming",
+      "read_bytes": 524288,
+      "read_rows": 65536,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.004,
+      "gating": true,
+      "peak_memory_bytes": 392349,
+      "query_class": "one_hop",
+      "query_id": "9f5871cc-966b-5442-9123-cdf560e9e282",
+      "query_name": "projection_after_incoming",
+      "read_bytes": 599656,
+      "read_rows": 65536,
+      "result_rows": 2,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.004,
+      "gating": true,
+      "peak_memory_bytes": 235272,
+      "query_class": "one_hop",
+      "query_id": "3729c3e0-785b-5d9d-bb1c-b8b7858d91e7",
+      "query_name": "projection_after_incoming",
+      "read_bytes": 524288,
+      "read_rows": 65536,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.032,
+      "gating": true,
+      "peak_memory_bytes": 320504,
+      "query_class": "one_hop",
+      "query_id": "9af9fb8a-752c-5955-a1ba-fe26031cf6de",
+      "query_name": "projection_after_outgoing",
+      "read_bytes": 524288,
+      "read_rows": 65536,
+      "result_rows": 0,
+      "run_kind": "post_restart_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.016,
+      "gating": true,
+      "peak_memory_bytes": 951720,
+      "query_class": "one_hop",
+      "query_id": "6f59635d-24e4-5436-b84c-757911fef813",
+      "query_name": "projection_after_outgoing",
+      "read_bytes": 752024,
+      "read_rows": 65536,
+      "result_rows": 46,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.005,
+      "gating": true,
+      "peak_memory_bytes": 525992,
+      "query_class": "one_hop",
+      "query_id": "5e711a2a-87d7-59b3-863c-dc836c2b097e",
+      "query_name": "projection_after_outgoing",
+      "read_bytes": 920776,
+      "read_rows": 65536,
+      "result_rows": 3414,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.0,
+      "gating": true,
+      "peak_memory_bytes": 170992,
+      "query_class": "one_hop",
+      "query_id": "84d74d9d-6683-5551-b529-1f97acd9ad9c",
+      "query_name": "projection_after_outgoing",
+      "read_bytes": 0,
+      "read_rows": 0,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.004,
+      "gating": true,
+      "peak_memory_bytes": 247176,
+      "query_class": "one_hop",
+      "query_id": "21c5176b-1b68-5115-b476-975df48c22c1",
+      "query_name": "projection_after_outgoing",
+      "read_bytes": 620952,
+      "read_rows": 49152,
+      "result_rows": 46,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.005,
+      "gating": true,
+      "peak_memory_bytes": 308639,
+      "query_class": "one_hop",
+      "query_id": "53f9d1b1-6257-5cb5-bfa2-d879c22a702b",
+      "query_name": "projection_after_outgoing",
+      "read_bytes": 920776,
+      "read_rows": 65536,
+      "result_rows": 3414,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.38,
+      "gating": true,
+      "peak_memory_bytes": 6029972635,
+      "query_class": "routine",
+      "query_id": "a84e5ea4-9de6-5e52-80a5-2804cf4e5eca",
+      "query_name": "projection_after_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "post_restart_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.406,
+      "gating": true,
+      "peak_memory_bytes": 5892862606,
+      "query_class": "routine",
+      "query_id": "dc0dbb0f-3251-5f07-b99c-e6ab9197d19b",
+      "query_name": "projection_after_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.518,
+      "gating": true,
+      "peak_memory_bytes": 5757604579,
+      "query_class": "routine",
+      "query_id": "cb8d5eb4-e0a4-5b8a-9217-76bdba6b1791",
+      "query_name": "projection_after_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.583,
+      "gating": true,
+      "peak_memory_bytes": 5787609995,
+      "query_class": "routine",
+      "query_id": "80357b3e-2058-528d-bfe4-66d49d69e2cd",
+      "query_name": "projection_after_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.88,
+      "gating": true,
+      "peak_memory_bytes": 5537173399,
+      "query_class": "routine",
+      "query_id": "42baaeb3-c8bc-5491-a186-a776a9e1e67f",
+      "query_name": "projection_after_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 6.57,
+      "gating": true,
+      "peak_memory_bytes": 5411578503,
+      "query_class": "routine",
+      "query_id": "bd374e9c-4482-5c91-b4ab-c465ddd6a8d4",
+      "query_name": "projection_after_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    }
+  ],
+  "before": [
+    {
+      "elapsed_seconds": 10.319,
+      "gating": true,
+      "peak_memory_bytes": 3464040,
+      "query_class": "one_hop",
+      "query_id": "22035539-6cb3-52d3-9dc3-e96bb41aec43",
+      "query_name": "projection_before_incoming",
+      "read_bytes": 1670297496,
+      "read_rows": 208787187,
+      "result_rows": 0,
+      "run_kind": "post_restart_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 8.319,
+      "gating": true,
+      "peak_memory_bytes": 3443176,
+      "query_class": "one_hop",
+      "query_id": "50bc3290-4b6e-57bc-86e4-a48b477ca5b5",
+      "query_name": "projection_before_incoming",
+      "read_bytes": 1670344344,
+      "read_rows": 208787187,
+      "result_rows": 2,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 3.377,
+      "gating": true,
+      "peak_memory_bytes": 3429464,
+      "query_class": "one_hop",
+      "query_id": "74bd5631-1fdc-502f-b9d2-9c8c44b569a4",
+      "query_name": "projection_before_incoming",
+      "read_bytes": 1670297496,
+      "read_rows": 208787187,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.002,
+      "gating": true,
+      "peak_memory_bytes": 171216,
+      "query_class": "one_hop",
+      "query_id": "e03049a4-211e-5d29-b177-ac2312a6a5dc",
+      "query_name": "projection_before_incoming",
+      "read_bytes": 0,
+      "read_rows": 0,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.031,
+      "gating": true,
+      "peak_memory_bytes": 202896,
+      "query_class": "one_hop",
+      "query_id": "d30fb1bc-7782-56c2-b6f5-fd42e34fe62d",
+      "query_name": "projection_before_incoming",
+      "read_bytes": 964352,
+      "read_rows": 114688,
+      "result_rows": 2,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.001,
+      "gating": true,
+      "peak_memory_bytes": 170976,
+      "query_class": "one_hop",
+      "query_id": "cad45565-3218-59e6-b075-806b87917dfb",
+      "query_name": "projection_before_incoming",
+      "read_bytes": 0,
+      "read_rows": 0,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.056,
+      "gating": true,
+      "peak_memory_bytes": 307744,
+      "query_class": "one_hop",
+      "query_id": "b91ec46f-45a8-5beb-a05c-b309651c79a4",
+      "query_name": "projection_before_outgoing",
+      "read_bytes": 524288,
+      "read_rows": 65536,
+      "result_rows": 0,
+      "run_kind": "post_restart_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.032,
+      "gating": true,
+      "peak_memory_bytes": 940736,
+      "query_class": "one_hop",
+      "query_id": "3279cff9-709a-55e4-8170-d1d5803d6296",
+      "query_name": "projection_before_outgoing",
+      "read_bytes": 752024,
+      "read_rows": 65536,
+      "result_rows": 46,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.025,
+      "gating": true,
+      "peak_memory_bytes": 515520,
+      "query_class": "one_hop",
+      "query_id": "be2bc9d1-9fa7-5c2d-93ae-5697d45f0167",
+      "query_name": "projection_before_outgoing",
+      "read_bytes": 920776,
+      "read_rows": 65536,
+      "result_rows": 3414,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.002,
+      "gating": true,
+      "peak_memory_bytes": 171072,
+      "query_class": "one_hop",
+      "query_id": "30f767f9-b6b1-5418-b6bf-99cc77af285a",
+      "query_name": "projection_before_outgoing",
+      "read_bytes": 0,
+      "read_rows": 0,
+      "result_rows": 0,
+      "run_kind": "warm_run",
+      "seed_work_id": 25441,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.025,
+      "gating": true,
+      "peak_memory_bytes": 240128,
+      "query_class": "one_hop",
+      "query_id": "daf27745-07ce-5e05-bafb-e81785631bd8",
+      "query_name": "projection_before_outgoing",
+      "read_bytes": 620952,
+      "read_rows": 49152,
+      "result_rows": 46,
+      "run_kind": "warm_run",
+      "seed_work_id": 1491165,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 0.028,
+      "gating": true,
+      "peak_memory_bytes": 287027,
+      "query_class": "one_hop",
+      "query_id": "2aadce2c-f9ad-546d-9101-90b0ffb4fef4",
+      "query_name": "projection_before_outgoing",
+      "read_bytes": 920776,
+      "read_rows": 65536,
+      "result_rows": 3414,
+      "run_kind": "warm_run",
+      "seed_work_id": 4388957908,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 73.282,
+      "gating": true,
+      "peak_memory_bytes": 5948209118,
+      "query_class": "routine",
+      "query_id": "98e20723-d911-594d-ad37-eba04f6be98b",
+      "query_name": "projection_before_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "post_restart_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.83,
+      "gating": true,
+      "peak_memory_bytes": 5726556387,
+      "query_class": "routine",
+      "query_id": "e9238dcf-de52-5854-b343-ac6818730a56",
+      "query_name": "projection_before_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.801,
+      "gating": true,
+      "peak_memory_bytes": 5819602088,
+      "query_class": "routine",
+      "query_id": "a9898681-6130-5f6d-b7c2-10193cef4432",
+      "query_name": "projection_before_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.793,
+      "gating": true,
+      "peak_memory_bytes": 5730718010,
+      "query_class": "routine",
+      "query_id": "cda1beda-8a1e-59c6-89a9-3f7db128196d",
+      "query_name": "projection_before_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.747,
+      "gating": true,
+      "peak_memory_bytes": 5723995451,
+      "query_class": "routine",
+      "query_id": "6654a2ba-f80d-5449-b1f4-2e0d8d855752",
+      "query_name": "projection_before_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    },
+    {
+      "elapsed_seconds": 4.873,
+      "gating": true,
+      "peak_memory_bytes": 5546904475,
+      "query_class": "routine",
+      "query_id": "41e0c1b6-7449-554e-8fe9-8f4f716c3c61",
+      "query_name": "projection_before_citations_by_year",
+      "read_bytes": 2296659057,
+      "read_rows": 208787187,
+      "result_rows": 1000,
+      "run_kind": "warm_run",
+      "seed_work_id": null,
+      "spill_bytes": 0
+    }
+  ],
+  "build_seconds": 20.370588582998607,
+  "sql_sha256": "72a693e47a633dcd6168b653d14c1b49dc594f54f349e669752e41ccab6bdd53",
+  "storage_samples": [
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 38088969
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1562122338,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958446.820516
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 38088969
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1562122338,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958448.053797
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958449.429703
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958450.653901
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958451.8866591
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958453.1622021
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958454.381786
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958455.618401
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958456.871149
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958458.102022
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958459.338133
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958460.5793102
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958461.8285592
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958463.061666
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 353591280
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 1877624649,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958464.289859
+    },
+    {
+      "filesystem_bytes": 23523983360,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 1471709541
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 2995742910,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958465.523701
+    },
+    {
+      "filesystem_bytes": 25571876864,
+      "filesystem_vanished_directories": 0,
+      "filesystem_vanished_files": 0,
+      "projection_bytes": {
+        "citation_edge": 2030656692
+      },
+      "table_bytes": {
+        "authors": 3342778720,
+        "citation_edge": 3554690061,
+        "institutions": 4357308,
+        "sources": 10677280,
+        "topics": 150309,
+        "work_author": 453924772,
+        "work_institution": 299706948,
+        "work_topic": 591525569,
+        "works": 645382468
+      },
+      "timestamp": 1785958466.2267
+    }
+  ]
+}

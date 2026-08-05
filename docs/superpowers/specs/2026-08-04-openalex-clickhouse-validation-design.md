@@ -162,8 +162,11 @@ so the spike must not claim checksum verification.
   changes without downloading more than the 45 GB selection.
 - Include the complete Authors entity, currently about 52.8 GB.
 - Include the exact 298,706,581-byte entity set used in Stage 1.
-- Maximum input is approximately 98.1 GB decimal. Generated ClickHouse data,
-  merge scratch, logs, and results are additional and must be measured.
+- For the pinned 2026-06-26 manifests and selected files, maximum input is
+  exactly 98,301,763,421 bytes (98.302 GB decimal): 45,233,146,344 bytes of
+  Works, 52,769,910,496 bytes of Authors, and 298,706,581 bytes of dimensions.
+  Generated ClickHouse data, merge scratch, logs, and results are additional
+  and must be measured.
 - Stage 2 begins only after Stage 1 correctness gates pass.
 
 At the largest tier, Works represent about 6.2% of current Works bytes while
@@ -284,20 +287,25 @@ network. Edge retention is displayed beside every citation result, and no
 full-scale two-hop capacity claim is made locally.
 
 Queries 1–5 and 7 run at the nested 3 GB, 15 GB, and 45 GB Works tiers. The
-scaling curve uses the 50 GB RAM envelope; the 45 GB tier is then repeated with
-the 32 GB envelope. The report plots measured latency and bytes read at all
-three tiers and reports a descriptive log-log slope. The slope may expose
-nonlinear/cache behaviour, but it is not used to predict a production latency
-or declare full-scale success.
+current local Docker VM exposes 46.964 GiB and therefore cannot run the planned
+50 GiB container. The local scaling curve explicitly uses the 32 GiB envelope
+and its verdict is capped at Conditional before execution. The 50 GiB arm is
+retained for a different environment configured with at least 54 GiB of Docker
+memory; the CLI refuses it here before Compose mutation and never downgrades it.
+The report plots measured latency and bytes read at all three tiers and reports
+a descriptive log-log slope. The slope may expose nonlinear/cache behaviour,
+but it is not used to predict a production latency or declare full-scale
+success.
 
 ## 9. Resource envelope and measurement
 
 The source Alliance allocation table states a persistent-project ceiling of 25
 vCPU and 50 GB RAM. The local host can expose only 16 benchmark CPUs, so the
-CPU test is deliberately below that stated ceiling. Stage 2 measures the 45 GB
-Works tier twice: at 32 GB and 50 GB container RAM, both with 16 CPUs. This
-shows memory sensitivity while keeping the 50 GB run aligned with the stated
-persistent quota. Docker Desktop must be configured with sufficient capacity.
+CPU test is deliberately below that stated ceiling. This local Stage 2 run
+measures all three Works tiers at 32 GiB with 16 CPUs. The 50 GiB comparison is
+not executed on the current host and remains an environmental-spike task. Note
+that the CLI and Compose limit are GiB despite the compatibility spelling
+`--memory-gb`.
 
 The benchmark pins these per-query settings:
 

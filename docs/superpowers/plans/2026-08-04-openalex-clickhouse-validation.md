@@ -840,11 +840,24 @@ Define one named `GateSpec` per design gate. Include these exact checks:
 - `uniqExactIf(openalex_numeric_id(id), id IS NOT NULL)` equals the count of
   non-null canonical IDs for every loaded entity;
 - left anti-join counts and percentages report bridge referential coverage and
-  retained citation edges; closed Work/Author gaps are blocking, Topic gaps
-  remain blocking because the Topics transformation has hierarchy exclusion
-  predicates that must be ruled out, while independently pinned Institution
-  gaps are explicit non-blocking observations with a capped raw ID/name sample
-  and both manifest identities;
+  retained citation edges. Work and Topic gaps remain zero-tolerance blocking
+  failures. Author gaps are split by ID because OpenAlex documents
+  `A9999999999` as the NULL/No Author ID and `A5317838346` as Deleted Authors:
+  the existing overall coverage and total missing count remain explicit
+  non-blocking diagnostics, while the blocking
+  `ordinary_author_reference_coverage_ratio` excludes only those two IDs from
+  its numerator and denominator and must be at least `0.999`. All bridge rows
+  and IDs remain unchanged, samples are capped at 25, and unmatched analyses
+  must use `LEFT JOIN`; no Author rows are synthesized and no bridge rows are
+  dropped. The threshold is scoped to the three pinned exploratory tiers. Its
+  pin-time ordinary coverage baselines are `0.9999960978` (small),
+  `0.9999834813` (medium), and `0.9999083965` (large), so the maximum-tier
+  missing rate is 10.9 times below the allowed 0.1% ceiling. A future breach
+  stops the run, and a full-corpus tier requires a new reviewed criterion.
+  Institution gaps remain explicit non-blocking observations with a capped raw
+  ID/name sample and both manifest identities. Special Author semantics are
+  pinned to OpenAlex's official explanation at
+  `https://help.openalex.org/hc/en-us/articles/28763618477975-Why-are-some-authors-assigned-to-NULL-AUTHOR-ID-A9999999999`;
 - authorships per Work, matched-Author fraction, and year/type/topic/XPAC
   distributions are emitted per tier;
 - selector file-list bytes and order reproduce exactly;
@@ -1041,6 +1054,25 @@ but exclude it from verdict evaluation and cap the non-error verdict at
 Conditional. Preserve raw per-query records in JSONL so statistics are
 reproducible.
 
+The pinned latency thresholds are executable verdict criteria, not descriptive
+configuration. For sufficiently sampled routine and join classes, p95 at or
+below the Pass ceiling is Pass, above Pass but at or below the Conditional
+ceiling is Conditional, and above Conditional is Fail. A forced query error or
+server restart is Fail. The existing under-sampling `verdict_cap` is consumed as
+the single Conditional cap. One-hop remains gated for errors and sample count,
+but has no latency ceiling because none is configured. Aggregate severity is
+the worst per-tier verdict; the 32 GiB arm then caps a non-Fail local verdict at
+Conditional. Unknown memory envelopes are rejected rather than graded.
+
+`stage2 --report-only` may recompute this pure verdict over a completed run
+without rerunning measurements. It reads the checkpoint only from
+`.data/state/stage2-<sha256(run-id)[:12]>.json`, takes memory and tier scope from
+that identity, verifies every tier artifact hash, requires `status=complete`
+and every identity tier complete, and branches before ClickHouse startup. It
+reads rather than overwrites `environment.json`, rewrites only final report and
+state artifacts, and records that the verdict was postprocessed from
+SHA-256-pinned tier summaries. Partial runs are refused.
+
 - [ ] **Step 4: Run tests and commit**
 
 Run: `uv run pytest tests/unit/test_concurrency.py -q`  
@@ -1185,37 +1217,37 @@ git commit -m "test: validate OpenAlex Stage 1 in ClickHouse"
 ## Task 13: Execute the 98 GB multi-scale performance stage
 
 **Files:**
-- Create: `results/stage2/report.json`
-- Create: `results/stage2/report.md`
-- Create: `results/stage2/query-log.jsonl`
-- Create: `results/stage2/disk-samples.jsonl`
+- Create: `results/stage2-v2/report.json`
+- Create: `results/stage2-v2/report.md`
+- Create: `results/stage2-v2/query-log.jsonl`
+- Create: `results/stage2-v2/disk-samples.jsonl`
 
-- [ ] **Step 1: Download and verify the maximum nested selection**
+- [x] **Step 1: Download and verify the maximum nested selection**
 
 Run: `uv run openalex-spike download --tier stage2_large --include-complete-authors --include-small-dimensions`  
-Expected: approximately 98.1 GB for the pinned 2026-06-26 manifest; exact bytes and rows match the selection and manifests.
+Expected: exactly 98,301,763,421 bytes for the pinned 2026-06-26 manifests and selections; exact bytes and rows match the selection and manifests.
 
-- [ ] **Step 2: Run the 50 GB scaling curve**
+- [x] **Step 2: Run the local 32 GiB scaling curve**
 
-Run: `uv run openalex-spike clickhouse-up --memory-gb 50 && uv run openalex-spike stage2 --memory-gb 50`  
-Expected: 3/15/45 GB tiers complete in order, correctness remains passing, sequential metrics and scaling slopes are recorded, three-client classes reach 50 samples or receive a Conditional cap, and two-hop is diagnostic only.
+Run: `uv run openalex-spike stage2 --memory-gb 32 --run-id stage2-v2`
+Expected: 3/15/45 GB tiers complete in order, correctness remains passing, sequential metrics and scaling evidence are recorded, three-client classes reach 50 samples or receive a Conditional cap, and two-hop is diagnostic only. The current Docker VM exposes 46.964 GiB, so the 50 GiB arm is unreachable and any otherwise-Pass 32 GiB local verdict is capped at Conditional. The measured 32 GiB run received Fail because the large-tier join p95 exceeded the Conditional latency ceiling.
 
-- [ ] **Step 3: Run the 32 GB sensitivity envelope**
+- [ ] **Step 3: Preserve the explicit future 50 GiB arm**
 
-Run: `uv run openalex-spike stage2 --memory-gb 32 --tier stage2_large`  
-Expected: the 45 GB tier records the 32 GB envelope with its distinct per-query/spill settings and does not overwrite 50 GB results.
+Run later on a different environment configured with at least 54 GiB of Docker memory: `uv run openalex-spike stage2 --memory-gb 50 --run-id stage2-50gib`
+Expected locally: the memory preflight refuses this command before Compose mutation and does not downgrade. The Alliance/x86 environment remains unvalidated.
 
-- [ ] **Step 4: Build and measure the reverse projection**
+- [x] **Step 4: Build and measure the reverse projection**
 
 Run the planned projection variant and repeat q05/q07. Expected: build time, peak/final disk, and before/after metrics are present.
 
-- [ ] **Step 5: Generate, inspect, and commit compact evidence**
+- [x] **Step 5: Generate, inspect, and commit compact evidence**
 
-Run: `uv run openalex-spike report --run stage2`  
+Run: `uv run openalex-spike report --run stage2-v2`
 Expected: report distinguishes local engine verdict, storage capacity result, and unvalidated Alliance claims.
 
 ```bash
-git add results/stage2
+git add results/stage2-v2
 git commit -m "test: benchmark OpenAlex ClickHouse sample"
 ```
 

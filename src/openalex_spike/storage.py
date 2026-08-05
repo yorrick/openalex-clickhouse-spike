@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from threading import Event, Thread
-from time import sleep, time
+from time import monotonic, time
 from typing import Callable
 import json
 import os
@@ -21,6 +21,15 @@ class StorageSample:
     table_bytes: dict[str, int]
     projection_bytes: dict[str, int]
     filesystem_bytes: int
+    filesystem_vanished_files: int = 0
+    filesystem_vanished_directories: int = 0
+
+
+@dataclass(frozen=True)
+class DirectoryUsage:
+    allocated_bytes: int
+    vanished_files: int
+    vanished_directories: int = 0
 
 
 def estimate_works_derived(
@@ -85,15 +94,44 @@ def layout_bytes(
     return (base_bytes + projection_bytes) * concurrent_generations
 
 
-def directory_allocated_bytes(path: Path) -> int:
+def directory_allocated_usage(path: Path) -> DirectoryUsage:
     total = 0
+    vanished_files = 0
+    vanished_directories = 0
     if not path.exists():
-        return 0
-    for root, _, files in os.walk(path):
+        return DirectoryUsage(
+            allocated_bytes=0,
+            vanished_files=0,
+            vanished_directories=0,
+        )
+    scan_root = path.absolute()
+
+    def handle_walk_error(error: OSError) -> None:
+        nonlocal vanished_directories
+        if isinstance(error, FileNotFoundError) and error.filename is not None:
+            vanished_path = Path(error.filename).absolute()
+            if vanished_path != scan_root and scan_root in vanished_path.parents:
+                vanished_directories += 1
+                return
+        raise error
+
+    for root, _, files in os.walk(path, onerror=handle_walk_error):
         for filename in files:
-            stat = (Path(root) / filename).stat()
+            try:
+                stat = (Path(root) / filename).stat()
+            except FileNotFoundError:
+                vanished_files += 1
+                continue
             total += stat.st_blocks * 512
-    return total
+    return DirectoryUsage(
+        allocated_bytes=total,
+        vanished_files=vanished_files,
+        vanished_directories=vanished_directories,
+    )
+
+
+def directory_allocated_bytes(path: Path) -> int:
+    return directory_allocated_usage(path).allocated_bytes
 
 
 def collect_storage_sample(
@@ -101,6 +139,7 @@ def collect_storage_sample(
     *,
     database: str,
     clickhouse_data_dir: Path,
+    filesystem_usage: DirectoryUsage | None = None,
 ) -> StorageSample:
     part_rows = query_json(
         "SELECT table, sum(bytes_on_disk) AS bytes "
@@ -112,14 +151,62 @@ def collect_storage_sample(
         "FROM system.projection_parts WHERE active AND database = "
         f"'{database}' GROUP BY table ORDER BY table"
     )
+    usage = filesystem_usage or directory_allocated_usage(clickhouse_data_dir)
     return StorageSample(
         timestamp=time(),
         table_bytes={str(row["table"]): int(row["bytes"]) for row in part_rows},
         projection_bytes={
             str(row["table"]): int(row["bytes"]) for row in projection_rows
         },
-        filesystem_bytes=directory_allocated_bytes(clickhouse_data_dir),
+        filesystem_bytes=usage.allocated_bytes,
+        filesystem_vanished_files=usage.vanished_files,
+        filesystem_vanished_directories=usage.vanished_directories,
     )
+
+
+class DecimatedFilesystemSampler:
+    """Poll ClickHouse parts frequently and the host filesystem less often."""
+
+    def __init__(
+        self,
+        query_json: Callable[[str], list[dict[str, object]]],
+        *,
+        database: str,
+        clickhouse_data_dir: Path,
+        filesystem_interval_seconds: float = 30.0,
+        clock: Callable[[], float] = monotonic,
+    ) -> None:
+        self.query_json = query_json
+        self.database = database
+        self.clickhouse_data_dir = clickhouse_data_dir
+        self.filesystem_interval_seconds = filesystem_interval_seconds
+        self.clock = clock
+        self._last_filesystem_at: float | None = None
+        self._filesystem_usage: DirectoryUsage | None = None
+
+    def __call__(self) -> StorageSample:
+        now = self.clock()
+        if (
+            self._last_filesystem_at is None
+            or now - self._last_filesystem_at >= self.filesystem_interval_seconds
+        ):
+            self._filesystem_usage = directory_allocated_usage(
+                self.clickhouse_data_dir
+            )
+            self._last_filesystem_at = now
+        return collect_storage_sample(
+            self.query_json,
+            database=self.database,
+            clickhouse_data_dir=self.clickhouse_data_dir,
+            filesystem_usage=self._filesystem_usage,
+        )
+
+    def final(self) -> StorageSample:
+        return collect_storage_sample(
+            self.query_json,
+            database=self.database,
+            clickhouse_data_dir=self.clickhouse_data_dir,
+        )
 
 
 class StorageMonitor:
@@ -128,9 +215,11 @@ class StorageMonitor:
         sample: Callable[[], StorageSample],
         *,
         interval_seconds: float = 1.0,
+        final_sample: Callable[[], StorageSample] | None = None,
     ) -> None:
         self.sample = sample
         self.interval_seconds = interval_seconds
+        self.final_sample = final_sample or sample
         self.samples: list[StorageSample] = []
         self._stop = Event()
         self._error: BaseException | None = None
@@ -160,7 +249,7 @@ class StorageMonitor:
         if self._error is not None:
             raise RuntimeError("storage monitor failed") from self._error
         try:
-            self.samples.append(self.sample())
+            self.samples.append(self.final_sample())
         except BaseException as error:
             raise RuntimeError("storage monitor final sample failed") from error
         return list(self.samples)

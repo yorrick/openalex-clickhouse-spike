@@ -57,7 +57,18 @@ def test_correctness_artifact_keeps_digests_not_full_result_bodies(tmp_path):
 def _evaluate_with_references(**reference_overrides):
     referential = {
         "missing_works_for_authors": 0,
+        "author_bridge_rows": 2,
         "missing_authors": 0,
+        "distinct_missing_author_ids": 0,
+        "works_with_missing_authors": 0,
+        "author_reference_coverage_ratio": 1.0,
+        "null_author_rows": 0,
+        "deleted_author_rows": 0,
+        "ordinary_authorship_rows": 2,
+        "ordinary_missing_author_rows": 0,
+        "distinct_ordinary_missing_author_ids": 0,
+        "works_with_ordinary_missing_authors": 0,
+        "ordinary_author_reference_coverage_ratio": 1.0,
         "institution_bridge_rows": 10,
         "missing_institutions": 2,
         "distinct_missing_institution_ids": 1,
@@ -79,6 +90,7 @@ def _evaluate_with_references(**reference_overrides):
             [{"authors": 2, "institutions": 2, "topics": 2}],
             [{"works": 2, "authors": 2, "institutions": 2, "topics": 2, "citations": 2}],
             [referential],
+            [],
             [{"institution_id": 99, "display_name": "Deleted Institute", "raw_bridge_rows": 2}],
             *[[{"rows": 2, "unique_ids": 2}] for _ in range(5)],
             [],
@@ -109,9 +121,68 @@ def test_missing_institutions_are_reported_but_do_not_fail_stage1():
     assert distributions["missing_institution_sample"][0]["institution_id"] == 99
 
 
+def test_special_author_gap_is_reported_while_ordinary_coverage_passes():
+    gates, _, distributions = _evaluate_with_references(
+        missing_authors=2,
+        distinct_missing_author_ids=1,
+        works_with_missing_authors=2,
+        author_reference_coverage_ratio=0.5,
+        null_author_rows=2,
+        ordinary_authorship_rows=0,
+        ordinary_author_reference_coverage_ratio=1.0,
+    )
+
+    require_all(gates)
+    missing_gate = next(gate for gate in gates if gate.name == "missing_authors")
+    coverage_gate = next(
+        gate
+        for gate in gates
+        if gate.name == "ordinary_author_reference_coverage"
+    )
+    assert missing_gate.passed is False
+    assert missing_gate.blocking is False
+    assert coverage_gate.passed is True
+    assert distributions["referential_coverage"]["author_reference_coverage_ratio"] == 0.5
+
+
+def test_ordinary_author_coverage_below_floor_is_blocking():
+    gates, _, _ = _evaluate_with_references(
+        missing_authors=2,
+        ordinary_authorship_rows=1_000,
+        ordinary_missing_author_rows=2,
+        distinct_ordinary_missing_author_ids=2,
+        works_with_ordinary_missing_authors=2,
+        ordinary_author_reference_coverage_ratio=0.998,
+    )
+
+    with pytest.raises(
+        CorrectnessFailure, match="ordinary_author_reference_coverage"
+    ):
+        require_all(gates)
+
+
+def test_zero_ordinary_author_denominator_is_a_pinned_vacuous_pass():
+    gates, _, _ = _evaluate_with_references(
+        missing_authors=2,
+        null_author_rows=2,
+        ordinary_authorship_rows=0,
+        ordinary_missing_author_rows=0,
+        ordinary_author_reference_coverage_ratio=1.0,
+    )
+
+    coverage_gate = next(
+        gate
+        for gate in gates
+        if gate.name == "ordinary_author_reference_coverage"
+    )
+    # Safe only because authors_bridge_reconciles independently pins the bridge
+    # row count to raw Parquet before this ratio is evaluated.
+    assert coverage_gate.passed is True
+
+
 @pytest.mark.parametrize(
     "field",
-    ["missing_works_for_authors", "missing_authors", "missing_topics"],
+    ["missing_works_for_authors", "missing_topics"],
 )
 def test_internal_reference_gaps_remain_blocking(field):
     gates, _, _ = _evaluate_with_references(**{field: 1})

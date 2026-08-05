@@ -12,6 +12,7 @@ class QueryEnvelope:
 
 @dataclass(frozen=True)
 class VerdictThresholds:
+    minimum_ordinary_author_reference_coverage: float
     minimum_samples: int
     maximum_seconds: int
     pass_routine_p95_seconds: int
@@ -49,6 +50,11 @@ class ExperimentConfig:
             int(name.removeprefix("memory")): QueryEnvelope(**values)
             for name, values in raw["envelopes"].items()
         }
+        thresholds = VerdictThresholds(**raw["thresholds"])
+        if not 0 <= thresholds.minimum_ordinary_author_reference_coverage <= 1:
+            raise ValueError(
+                "minimum ordinary Author reference coverage must be between 0 and 1"
+            )
         return cls(
             seed=raw["seed"],
             works_manifest_url=raw["works_manifest_url"],
@@ -57,5 +63,5 @@ class ExperimentConfig:
             cpus=int(raw["resources"]["cpus"]),
             memory_gb=tuple(int(v) for v in raw["resources"]["memory_gb"]),
             envelopes=envelopes,
-            thresholds=VerdictThresholds(**raw["thresholds"]),
+            thresholds=thresholds,
         )
