@@ -2,8 +2,10 @@
 
 ## Objective
 
-Repeat the completed Stage 2 benchmark with one concurrent user under two
-predeclared local resource envelopes:
+Repeat the completed Stage 2 benchmark with one closed-loop worker under two
+predeclared local resource envelopes. The worker issues one blocking query at
+a time, so this is a single-stream latency experiment rather than simultaneous
+multi-user concurrency:
 
 1. more memory while preserving the existing concurrent-query CPU ceiling;
 2. the same larger memory envelope with all locally available CPUs exposed to
@@ -37,7 +39,7 @@ Conditional verdict cap.
 
 | Setting | Run A: memory | Run B: memory + CPU |
 |---|---:|---:|
-| Concurrent workers | 1 | 1 |
+| Closed-loop workers | 1 | 1 |
 | ClickHouse memory | 50 GiB | 50 GiB |
 | ClickHouse CPU limit | 16 | 18 |
 | Concurrent query `max_threads` | 8 | 18 |
@@ -53,6 +55,9 @@ generalized to a materially larger external VM.
 The prior sequential evidence suggests the slow join is neither spilling nor
 using enough memory to prove it is memory-bound, so little or no improvement is
 an expected and reportable result rather than an execution failure.
+
+The completed measurements and their evidence limits are recorded in
+[`Single-user resource benchmark results`](../2026-08-05-single-user-resource-benchmark-results.md).
 
 ## CLI and execution identity
 

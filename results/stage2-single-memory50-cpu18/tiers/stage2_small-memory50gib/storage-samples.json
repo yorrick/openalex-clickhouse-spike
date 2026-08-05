@@ -1,0 +1,82 @@
+[
+  {
+    "filesystem_bytes": 32303190016,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3395096773,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785959585.749942
+  },
+  {
+    "filesystem_bytes": 32303190016,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3395096773,
+      "citation_edge": 55363736,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 43651384
+    },
+    "timestamp": 1785959586.989713
+  },
+  {
+    "filesystem_bytes": 32303190016,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3371430644,
+      "citation_edge": 119673473,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 40604030,
+      "works": 43651384
+    },
+    "timestamp": 1785959588.298153
+  },
+  {
+    "filesystem_bytes": 32303190016,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3371430644,
+      "citation_edge": 107586178,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 40604030,
+      "work_institution": 23587815,
+      "work_topic": 38964752,
+      "works": 43651384
+    },
+    "timestamp": 1785959589.507828
+  },
+  {
+    "filesystem_bytes": 33471188992,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3371430644,
+      "citation_edge": 107586178,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 40604030,
+      "work_institution": 23587815,
+      "work_topic": 38964752,
+      "works": 43651384
+    },
+    "timestamp": 1785959590.008257
+  }
+]

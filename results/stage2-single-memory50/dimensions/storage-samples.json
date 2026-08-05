@@ -1,0 +1,141 @@
+[
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 30618020
+    },
+    "timestamp": 1785937800.7438028
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 256982647
+    },
+    "timestamp": 1785937801.9958458
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 446218742
+    },
+    "timestamp": 1785937803.246357
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 662434669
+    },
+    "timestamp": 1785937804.5151072
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 907127116
+    },
+    "timestamp": 1785937805.781642
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1157600516
+    },
+    "timestamp": 1785937807.05374
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1378418261
+    },
+    "timestamp": 1785937808.286319
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1591617120
+    },
+    "timestamp": 1785937809.572308
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1808631662
+    },
+    "timestamp": 1785937810.831289
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2025589926
+    },
+    "timestamp": 1785937812.086438
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2237004746
+    },
+    "timestamp": 1785937813.338728
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2448791719
+    },
+    "timestamp": 1785937814.583786
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2661095106
+    },
+    "timestamp": 1785937815.835254
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2880039719
+    },
+    "timestamp": 1785937817.088115
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3071835727
+    },
+    "timestamp": 1785937818.3278432
+  },
+  {
+    "filesystem_bytes": 14912917504,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3288877846
+    },
+    "timestamp": 1785937819.565218
+  },
+  {
+    "filesystem_bytes": 23861321728,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3400453449,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785937820.573578
+  }
+]

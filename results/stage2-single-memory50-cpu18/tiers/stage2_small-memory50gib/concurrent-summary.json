@@ -1,0 +1,47 @@
+{
+  "classes": {
+    "join": {
+      "count": 150,
+      "insufficient_sample": false,
+      "maximum_seconds": 43.77,
+      "median_seconds": 0.365,
+      "p95_seconds": 1.15,
+      "peak_memory_bytes": 2412196492,
+      "read_bytes": 172574035100,
+      "read_rows": 6934116600,
+      "spill_bytes": 0
+    },
+    "one_hop": {
+      "count": 50,
+      "insufficient_sample": false,
+      "maximum_seconds": 1.659,
+      "median_seconds": 0.003,
+      "p95_seconds": 0.005,
+      "peak_memory_bytes": 865532,
+      "read_bytes": 136132864,
+      "read_rows": 16929608,
+      "spill_bytes": 0
+    },
+    "routine": {
+      "count": 99,
+      "insufficient_sample": false,
+      "maximum_seconds": 7.352,
+      "median_seconds": 0.142,
+      "p95_seconds": 0.196,
+      "peak_memory_bytes": 1813507797,
+      "read_bytes": 8838440224,
+      "read_rows": 849016884,
+      "spill_bytes": 0
+    }
+  },
+  "execution": {
+    "cpus": 18,
+    "maximum_seconds": 18000,
+    "query_threads": 18,
+    "workers": 1
+  },
+  "first_error": null,
+  "forced_verdict": null,
+  "server_restarted": false,
+  "verdict_cap": "pass"
+}

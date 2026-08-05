@@ -1,0 +1,632 @@
+{
+  "distribution_digests": {
+    "authorships_per_work": {
+      "item_count": 200,
+      "sha256": "8c704127e6d040ac4779ce338b625f61ecd0f9a7faee500ee1f59850b8dc3b38",
+      "value_kind": "rows"
+    },
+    "materialized_counts": {
+      "item_count": 5,
+      "sha256": "534006b323a9366b702a0c26ae80f3bc899bdfc3650deaf3e399a2dcbf2aceb8",
+      "value_kind": "object"
+    },
+    "missing_author_sample": {
+      "item_count": 14,
+      "sha256": "99a76bcebd2eb596aad11499de36d0f0433fdd046319d0bec9237a41f9f28082",
+      "value_kind": "rows"
+    },
+    "missing_institution_sample": {
+      "item_count": 25,
+      "sha256": "e76891d77558501c47c0f69c20680983202e0d65482fb85bfcbd131b4f66f365",
+      "value_kind": "rows"
+    },
+    "referential_coverage": {
+      "item_count": 26,
+      "sha256": "cb6afcad7dc161d569c5d040c29dd299fa9399bee7898a8122370679f32d73ca",
+      "value_kind": "object"
+    },
+    "year_type_topic_xpac": {
+      "item_count": 492399,
+      "sha256": "89b42e728db3c8983e10ef0e5324c51deb698afea5daa05dcefcf53b0917024e",
+      "value_kind": "rows"
+    }
+  },
+  "gates": [
+    {
+      "actual": 2002982,
+      "blocking": true,
+      "evidence": {
+        "query": "raw_work_rows"
+      },
+      "expected": 2002982,
+      "name": "manifest_rows_match_parquet",
+      "passed": true
+    },
+    {
+      "actual": 2002982,
+      "blocking": true,
+      "evidence": {
+        "query": "raw_work_rows"
+      },
+      "expected": 2002982,
+      "name": "raw_work_ids_are_unique",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "blocking": true,
+      "evidence": {
+        "raw_evidence": {
+          "distinct_valid_pairs": 15283016,
+          "duplicate_pair_delta": 0,
+          "null_topic_scores": 0,
+          "raw_reference_entries": 15283016,
+          "rejected_id_entries": 0
+        }
+      },
+      "expected": 0,
+      "name": "raw_reference_ids_parse",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "blocking": true,
+      "evidence": {
+        "raw_evidence": {
+          "distinct_valid_pairs": 15283016,
+          "duplicate_pair_delta": 0,
+          "null_topic_scores": 0,
+          "raw_reference_entries": 15283016,
+          "rejected_id_entries": 0
+        }
+      },
+      "expected": 0,
+      "name": "topic_scores_are_non_null",
+      "passed": true
+    },
+    {
+      "actual": 3852081,
+      "blocking": true,
+      "evidence": {
+        "raw_query": "raw_bridge_counts",
+        "table_query": "materialized_counts"
+      },
+      "expected": 3852081,
+      "name": "authors_bridge_reconciles",
+      "passed": true
+    },
+    {
+      "actual": 2646224,
+      "blocking": true,
+      "evidence": {
+        "raw_query": "raw_bridge_counts",
+        "table_query": "materialized_counts"
+      },
+      "expected": 2646224,
+      "name": "institutions_bridge_reconciles",
+      "passed": true
+    },
+    {
+      "actual": 4139113,
+      "blocking": true,
+      "evidence": {
+        "raw_query": "raw_bridge_counts",
+        "table_query": "materialized_counts"
+      },
+      "expected": 4139113,
+      "name": "topics_bridge_reconciles",
+      "passed": true
+    },
+    {
+      "actual": 15283016,
+      "blocking": true,
+      "evidence": {
+        "duplicate_pair_delta": 0
+      },
+      "expected": 15283016,
+      "name": "citation_pairs_reconcile",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "blocking": true,
+      "evidence": {
+        "query": "referential_coverage"
+      },
+      "expected": 0,
+      "name": "missing_works_for_authors",
+      "passed": true
+    },
+    {
+      "actual": 0,
+      "blocking": true,
+      "evidence": {
+        "query": "referential_coverage"
+      },
+      "expected": 0,
+      "name": "missing_topics",
+      "passed": true
+    },
+    {
+      "actual": 8133,
+      "blocking": false,
+      "evidence": {
+        "affected_works": 8117,
+        "deleted_author_rows": 0,
+        "distinct_missing_ids": 14,
+        "null_author_rows": 8118,
+        "overall_coverage": 0.9978886736805379,
+        "query": "referential_coverage",
+        "sample_query": "missing_author_sample",
+        "special_author_documentation": "https://help.openalex.org/hc/en-us/articles/28763618477975-Why-are-some-authors-assigned-to-NULL-AUTHOR-ID-A9999999999",
+        "special_author_ids": [
+          9999999999,
+          5317838346
+        ]
+      },
+      "expected": 0,
+      "name": "missing_authors",
+      "passed": false
+    },
+    {
+      "actual": 0.9999960977772159,
+      "blocking": true,
+      "evidence": {
+        "affected_works": 14,
+        "distinct_ordinary_missing_ids": 13,
+        "excluded_special_author_ids": [
+          9999999999,
+          5317838346
+        ],
+        "ordinary_authorship_rows": 3843963,
+        "ordinary_missing_rows": 15,
+        "query": "referential_coverage",
+        "zero_denominator_convention": "coverage is 1 only when ordinary_authorship_rows is zero; authors_bridge_reconciles independently pins total bridge rows"
+      },
+      "expected": ">=0.999000",
+      "name": "ordinary_author_reference_coverage",
+      "passed": true
+    },
+    {
+      "actual": 3133,
+      "blocking": false,
+      "evidence": {
+        "distinct_missing_ids": 122,
+        "query": "referential_coverage",
+        "sample_query": "missing_institution_sample"
+      },
+      "expected": 0,
+      "name": "missing_institutions",
+      "passed": false
+    },
+    {
+      "actual": 2002982,
+      "blocking": true,
+      "evidence": {
+        "query": "works_id_uniqueness"
+      },
+      "expected": 2002982,
+      "name": "works_ids_are_unique",
+      "passed": true
+    },
+    {
+      "actual": 119129660,
+      "blocking": true,
+      "evidence": {
+        "query": "authors_id_uniqueness"
+      },
+      "expected": 119129660,
+      "name": "authors_ids_are_unique",
+      "passed": true
+    },
+    {
+      "actual": 127784,
+      "blocking": true,
+      "evidence": {
+        "query": "institutions_id_uniqueness"
+      },
+      "expected": 127784,
+      "name": "institutions_ids_are_unique",
+      "passed": true
+    },
+    {
+      "actual": 283287,
+      "blocking": true,
+      "evidence": {
+        "query": "sources_id_uniqueness"
+      },
+      "expected": 283287,
+      "name": "sources_ids_are_unique",
+      "passed": true
+    },
+    {
+      "actual": 4516,
+      "blocking": true,
+      "evidence": {
+        "query": "topics_id_uniqueness"
+      },
+      "expected": 4516,
+      "name": "topics_ids_are_unique",
+      "passed": true
+    }
+  ],
+  "missing_author_sample": [
+    {
+      "author_id": 9999999999,
+      "classification": "null_author",
+      "display_names": [
+        "",
+        "\"\u0413\u04af\u043b\u043d\u0430\u0440\u0430 \u049a\u0430\u043d\u0430\u0442\u049b\u044b\u0437\u044b \u049a\u04b1\u0440\u043c\u0430\u043d\u0493\u0430\u043b\u0438 \"",
+        "&NA;",
+        "&NA; &NA;",
+        ","
+      ],
+      "raw_bridge_rows": 8118
+    },
+    {
+      "author_id": 5013217494,
+      "classification": "ordinary",
+      "display_names": [
+        "F. Xavier Medina"
+      ],
+      "raw_bridge_rows": 2
+    },
+    {
+      "author_id": 5108107655,
+      "classification": "ordinary",
+      "display_names": [
+        "Jos\u00e9 \u00c1ngel Brandariz",
+        "Jos\u00e9 \u00c1ngel Brandariz Garc\u00eda"
+      ],
+      "raw_bridge_rows": 2
+    },
+    {
+      "author_id": 5005691707,
+      "classification": "ordinary",
+      "display_names": [
+        "Weixin Liang"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5033480771,
+      "classification": "ordinary",
+      "display_names": [
+        "Krstulovic, Giorgio"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5040314307,
+      "classification": "ordinary",
+      "display_names": [
+        "Chunhua Yang"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5076742397,
+      "classification": "ordinary",
+      "display_names": [
+        "Alwyn Cheung"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5090532047,
+      "classification": "ordinary",
+      "display_names": [
+        "Elena Planas"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5100450860,
+      "classification": "ordinary",
+      "display_names": [
+        "Yongsheng Han"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5102966505,
+      "classification": "ordinary",
+      "display_names": [
+        "Mads F. Hansen"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5106093995,
+      "classification": "ordinary",
+      "display_names": [
+        "Adina Dusa"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5111751828,
+      "classification": "ordinary",
+      "display_names": [
+        "Peter Robins"
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5118904739,
+      "classification": "ordinary",
+      "display_names": [
+        "Arendt, D."
+      ],
+      "raw_bridge_rows": 1
+    },
+    {
+      "author_id": 5118904740,
+      "classification": "ordinary",
+      "display_names": [
+        "Arndt, Thomas Channing"
+      ],
+      "raw_bridge_rows": 1
+    }
+  ],
+  "missing_institution_sample": [
+    {
+      "display_name": "Tampere University",
+      "institution_id": 4210133110,
+      "raw_bridge_rows": 660
+    },
+    {
+      "display_name": "Southwestern Medical Center",
+      "institution_id": 4210096815,
+      "raw_bridge_rows": 473
+    },
+    {
+      "display_name": "National Yang Ming Chiao Tung University",
+      "institution_id": 96323854,
+      "raw_bridge_rows": 150
+    },
+    {
+      "display_name": "North West Agriculture and Forestry University",
+      "institution_id": 4210088176,
+      "raw_bridge_rows": 149
+    },
+    {
+      "display_name": "University of Campania \"Luigi Vanvitelli\"",
+      "institution_id": 4210126337,
+      "raw_bridge_rows": 110
+    },
+    {
+      "display_name": "Institut Agro Montpelier",
+      "institution_id": 4210136436,
+      "raw_bridge_rows": 108
+    },
+    {
+      "display_name": "The University of Texas Health Science Center",
+      "institution_id": 4210159031,
+      "raw_bridge_rows": 99
+    },
+    {
+      "display_name": "University of Clermont Auvergne",
+      "institution_id": 4210103002,
+      "raw_bridge_rows": 98
+    },
+    {
+      "display_name": "Seattle Children's Hospital",
+      "institution_id": 4210109034,
+      "raw_bridge_rows": 75
+    },
+    {
+      "display_name": "Department of Biomedicine Basel",
+      "institution_id": 4210128905,
+      "raw_bridge_rows": 68
+    },
+    {
+      "display_name": "Autonomous University of Yucat\u00e1n",
+      "institution_id": 4210122862,
+      "raw_bridge_rows": 60
+    },
+    {
+      "display_name": "Toulouse Mathematics Institute",
+      "institution_id": 4210098964,
+      "raw_bridge_rows": 58
+    },
+    {
+      "display_name": "University of Management and Technology",
+      "institution_id": 4210089805,
+      "raw_bridge_rows": 54
+    },
+    {
+      "display_name": "Pontificial Catholic University of Valparaiso",
+      "institution_id": 4210116133,
+      "raw_bridge_rows": 53
+    },
+    {
+      "display_name": "ZHAW Zurich University of Applied Sciences",
+      "institution_id": 200744771,
+      "raw_bridge_rows": 50
+    },
+    {
+      "display_name": "Federal University of S\u00e3o Jo\u00e3o del-Rei",
+      "institution_id": 4210130985,
+      "raw_bridge_rows": 41
+    },
+    {
+      "display_name": "Universit\u00e9 Paul-Val\u00e9ry Montpellier",
+      "institution_id": 4210095130,
+      "raw_bridge_rows": 35
+    },
+    {
+      "display_name": "Texas A&M Health Science Center",
+      "institution_id": 4210105967,
+      "raw_bridge_rows": 32
+    },
+    {
+      "display_name": "Beibu Gulf University",
+      "institution_id": 4210128032,
+      "raw_bridge_rows": 30
+    },
+    {
+      "display_name": "Parul University",
+      "institution_id": 4210112983,
+      "raw_bridge_rows": 29
+    },
+    {
+      "display_name": "Indonesia Open University",
+      "institution_id": 4210132268,
+      "raw_bridge_rows": 27
+    },
+    {
+      "display_name": "Spanish National Centre for Cardiovascular Research",
+      "institution_id": 4210130400,
+      "raw_bridge_rows": 26
+    },
+    {
+      "display_name": "Instituto Superior de Contabilidade e Administracao do Porto",
+      "institution_id": 11193315,
+      "raw_bridge_rows": 25
+    },
+    {
+      "display_name": "Iscte \u2013 Instituto Universit\u00e1rio de Lisboa",
+      "institution_id": 4210100009,
+      "raw_bridge_rows": 25
+    },
+    {
+      "display_name": "Hospital de Sabadell",
+      "institution_id": 4210124707,
+      "raw_bridge_rows": 25
+    }
+  ],
+  "normalized_sha256": "c0aa0cfc9c79716d2c257935daa062ec1a1dca2c5f13ada407b14282e398d8b0",
+  "queries": [
+    {
+      "name": "raw_work_rows",
+      "result_row_count": 1,
+      "result_sha256": "74a4b54bd6c6fe3b72ff60e9d31fff2d02e1622bd0a05fa63ef21325131ac1b5",
+      "sql": "SELECT count() AS rows, uniqExact(id) AS unique_ids FROM file('tiers/stage2_small/works/*.parquet', Parquet)",
+      "sql_sha256": "12798bc7da425a178465fd84b4f92cc108f625159d50f2fcafce095c016ab67d"
+    },
+    {
+      "name": "raw_bridge_counts",
+      "result_row_count": 1,
+      "result_sha256": "9192da1cdf9b0b667d34e46c464d9e90df1acb24afb44478aac0e0e6c2df72b7",
+      "sql": "SELECT (SELECT count() FROM file('tiers/stage2_small/works/*.parquet', Parquet) ARRAY JOIN authorships AS a WHERE openalex_numeric_id(id) IS NOT NULL AND openalex_numeric_id(a.author.id) IS NOT NULL) AS authors, (SELECT uniqExact(tuple(openalex_numeric_id(id), openalex_numeric_id(a.author.id), openalex_numeric_id(i.id))) FROM file('tiers/stage2_small/works/*.parquet', Parquet) ARRAY JOIN authorships AS a ARRAY JOIN a.institutions AS i WHERE openalex_numeric_id(id) IS NOT NULL AND openalex_numeric_id(a.author.id) IS NOT NULL AND openalex_numeric_id(i.id) IS NOT NULL) AS institutions, (SELECT count() FROM file('tiers/stage2_small/works/*.parquet', Parquet) ARRAY JOIN topics AS t WHERE openalex_numeric_id(id) IS NOT NULL AND openalex_numeric_id(t.id) IS NOT NULL AND t.score IS NOT NULL) AS topics",
+      "sql_sha256": "554b0bd27e749b0e297df59df5b6f12493921c990072dd35aea134f2ad2b93fd"
+    },
+    {
+      "name": "materialized_counts",
+      "result_row_count": 1,
+      "result_sha256": "29acd2fe9a3249f999b497fd2dcc5506f705281dd59d3fdb5bed85e18587b25b",
+      "sql": "SELECT (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.works) AS works, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author) AS authors, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_institution) AS institutions, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_topic) AS topics, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.citation_edge) AS citations",
+      "sql_sha256": "c4dbf650cd7d02271b012a22a5c8089e87b1f7eb10d4f64fe875a3dd289c1127"
+    },
+    {
+      "name": "referential_coverage",
+      "result_row_count": 1,
+      "result_sha256": "aaacea8bab04a1689cbd1580515b55fb7b21aa9a3ec549a22df8b6c55a6add54",
+      "sql": "SELECT (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.works w ON wa.work_id=w.work_id) AS missing_works_for_authors, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author) AS author_bridge_rows, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.authors a ON wa.author_id=a.author_id) AS missing_authors, (SELECT uniqExact(wa.author_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.authors a ON wa.author_id=a.author_id) AS distinct_missing_author_ids, (SELECT uniqExact(wa.work_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.authors a ON wa.author_id=a.author_id) AS works_with_missing_authors, if(author_bridge_rows = 0, 1., 1 - missing_authors / author_bridge_rows) AS author_reference_coverage_ratio, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author WHERE author_id=9999999999) AS null_author_rows, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author WHERE author_id=5317838346) AS deleted_author_rows, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author WHERE author_id NOT IN (9999999999,5317838346)) AS ordinary_authorship_rows, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.authors a ON wa.author_id=a.author_id WHERE wa.author_id NOT IN (9999999999,5317838346)) AS ordinary_missing_author_rows, (SELECT uniqExact(wa.author_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.authors a ON wa.author_id=a.author_id WHERE wa.author_id NOT IN (9999999999,5317838346)) AS distinct_ordinary_missing_author_ids, (SELECT uniqExact(wa.work_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.authors a ON wa.author_id=a.author_id WHERE wa.author_id NOT IN (9999999999,5317838346)) AS works_with_ordinary_missing_authors, if(ordinary_authorship_rows = 0, 1., 1 - ordinary_missing_author_rows / ordinary_authorship_rows) AS ordinary_author_reference_coverage_ratio, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_institution) AS institution_bridge_rows, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_institution wi LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.institutions i ON wi.institution_id=i.institution_id) AS missing_institutions, (SELECT uniqExact(wi.institution_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_institution wi LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.institutions i ON wi.institution_id=i.institution_id) AS distinct_missing_institution_ids, (SELECT uniqExact(wi.work_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_institution wi LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.institutions i ON wi.institution_id=i.institution_id) AS works_with_missing_institutions, (SELECT uniqExact(wi.author_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_institution wi LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.institutions i ON wi.institution_id=i.institution_id) AS authors_with_missing_institutions, if(institution_bridge_rows = 0, 1., (institution_bridge_rows - missing_institutions) / institution_bridge_rows) AS institution_reference_coverage_ratio, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_topic) AS topic_bridge_rows, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_topic wt LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.topics t ON wt.topic_id=t.topic_id) AS missing_topics, (SELECT uniqExact(wt.topic_id) FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_topic wt LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.topics t ON wt.topic_id=t.topic_id) AS distinct_missing_topic_ids, if(topic_bridge_rows = 0, 1., (topic_bridge_rows - missing_topics) / topic_bridge_rows) AS topic_reference_coverage_ratio, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.citation_edge) AS citation_edges, (SELECT count() FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.citation_edge ce INNER JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.works w ON ce.cited_work_id=w.work_id) AS retained_cited_edges, if(citation_edges = 0, 1., retained_cited_edges / citation_edges) AS citation_retention_ratio",
+      "sql_sha256": "00b068e011abbd62f9439abb98527426d0e97cf29a2f6b846b012a1cc5b64d77"
+    },
+    {
+      "name": "missing_author_sample",
+      "result_row_count": 14,
+      "result_sha256": "99a76bcebd2eb596aad11499de36d0f0433fdd046319d0bec9237a41f9f28082",
+      "sql": "WITH missing_ids AS (SELECT DISTINCT wa.author_id FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author wa LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.authors a ON wa.author_id=a.author_id) SELECT openalex_numeric_id(authorship.author.id) AS author_id, multiIf(author_id=9999999999, 'null_author', author_id=5317838346, 'deleted_author', 'ordinary') AS classification, arraySlice(arraySort(groupUniqArray(ifNull(authorship.author.display_name, ''))), 1, 5) AS display_names, count() AS raw_bridge_rows FROM file('tiers/stage2_small/works/*.parquet', Parquet) ARRAY JOIN authorships AS authorship WHERE openalex_numeric_id(authorship.author.id) IN missing_ids GROUP BY author_id ORDER BY raw_bridge_rows DESC, author_id LIMIT 25",
+      "sql_sha256": "f2679d2fc1af4fcb1271b1dfb5a17bad25e959939ec11d8b76fd436744597d09"
+    },
+    {
+      "name": "missing_institution_sample",
+      "result_row_count": 25,
+      "result_sha256": "e76891d77558501c47c0f69c20680983202e0d65482fb85bfcbd131b4f66f365",
+      "sql": "WITH missing_ids AS (SELECT DISTINCT wi.institution_id FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_institution wi LEFT ANTI JOIN openalex_stage2_stage2_single_memory50_c_58ad64fc.institutions i ON wi.institution_id=i.institution_id) SELECT openalex_numeric_id(raw_institution.id) AS institution_id, any(raw_institution.display_name) AS display_name, count() AS raw_bridge_rows FROM file('tiers/stage2_small/works/*.parquet', Parquet) ARRAY JOIN authorships AS authorship ARRAY JOIN authorship.institutions AS raw_institution WHERE openalex_numeric_id(raw_institution.id) IN missing_ids GROUP BY institution_id ORDER BY raw_bridge_rows DESC, institution_id LIMIT 25",
+      "sql_sha256": "1e3de54a4717acf81318f24718a80e447a828ceab0f9691a7ea9dee1a23cca5c"
+    },
+    {
+      "name": "works_id_uniqueness",
+      "result_row_count": 1,
+      "result_sha256": "74a4b54bd6c6fe3b72ff60e9d31fff2d02e1622bd0a05fa63ef21325131ac1b5",
+      "sql": "SELECT count() AS rows, uniqExact(work_id) AS unique_ids FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.works",
+      "sql_sha256": "bff959b1cc1c796743f1c7129d083b93f49e1b89f2f656f9033f98ba4c266aad"
+    },
+    {
+      "name": "authors_id_uniqueness",
+      "result_row_count": 1,
+      "result_sha256": "ad147b0c2afdbf81139c75c21696b85568b9bd6db2c30818e5fe0d962e8a0170",
+      "sql": "SELECT count() AS rows, uniqExact(author_id) AS unique_ids FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.authors",
+      "sql_sha256": "2944b8b9c16fcd9e1c780e896d16475e34cad45fac7b7677fa03b7f43c528ec2"
+    },
+    {
+      "name": "institutions_id_uniqueness",
+      "result_row_count": 1,
+      "result_sha256": "1d729a2ea001d72722af893931308d2a7ffb55562e2a5a3c33945a1cc15f9c47",
+      "sql": "SELECT count() AS rows, uniqExact(institution_id) AS unique_ids FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.institutions",
+      "sql_sha256": "a17840b5501df389ba3853f990a3132bb290aff33ea49311bbf061c829c860cf"
+    },
+    {
+      "name": "sources_id_uniqueness",
+      "result_row_count": 1,
+      "result_sha256": "8515fa4a030ad72ca441f50ae103ac1b7701fb65366d5de9dab09a297ce71e9f",
+      "sql": "SELECT count() AS rows, uniqExact(source_id) AS unique_ids FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.sources",
+      "sql_sha256": "0d26677def8fad45f2045bf4eda58ef6ae0eebe65d70fccf2a090a5c859829d4"
+    },
+    {
+      "name": "topics_id_uniqueness",
+      "result_row_count": 1,
+      "result_sha256": "83708a811c93190b16a1b7dbe7033261c7a31e9cc7d70ade69ae253c50e5ac75",
+      "sql": "SELECT count() AS rows, uniqExact(topic_id) AS unique_ids FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.topics",
+      "sql_sha256": "3c683ea3f095c99bbbaecdf2e9ae7155a826715f2b6c17ee517b4c4208c44fb5"
+    },
+    {
+      "name": "year_type_topic_xpac_distribution",
+      "result_row_count": 492399,
+      "result_sha256": "89b42e728db3c8983e10ef0e5324c51deb698afea5daa05dcefcf53b0917024e",
+      "sql": "SELECT publication_year, work_type, primary_topic_id, is_xpac, count() AS works FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.works GROUP BY ALL ORDER BY ALL",
+      "sql_sha256": "41dfcd313bf95b37a5825eebed4a4c07111493c109b83aaacee88b93edbc7d29"
+    },
+    {
+      "name": "authorships_per_work",
+      "result_row_count": 200,
+      "result_sha256": "8c704127e6d040ac4779ce338b625f61ecd0f9a7faee500ee1f59850b8dc3b38",
+      "sql": "SELECT authorships, count() AS works FROM (SELECT work_id, count() AS authorships FROM openalex_stage2_stage2_single_memory50_c_58ad64fc.work_author GROUP BY work_id) GROUP BY authorships ORDER BY authorships",
+      "sql_sha256": "816e4518adc6aaabceaecedaa62ae323e2d3dbe0185071bdb7aa5370e082ac78"
+    }
+  ],
+  "raw_evidence": {
+    "distinct_valid_pairs": 15283016,
+    "duplicate_pair_delta": 0,
+    "null_topic_scores": 0,
+    "raw_reference_entries": 15283016,
+    "rejected_id_entries": 0
+  },
+  "referential_coverage": {
+    "author_bridge_rows": 3852081,
+    "author_reference_coverage_ratio": 0.9978886736805379,
+    "authors_with_missing_institutions": 2980,
+    "citation_edges": 15283016,
+    "citation_retention_ratio": 0.005086299719898219,
+    "deleted_author_rows": 0,
+    "distinct_missing_author_ids": 14,
+    "distinct_missing_institution_ids": 122,
+    "distinct_missing_topic_ids": 0,
+    "distinct_ordinary_missing_author_ids": 13,
+    "institution_bridge_rows": 2646224,
+    "institution_reference_coverage_ratio": 0.9988160488303334,
+    "missing_authors": 8133,
+    "missing_institutions": 3133,
+    "missing_topics": 0,
+    "missing_works_for_authors": 0,
+    "null_author_rows": 8118,
+    "ordinary_author_reference_coverage_ratio": 0.9999960977772159,
+    "ordinary_authorship_rows": 3843963,
+    "ordinary_missing_author_rows": 15,
+    "retained_cited_edges": 77734,
+    "topic_bridge_rows": 4139113,
+    "topic_reference_coverage_ratio": 1,
+    "works_with_missing_authors": 8117,
+    "works_with_missing_institutions": 1501,
+    "works_with_ordinary_missing_authors": 14
+  },
+  "sql_sha256": {
+    "05_raw_evidence.sql": "797a7ccfaecba47b213e1664e925a39e284aeed47a89b71106934db9f0950681",
+    "20_load_works.sql": "a388d32659ec62b4baca76bc104cfdea872efdcd52fe05364df0e2cc5bd903f6"
+  }
+}

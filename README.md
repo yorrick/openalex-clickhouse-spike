@@ -12,10 +12,10 @@ evidence, not a full-size capacity prediction.
 
 - Apple-silicon Docker Desktop capable of running native `linux/arm64` images.
 - Python 3.12 and `uv`.
-- At least 32 GiB for the Stage 1 ClickHouse container. On the validation host,
-  Docker Desktop is configured with 16 CPUs and 48 GiB; its 64-GiB VM setting
-  did not boot. A later 50-GiB container run needs at least 54 GiB assigned to
-  Docker Desktop and must be validated separately.
+- At least 32 GiB for the Stage 1 ClickHouse container. The validation host is
+  normally configured with 16 CPUs and 48 GiB in Docker Desktop. The 50-GiB
+  container experiments temporarily used a 56-GiB Docker VM, which exposed
+  about 54.8 GiB to containers; the normal allocation is restored after them.
 - At least 3 GiB of download space plus ClickHouse working space for Stage 1.
   The pinned Stage 2 input is exactly 98,301,763,421 bytes and its conservative
   preflight reserves another two input-size equivalents plus 50 GiB before
@@ -72,14 +72,12 @@ artifacts without starting Docker:
 uv run openalex-spike stage2 --run-id stage2-v2 --report-only
 ```
 
-The compatibility flag `--memory-gb` is interpreted as GiB. The current Docker
-VM exposes 46.964 GiB, so a 50 GiB run is deliberately unreachable here and
-refused before Compose changes anything. The local 32 GiB result is capped at
-Conditional even if every gate passes. The observed run is a Fail because the
-large tier exceeds the configured latency ceilings, not because of that cap. A
-future 50 GiB run requires a different Docker environment with at least 54 GiB
-configured and a distinct run ID; the CLI never falls back to a smaller
-envelope.
+The compatibility flag `--memory-gb` is interpreted as GiB. Under the normal
+48-GiB Docker Desktop allocation, a 50-GiB container is deliberately
+unreachable and refused before Compose changes anything. The local 32-GiB
+result is capped at Conditional even if every gate passes. The observed run is
+a Fail because the large tier exceeds the configured latency ceilings, not
+because of that cap. The CLI never falls back to a smaller envelope.
 
 ## Stage 2 result
 
@@ -98,10 +96,42 @@ validate the unoptimized large tier for interactive concurrent joins. The next
 technical experiment should target physical layout or pre-aggregation for the
 slow join queries and compare against this immutable baseline.
 
+## Single-user resource result
+
+Two follow-up runs used the same pinned inputs, 50-GiB ClickHouse limit, and
+one closed-loop worker. One worker means one workload query at a time; these
+are single-stream interactive-latency measurements, not multi-user concurrency
+tests.
+
+| Run | Docker / query envelope | Small | Medium | Large | Aggregate |
+|---|---|---|---|---|---|
+| [`stage2-single-memory50`](results/stage2-single-memory50/report.md) | 16 CPU, 8 query threads | Pass | Pass | Fail | Fail |
+| [`stage2-single-memory50-cpu18`](results/stage2-single-memory50-cpu18/report.md) | 18 CPU, 18 query threads | Pass | Fail | Conditional | Fail |
+
+Both runs saw the same approximately 54.8-GiB Docker-visible memory and the
+same 50-GiB container limit. The second run therefore changes a joint compute
+envelope—CPU allocation and per-query threads—not memory and not CPU alone.
+All correctness gates passed, every class reached its sample minimum, and
+there were no workload errors, unexpected server replacements, or spills.
+
+At the 31,885,241-Work large tier, the 18-CPU/18-thread run improved join p95
+from 306.858 to 60.518 seconds and routine p95 from 169.067 to 4.876 seconds.
+Its large q02 query nevertheless had a stable roughly 60-second floor. The
+same run also produced severe intermittent medium-tier q03/q07 tails and
+isolated small-tier maxima. Slow and fast executions read the same rows with
+overlapping memory use, while measured peak query memory stayed about 6.2 GiB
+and spill remained zero. The tested single-stream workload is therefore not
+memory-capacity-bound at 50 GiB.
+
+The tier-to-tier instability means one run per envelope cannot prove that the
+larger compute envelope caused the large-tier improvement. See the
+[`single-user resource result`](docs/superpowers/2026-08-05-single-user-resource-benchmark-results.md)
+for the per-class evidence, interpretation boundary, and repeatability design.
+
 The tracked follow-up work is in
 [`Post-Stage 2 next steps`](docs/superpowers/plans/2026-08-05-post-stage2-next-steps.md):
-repeat the benchmark with one concurrent worker and a larger CPU/RAM envelope,
-design and validate snapshot updates, and define enrichment criteria.
+measure the performance noise floor and isolate CPU from query threads, design
+and validate snapshot updates, and define enrichment criteria.
 
 ## SQL access
 

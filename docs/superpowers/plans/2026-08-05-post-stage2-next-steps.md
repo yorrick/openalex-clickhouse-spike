@@ -4,25 +4,36 @@ These items are intentionally deferred from the completed 98 GB Stage 2
 validation. Keep the Stage 2 input selection, SQL, and report as the immutable
 baseline so later results remain comparable.
 
-## 1. Repeat the performance experiment
+## 1. Establish repeatability and isolate compute variables
 
-- Measure the effect of concurrency separately from the effect of hardware.
-- Complete the remaining cells in this comparison matrix:
+- The two one-worker, 50-GiB runs are complete. Treat them as single-stream
+  latency evidence: one worker issues one blocking query at a time. They do not
+  measure multi-user concurrency.
+- Run at least three independent repeats of one fixed configuration, starting
+  with 18 CPU / 18 query threads, to measure the p95 and maximum noise floor.
+  Recreate the container between repeats while retaining the same pinned input.
+- Then isolate one variable per arm, with at least three repeats per arm:
 
-| Concurrent workers | 16 CPU / 32 GiB | Larger CPU/RAM envelope |
-|---:|---:|---:|
-| 1 | Run | Run |
-| 3 | Existing Stage 2 baseline | Run |
+| Arm | CPU | Query threads | ClickHouse memory | Workers |
+|---|---:|---:|---:|---:|
+| A, completed | 16 | 8 | 50 GiB | 1 |
+| CPU isolation | 18 | 8 | 50 GiB | 1 |
+| B, completed | 18 | 18 | 50 GiB | 1 |
 
-- Choose and record the larger envelope before execution; it must be genuinely
-  larger than 16 CPU / 32 GiB and have enough host memory for the container.
 - Reuse the exact `stage2-v2` manifests, selected Parquet objects, query catalog,
   query envelopes, seed IDs, sample minimums, and verdict thresholds.
 - Record query-class median, p95, maximum, errors, restarts, peak memory, spills,
   and storage. Compare each new result directly with the committed Stage 2
   report rather than changing the baseline thresholds after seeing results.
-- Pay particular attention to the large-tier join tail: its current median is
-  19.165 seconds and p95 is 140.781 seconds.
+- Add per-query wall-clock timestamps and sample `system.merges` and relevant
+  system events. Slow and fast executions currently read identical row counts
+  with overlapping memory use and zero spill, but the recurring tail mechanism
+  is not instrumented.
+- Counterbalance or randomize tier order across repeats. Run A was stable at
+  medium and unstable at large; Run B showed intermittent outliers in every
+  tier, with its most severe non-q02 tails at medium.
+- Treat a three-worker 50-GiB run as a separate multi-user capacity experiment,
+  not as a correction to these intentionally single-user measurements.
 
 ## 2. Design the update path
 
