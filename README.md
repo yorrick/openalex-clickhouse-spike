@@ -98,6 +98,11 @@ validate the unoptimized large tier for interactive concurrent joins. The next
 technical experiment should target physical layout or pre-aggregation for the
 slow join queries and compare against this immutable baseline.
 
+The tracked follow-up work is in
+[`Post-Stage 2 next steps`](docs/superpowers/plans/2026-08-05-post-stage2-next-steps.md):
+repeat the benchmark with one concurrent worker and a larger CPU/RAM envelope,
+design and validate snapshot updates, and define enrichment criteria.
+
 ## SQL access
 
 After a passing run, start ClickHouse again with `clickhouse-up`. The retained
