@@ -27,6 +27,7 @@ container_gb = 50
 max_memory_usage_gib = 12
 spill_gib = 4
 [thresholds]
+minimum_ordinary_author_reference_coverage = 0.999
 minimum_samples = 50
 maximum_seconds = 3600
 pass_routine_p95_seconds = 15
@@ -41,3 +42,4 @@ conditional_join_p95_seconds = 120
     assert cfg.memory_gb == (32, 50)
     assert cfg.envelopes[32].max_memory_usage_gib == 7
     assert cfg.thresholds.minimum_samples == 50
+    assert cfg.thresholds.minimum_ordinary_author_reference_coverage == 0.999

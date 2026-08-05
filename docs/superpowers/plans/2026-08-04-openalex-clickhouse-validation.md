@@ -840,11 +840,24 @@ Define one named `GateSpec` per design gate. Include these exact checks:
 - `uniqExactIf(openalex_numeric_id(id), id IS NOT NULL)` equals the count of
   non-null canonical IDs for every loaded entity;
 - left anti-join counts and percentages report bridge referential coverage and
-  retained citation edges; closed Work/Author gaps are blocking, Topic gaps
-  remain blocking because the Topics transformation has hierarchy exclusion
-  predicates that must be ruled out, while independently pinned Institution
-  gaps are explicit non-blocking observations with a capped raw ID/name sample
-  and both manifest identities;
+  retained citation edges. Work and Topic gaps remain zero-tolerance blocking
+  failures. Author gaps are split by ID because OpenAlex documents
+  `A9999999999` as the NULL/No Author ID and `A5317838346` as Deleted Authors:
+  the existing overall coverage and total missing count remain explicit
+  non-blocking diagnostics, while the blocking
+  `ordinary_author_reference_coverage_ratio` excludes only those two IDs from
+  its numerator and denominator and must be at least `0.999`. All bridge rows
+  and IDs remain unchanged, samples are capped at 25, and unmatched analyses
+  must use `LEFT JOIN`; no Author rows are synthesized and no bridge rows are
+  dropped. The threshold is scoped to the three pinned exploratory tiers. Its
+  pin-time ordinary coverage baselines are `0.9999960978` (small),
+  `0.9999834813` (medium), and `0.9999083965` (large), so the maximum-tier
+  missing rate is 10.9 times below the allowed 0.1% ceiling. A future breach
+  stops the run, and a full-corpus tier requires a new reviewed criterion.
+  Institution gaps remain explicit non-blocking observations with a capped raw
+  ID/name sample and both manifest identities. Special Author semantics are
+  pinned to OpenAlex's official explanation at
+  `https://help.openalex.org/hc/en-us/articles/28763618477975-Why-are-some-authors-assigned-to-NULL-AUTHOR-ID-A9999999999`;
 - authorships per Work, matched-Author fraction, and year/type/topic/XPAC
   distributions are emitted per tier;
 - selector file-list bytes and order reproduce exactly;

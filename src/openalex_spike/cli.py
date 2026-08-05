@@ -412,6 +412,7 @@ def _build_stage1_database(
     globs: dict[str, str],
     expected_rows: int,
     result_dir: Path,
+    minimum_ordinary_author_reference_coverage: float,
 ) -> tuple[
     dict[str, object], list[dict[str, object]], dict[str, object]
 ]:
@@ -456,6 +457,9 @@ def _build_stage1_database(
         works_glob=globs["WORKS_GLOB"],
         expected_manifest_rows=expected_rows,
         raw_evidence=raw_evidence,
+        minimum_ordinary_author_reference_coverage=(
+            minimum_ordinary_author_reference_coverage
+        ),
     )
     correctness = write_correctness(
         result_dir / "correctness.json", gates, query_evidence, distributions
@@ -583,6 +587,9 @@ def command_stage1(args: Namespace) -> int:
                 globs=globs,
                 expected_rows=expected_rows,
                 result_dir=result_root / database,
+                minimum_ordinary_author_reference_coverage=(
+                    cfg.thresholds.minimum_ordinary_author_reference_coverage
+                ),
             )
             builds.append(correctness)
             build_distributions.append(distributions)
@@ -631,6 +638,10 @@ def command_stage1(args: Namespace) -> int:
         if int(referential["missing_institutions"]) > 0:
             limitations.append(
                 f"The canonical Institutions snapshot does not resolve {referential['missing_institutions']} of {referential['institution_bridge_rows']} Work-institution bridge rows ({referential['distinct_missing_institution_ids']} distinct IDs; coverage ratio {float(referential['institution_reference_coverage_ratio']):.6f}). The raw links are preserved and analyses must use LEFT JOIN when unmatched affiliations matter."
+            )
+        if int(referential["missing_authors"]) > 0:
+            limitations.append(
+                f"The canonical Authors snapshot does not resolve {referential['missing_authors']} of {referential['author_bridge_rows']} Work-author bridge rows. This includes {referential['null_author_rows']} documented NULL-author rows and {referential['deleted_author_rows']} documented deleted-author rows; ordinary coverage is {float(referential['ordinary_author_reference_coverage_ratio']):.9f} against a blocking floor of {cfg.thresholds.minimum_ordinary_author_reference_coverage:.6f}. The raw links are preserved and analyses must use LEFT JOIN when unmatched authorships matter."
             )
         report_evidence = {
             "run_id": run_id,
@@ -899,6 +910,7 @@ def _load_stage2_tier(
     tier: str,
     expected_rows: int,
     result_dir: Path,
+    minimum_ordinary_author_reference_coverage: float,
 ) -> tuple[dict[str, object], dict[str, object], list[dict[str, object]]]:
     globs = _stage2_globs(tier)
     _reset_stage2_work_tables(service, database=database)
@@ -932,6 +944,9 @@ def _load_stage2_tier(
         works_glob=globs["WORKS_GLOB"],
         expected_manifest_rows=expected_rows,
         raw_evidence=raw_evidence,
+        minimum_ordinary_author_reference_coverage=(
+            minimum_ordinary_author_reference_coverage
+        ),
     )
     correctness = write_correctness(
         result_dir / "correctness.json", gates, query_evidence, distributions
@@ -941,6 +956,11 @@ def _load_stage2_tier(
         "20_load_works.sql": works_hash,
     }
     correctness["raw_evidence"] = raw_evidence
+    correctness["referential_coverage"] = distributions["referential_coverage"]
+    correctness["missing_author_sample"] = distributions["missing_author_sample"]
+    correctness["missing_institution_sample"] = distributions[
+        "missing_institution_sample"
+    ]
     _write_json_atomic(result_dir / "correctness.json", correctness)
     require_all(gates)
     profile = _stage2_profile(
@@ -1225,6 +1245,9 @@ def command_stage2(args: Namespace) -> int:
                 tier=tier,
                 expected_rows=expected_rows,
                 result_dir=tier_dir,
+                minimum_ordinary_author_reference_coverage=(
+                    cfg.thresholds.minimum_ordinary_author_reference_coverage
+                ),
             )
 
             def restart() -> None:
@@ -1434,6 +1457,16 @@ def command_stage2(args: Namespace) -> int:
                 "The Works samples are stratified by updated_date and are not a population-representative sample.",
                 "Local Apple Silicon and local SSD latency is not extrapolated to an Alliance x86 VM with network-backed storage.",
                 "The 50 GiB and Alliance performance envelopes remain unvalidated.",
+            ]
+            + [
+                f"{tier}: the canonical Authors snapshot leaves {summary['correctness']['referential_coverage']['missing_authors']} of {summary['correctness']['referential_coverage']['author_bridge_rows']} Work-author bridge rows unresolved, including {summary['correctness']['referential_coverage']['null_author_rows']} documented NULL-author rows and {summary['correctness']['referential_coverage']['deleted_author_rows']} documented deleted-author rows. The ordinary unresolved count is {summary['correctness']['referential_coverage']['ordinary_missing_author_rows']} of {summary['correctness']['referential_coverage']['ordinary_authorship_rows']} (coverage {float(summary['correctness']['referential_coverage']['ordinary_author_reference_coverage_ratio']):.10f}; blocking floor {cfg.thresholds.minimum_ordinary_author_reference_coverage:.6f}). Raw links are preserved; use LEFT JOIN when unmatched authorships matter."
+                for tier, summary in tier_summaries.items()
+                if int(
+                    summary["correctness"]["referential_coverage"][
+                        "missing_authors"
+                    ]
+                )
+                > 0
             ],
         }
         report_json, report_md = render_report(result_root, report_evidence)

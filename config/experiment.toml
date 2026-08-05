@@ -23,6 +23,7 @@ max_memory_usage_gib = 12
 spill_gib = 4
 
 [thresholds]
+minimum_ordinary_author_reference_coverage = 0.999
 minimum_samples = 50
 maximum_seconds = 3600
 pass_routine_p95_seconds = 15
