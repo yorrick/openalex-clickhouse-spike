@@ -126,12 +126,22 @@ memory-capacity-bound at 50 GiB.
 The tier-to-tier instability means one run per envelope cannot prove that the
 larger compute envelope caused the large-tier improvement. See the
 [`single-user resource result`](docs/superpowers/2026-08-05-single-user-resource-benchmark-results.md)
-for the per-class evidence, interpretation boundary, and repeatability design.
+for the per-class evidence and interpretation boundary.
+
+The medium-tier anomaly was then instrumented and repeated three times with
+the fixed 50-GiB / 18-CPU / 18-thread / one-worker envelope. Every repeat
+passed the predeclared repeatability rule with wide margin. Observed maxima
+across the repeats were routine p95 1.716 seconds, join p95 10.881 seconds, and
+q03/q07 maximum-to-median ratio 1.191; there were no 20-second samples,
+foreign-database merges, errors, restarts, or spills. The old medium tails are
+therefore not an ongoing reproducible issue under this configuration. Their
+historical cause remains unknown because the old run predates the new
+per-query wait/I/O and merge telemetry.
 
 The tracked follow-up work is in
 [`Post-Stage 2 next steps`](docs/superpowers/plans/2026-08-05-post-stage2-next-steps.md):
-measure the performance noise floor and isolate CPU from query threads, design
-and validate snapshot updates, and define enrichment criteria.
+the performance-repeatability item is complete; snapshot updates and
+enrichment design remain.
 
 ## SQL access
 

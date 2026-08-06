@@ -1,0 +1,175 @@
+[
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 31999198
+    },
+    "timestamp": 1785985566.2998989
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 292128372
+    },
+    "timestamp": 1785985567.538465
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 544857846
+    },
+    "timestamp": 1785985568.7662568
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 820617094
+    },
+    "timestamp": 1785985569.99202
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 942321443
+    },
+    "timestamp": 1785985571.2184079
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1033867568
+    },
+    "timestamp": 1785985572.43287
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1224939667
+    },
+    "timestamp": 1785985573.672172
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1478397806
+    },
+    "timestamp": 1785985574.890176
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1696474566
+    },
+    "timestamp": 1785985576.114602
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1879934479
+    },
+    "timestamp": 1785985577.345477
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2094373546
+    },
+    "timestamp": 1785985578.5613408
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2362041966
+    },
+    "timestamp": 1785985579.800061
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2607832477
+    },
+    "timestamp": 1785985581.0273669
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2857931399
+    },
+    "timestamp": 1785985582.258591
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3076356508
+    },
+    "timestamp": 1785985583.471806
+  },
+  {
+    "filesystem_bytes": 3286265856,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3325475931
+    },
+    "timestamp": 1785985584.7106502
+  },
+  {
+    "filesystem_bytes": 11121467392,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3400014177,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785985585.562724
+  }
+]

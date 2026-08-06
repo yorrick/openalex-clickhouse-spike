@@ -4,36 +4,25 @@ These items are intentionally deferred from the completed 98 GB Stage 2
 validation. Keep the Stage 2 input selection, SQL, and report as the immutable
 baseline so later results remain comparable.
 
-## 1. Establish repeatability and isolate compute variables
+## 1. Establish repeatability — completed
 
-- The two one-worker, 50-GiB runs are complete. Treat them as single-stream
-  latency evidence: one worker issues one blocking query at a time. They do not
-  measure multi-user concurrency.
-- Run at least three independent repeats of one fixed configuration, starting
-  with 18 CPU / 18 query threads, to measure the p95 and maximum noise floor.
-  Recreate the container between repeats while retaining the same pinned input.
-- Then isolate one variable per arm, with at least three repeats per arm:
+- Added server-side query start/end timestamps, CPU-wait and read-wait profile
+  events, page-cache and read-byte counters, and phase-scoped merge evidence.
+- Added a hard guard against any in-flight or completed merge from a foreign
+  database during newly instrumented benchmark phases.
+- Ran three independent medium-only repeats at 50 GiB, 18 CPUs, 18 query
+  threads, and one worker against the same 10,109,733-Work input.
+- Every repeat passed the predeclared stricter rule: routine p95 below 5
+  seconds, join p95 below 15 seconds, q03/q07 maximum-to-median below 2.0, and
+  zero 20-second tails, foreign merges, errors, restarts, or spills.
+- The old long tails are not an ongoing reproducible problem at this fixed
+  configuration. Their historical cause is not recoverable because the old
+  matched run predates the new timestamp and wait/I/O telemetry.
 
-| Arm | CPU | Query threads | ClickHouse memory | Workers |
-|---|---:|---:|---:|---:|
-| A, completed | 16 | 8 | 50 GiB | 1 |
-| CPU isolation | 18 | 8 | 50 GiB | 1 |
-| B, completed | 18 | 18 | 50 GiB | 1 |
-
-- Reuse the exact `stage2-v2` manifests, selected Parquet objects, query catalog,
-  query envelopes, seed IDs, sample minimums, and verdict thresholds.
-- Record query-class median, p95, maximum, errors, restarts, peak memory, spills,
-  and storage. Compare each new result directly with the committed Stage 2
-  report rather than changing the baseline thresholds after seeing results.
-- Add per-query wall-clock timestamps and sample `system.merges` and relevant
-  system events. Slow and fast executions currently read identical row counts
-  with overlapping memory use and zero spill, but the recurring tail mechanism
-  is not instrumented.
-- Counterbalance or randomize tier order across repeats. Run A was stable at
-  medium and unstable at large; Run B showed intermittent outliers in every
-  tier, with its most severe non-q02 tails at medium.
-- Treat a three-worker 50-GiB run as a separate multi-user capacity experiment,
-  not as a correction to these intentionally single-user measurements.
+Stop this repeatability series. Run an 18-CPU/8-thread arm only if that envelope
+becomes a deployment candidate. Treat any future multi-worker run as a separate
+capacity experiment, not as a correction to this single-stream evidence. See
+[`Single-user resource benchmark results`](../2026-08-05-single-user-resource-benchmark-results.md).
 
 ## 2. Design the update path
 
@@ -67,6 +56,7 @@ baseline so later results remain comparable.
 
 ## Completion criteria
 
-These next steps are complete only when the performance comparison is
-reproducible, the update design is proven against consecutive snapshots, and
-each accepted enrichment has explicit provenance and measured join quality.
+The performance-repeatability item is complete. The remaining program is
+complete only when the update design is proven against consecutive snapshots
+and each accepted enrichment has explicit provenance and measured join
+quality.

@@ -1,0 +1,252 @@
+[
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3370985788,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785985591.232002
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3370985788,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 184585137
+    },
+    "timestamp": 1785985592.444638
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3370985788,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 220443153
+    },
+    "timestamp": 1785985593.70507
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213799392
+    },
+    "timestamp": 1785985594.929163
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 55751436,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213799392
+    },
+    "timestamp": 1785985596.193145
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 187361023,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213799392
+    },
+    "timestamp": 1785985597.388227
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 314799147,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213799392
+    },
+    "timestamp": 1785985598.601825
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 466602130,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213799392
+    },
+    "timestamp": 1785985599.820551
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 594073186,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213799392
+    },
+    "timestamp": 1785985601.050456
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 580786218,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 100105542,
+      "works": 213799392
+    },
+    "timestamp": 1785985602.2980638
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 516250207,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159130271,
+      "works": 213799392
+    },
+    "timestamp": 1785985603.530587
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 461584771,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159130271,
+      "work_institution": 36602900,
+      "works": 213799392
+    },
+    "timestamp": 1785985604.7808158
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 461584771,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159130271,
+      "work_institution": 69719157,
+      "works": 213799392
+    },
+    "timestamp": 1785985606.02643
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 461584771,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159130271,
+      "work_institution": 104042410,
+      "work_topic": 20394050,
+      "works": 213799392
+    },
+    "timestamp": 1785985607.2777941
+  },
+  {
+    "filesystem_bytes": 12290797568,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 461584771,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159130271,
+      "work_institution": 100941640,
+      "work_topic": 150685241,
+      "works": 213799392
+    },
+    "timestamp": 1785985608.495229
+  },
+  {
+    "filesystem_bytes": 15642726400,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348479837,
+      "citation_edge": 461584771,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159130271,
+      "work_institution": 100941640,
+      "work_topic": 202518521,
+      "works": 213799392
+    },
+    "timestamp": 1785985609.2507572
+  }
+]

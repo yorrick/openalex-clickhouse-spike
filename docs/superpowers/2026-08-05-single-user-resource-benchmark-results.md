@@ -3,15 +3,49 @@
 ## Outcome
 
 The 50-GiB ClickHouse configuration is viable for the tested 98.302-GB raw
-sample and 31,885,241-Work largest tier, but neither completed run meets every
-predeclared latency gate. More importantly, the workload used only about
-6.2 GiB peak query memory and never spilled, so memory capacity was not the
-performance constraint in this single-stream experiment.
+sample and 31,885,241-Work largest tier. The current medium-tier workload is
+repeatably fast under 18 CPUs, 18 query threads, and one worker: three clean
+repeats all met the stricter repeatability rule, with no 20-second tail, spill,
+query error, server restart, or foreign-database merge activity.
 
-Run B made the large tier dramatically faster and more consistent than Run A,
-but it also suffered severe intermittent tails at medium and isolated outliers
-at small. One observation per configuration is not enough to attribute the
-large-tier improvement causally to the larger CPU/thread envelope.
+The older matched 18-CPU/18-thread run had 25 medium-tier samples of at least
+20 seconds and maxima above 200 seconds. Those tails did not recur in the
+instrumented baseline or any repeat. The operational issue is therefore not
+currently reproducible at this fixed configuration and byte-identical work
+volume. Its historical cause remains unknown and cannot be recovered from the
+old artifacts because they predate per-query timestamps and wait/I/O telemetry.
+
+This does not turn the overall capacity verdict into a full pass. Large q02
+still has a stable roughly 60-second floor, and the storage model has not been
+validated at full OpenAlex corpus scale. Peak single-query memory remained
+about 6.3 GiB of the 50-GiB container limit and no query spilled, so additional
+memory was not the binding resource in these single-stream measurements.
+
+## Medium-tier repeatability result
+
+The fixed experiment used 10,109,733 Works, 50 GiB of ClickHouse container
+memory, 18 CPUs, 18 query threads, and one closed-loop worker. Each repeat
+captured 299 concurrent-phase samples. The predeclared rule required every
+repeat to satisfy all of the following:
+
+- routine p95 below 5 seconds and join p95 below 15 seconds;
+- q03 and q07 maximum/median ratios below 2.0;
+- no sample of at least 20 seconds;
+- no in-flight or completed merge from a foreign database;
+- no error, server restart, or spill.
+
+| Run | Routine p95 | Join p95 | q03 max/median | q07 max/median | >=20 s | Foreign merges |
+|---|---:|---:|---:|---:|---:|---:|
+| Instrumented baseline | 1.571 s | 10.367 s | 1.059 | 1.129 | 0 | not gated yet |
+| Repeat 1 | 1.566 s | 10.583 s | 1.047 | 1.050 | 0 | 0 |
+| Repeat 2 | 1.716 s | 10.881 s | 1.077 | 1.191 | 0 | 0 |
+| Repeat 3 | 1.574 s | 10.456 s | 1.094 | 1.094 | 0 | 0 |
+
+Across the three gated repeats, join p95 ranged from 10.456 to 10.881 seconds,
+q03 p95 from 3.008 to 3.132 seconds, and q07 p95 from 1.583 to 1.737 seconds.
+All three repeats passed with wide margin. The instrumented baseline is useful
+corroborating performance evidence, but it predates the strict foreign-merge
+guard and is not counted toward that gate.
 
 ## Scope and controlled inputs
 
@@ -116,30 +150,39 @@ seconds. The instability is therefore not exclusively a medium-tier property.
 
 ## What remains uncertain
 
-- The experiment does not isolate CPU count from query threads: both changed
-  between A and B.
-- One run per arm provides no run-to-run error bar. The severe tails moved
-  between tiers across runs, so the entire large-tier improvement cannot yet be
-  assigned causally to the resource change.
-- Identical row counts and overlapping memory do not prove that ClickHouse's
-  runtime plan, background merges, cache state, host contention, or thermal
-  state remained identical. The existing artifacts lack per-query wall-clock
-  timestamps and merge/event telemetry needed to distinguish them.
+- The original Run A/Run B experiment does not isolate CPU count from query
+  threads: both changed. The new repeats establish stability only for the
+  selected 18-CPU/18-thread configuration.
+- The severe old medium-tier tails are not reproducible now, but their cause is
+  not established. The matched historical run lacks the telemetry needed to
+  distinguish host scheduling, cache/I/O stalls, or another environmental
+  cause, so re-analysis cannot recover a definitive root cause.
+- The repeatability result is scoped to medium. The large tier remains
+  Conditional because q02 is consistently expensive, and neither the local
+  sample nor its projection proves full-corpus capacity on an Alliance VM.
 - Single-stream peak memory does not establish the memory requirement under
   multiple simultaneous users.
 
-## Next experiment
+## Decision and future experiments
 
-1. Repeat 18 CPU / 18 threads at least three times to measure the noise floor.
-2. Add an 18 CPU / 8-thread arm, then repeat all three arms at least three times
-   while holding memory, workers, input, and SQL fixed.
-3. Counterbalance tier order and record per-query wall-clock timestamps,
-   `system.merges`, and relevant ClickHouse/system events.
-4. Profile and optimize large q02 separately; its stable roughly 60-second
-   floor is a query-design problem even in the more consistent run.
-5. If multi-user capacity is required, run a separately labeled worker-count
-   experiment after the single-stream variance is understood.
+Stop the current repeatability series and ship the evidence. More same-config
+repeats are unlikely to change the operational decision. An 18-CPU/8-thread
+arm is worthwhile only if eight query threads becomes a real deployment
+candidate. A `SYSTEM FLUSH LOGS` A/B is not justified: flushes occur after the
+server-reported query duration and were present in both the old and new code.
+
+The next performance work with a concrete decision attached is:
+
+1. profile and optimize large q02 separately;
+2. run a separately labeled worker-count experiment if multi-user capacity is
+   required;
+3. validate the storage/capacity model on the intended Alliance VM before a
+   full-corpus commitment.
 
 The immutable reports are
-[`Run A`](../../results/stage2-single-memory50/report.md) and
-[`Run B`](../../results/stage2-single-memory50-cpu18/report.md).
+[`Run A`](../../results/stage2-single-memory50/report.md),
+[`Run B`](../../results/stage2-single-memory50-cpu18/report.md),
+[`instrumented baseline`](../../results/stage2-instrumented-18c18t-baseline/report.md),
+[`repeat 1`](../../results/stage2-repeat-medium-18c18t-r1/report.md),
+[`repeat 2`](../../results/stage2-repeat-medium-18c18t-r2/report.md), and
+[`repeat 3`](../../results/stage2-repeat-medium-18c18t-r3/report.md).

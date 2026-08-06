@@ -159,6 +159,55 @@ uv run openalex-spike stage2 \
 - Reports disclose the exact resource envelope and compare medians, p95s,
   maximums, memory, spills, errors, and restarts with `stage2-v2`.
 
+## Repeatability extension
+
+The first 18-CPU/18-thread run exposed severe intermittent medium-tier tails
+without enough evidence to distinguish query work from environmental waiting.
+The follow-up protocol therefore adds evidence before repeating the run:
+
+- every query record stores server-side start and finish timestamps;
+- `system.query_log` profile events capture user/system CPU, virtual CPU time,
+  CPU wait, disk-read elapsed time, synchronous-read wait, page-cache miss bytes
+  and elapsed time, and OS/file-descriptor read bytes;
+- every phase stores both its immediate `system.merges` snapshot and completed
+  `MergeParts` records whose intervals overlap the phase;
+- newly instrumented runs fail if any in-flight or completed overlapping merge
+  belongs to a database other than `system` or the current benchmark database;
+- raw query and merge evidence is written before the strict contamination check
+  so a failed run remains diagnosable;
+- artifact hashes exclude temporary `.tmp` files, and mixed telemetry schemas
+  cannot be combined into one report.
+
+Run three medium-only repeats with the exact command shape below, changing only
+the run ID:
+
+```bash
+uv run openalex-spike stage2 \
+  --memory-gb 50 \
+  --tier stage2_medium \
+  --cpus 18 \
+  --workers 1 \
+  --query-threads 18 \
+  --maximum-seconds 18000 \
+  --run-id stage2-repeat-medium-18c18t-r1
+```
+
+Between repeats, verify there are no active queries or merges, drop the exact
+prior benchmark database synchronously, and verify no benchmark database
+remains. Do not overlap any diagnostic workload with a measured phase.
+
+The predeclared operational criterion is satisfied only if every repeat has
+routine p95 below 5 seconds, join p95 below 15 seconds, q03 and q07
+maximum-to-median ratios below 2.0, zero samples of at least 20 seconds, and
+zero foreign-database merge activity. Any 20-second tail leaves the old
+intermittent problem unresolved.
+
+All three repeats satisfied the criterion. This establishes current
+repeatability for the medium tier at 50 GiB / 18 CPU / 18 query threads / one
+worker; it does not establish the historical root cause or full-corpus
+capacity. Detailed values are in
+[`Single-user resource benchmark results`](../2026-08-05-single-user-resource-benchmark-results.md).
+
 ## Run A storage-sampling incident and resume design
 
 The first Run A attempt completed its dimension load and the small-tier SQL

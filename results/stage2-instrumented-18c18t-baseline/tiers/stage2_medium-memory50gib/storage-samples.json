@@ -1,0 +1,286 @@
+[
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 90886177
+    },
+    "timestamp": 1785974595.9716852
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 220199515
+    },
+    "timestamp": 1785974597.338086
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 220199515
+    },
+    "timestamp": 1785974598.6301
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213457735
+    },
+    "timestamp": 1785974599.8459258
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 89159715,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213457735
+    },
+    "timestamp": 1785974601.165163
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 207560543,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213457735
+    },
+    "timestamp": 1785974602.36478
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 348256571,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213457735
+    },
+    "timestamp": 1785974603.5710158
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 486764979,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213457735
+    },
+    "timestamp": 1785974604.801344
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 594082577,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "works": 213457735
+    },
+    "timestamp": 1785974606.133538
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 580795609,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 77535623,
+      "works": 213457735
+    },
+    "timestamp": 1785974607.5856519
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 516259860,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 145802689,
+      "works": 213457735
+    },
+    "timestamp": 1785974608.908965
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 516259860,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159086889,
+      "works": 213457735
+    },
+    "timestamp": 1785974610.366079
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 516259860,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159086889,
+      "work_institution": 27171114,
+      "works": 213457735
+    },
+    "timestamp": 1785974611.7524748
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 461582913,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159086889,
+      "work_institution": 54482931,
+      "works": 213457735
+    },
+    "timestamp": 1785974613.064342
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 461582913,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159086889,
+      "work_institution": 78420635,
+      "works": 213457735
+    },
+    "timestamp": 1785974614.351101
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 461582913,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159086889,
+      "work_institution": 104064247,
+      "work_topic": 30498920,
+      "works": 213457735
+    },
+    "timestamp": 1785974615.610398
+  },
+  {
+    "filesystem_bytes": 44419743744,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 461582913,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159086889,
+      "work_institution": 100927174,
+      "work_topic": 151766606,
+      "works": 213457735
+    },
+    "timestamp": 1785974616.867027
+  },
+  {
+    "filesystem_bytes": 47383863296,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3348758271,
+      "citation_edge": 461582913,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309,
+      "work_author": 159086889,
+      "work_institution": 100927174,
+      "work_topic": 202442261,
+      "works": 213457735
+    },
+    "timestamp": 1785974618.223371
+  }
+]

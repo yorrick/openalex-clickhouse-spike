@@ -12,11 +12,24 @@ class FakeClient:
     def execute(self, query, *, parameters, settings, query_id):
         return {
             "elapsed_seconds": 0.1,
+            "started_at_unix_us": 1_000_000,
+            "finished_at_unix_us": 1_100_000,
             "read_rows": 1,
             "read_bytes": 10,
             "result_rows": 1,
             "peak_memory_bytes": 100,
             "spill_bytes": 0,
+            "real_time_us": 100_000,
+            "user_time_us": 50_000,
+            "system_time_us": 5_000,
+            "os_cpu_virtual_time_us": 55_000,
+            "os_cpu_wait_time_us": 10_000,
+            "disk_read_elapsed_us": 2_000,
+            "synchronous_read_wait_us": 3_000,
+            "page_cache_miss_bytes": 4_000,
+            "page_cache_miss_elapsed_us": 1_000,
+            "os_read_bytes": 6_000,
+            "file_descriptor_read_bytes": 5_000,
         }
 
 
@@ -77,6 +90,16 @@ def test_closed_loop_uses_requested_single_worker_threads_and_telemetry():
     assert all(record.read_bytes == 10 for record in records)
     assert all(record.peak_memory_bytes == 100 for record in records)
     assert all(record.spill_bytes == 0 for record in records)
+    assert [record.worker_iteration for record in records] == list(
+        range(len(records))
+    )
+    q05 = next(record for record in records if record.query_name == "q05")
+    assert q05.seed_work_id == 2
+    assert q05.started_at_unix_us == 1_000_000
+    assert q05.finished_at_unix_us == 1_100_000
+    assert q05.os_cpu_wait_time_us == 10_000
+    assert q05.page_cache_miss_bytes == 4_000
+    assert q05.os_read_bytes == 6_000
 
 
 def test_under_sampled_class_caps_verdict_at_conditional():
@@ -85,6 +108,8 @@ def test_under_sampled_class_caps_verdict_at_conditional():
         query_name="q01",
         query_class="routine",
         query_id="id",
+        worker_iteration=0,
+        seed_work_id=None,
         elapsed_seconds=1.0,
         max_threads=8,
         error=None,
@@ -92,3 +117,4 @@ def test_under_sampled_class_caps_verdict_at_conditional():
     summary = summarize_concurrency([record], minimum_samples=50, first_error=None)
     assert summary["verdict_cap"] == "conditional"
     assert summary["classes"]["routine"]["insufficient_sample"] is True
+    assert summary["queries"]["q01"]["count"] == 1

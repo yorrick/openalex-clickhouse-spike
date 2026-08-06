@@ -29,6 +29,8 @@ class ConcurrentRecord:
     query_name: str
     query_class: str
     query_id: str
+    worker_iteration: int
+    seed_work_id: int | None
     elapsed_seconds: float
     max_threads: int
     error: str | None
@@ -36,6 +38,19 @@ class ConcurrentRecord:
     read_bytes: int = 0
     peak_memory_bytes: int = 0
     spill_bytes: int = 0
+    started_at_unix_us: int = 0
+    finished_at_unix_us: int = 0
+    real_time_us: int = 0
+    user_time_us: int = 0
+    system_time_us: int = 0
+    os_cpu_virtual_time_us: int = 0
+    os_cpu_wait_time_us: int = 0
+    disk_read_elapsed_us: int = 0
+    synchronous_read_wait_us: int = 0
+    page_cache_miss_bytes: int = 0
+    page_cache_miss_elapsed_us: int = 0
+    os_read_bytes: int = 0
+    file_descriptor_read_bytes: int = 0
 
 
 def build_worker_schedules(
@@ -109,6 +124,8 @@ def run_closed_loop(
                     query_name=query.name,
                     query_class=query.query_class,
                     query_id=query_id,
+                    worker_iteration=iteration,
+                    seed_work_id=seed if query.requires_seed else None,
                     elapsed_seconds=float(telemetry["elapsed_seconds"]),
                     max_threads=int(settings["max_threads"]),
                     error=None,
@@ -116,6 +133,27 @@ def run_closed_loop(
                     read_bytes=int(telemetry["read_bytes"]),
                     peak_memory_bytes=int(telemetry["peak_memory_bytes"]),
                     spill_bytes=int(telemetry["spill_bytes"]),
+                    started_at_unix_us=int(telemetry["started_at_unix_us"]),
+                    finished_at_unix_us=int(telemetry["finished_at_unix_us"]),
+                    real_time_us=int(telemetry["real_time_us"]),
+                    user_time_us=int(telemetry["user_time_us"]),
+                    system_time_us=int(telemetry["system_time_us"]),
+                    os_cpu_virtual_time_us=int(
+                        telemetry["os_cpu_virtual_time_us"]
+                    ),
+                    os_cpu_wait_time_us=int(telemetry["os_cpu_wait_time_us"]),
+                    disk_read_elapsed_us=int(telemetry["disk_read_elapsed_us"]),
+                    synchronous_read_wait_us=int(
+                        telemetry["synchronous_read_wait_us"]
+                    ),
+                    page_cache_miss_bytes=int(telemetry["page_cache_miss_bytes"]),
+                    page_cache_miss_elapsed_us=int(
+                        telemetry["page_cache_miss_elapsed_us"]
+                    ),
+                    os_read_bytes=int(telemetry["os_read_bytes"]),
+                    file_descriptor_read_bytes=int(
+                        telemetry["file_descriptor_read_bytes"]
+                    ),
                 )
                 output.put(record)
                 with lock:
@@ -128,6 +166,8 @@ def run_closed_loop(
                         query_name=query.name,
                         query_class=query.query_class,
                         query_id=query_id,
+                        worker_iteration=iteration,
+                        seed_work_id=seed if query.requires_seed else None,
                         elapsed_seconds=0.0,
                         max_threads=int(settings["max_threads"]),
                         error=message,
@@ -150,7 +190,7 @@ def run_closed_loop(
     records = []
     while not output.empty():
         records.append(output.get())
-    records.sort(key=lambda record: (record.worker_id, record.query_id))
+    records.sort(key=lambda record: (record.worker_id, record.worker_iteration))
     return records, first_error[0] if first_error else None
 
 
@@ -188,6 +228,26 @@ def summarize_concurrency(
             "read_bytes": sum(record.read_bytes for record in successful),
             "insufficient_sample": len(durations) < minimum_samples,
         }
+    query_summary = {}
+    for query_name in sorted({record.query_name for record in records}):
+        successful = [
+            record
+            for record in records
+            if record.query_name == query_name and record.error is None
+        ]
+        durations = [record.elapsed_seconds for record in successful]
+        query_summary[query_name] = {
+            "count": len(durations),
+            "median_seconds": (
+                sorted(durations)[(len(durations) - 1) // 2] if durations else None
+            ),
+            "p95_seconds": _nearest_rank_p95(durations) if durations else None,
+            "maximum_seconds": max(durations) if durations else None,
+            "peak_memory_bytes": max(
+                (record.peak_memory_bytes for record in successful), default=0
+            ),
+            "spill_bytes": sum(record.spill_bytes for record in successful),
+        }
     if first_error:
         verdict_cap = "fail"
     elif any(item["insufficient_sample"] for item in class_summary.values()):
@@ -196,6 +256,7 @@ def summarize_concurrency(
         verdict_cap = "pass"
     return {
         "classes": class_summary,
+        "queries": query_summary,
         "first_error": first_error,
         "forced_verdict": "fail" if first_error else None,
         "verdict_cap": verdict_cap,

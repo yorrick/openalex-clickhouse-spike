@@ -1,0 +1,117 @@
+{
+  "classes": {
+    "join": {
+      "count": 150,
+      "insufficient_sample": false,
+      "maximum_seconds": 11.07,
+      "median_seconds": 2.915,
+      "p95_seconds": 10.583,
+      "peak_memory_bytes": 4523914495,
+      "read_bytes": 227563532400,
+      "read_rows": 10624296150,
+      "spill_bytes": 0
+    },
+    "one_hop": {
+      "count": 50,
+      "insufficient_sample": false,
+      "maximum_seconds": 0.086,
+      "median_seconds": 0.006,
+      "p95_seconds": 0.01,
+      "peak_memory_bytes": 2313070,
+      "read_bytes": 574721072,
+      "read_rows": 71235184,
+      "spill_bytes": 0
+    },
+    "routine": {
+      "count": 99,
+      "insufficient_sample": false,
+      "maximum_seconds": 1.595,
+      "median_seconds": 0.053,
+      "p95_seconds": 1.566,
+      "peak_memory_bytes": 6748442901,
+      "read_bytes": 40987135276,
+      "read_rows": 3955869866,
+      "spill_bytes": 0
+    }
+  },
+  "execution": {
+    "cpus": 18,
+    "maximum_seconds": 18000,
+    "query_threads": 18,
+    "workers": 1
+  },
+  "first_error": null,
+  "forced_verdict": null,
+  "merge_activity": {
+    "completed_benchmark_merge_count": 0,
+    "completed_foreign_merge_count": 0,
+    "completed_merge_count": 1239,
+    "completed_system_merge_count": 1239,
+    "foreign_databases": [],
+    "in_flight_benchmark_merge_count": 0,
+    "in_flight_foreign_merge_count": 0,
+    "in_flight_merge_count": 0,
+    "in_flight_system_merge_count": 0,
+    "maximum_completed_merge_ms": 3420,
+    "maximum_completed_system_merge_ms": 3420,
+    "part_log_coverage": {
+      "maximum_event_at_unix_us": 1785983674753387,
+      "minimum_event_at_unix_us": 1785868945280710,
+      "row_count": 49449
+    },
+    "schema_version": 1,
+    "status": "complete"
+  },
+  "queries": {
+    "q01": {
+      "count": 50,
+      "maximum_seconds": 0.053,
+      "median_seconds": 0.026,
+      "p95_seconds": 0.033,
+      "peak_memory_bytes": 122058027,
+      "spill_bytes": 0
+    },
+    "q02": {
+      "count": 50,
+      "maximum_seconds": 11.07,
+      "median_seconds": 10.257,
+      "p95_seconds": 10.774,
+      "peak_memory_bytes": 3130756420,
+      "spill_bytes": 0
+    },
+    "q03": {
+      "count": 50,
+      "maximum_seconds": 3.048,
+      "median_seconds": 2.912,
+      "p95_seconds": 3.024,
+      "peak_memory_bytes": 4523914495,
+      "spill_bytes": 0
+    },
+    "q04": {
+      "count": 50,
+      "maximum_seconds": 2.923,
+      "median_seconds": 2.745,
+      "p95_seconds": 2.915,
+      "peak_memory_bytes": 2274594178,
+      "spill_bytes": 0
+    },
+    "q05": {
+      "count": 50,
+      "maximum_seconds": 0.086,
+      "median_seconds": 0.006,
+      "p95_seconds": 0.01,
+      "peak_memory_bytes": 2313070,
+      "spill_bytes": 0
+    },
+    "q07": {
+      "count": 49,
+      "maximum_seconds": 1.595,
+      "median_seconds": 1.519,
+      "p95_seconds": 1.583,
+      "peak_memory_bytes": 6748442901,
+      "spill_bytes": 0
+    }
+  },
+  "server_restarted": false,
+  "verdict_cap": "pass"
+}

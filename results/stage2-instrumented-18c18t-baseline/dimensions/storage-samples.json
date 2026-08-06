@@ -1,0 +1,165 @@
+[
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 30563145
+    },
+    "timestamp": 1785974270.060747
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 289442729
+    },
+    "timestamp": 1785974271.290061
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 509119634
+    },
+    "timestamp": 1785974272.522697
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 721497520
+    },
+    "timestamp": 1785974273.739831
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 966828240
+    },
+    "timestamp": 1785974274.948684
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1212214315
+    },
+    "timestamp": 1785974276.1578062
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1467878419
+    },
+    "timestamp": 1785974277.375083
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1717698114
+    },
+    "timestamp": 1785974278.592797
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1960756060
+    },
+    "timestamp": 1785974279.820838
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2199503771
+    },
+    "timestamp": 1785974281.059604
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2447034351
+    },
+    "timestamp": 1785974282.287779
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2664579000
+    },
+    "timestamp": 1785974283.5230029
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2880037396
+    },
+    "timestamp": 1785974284.744999
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3104199409
+    },
+    "timestamp": 1785974285.956612
+  },
+  {
+    "filesystem_bytes": 34212360192,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3406049506
+    },
+    "timestamp": 1785974287.1459148
+  },
+  {
+    "filesystem_bytes": 43252871168,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3400678783,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785974288.346731
+  }
+]
