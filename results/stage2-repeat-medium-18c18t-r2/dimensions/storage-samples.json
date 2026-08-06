@@ -1,0 +1,165 @@
+[
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 65127188
+    },
+    "timestamp": 1785983969.378252
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 353812270
+    },
+    "timestamp": 1785983970.597707
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 604334732
+    },
+    "timestamp": 1785983971.798629
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 874789034
+    },
+    "timestamp": 1785983973.007346
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1156630868
+    },
+    "timestamp": 1785983974.228746
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1403408102
+    },
+    "timestamp": 1785983975.475264
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1467785874
+    },
+    "timestamp": 1785983976.709975
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1656866012
+    },
+    "timestamp": 1785983977.948947
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1809726903
+    },
+    "timestamp": 1785983979.176976
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2056133761
+    },
+    "timestamp": 1785983980.414874
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2297823085
+    },
+    "timestamp": 1785983981.6379972
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2542250650
+    },
+    "timestamp": 1785983982.850348
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2792598403
+    },
+    "timestamp": 1785983984.092937
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3015152949
+    },
+    "timestamp": 1785983985.306735
+  },
+  {
+    "filesystem_bytes": 3420209152,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3296679959
+    },
+    "timestamp": 1785983986.5229702
+  },
+  {
+    "filesystem_bytes": 11199000576,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3400278950,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785983987.4942222
+  }
+]

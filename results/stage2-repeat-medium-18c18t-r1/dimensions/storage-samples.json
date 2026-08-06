@@ -1,0 +1,163 @@
+[
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {},
+    "timestamp": 1785982450.7055418
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 195137916
+    },
+    "timestamp": 1785982451.935754
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 412987097
+    },
+    "timestamp": 1785982453.153811
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 660862371
+    },
+    "timestamp": 1785982454.3578172
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 905113137
+    },
+    "timestamp": 1785982455.572178
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1156637809
+    },
+    "timestamp": 1785982456.800863
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1401645002
+    },
+    "timestamp": 1785982458.0093231
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1655780113
+    },
+    "timestamp": 1785982459.245413
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 1901383720
+    },
+    "timestamp": 1785982460.48947
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2143606194
+    },
+    "timestamp": 1785982461.71542
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2386983508
+    },
+    "timestamp": 1785982462.9456341
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2637628011
+    },
+    "timestamp": 1785982464.171808
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 2883879653
+    },
+    "timestamp": 1785982465.414121
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3074059327
+    },
+    "timestamp": 1785982466.640815
+  },
+  {
+    "filesystem_bytes": 1810870272,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3320070198
+    },
+    "timestamp": 1785982467.8697758
+  },
+  {
+    "filesystem_bytes": 10724585472,
+    "filesystem_vanished_directories": 0,
+    "filesystem_vanished_files": 0,
+    "projection_bytes": {},
+    "table_bytes": {
+      "authors": 3400460221,
+      "institutions": 4357308,
+      "sources": 10677280,
+      "topics": 150309
+    },
+    "timestamp": 1785982468.664284
+  }
+]
