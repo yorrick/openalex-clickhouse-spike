@@ -163,3 +163,28 @@ def test_merge_activity_summary_separates_system_and_benchmark_merges():
     assert summary["completed_benchmark_merge_count"] == 1
     assert summary["maximum_completed_system_merge_ms"] == 7_000
     assert summary["in_flight_merge_count"] == 1
+    assert summary["completed_foreign_merge_count"] == 0
+    assert summary["foreign_databases"] == []
+
+
+def test_merge_activity_summary_surfaces_foreign_database_contamination():
+    activity = {
+        "schema_version": 1,
+        "status": "complete",
+        "part_log_coverage": {"row_count": 10},
+        "completed_merges": [
+            {"database": "openalex_stage2_prior", "duration_ms": 8_000},
+        ],
+        "in_flight_at_phase_end": [
+            {"database": "openalex_stage2_other", "elapsed_seconds": 2.0},
+        ],
+    }
+
+    summary = summarize_merge_activity(activity, benchmark_database="openalex")
+
+    assert summary["completed_foreign_merge_count"] == 1
+    assert summary["in_flight_foreign_merge_count"] == 1
+    assert summary["foreign_databases"] == [
+        "openalex_stage2_other",
+        "openalex_stage2_prior",
+    ]

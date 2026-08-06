@@ -8,7 +8,9 @@ import pytest
 from openalex_spike.cli import (
     LEGACY_STAGE2_EXECUTION,
     PrerequisiteError,
+    STAGE2_TELEMETRY_SCHEMA_VERSION,
     Stage2Execution,
+    _require_no_foreign_merge_activity,
     _resolve_stage2_execution,
     _selected_tier,
     _stage2_merge_activity_payload,
@@ -155,12 +157,12 @@ def test_merge_activity_payload_preserves_legacy_and_rejects_mixed_schemas():
 
     with pytest.raises(Stage2PrerequisiteError, match="evidence is missing"):
         _stage2_merge_activity_payload(
-            {"telemetry_schema_version": 1},
+            {"telemetry_schema_version": STAGE2_TELEMETRY_SCHEMA_VERSION},
             legacy_summaries,
         )
 
     assert _stage2_merge_activity_payload(
-        {"telemetry_schema_version": 1},
+        {"telemetry_schema_version": STAGE2_TELEMETRY_SCHEMA_VERSION},
         {
             "stage2_small": {"merge_activity": {"status": "complete"}},
             "stage2_medium": {"merge_activity": {"status": "complete"}},
@@ -169,6 +171,25 @@ def test_merge_activity_payload_preserves_legacy_and_rejects_mixed_schemas():
         "stage2_small": {"status": "complete"},
         "stage2_medium": {"status": "complete"},
     }
+
+
+def test_foreign_merge_activity_is_a_hard_experiment_failure():
+    _require_no_foreign_merge_activity(
+        {
+            "completed_foreign_merge_count": 0,
+            "in_flight_foreign_merge_count": 0,
+            "foreign_databases": [],
+        }
+    )
+
+    with pytest.raises(Stage2PrerequisiteError, match="foreign database merge"):
+        _require_no_foreign_merge_activity(
+            {
+                "completed_foreign_merge_count": 1,
+                "in_flight_foreign_merge_count": 0,
+                "foreign_databases": ["openalex_stage2_prior"],
+            }
+        )
 
 
 def test_resume_dimension_validation_uses_supported_database_catalog_query():

@@ -77,7 +77,7 @@ from openalex_spike.stage2 import (
 
 
 COMMAND_VERSION = "0.1.0"
-STAGE2_TELEMETRY_SCHEMA_VERSION = 1
+STAGE2_TELEMETRY_SCHEMA_VERSION = 2
 
 
 class PrerequisiteError(RuntimeError):
@@ -1300,6 +1300,17 @@ def _stage2_merge_activity_payload(
     }
 
 
+def _require_no_foreign_merge_activity(summary: dict[str, object]) -> None:
+    completed = int(summary["completed_foreign_merge_count"])
+    in_flight = int(summary["in_flight_foreign_merge_count"])
+    if completed or in_flight:
+        databases = ", ".join(str(value) for value in summary["foreign_databases"])
+        raise Stage2PrerequisiteError(
+            "resource comparison detected foreign database merge activity: "
+            f"completed={completed}, in_flight={in_flight}, databases={databases}"
+        )
+
+
 def _finalize_stage2_report(
     *,
     root: Path,
@@ -1831,6 +1842,7 @@ def command_stage2(args: Namespace) -> int:
                     raise Stage2PrerequisiteError(
                         "resource comparison detected a ClickHouse restart"
                     )
+                _require_no_foreign_merge_activity(merge_activity_summary)
                 require_complete_concurrency_samples(concurrent_summary)
             projection = None
             if tier == "stage2_large":

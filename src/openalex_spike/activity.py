@@ -121,6 +121,16 @@ def summarize_merge_activity(
     benchmark_completed = [
         row for row in completed if row["database"] == benchmark_database
     ]
+    foreign_completed = [
+        row
+        for row in completed
+        if row["database"] not in {"system", benchmark_database}
+    ]
+    foreign_in_flight = [
+        row
+        for row in in_flight
+        if row["database"] not in {"system", benchmark_database}
+    ]
     return {
         "schema_version": int(activity["schema_version"]),
         "status": activity["status"],
@@ -128,6 +138,7 @@ def summarize_merge_activity(
         "completed_merge_count": len(completed),
         "completed_system_merge_count": len(system_completed),
         "completed_benchmark_merge_count": len(benchmark_completed),
+        "completed_foreign_merge_count": len(foreign_completed),
         "maximum_completed_merge_ms": max(
             (int(row["duration_ms"]) for row in completed), default=0
         ),
@@ -140,5 +151,12 @@ def summarize_merge_activity(
         ),
         "in_flight_benchmark_merge_count": sum(
             row["database"] == benchmark_database for row in in_flight
+        ),
+        "in_flight_foreign_merge_count": len(foreign_in_flight),
+        "foreign_databases": sorted(
+            {
+                str(row["database"])
+                for row in foreign_completed + foreign_in_flight
+            }
         ),
     }
