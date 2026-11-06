@@ -1,0 +1,109 @@
+{
+  "computed_at": "2026-11-06T22:25:43.376844+00:00",
+  "currency": "USD",
+  "ec2_compute_upper": 1.3345487950312298,
+  "temporary_root_ebs_upper": 0.06629368072115305,
+  "public_ipv4_upper": 0.007685822091831102,
+  "athena_rounded_bytes": 221492000000,
+  "athena_scan_fee_conservative": 1.10746,
+  "other_allowance": 1.0,
+  "total_conservative_estimate": 3.515988297844214,
+  "retained_raw_ebs_gib": 120,
+  "retained_raw_usd_month": 9.6,
+  "rows": [
+    {
+      "run": "oaspike-20261106191405-203a5f",
+      "purpose": "source preparation/probe",
+      "type": "t4g.small",
+      "lifecycle_upper_seconds": 157.65761804580688,
+      "ec2_usd_upper": 0.000735735550880432,
+      "root_usd_upper": 7.678909859156499e-05,
+      "ipv4_usd_upper": 0.00021896891395250956,
+      "total_usd_upper": 0.0010314935634245066,
+      "termination_verified": true
+    },
+    {
+      "run": "oaspike-20261106191717-99f849",
+      "purpose": "source preparation/probe",
+      "type": "t4g.small",
+      "lifecycle_upper_seconds": 155.7129647731781,
+      "ec2_usd_upper": 0.0007266605022748311,
+      "root_usd_upper": 7.584193109195889e-05,
+      "ipv4_usd_upper": 0.00021626800662941401,
+      "total_usd_upper": 0.001018770439996204,
+      "termination_verified": true
+    },
+    {
+      "run": "oaspike-20261106192239-9df040",
+      "purpose": "source preparation/probe",
+      "type": "t4g.small",
+      "lifecycle_upper_seconds": 1564.7664830684662,
+      "ec2_usd_upper": 0.007302243587652841,
+      "root_usd_upper": 0.0007621389263042758,
+      "ipv4_usd_upper": 0.0021732867820395364,
+      "total_usd_upper": 0.010237669295996652,
+      "termination_verified": true
+    },
+    {
+      "run": "oaspike-20261106195056-5ee45f",
+      "purpose": "small baseline",
+      "type": "m7g.8xlarge",
+      "lifecycle_upper_seconds": 335.8721237182617,
+      "ec2_usd_upper": 0.12180962353515626,
+      "root_usd_upper": 0.0060068454394057455,
+      "ipv4_usd_upper": 0.0004664890607198079,
+      "total_usd_upper": 0.1282829580352818,
+      "termination_verified": true
+    },
+    {
+      "run": "oaspike-20261106201804-2e9d23",
+      "purpose": "medium baseline",
+      "type": "m7g.8xlarge",
+      "lifecycle_upper_seconds": 537.4660887718201,
+      "ec2_usd_upper": 0.19492103486124676,
+      "root_usd_upper": 0.009612216960531028,
+      "ipv4_usd_upper": 0.0007464806788497501,
+      "total_usd_upper": 0.20527973250062753,
+      "termination_verified": true
+    },
+    {
+      "run": "oaspike-20261106204843-b2d12b",
+      "purpose": "large baseline",
+      "type": "m7g.8xlarge",
+      "lifecycle_upper_seconds": 1212.8530716896057,
+      "ec2_usd_upper": 0.43986138066609703,
+      "root_usd_upper": 0.021691055696123084,
+      "ipv4_usd_upper": 0.0016845181551244524,
+      "total_usd_upper": 0.46323695451734453,
+      "termination_verified": true
+    },
+    {
+      "run": "oaspike-20261106213843-aa3ecc",
+      "purpose": "31.89m q02 tuning",
+      "type": "m7g.8xlarge",
+      "lifecycle_upper_seconds": 1569.4635560512543,
+      "ec2_usd_upper": 0.5691921163279217,
+      "root_usd_upper": 0.028068792669105384,
+      "ipv4_usd_upper": 0.002179810494515631,
+      "total_usd_upper": 0.5994407194915427,
+      "termination_verified": true
+    }
+  ],
+  "rates": {
+    "m7g.8xlarge_usd_hour": 1.3056,
+    "t4g.small_usd_hour": 0.0168,
+    "scratch_400gib_500mibps_usd_month": 47,
+    "gp3_usd_gib_month": 0.08,
+    "additional_gp3_mibps_usd_month": 0.04,
+    "ipv4_usd_hour": 0.005,
+    "athena_usd_per_decimal_TB": 5
+  },
+  "limitations": [
+    "Lifecycle bounds are not an invoice",
+    "60 seconds added per VM to cover create-to-record timing",
+    "EBS root creation/deletion boundaries and small requests/copy/list/GET/result storage/data return/CPU credits/old pilot are covered by the other allowance",
+    "Scan pricing uses a conservative decimal TB assumption, not a verified invoice billing-unit interpretation",
+    "The intentionally retained raw input EBS is ongoing and separately authorized",
+    "Tax/credits excluded"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "guest-baseline-2m-10m.py": {
+    "sha256": "c875db3b19f2900c70141de88cd233d1afaa66c192ef8cf42fb68f596bdf19c1",
+    "original_study_file": "deployed-benchmark-2m.py"
+  },
+  "guest-baseline-31m.py": {
+    "sha256": "4372f8958d71b69d2fdc447aed226996887c1aa6a6058b2615f7ef1647698365",
+    "original_study_file": "baseline_guest.py"
+  },
+  "guest-tuning-31m.py": {
+    "sha256": "2981b06a0a9333227505f16edd602409634d486b64dbf0ec0f8cd02adde6ae9a",
+    "original_study_file": "deployed-tune-31m.py"
+  },
+  "cloud_job.py": {
+    "sha256": "4e8087c06db037be5e099f52c0a499a1b0065f679998d54561ec013ad57aa72e",
+    "original_study_file": "cloud_job.py"
+  },
+  "tune_driver.py": {
+    "sha256": "617a1fa4cce416e579b6dcdb842ac6ee6284520f9ff71554b3bb63b239fe61de",
+    "original_study_file": "tune_driver.py"
+  },
+  "run_tiers.py": {
+    "sha256": "4fcd2d4bed86d9b0fc27e539bad38bf82f18631f682605b6b16c86c7045d43ef",
+    "original_study_file": "run_tiers.py"
+  },
+  "controls.py": {
+    "sha256": "208a9c052e7c9727fe0d6a935e03b5a376c085833cfc4e0d08bf752dc0420246",
+    "original_study_file": "controls.py"
+  },
+  "scope.py": {
+    "sha256": "96497cf126770d1f0abde7c5df98594a94c5d99b3f402af0a9f88a73be4089b0",
+    "original_study_file": "scope.py"
+  },
+  "athena_tier.py": {
+    "sha256": "b8bc0f83def3d71d4d51f460d8cc21e5ae2728c5b94ff2bc74b58f0f13f27a04",
+    "original_study_file": "athena_tier.py"
+  },
+  "tier_sql.py": {
+    "sha256": "05f15e50dfeea6075368991d90f3bb91ccdf11b234a88ff4af274b45d35f6b70",
+    "original_study_file": "tier_sql.py"
+  },
+  "source_copy.py": {
+    "sha256": "a79bae14e05a147c9c2d94adf7185fd4f77f3d2079815244848648c380d33736",
+    "original_study_file": "source_copy.py"
+  },
+  "server_copy.py": {
+    "sha256": "1f28a68eb7a5eb0c0c79d2c315519610b6b39695d19639a5c5479e0cb0ce38cf",
+    "original_study_file": "server_copy.py"
+  },
+  "prepare_cached.py": {
+    "sha256": "cc23437db2492e503cd06b1673f96ca8cdbf5abac133cbc50d3a2d6064ac85f6",
+    "original_study_file": "prepare_cached.py"
+  },
+  "prep_guest.py": {
+    "sha256": "93b09720ef5fb277a001ca77c62e569fd0c0f663464a9df2e5cb9489e9ff0abe",
+    "original_study_file": "prep_guest.py"
+  },
+  "analyze_tuning.py": {
+    "sha256": "1699a944666eb32684f203dce61f408022ab4c5071e25a133bfbb9801b53212b",
+    "original_study_file": "analyze_tuning.py"
+  },
+  "costs.py": {
+    "sha256": "2e3dd72f741ab0b0c4e696f781c0cf528b5498c84687fab9a00405d9ab19d4f6",
+    "original_study_file": "costs.py"
+  },
+  "analyze_series.py": {
+    "sha256": "d0a73df5d7cfd5555e1ccd07eeea470dc840b1392c711708bcf2f6933ea88477",
+    "original_study_file": "analyze_series.py"
+  },
+  "export_report.py": {
+    "sha256": "18eb6b1537ff24f9b0191dc2f7f70ae7e222d5854f5b23950000d30041c77ec6",
+    "original_study_file": "export_report.py"
+  },
+  "finalize_report.py": {
+    "sha256": "f4f6dae03629c678f7652d54729cd567e80d4ad4c84c0986e2685c20bdd851e8",
+    "original_study_file": "finalize_report.py"
+  },
+  "q02_preaggregate_topic_names.sql": {
+    "sha256": "4cd704358785e3280b10530c9119b4ea719f10588f46cb49678d9b8fa422c6da",
+    "original_study_file": "q02_preaggregate_topic_names.sql"
+  },
+  "legacy-run_experiment.py": {
+    "sha256": "800262d20fda2fd0270ed47987cb35f2a56d4a5e2ae4244c60da70bebdc2cab5",
+    "original_study_file": "../openalex-small-spike-20261105/run_experiment.py"
+  }
+}

@@ -1,0 +1,1273 @@
+{
+  "source_identity": "777330c48ef28c1c40a3ca9bf5d13b00847b427a4550ee3250aec558c85a13ea",
+  "normalized_sha256": "55d9f93cd6fb278e926c729ef145f832f6fccde8619b109b864d65fbe4a9271e",
+  "baseline_q02_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+  "guest_experiment_state": "complete",
+  "guest_control_policy": {
+    "clock": "query_log server seconds, FORMAT Null",
+    "warm_repeats": 3,
+    "target_seconds": 60,
+    "pass_rule": "all three warm observations under60s, exact typed QA, effective settings verified",
+    "controls_max_median_ratio": 1.2,
+    "control_failure": "INCONCLUSIVE_COMPARISON",
+    "case_order": [
+      "original_a",
+      "memory24",
+      "parallel_hash24",
+      "preaggregate12",
+      "original_b"
+    ]
+  },
+  "report_policy": {
+    "recorded_at_utc": "2026-11-06T21:47:10.609453+00:00",
+    "reason": "External review notes that 20% control drift exceeds the approximately 8% baseline-to-target margin.",
+    "original_guest_preregistered_control_ratio": 1.2,
+    "conservative_report_control_ratio": 1.08,
+    "apply_to_all_arms": true,
+    "disclosure": "The report applies this stricter secondary rule. Original guest policy and outcomes are preserved. No memory24, parallel_hash24, preaggregate12, or closing-control results had been observed when this rule was recorded.",
+    "minimum_success": "Every warm observation below 60 seconds, typed QA matches, effective settings verified, both original controls validated, and their median ratio no greater than 1.08."
+  },
+  "controls_median_ratio": 1.007503882644196,
+  "controls_stable_stricter_rule": true,
+  "cases": {
+    "original_a": {
+      "state": "complete",
+      "query_memory_gib": 12,
+      "spill_gib": 4,
+      "join_algorithm": "auto",
+      "qa": {
+        "matched": true,
+        "rows": 838464,
+        "canonical_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+        "query_id": "3a9cddcd-12ba-47fa-8d2a-a161057a5b93"
+      },
+      "raw_settings": [
+        {
+          "name": "max_threads",
+          "value": "'auto(18)'",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_before_external_group_by",
+          "value": "4294967296",
+          "changed": 1
+        },
+        {
+          "name": "max_bytes_before_external_sort",
+          "value": "4294967296",
+          "changed": 1
+        },
+        {
+          "name": "max_execution_time",
+          "value": "300",
+          "changed": 1
+        },
+        {
+          "name": "max_rows_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "join_overflow_mode",
+          "value": "throw",
+          "changed": 0
+        },
+        {
+          "name": "join_algorithm",
+          "value": "auto",
+          "changed": 1
+        },
+        {
+          "name": "default_max_bytes_in_join",
+          "value": "1000000000",
+          "changed": 0
+        },
+        {
+          "name": "partial_merge_join_rows_in_right_blocks",
+          "value": "65536",
+          "changed": 0
+        },
+        {
+          "name": "join_on_disk_max_files_to_merge",
+          "value": "64",
+          "changed": 0
+        },
+        {
+          "name": "max_memory_usage",
+          "value": "12884901888",
+          "changed": 1
+        }
+      ],
+      "effective_settings": {
+        "max_threads": 18,
+        "max_memory_usage": 12884901888,
+        "max_bytes_before_external_group_by": 4294967296,
+        "max_bytes_before_external_sort": 4294967296,
+        "join_algorithm": "auto"
+      },
+      "settings_verified": true,
+      "plan": "Expression (Project names)\nActions: INPUT : 0 -> uniqExact(__table1.work_id) UInt64 : 0\n         INPUT : 1 -> sum(__table1.cited_by_count) UInt64 : 1\n         INPUT : 2 -> __table1.publication_year Nullable(UInt16) : 2\n         INPUT : 3 -> __table3.topic_id UInt64 : 3\n         INPUT : 4 -> __table3.display_name String : 4\n         ALIAS uniqExact(__table1.work_id) :: 0 -> works UInt64 : 5\n         ALIAS sum(__table1.cited_by_count) :: 1 -> citations UInt64 : 0\n         ALIAS __table1.publication_year :: 2 -> publication_year Nullable(UInt16) : 1\n         ALIAS __table3.topic_id :: 3 -> t.topic_id UInt64 : 2\n         ALIAS __table3.display_name :: 4 -> display_name String : 3\nPositions: 1 2 3 5 0\n  Sorting (Sorting for ORDER BY)\n  Sort description: __table1.publication_year ASC, uniqExact(__table1.work_id) DESC\n    Expression ((Before ORDER BY + Projection))\n    Actions: INPUT :: 0 -> uniqExact(__table1.work_id) UInt64 : 0\n             INPUT :: 1 -> sum(__table1.cited_by_count) UInt64 : 1\n             INPUT :: 2 -> __table1.publication_year Nullable(UInt16) : 2\n             INPUT :: 3 -> __table3.topic_id UInt64 : 3\n             INPUT :: 4 -> __table3.display_name String : 4\n    Positions: 2 0 1 3 4\n      Aggregating\n      Keys: __table1.publication_year, __table3.topic_id, __table3.display_name\n      Aggregates:\n          uniqExact(__table1.work_id)\n            Function: uniqExact(UInt64) \u2192 UInt64\n            Arguments: __table1.work_id\n          sum(__table1.cited_by_count)\n            Function: sum(UInt32) \u2192 UInt64\n            Arguments: __table1.cited_by_count\n      Skip merging: 0\n        Expression (Before GROUP BY)\n        Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n                 INPUT :: 1 -> __table1.work_id UInt64 : 1\n                 INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n                 INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                 INPUT :: 4 -> __table3.display_name String : 4\n        Positions: 0 3 4 1 2\n          Expression (Post Join Actions)\n          Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n                   INPUT :: 1 -> __table1.work_id UInt64 : 1\n                   INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n                   INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                   INPUT :: 4 -> __table3.display_name String : 4\n          Positions: 0 1 2 3 4\n            Join (JOIN FillRightFirst)\n            Type: INNER\n            Strictness: ALL\n            Algorithm: JoinSwitcher\n            Clauses: [(__table1.work_id) = (__table2.work_id)]\n              Expression (Left Pre Join Actions)\n              Actions: INPUT :: 0 -> __table1.work_id UInt64 : 0\n                       INPUT :: 1 -> __table1.publication_year Nullable(UInt16) : 1\n                       INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n              Positions: 0 1 2\n                Expression (Change column names to column identifiers)\n                Actions: INPUT : 0 -> publication_year Nullable(UInt16) : 0\n                         INPUT : 1 -> work_id UInt64 : 1\n                         INPUT : 2 -> cited_by_count UInt32 : 2\n                         ALIAS publication_year :: 0 -> __table1.publication_year Nullable(UInt16) : 3\n                         ALIAS work_id :: 1 -> __table1.work_id UInt64 : 0\n                         ALIAS cited_by_count :: 2 -> __table1.cited_by_count UInt32 : 1\n                Positions: 3 0 1\n                  ReadFromMergeTree (openalex_benchmark.works)\n                  ReadType: Default\n                  Parts: 5\n                  Granules: 3895\n              Expression (Right Pre Join Actions)\n              Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                       INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                       INPUT :: 2 -> __table3.display_name String : 2\n              Positions: 0 1 2\n                Expression (Post Join Actions)\n                Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                         INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                         INPUT :: 2 -> __table3.display_name String : 2\n                Positions: 0 1 2\n                  Join (JOIN FillRightFirst)\n                  Type: INNER\n                  Strictness: ALL\n                  Algorithm: JoinSwitcher\n                  Clauses: [(__table2.topic_id) = (__table3.topic_id)]\n                    Expression (Left Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table2.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table2.work_id UInt64 : 1\n                    Positions: 0 1\n                      Expression (Change column names to column identifiers)\n                      Actions: INPUT : 0 -> work_id UInt64 : 0\n                               INPUT : 1 -> topic_id UInt64 : 1\n                               ALIAS work_id :: 0 -> __table2.work_id UInt64 : 2\n                               ALIAS topic_id :: 1 -> __table2.topic_id UInt64 : 0\n                      Positions: 2 0\n                        ReadFromMergeTree (openalex_benchmark.work_topic)\n                        ReadType: Default\n                        Parts: 6\n                        Granules: 7887\n                    Expression (Right Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table3.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table3.display_name String : 1\n                    Positions: 0 1\n                      Expression (Change column names to column identifiers)\n                      Actions: INPUT : 0 -> topic_id UInt64 : 0\n                               INPUT : 1 -> display_name String : 1\n                               ALIAS topic_id :: 0 -> __table3.topic_id UInt64 : 2\n                               ALIAS display_name :: 1 -> __table3.display_name String : 0\n                      Positions: 2 0\n                        ReadFromMergeTree (openalex_benchmark.topics)\n                        ReadType: Default\n                        Parts: 1\n                        Granules: 1",
+      "target_outcome": "FAIL_LATENCY",
+      "warm_seconds": [
+        65.521,
+        64.889,
+        66.232
+      ],
+      "median_seconds": 65.521,
+      "max_seconds": 66.232,
+      "resources": [
+        {
+          "query_peak_bytes": 4319520501,
+          "spill_compressed_bytes": 2674871075,
+          "telemetry_sample_count": 133,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2204020564,
+          "external_aggregation_compressed_bytes": 470850511,
+          "telemetry_max_gap_seconds": 0.501003140000023,
+          "cpu_seconds": 314.901156,
+          "average_cpu_cores": 4.806110346301186,
+          "cpu_fraction": 0.26700613035006593,
+          "container_sampled_peak_bytes": 44622278656,
+          "container_sampled_peak_anon_bytes": 7760146432,
+          "container_sampled_peak_file_bytes": 37019734016,
+          "sampled_scratch_used_peak_bytes": 27790888960,
+          "physical_read_bytes": 16384,
+          "physical_write_bytes": 1188401152,
+          "io_stall_fraction": 3.5159085611089154e-05,
+          "io_fraction": 0.020160515092716345,
+          "physical_iops": 79.50003723494866,
+          "physical_await_ms": 4.779544148630531,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 5221,
+              "io_wait_ms": 24954,
+              "read_bytes": 16384,
+              "write_bytes": 1188401152,
+              "iops": 79.50003723494866,
+              "await_ms": 4.779544148630531,
+              "utilization": 0.020160515092716345
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 65.67292521600001,
+          "physical_read_bytes_s": 249.47876078479197,
+          "physical_write_bytes_s": 18095754.804454297,
+          "container_average_cpu_cores": 4.939934759004172,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 4325151358,
+          "spill_compressed_bytes": 2674364540,
+          "telemetry_sample_count": 131,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2203883143,
+          "external_aggregation_compressed_bytes": 470481397,
+          "telemetry_max_gap_seconds": 0.5009532099999774,
+          "cpu_seconds": 328.257914,
+          "average_cpu_cores": 5.058760560341507,
+          "cpu_fraction": 0.2810422533523059,
+          "container_sampled_peak_bytes": 44721025024,
+          "container_sampled_peak_anon_bytes": 7726292992,
+          "container_sampled_peak_file_bytes": 37043625984,
+          "sampled_scratch_used_peak_bytes": 27813285888,
+          "physical_read_bytes": 8192,
+          "physical_write_bytes": 1998082048,
+          "io_stall_fraction": 1.8600293157646356e-06,
+          "io_fraction": 0.024226497534256743,
+          "physical_iops": 129.04914137061252,
+          "physical_await_ms": 2.8277546158427636,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 8395,
+              "io_wait_ms": 23739,
+              "read_bytes": 8192,
+              "write_bytes": 1998082048,
+              "iops": 129.04914137061252,
+              "await_ms": 2.8277546158427636,
+              "utilization": 0.024226497534256743
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 65.05273813399998,
+          "physical_read_bytes_s": 125.92859632019747,
+          "physical_write_bytes_s": 30714803.178372245,
+          "container_average_cpu_cores": 5.1893523421662415,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 4355785482,
+          "spill_compressed_bytes": 2673097551,
+          "telemetry_sample_count": 134,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2201769169,
+          "external_aggregation_compressed_bytes": 471328382,
+          "telemetry_max_gap_seconds": 0.5010219329999472,
+          "cpu_seconds": 342.514771,
+          "average_cpu_cores": 5.171439349559125,
+          "cpu_fraction": 0.2873021860866181,
+          "container_sampled_peak_bytes": 44672196608,
+          "container_sampled_peak_anon_bytes": 7712268288,
+          "container_sampled_peak_file_bytes": 37068681216,
+          "sampled_scratch_used_peak_bytes": 27837906944,
+          "physical_read_bytes": 16384,
+          "physical_write_bytes": 1186734080,
+          "io_stall_fraction": 1.2051672062672687e-06,
+          "io_fraction": 0.017956991373382306,
+          "physical_iops": 78.3057392272158,
+          "physical_await_ms": 4.350519430550212,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 5198,
+              "io_wait_ms": 22614,
+              "read_bytes": 16384,
+              "write_bytes": 1186734080,
+              "iops": 78.3057392272158,
+              "await_ms": 4.350519430550212,
+              "utilization": 0.017956991373382306
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 66.38083046399993,
+          "physical_read_bytes_s": 246.81824384353664,
+          "physical_write_bytes_s": 17877662.447196968,
+          "container_average_cpu_cores": 5.301197793704065,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        }
+      ],
+      "report_target_outcome": "FAIL_LATENCY"
+    },
+    "memory24": {
+      "state": "complete",
+      "query_memory_gib": 24,
+      "spill_gib": 8,
+      "join_algorithm": "auto",
+      "qa": {
+        "matched": true,
+        "rows": 838464,
+        "canonical_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+        "query_id": "3dce4d6a-1227-4646-8a2e-b9da0d067cc3"
+      },
+      "raw_settings": [
+        {
+          "name": "max_threads",
+          "value": "'auto(18)'",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_before_external_group_by",
+          "value": "8589934592",
+          "changed": 1
+        },
+        {
+          "name": "max_bytes_before_external_sort",
+          "value": "8589934592",
+          "changed": 1
+        },
+        {
+          "name": "max_execution_time",
+          "value": "300",
+          "changed": 1
+        },
+        {
+          "name": "max_rows_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "join_overflow_mode",
+          "value": "throw",
+          "changed": 0
+        },
+        {
+          "name": "join_algorithm",
+          "value": "auto",
+          "changed": 1
+        },
+        {
+          "name": "default_max_bytes_in_join",
+          "value": "1000000000",
+          "changed": 0
+        },
+        {
+          "name": "partial_merge_join_rows_in_right_blocks",
+          "value": "65536",
+          "changed": 0
+        },
+        {
+          "name": "join_on_disk_max_files_to_merge",
+          "value": "64",
+          "changed": 0
+        },
+        {
+          "name": "max_memory_usage",
+          "value": "25769803776",
+          "changed": 1
+        }
+      ],
+      "effective_settings": {
+        "max_threads": 18,
+        "max_memory_usage": 25769803776,
+        "max_bytes_before_external_group_by": 8589934592,
+        "max_bytes_before_external_sort": 8589934592,
+        "join_algorithm": "auto"
+      },
+      "settings_verified": true,
+      "plan": "Expression (Project names)\nActions: INPUT : 0 -> uniqExact(__table1.work_id) UInt64 : 0\n         INPUT : 1 -> sum(__table1.cited_by_count) UInt64 : 1\n         INPUT : 2 -> __table1.publication_year Nullable(UInt16) : 2\n         INPUT : 3 -> __table3.topic_id UInt64 : 3\n         INPUT : 4 -> __table3.display_name String : 4\n         ALIAS uniqExact(__table1.work_id) :: 0 -> works UInt64 : 5\n         ALIAS sum(__table1.cited_by_count) :: 1 -> citations UInt64 : 0\n         ALIAS __table1.publication_year :: 2 -> publication_year Nullable(UInt16) : 1\n         ALIAS __table3.topic_id :: 3 -> t.topic_id UInt64 : 2\n         ALIAS __table3.display_name :: 4 -> display_name String : 3\nPositions: 1 2 3 5 0\n  Sorting (Sorting for ORDER BY)\n  Sort description: __table1.publication_year ASC, uniqExact(__table1.work_id) DESC\n    Expression ((Before ORDER BY + Projection))\n    Actions: INPUT :: 0 -> uniqExact(__table1.work_id) UInt64 : 0\n             INPUT :: 1 -> sum(__table1.cited_by_count) UInt64 : 1\n             INPUT :: 2 -> __table1.publication_year Nullable(UInt16) : 2\n             INPUT :: 3 -> __table3.topic_id UInt64 : 3\n             INPUT :: 4 -> __table3.display_name String : 4\n    Positions: 2 0 1 3 4\n      Aggregating\n      Keys: __table1.publication_year, __table3.topic_id, __table3.display_name\n      Aggregates:\n          uniqExact(__table1.work_id)\n            Function: uniqExact(UInt64) \u2192 UInt64\n            Arguments: __table1.work_id\n          sum(__table1.cited_by_count)\n            Function: sum(UInt32) \u2192 UInt64\n            Arguments: __table1.cited_by_count\n      Skip merging: 0\n        Expression (Before GROUP BY)\n        Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n                 INPUT :: 1 -> __table1.work_id UInt64 : 1\n                 INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n                 INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                 INPUT :: 4 -> __table3.display_name String : 4\n        Positions: 0 3 4 1 2\n          Expression (Post Join Actions)\n          Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n                   INPUT :: 1 -> __table1.work_id UInt64 : 1\n                   INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n                   INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                   INPUT :: 4 -> __table3.display_name String : 4\n          Positions: 0 1 2 3 4\n            Join (JOIN FillRightFirst)\n            Type: INNER\n            Strictness: ALL\n            Algorithm: JoinSwitcher\n            Clauses: [(__table1.work_id) = (__table2.work_id)]\n              Expression (Left Pre Join Actions)\n              Actions: INPUT :: 0 -> __table1.work_id UInt64 : 0\n                       INPUT :: 1 -> __table1.publication_year Nullable(UInt16) : 1\n                       INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n              Positions: 0 1 2\n                Expression (Change column names to column identifiers)\n                Actions: INPUT : 0 -> publication_year Nullable(UInt16) : 0\n                         INPUT : 1 -> work_id UInt64 : 1\n                         INPUT : 2 -> cited_by_count UInt32 : 2\n                         ALIAS publication_year :: 0 -> __table1.publication_year Nullable(UInt16) : 3\n                         ALIAS work_id :: 1 -> __table1.work_id UInt64 : 0\n                         ALIAS cited_by_count :: 2 -> __table1.cited_by_count UInt32 : 1\n                Positions: 3 0 1\n                  ReadFromMergeTree (openalex_benchmark.works)\n                  ReadType: Default\n                  Parts: 5\n                  Granules: 3895\n              Expression (Right Pre Join Actions)\n              Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                       INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                       INPUT :: 2 -> __table3.display_name String : 2\n              Positions: 0 1 2\n                Expression (Post Join Actions)\n                Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                         INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                         INPUT :: 2 -> __table3.display_name String : 2\n                Positions: 0 1 2\n                  Join (JOIN FillRightFirst)\n                  Type: INNER\n                  Strictness: ALL\n                  Algorithm: JoinSwitcher\n                  Clauses: [(__table2.topic_id) = (__table3.topic_id)]\n                    Expression (Left Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table2.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table2.work_id UInt64 : 1\n                    Positions: 0 1\n                      Expression (Change column names to column identifiers)\n                      Actions: INPUT : 0 -> work_id UInt64 : 0\n                               INPUT : 1 -> topic_id UInt64 : 1\n                               ALIAS work_id :: 0 -> __table2.work_id UInt64 : 2\n                               ALIAS topic_id :: 1 -> __table2.topic_id UInt64 : 0\n                      Positions: 2 0\n                        ReadFromMergeTree (openalex_benchmark.work_topic)\n                        ReadType: Default\n                        Parts: 6\n                        Granules: 7887\n                    Expression (Right Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table3.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table3.display_name String : 1\n                    Positions: 0 1\n                      Expression (Change column names to column identifiers)\n                      Actions: INPUT : 0 -> topic_id UInt64 : 0\n                               INPUT : 1 -> display_name String : 1\n                               ALIAS topic_id :: 0 -> __table3.topic_id UInt64 : 2\n                               ALIAS display_name :: 1 -> __table3.display_name String : 0\n                      Positions: 2 0\n                        ReadFromMergeTree (openalex_benchmark.topics)\n                        ReadType: Default\n                        Parts: 1\n                        Granules: 1",
+      "target_outcome": "FAIL_LATENCY",
+      "warm_seconds": [
+        65.983,
+        64.905,
+        64.725
+      ],
+      "median_seconds": 64.905,
+      "max_seconds": 65.983,
+      "resources": [
+        {
+          "query_peak_bytes": 5211544999,
+          "spill_compressed_bytes": 2202693036,
+          "telemetry_sample_count": 134,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2202693036,
+          "external_aggregation_compressed_bytes": 0,
+          "telemetry_max_gap_seconds": 0.500910728000008,
+          "cpu_seconds": 329.802461,
+          "average_cpu_cores": 4.998294424321416,
+          "cpu_fraction": 0.277683023573412,
+          "container_sampled_peak_bytes": 43497455616,
+          "container_sampled_peak_anon_bytes": 8892141568,
+          "container_sampled_peak_file_bytes": 35034341376,
+          "sampled_scratch_used_peak_bytes": 25802952704,
+          "physical_read_bytes": 12288,
+          "physical_write_bytes": 1420320768,
+          "io_stall_fraction": 1.1038086118339627e-06,
+          "io_fraction": 0.018311126423711355,
+          "physical_iops": 96.01622856363923,
+          "physical_await_ms": 2.8456692913385826,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 6350,
+              "io_wait_ms": 18070,
+              "read_bytes": 12288,
+              "write_bytes": 1420320768,
+              "iops": 96.01622856363923,
+              "await_ms": 2.8456692913385826,
+              "utilization": 0.018311126423711355
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 66.13465343300004,
+          "physical_read_bytes_s": 185.80274277007857,
+          "physical_write_bytes_s": 21476195.8258223,
+          "container_average_cpu_cores": 5.14489817875447,
+          "container_throttled_cpu_seconds": 0.003001,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 5188230264,
+          "spill_compressed_bytes": 2207666483,
+          "telemetry_sample_count": 131,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2207666483,
+          "external_aggregation_compressed_bytes": 0,
+          "telemetry_max_gap_seconds": 0.5009379100000615,
+          "cpu_seconds": 326.556089,
+          "average_cpu_cores": 5.031293259379092,
+          "cpu_fraction": 0.27951629218772733,
+          "container_sampled_peak_bytes": 32697884672,
+          "container_sampled_peak_anon_bytes": 8563417088,
+          "container_sampled_peak_file_bytes": 24687177728,
+          "sampled_scratch_used_peak_bytes": 15451283456,
+          "physical_read_bytes": 4096,
+          "physical_write_bytes": 1139343360,
+          "io_stall_fraction": 4.303895025937646e-07,
+          "io_fraction": 0.014464161497883302,
+          "physical_iops": 76.53247619336979,
+          "physical_await_ms": 2.8461538461538463,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 4979,
+              "io_wait_ms": 14171,
+              "read_bytes": 4096,
+              "write_bytes": 1139343360,
+              "iops": 76.53247619336979,
+              "await_ms": 2.8461538461538463,
+              "utilization": 0.014464161497883302
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 65.05734882299998,
+          "physical_read_bytes_s": 62.95983580800213,
+          "physical_write_bytes_s": 17512907.928353876,
+          "container_average_cpu_cores": 5.163016001679594,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 5202704539,
+          "spill_compressed_bytes": 2203564335,
+          "telemetry_sample_count": 131,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2203564335,
+          "external_aggregation_compressed_bytes": 0,
+          "telemetry_max_gap_seconds": 0.5009685689999515,
+          "cpu_seconds": 324.46008,
+          "average_cpu_cores": 5.012901969872538,
+          "cpu_fraction": 0.27849455388180766,
+          "container_sampled_peak_bytes": 32984629248,
+          "container_sampled_peak_anon_bytes": 8825475072,
+          "container_sampled_peak_file_bytes": 24744349696,
+          "sampled_scratch_used_peak_bytes": 15508082688,
+          "physical_read_bytes": 32768,
+          "physical_write_bytes": 1231282176,
+          "io_stall_fraction": 7.706435925832568e-07,
+          "io_fraction": 0.01584443226351176,
+          "physical_iops": 82.41262579085347,
+          "physical_await_ms": 2.980923882550963,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 5347,
+              "io_wait_ms": 15939,
+              "read_bytes": 32768,
+              "write_bytes": 1231282176,
+              "iops": 82.41262579085347,
+              "await_ms": 2.980923882550963,
+              "utilization": 0.01584443226351176
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 64.8808352929999,
+          "physical_read_bytes_s": 505.0489848353631,
+          "physical_write_bytes_s": 18977594.391927395,
+          "container_average_cpu_cores": 5.1437174243039765,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        }
+      ],
+      "report_target_outcome": "FAIL_LATENCY"
+    },
+    "parallel_hash24": {
+      "state": "complete",
+      "query_memory_gib": 24,
+      "spill_gib": 8,
+      "join_algorithm": "parallel_hash",
+      "qa": {
+        "matched": true,
+        "rows": 838464,
+        "canonical_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+        "query_id": "5b2e82d4-b82d-41e0-9a58-20ae6ce3778a"
+      },
+      "raw_settings": [
+        {
+          "name": "max_threads",
+          "value": "'auto(18)'",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_before_external_group_by",
+          "value": "8589934592",
+          "changed": 1
+        },
+        {
+          "name": "max_bytes_before_external_sort",
+          "value": "8589934592",
+          "changed": 1
+        },
+        {
+          "name": "max_execution_time",
+          "value": "300",
+          "changed": 1
+        },
+        {
+          "name": "max_rows_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "join_overflow_mode",
+          "value": "throw",
+          "changed": 0
+        },
+        {
+          "name": "join_algorithm",
+          "value": "parallel_hash",
+          "changed": 1
+        },
+        {
+          "name": "default_max_bytes_in_join",
+          "value": "1000000000",
+          "changed": 0
+        },
+        {
+          "name": "partial_merge_join_rows_in_right_blocks",
+          "value": "65536",
+          "changed": 0
+        },
+        {
+          "name": "join_on_disk_max_files_to_merge",
+          "value": "64",
+          "changed": 0
+        },
+        {
+          "name": "max_memory_usage",
+          "value": "25769803776",
+          "changed": 1
+        }
+      ],
+      "effective_settings": {
+        "max_threads": 18,
+        "max_memory_usage": 25769803776,
+        "max_bytes_before_external_group_by": 8589934592,
+        "max_bytes_before_external_sort": 8589934592,
+        "join_algorithm": "parallel_hash"
+      },
+      "settings_verified": true,
+      "plan": "Expression (Project names)\nActions: INPUT : 0 -> uniqExact(__table1.work_id) UInt64 : 0\n         INPUT : 1 -> sum(__table1.cited_by_count) UInt64 : 1\n         INPUT : 2 -> __table1.publication_year Nullable(UInt16) : 2\n         INPUT : 3 -> __table3.topic_id UInt64 : 3\n         INPUT : 4 -> __table3.display_name String : 4\n         ALIAS uniqExact(__table1.work_id) :: 0 -> works UInt64 : 5\n         ALIAS sum(__table1.cited_by_count) :: 1 -> citations UInt64 : 0\n         ALIAS __table1.publication_year :: 2 -> publication_year Nullable(UInt16) : 1\n         ALIAS __table3.topic_id :: 3 -> t.topic_id UInt64 : 2\n         ALIAS __table3.display_name :: 4 -> display_name String : 3\nPositions: 1 2 3 5 0\n  Sorting (Sorting for ORDER BY)\n  Sort description: __table1.publication_year ASC, uniqExact(__table1.work_id) DESC\n    Expression ((Before ORDER BY + Projection))\n    Actions: INPUT :: 0 -> uniqExact(__table1.work_id) UInt64 : 0\n             INPUT :: 1 -> sum(__table1.cited_by_count) UInt64 : 1\n             INPUT :: 2 -> __table1.publication_year Nullable(UInt16) : 2\n             INPUT :: 3 -> __table3.topic_id UInt64 : 3\n             INPUT :: 4 -> __table3.display_name String : 4\n    Positions: 2 0 1 3 4\n      Aggregating\n      Keys: __table1.publication_year, __table3.topic_id, __table3.display_name\n      Aggregates:\n          uniqExact(__table1.work_id)\n            Function: uniqExact(UInt64) \u2192 UInt64\n            Arguments: __table1.work_id\n          sum(__table1.cited_by_count)\n            Function: sum(UInt32) \u2192 UInt64\n            Arguments: __table1.cited_by_count\n      Skip merging: 0\n        Expression\n        Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n                 INPUT :: 1 -> __table1.work_id UInt64 : 1\n                 INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n                 INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                 INPUT :: 4 -> __table3.display_name String : 4\n        Positions: 0 3 4 1 2\n          Join (JOIN FillRightFirst)\n          Type: INNER\n          Strictness: ALL\n          Algorithm: ConcurrentHashJoin\n          Clauses: [(__table1.work_id) = (__table2.work_id)]\n            Expression (Left Pre Join Actions)\n            Actions: INPUT :: 0 -> __table1.work_id UInt64 : 0\n                     INPUT :: 1 -> __table1.publication_year Nullable(UInt16) : 1\n                     INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n            Positions: 0 1 2\n              Expression\n              Actions: INPUT : 0 -> publication_year Nullable(UInt16) : 0\n                       INPUT : 2 -> cited_by_count UInt32 : 1\n                       INPUT : 1 -> work_id UInt64 : 2\n                       ALIAS publication_year :: 0 -> __table1.publication_year Nullable(UInt16) : 3\n                       ALIAS cited_by_count :: 1 -> __table1.cited_by_count UInt32 : 0\n                       ALIAS work_id :: 2 -> __table1.work_id UInt64 : 1\n              Positions: 3 1 0\n                ReadFromMergeTree (openalex_benchmark.works)\n                ReadType: Default\n                Parts: 5\n                Granules: 3895\n                Prewhere info\n                Need filter: 1\n                  Prewhere filter\n                  Prewhere filter column: __applyFilter(_runtime_filter_4668816842518648195_0, __table1.work_id) (removed)\n                  Actions: INPUT : 0 -> work_id UInt64 : 0\n                           COLUMN Const(String) -> _runtime_filter_4668816842518648195_0 String : 1\n                           FUNCTION __applyFilter(_runtime_filter_4668816842518648195_0 :: 1, work_id : 0) -> __applyFilter(_runtime_filter_4668816842518648195_0, __table1.work_id) UInt8 : 2\n                  Positions: 0 2\n            Expression (Right Pre Join Actions)\n            Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                     INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                     INPUT :: 2 -> __table3.display_name String : 2\n            Positions: 0 1 2\n              BuildRuntimeFilter (Build runtime join filter on __table2.work_id)\n              Filter id: _runtime_filter_4668816842518648195_0\n              Allow not exact filter: 1\n                Expression (Post Join Actions)\n                Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                         INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                         INPUT :: 2 -> __table3.display_name String : 2\n                Positions: 0 1 2\n                  Join (JOIN FillRightFirst)\n                  Type: INNER\n                  Strictness: ALL\n                  Algorithm: ConcurrentHashJoin\n                  Clauses: [(__table2.topic_id) = (__table3.topic_id)]\n                    Expression (Left Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table2.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table2.work_id UInt64 : 1\n                    Positions: 0 1\n                      Expression\n                      Actions: INPUT : 0 -> work_id UInt64 : 0\n                               INPUT : 1 -> topic_id UInt64 : 1\n                               ALIAS work_id :: 0 -> __table2.work_id UInt64 : 2\n                               ALIAS topic_id :: 1 -> __table2.topic_id UInt64 : 0\n                      Positions: 2 0\n                        ReadFromMergeTree (openalex_benchmark.work_topic)\n                        ReadType: Default\n                        Parts: 6\n                        Granules: 7887\n                        Prewhere info\n                        Need filter: 1\n                          Prewhere filter\n                          Prewhere filter column: __applyFilter(_runtime_filter_7185706861065256392_0, __table2.topic_id) (removed)\n                          Actions: INPUT : 0 -> topic_id UInt64 : 0\n                                   COLUMN Const(String) -> _runtime_filter_7185706861065256392_0 String : 1\n                                   FUNCTION __applyFilter(_runtime_filter_7185706861065256392_0 :: 1, topic_id : 0) -> __applyFilter(_runtime_filter_7185706861065256392_0, __table2.topic_id) UInt8 : 2\n                          Positions: 0 2\n                    Expression (Right Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table3.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table3.display_name String : 1\n                    Positions: 0 1\n                      BuildRuntimeFilter (Build runtime join filter on __table3.topic_id)\n                      Filter id: _runtime_filter_7185706861065256392_0\n                      Allow not exact filter: 1\n                        Expression (Change column names to column identifiers)\n                        Actions: INPUT : 0 -> topic_id UInt64 : 0\n                                 INPUT : 1 -> display_name String : 1\n                                 ALIAS topic_id :: 0 -> __table3.topic_id UInt64 : 2\n                                 ALIAS display_name :: 1 -> __table3.display_name String : 0\n                        Positions: 2 0\n                          ReadFromMergeTree (openalex_benchmark.topics)\n                          ReadType: Default\n                          Parts: 1\n                          Granules: 1",
+      "target_outcome": "PASS",
+      "warm_seconds": [
+        5.64,
+        5.66,
+        5.633
+      ],
+      "median_seconds": 5.64,
+      "max_seconds": 5.66,
+      "resources": [
+        {
+          "query_peak_bytes": 14257602964,
+          "spill_compressed_bytes": 597471384,
+          "telemetry_sample_count": 13,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 0,
+          "external_aggregation_compressed_bytes": 597471384,
+          "telemetry_max_gap_seconds": 0.500979142999995,
+          "cpu_seconds": 91.279124,
+          "average_cpu_cores": 16.18424184397163,
+          "cpu_fraction": 0.8991245468873128,
+          "container_sampled_peak_bytes": 37958242304,
+          "container_sampled_peak_anon_bytes": 14338527232,
+          "container_sampled_peak_file_bytes": 23174619136,
+          "sampled_scratch_used_peak_bytes": 13936205824,
+          "physical_read_bytes": 0,
+          "physical_write_bytes": 1392640,
+          "io_stall_fraction": 3.438303233085259e-07,
+          "io_fraction": 0.0006876606466170518,
+          "physical_iops": 2.406812263159681,
+          "physical_await_ms": 2.642857142857143,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 14,
+              "io_wait_ms": 37,
+              "read_bytes": 0,
+              "write_bytes": 1392640,
+              "iops": 2.406812263159681,
+              "await_ms": 2.642857142857143,
+              "utilization": 0.0006876606466170518
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 5.8168226140001025,
+          "physical_read_bytes_s": 0.0,
+          "physical_write_bytes_s": 239415.93072619275,
+          "container_average_cpu_cores": 15.964358922772949,
+          "container_throttled_cpu_seconds": 0.740287,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 14236720897,
+          "spill_compressed_bytes": 597501373,
+          "telemetry_sample_count": 13,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 0,
+          "external_aggregation_compressed_bytes": 597501373,
+          "telemetry_max_gap_seconds": 0.500990844999933,
+          "cpu_seconds": 90.943868,
+          "average_cpu_cores": 16.067821201413427,
+          "cpu_fraction": 0.892656733411857,
+          "container_sampled_peak_bytes": 38069764096,
+          "container_sampled_peak_anon_bytes": 14441312256,
+          "container_sampled_peak_file_bytes": 23180636160,
+          "sampled_scratch_used_peak_bytes": 13942181888,
+          "physical_read_bytes": 0,
+          "physical_write_bytes": 55275520,
+          "io_stall_fraction": 1.0331493402781778e-06,
+          "io_fraction": 0.015841623217598726,
+          "physical_iops": 52.34623324076101,
+          "physical_await_ms": 2.588815789473684,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 304,
+              "io_wait_ms": 787,
+              "read_bytes": 0,
+              "write_bytes": 55275520,
+              "iops": 52.34623324076101,
+              "await_ms": 2.588815789473684,
+              "utilization": 0.015841623217598726
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 5.807485680999889,
+          "physical_read_bytes_s": 0.0,
+          "physical_write_bytes_s": 9517977.836922204,
+          "container_average_cpu_cores": 15.946643192421117,
+          "container_throttled_cpu_seconds": 1.05344,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 14245112537,
+          "spill_compressed_bytes": 597567419,
+          "telemetry_sample_count": 13,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 0,
+          "external_aggregation_compressed_bytes": 597567419,
+          "telemetry_max_gap_seconds": 0.500942342999906,
+          "cpu_seconds": 91.151901,
+          "average_cpu_cores": 16.18176832948695,
+          "cpu_fraction": 0.8989871294159417,
+          "container_sampled_peak_bytes": 38088437760,
+          "container_sampled_peak_anon_bytes": 14456356864,
+          "container_sampled_peak_file_bytes": 23186608128,
+          "sampled_scratch_used_peak_bytes": 13948129280,
+          "physical_read_bytes": 0,
+          "physical_write_bytes": 5087232,
+          "io_stall_fraction": 2.8308031071440638e-05,
+          "io_fraction": 0.0010356596733453892,
+          "physical_iops": 3.797418802266427,
+          "physical_await_ms": 3.6818181818181817,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 22,
+              "io_wait_ms": 81,
+              "read_bytes": 0,
+              "write_bytes": 5087232,
+              "iops": 3.797418802266427,
+              "await_ms": 3.6818181818181817,
+              "utilization": 0.0010356596733453892
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 5.793408929999941,
+          "physical_read_bytes_s": 0.0,
+          "physical_write_bytes_s": 878106.8385587018,
+          "container_average_cpu_cores": 16.042269779841167,
+          "container_throttled_cpu_seconds": 0.887812,
+          "bottleneck": null
+        }
+      ],
+      "report_target_outcome": "PASS"
+    },
+    "preaggregate12": {
+      "state": "complete",
+      "query_memory_gib": 12,
+      "spill_gib": 4,
+      "join_algorithm": "auto",
+      "qa": {
+        "matched": true,
+        "rows": 838464,
+        "canonical_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+        "query_id": "e247a675-5c19-4c8e-8f3b-81ff9c41a65b"
+      },
+      "raw_settings": [
+        {
+          "name": "max_threads",
+          "value": "'auto(18)'",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_before_external_group_by",
+          "value": "4294967296",
+          "changed": 1
+        },
+        {
+          "name": "max_bytes_before_external_sort",
+          "value": "4294967296",
+          "changed": 1
+        },
+        {
+          "name": "max_execution_time",
+          "value": "300",
+          "changed": 1
+        },
+        {
+          "name": "max_rows_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "join_overflow_mode",
+          "value": "throw",
+          "changed": 0
+        },
+        {
+          "name": "join_algorithm",
+          "value": "auto",
+          "changed": 1
+        },
+        {
+          "name": "default_max_bytes_in_join",
+          "value": "1000000000",
+          "changed": 0
+        },
+        {
+          "name": "partial_merge_join_rows_in_right_blocks",
+          "value": "65536",
+          "changed": 0
+        },
+        {
+          "name": "join_on_disk_max_files_to_merge",
+          "value": "64",
+          "changed": 0
+        },
+        {
+          "name": "max_memory_usage",
+          "value": "12884901888",
+          "changed": 1
+        }
+      ],
+      "effective_settings": {
+        "max_threads": 18,
+        "max_memory_usage": 12884901888,
+        "max_bytes_before_external_group_by": 4294967296,
+        "max_bytes_before_external_sort": 4294967296,
+        "join_algorithm": "auto"
+      },
+      "settings_verified": true,
+      "plan": "Expression (Project names)\nActions: INPUT : 0 -> __table1.publication_year Nullable(UInt16) : 0\n         INPUT : 1 -> __table1.works UInt64 : 1\n         INPUT : 2 -> __table1.citations UInt64 : 2\n         INPUT : 3 -> __table4.topic_id UInt64 : 3\n         INPUT : 4 -> __table4.display_name String : 4\n         ALIAS __table1.publication_year :: 0 -> publication_year Nullable(UInt16) : 5\n         ALIAS __table1.works :: 1 -> works UInt64 : 0\n         ALIAS __table1.citations :: 2 -> citations UInt64 : 1\n         ALIAS __table4.topic_id :: 3 -> t.topic_id UInt64 : 2\n         ALIAS __table4.display_name :: 4 -> display_name String : 3\nPositions: 5 2 3 0 1\n  Sorting (Sorting for ORDER BY)\n  Sort description: __table1.publication_year ASC, __table4.topic_id ASC\n    Expression ((Before ORDER BY + Projection))\n    Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n             INPUT :: 1 -> __table1.works UInt64 : 1\n             INPUT :: 2 -> __table1.citations UInt64 : 2\n             INPUT :: 3 -> __table4.topic_id UInt64 : 3\n             INPUT :: 4 -> __table4.display_name String : 4\n    Positions: 0 3 1 2 4\n      Expression (Post Join Actions)\n      Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n               INPUT :: 1 -> __table1.works UInt64 : 1\n               INPUT :: 2 -> __table1.citations UInt64 : 2\n               INPUT :: 3 -> __table4.topic_id UInt64 : 3\n               INPUT :: 4 -> __table4.display_name String : 4\n      Positions: 0 1 2 3 4\n        Join (JOIN FillRightFirst)\n        Type: INNER\n        Strictness: ALL\n        Algorithm: JoinSwitcher\n        Clauses: [(__table1.topic_id) = (__table4.topic_id)]\n          Expression (Left Pre Join Actions)\n          Actions: INPUT :: 0 -> __table1.topic_id UInt64 : 0\n                   INPUT :: 1 -> __table1.publication_year Nullable(UInt16) : 1\n                   INPUT :: 2 -> __table1.works UInt64 : 2\n                   INPUT :: 3 -> __table1.citations UInt64 : 3\n          Positions: 0 1 2 3\n            Expression ((Change column names to column identifiers + (Project names + Projection)))\n            Actions: INPUT : 0 -> uniqExact(__table2.work_id) UInt64 : 0\n                     INPUT : 1 -> sum(__table2.cited_by_count) UInt64 : 1\n                     INPUT : 2 -> __table2.publication_year Nullable(UInt16) : 2\n                     INPUT : 3 -> __table3.topic_id UInt64 : 3\n                     ALIAS uniqExact(__table2.work_id) :: 0 -> works UInt64 : 4\n                     ALIAS sum(__table2.cited_by_count) :: 1 -> citations UInt64 : 0\n                     ALIAS __table2.publication_year :: 2 -> publication_year Nullable(UInt16) : 1\n                     ALIAS __table3.topic_id :: 3 -> topic_id UInt64 : 2\n                     ALIAS works :: 4 -> __table1.works UInt64 : 3\n                     ALIAS citations :: 0 -> __table1.citations UInt64 : 4\n                     ALIAS publication_year :: 1 -> __table1.publication_year Nullable(UInt16) : 0\n                     ALIAS topic_id :: 2 -> __table1.topic_id UInt64 : 1\n            Positions: 0 1 3 4\n              Aggregating\n              Keys: __table2.publication_year, __table3.topic_id\n              Aggregates:\n                  uniqExact(__table2.work_id)\n                    Function: uniqExact(UInt64) \u2192 UInt64\n                    Arguments: __table2.work_id\n                  sum(__table2.cited_by_count)\n                    Function: sum(UInt32) \u2192 UInt64\n                    Arguments: __table2.cited_by_count\n              Skip merging: 0\n                Expression (Before GROUP BY)\n                Actions: INPUT :: 0 -> __table2.publication_year Nullable(UInt16) : 0\n                         INPUT :: 1 -> __table2.work_id UInt64 : 1\n                         INPUT :: 2 -> __table2.cited_by_count UInt32 : 2\n                         INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                Positions: 0 3 1 2\n                  Expression (Post Join Actions)\n                  Actions: INPUT :: 0 -> __table2.publication_year Nullable(UInt16) : 0\n                           INPUT :: 1 -> __table2.work_id UInt64 : 1\n                           INPUT :: 2 -> __table2.cited_by_count UInt32 : 2\n                           INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                  Positions: 0 1 2 3\n                    Join (JOIN FillRightFirst)\n                    Type: INNER\n                    Strictness: ALL\n                    Algorithm: JoinSwitcher\n                    Clauses: [(__table3.work_id) = (__table2.work_id)]\n                      Expression (Left Pre Join Actions)\n                      Actions: INPUT :: 0 -> __table3.work_id UInt64 : 0\n                               INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                      Positions: 0 1\n                        Expression (Change column names to column identifiers)\n                        Actions: INPUT : 0 -> topic_id UInt64 : 0\n                                 INPUT : 1 -> work_id UInt64 : 1\n                                 ALIAS topic_id :: 0 -> __table3.topic_id UInt64 : 2\n                                 ALIAS work_id :: 1 -> __table3.work_id UInt64 : 0\n                        Positions: 2 0\n                          ReadFromMergeTree (openalex_benchmark.work_topic)\n                          ReadType: Default\n                          Parts: 6\n                          Granules: 7887\n                      Expression (Right Pre Join Actions)\n                      Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                               INPUT :: 1 -> __table2.publication_year Nullable(UInt16) : 1\n                               INPUT :: 2 -> __table2.cited_by_count UInt32 : 2\n                      Positions: 0 1 2\n                        Expression (Change column names to column identifiers)\n                        Actions: INPUT : 0 -> publication_year Nullable(UInt16) : 0\n                                 INPUT : 1 -> work_id UInt64 : 1\n                                 INPUT : 2 -> cited_by_count UInt32 : 2\n                                 ALIAS publication_year :: 0 -> __table2.publication_year Nullable(UInt16) : 3\n                                 ALIAS work_id :: 1 -> __table2.work_id UInt64 : 0\n                                 ALIAS cited_by_count :: 2 -> __table2.cited_by_count UInt32 : 1\n                        Positions: 3 0 1\n                          ReadFromMergeTree (openalex_benchmark.works)\n                          ReadType: Default\n                          Parts: 5\n                          Granules: 3895\n          Expression (Right Pre Join Actions)\n          Actions: INPUT :: 0 -> __table4.topic_id UInt64 : 0\n                   INPUT :: 1 -> __table4.display_name String : 1\n          Positions: 0 1\n            Expression (Change column names to column identifiers)\n            Actions: INPUT : 0 -> topic_id UInt64 : 0\n                     INPUT : 1 -> display_name String : 1\n                     ALIAS topic_id :: 0 -> __table4.topic_id UInt64 : 2\n                     ALIAS display_name :: 1 -> __table4.display_name String : 0\n            Positions: 2 0\n              ReadFromMergeTree (openalex_benchmark.topics)\n              ReadType: Default\n              Parts: 1\n              Granules: 1",
+      "target_outcome": "PASS",
+      "warm_seconds": [
+        9.248,
+        9.3,
+        9.258
+      ],
+      "median_seconds": 9.258,
+      "max_seconds": 9.3,
+      "resources": [
+        {
+          "query_peak_bytes": 4003234504,
+          "spill_compressed_bytes": 0,
+          "telemetry_sample_count": 20,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 0,
+          "external_aggregation_compressed_bytes": 0,
+          "telemetry_max_gap_seconds": 0.5009369869999318,
+          "cpu_seconds": 60.771504,
+          "average_cpu_cores": 6.571313148788928,
+          "cpu_fraction": 0.36507295271049595,
+          "container_sampled_peak_bytes": 27974066176,
+          "container_sampled_peak_anon_bytes": 6080593920,
+          "container_sampled_peak_file_bytes": 21516521472,
+          "sampled_scratch_used_peak_bytes": 12277104640,
+          "physical_read_bytes": 0,
+          "physical_write_bytes": 3366912,
+          "io_stall_fraction": 2.126382046396694e-07,
+          "io_fraction": 0.0009568719208785123,
+          "physical_iops": 2.232701148716529,
+          "physical_await_ms": 2.2857142857142856,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 21,
+              "io_wait_ms": 48,
+              "read_bytes": 0,
+              "write_bytes": 3366912,
+              "iops": 2.232701148716529,
+              "await_ms": 2.2857142857142856,
+              "utilization": 0.0009568719208785123
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 9.405647510000108,
+          "physical_read_bytes_s": 0.0,
+          "physical_write_bytes_s": 357967.0614298793,
+          "container_average_cpu_cores": 6.64855491698086,
+          "container_throttled_cpu_seconds": 0.394335,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 4014351331,
+          "spill_compressed_bytes": 0,
+          "telemetry_sample_count": 20,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 0,
+          "external_aggregation_compressed_bytes": 0,
+          "telemetry_max_gap_seconds": 0.5009649430000991,
+          "cpu_seconds": 60.76143,
+          "average_cpu_cores": 6.533487096774193,
+          "cpu_fraction": 0.36297150537634404,
+          "container_sampled_peak_bytes": 28403253248,
+          "container_sampled_peak_anon_bytes": 6500540416,
+          "container_sampled_peak_file_bytes": 21521539072,
+          "sampled_scratch_used_peak_bytes": 12282048512,
+          "physical_read_bytes": 4096,
+          "physical_write_bytes": 3395584,
+          "io_stall_fraction": 6.34577679663225e-07,
+          "io_fraction": 0.0009518665194948374,
+          "physical_iops": 2.4325477720423625,
+          "physical_await_ms": 2.739130434782609,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 23,
+              "io_wait_ms": 63,
+              "read_bytes": 4096,
+              "write_bytes": 3395584,
+              "iops": 2.4325477720423625,
+              "await_ms": 2.739130434782609,
+              "utilization": 0.0009518665194948374
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 9.455107218999956,
+          "physical_read_bytes_s": 433.20502931676157,
+          "physical_write_bytes_s": 359126.96930359537,
+          "container_average_cpu_cores": 6.599777089212116,
+          "container_throttled_cpu_seconds": 0.445089,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 4002427292,
+          "spill_compressed_bytes": 0,
+          "telemetry_sample_count": 20,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 0,
+          "external_aggregation_compressed_bytes": 0,
+          "telemetry_max_gap_seconds": 0.5009625689999666,
+          "cpu_seconds": 60.970922,
+          "average_cpu_cores": 6.585755238712466,
+          "cpu_fraction": 0.36587529103958144,
+          "container_sampled_peak_bytes": 28478078976,
+          "container_sampled_peak_anon_bytes": 6568153088,
+          "container_sampled_peak_file_bytes": 21526765568,
+          "sampled_scratch_used_peak_bytes": 12287184896,
+          "physical_read_bytes": 4096,
+          "physical_write_bytes": 5070848,
+          "io_stall_fraction": 6.371293594047793e-07,
+          "io_fraction": 0.0013804469453770217,
+          "physical_iops": 3.9289643829961385,
+          "physical_await_ms": 2.5135135135135136,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 37,
+              "io_wait_ms": 93,
+              "read_bytes": 4096,
+              "write_bytes": 5070848,
+              "iops": 3.9289643829961385,
+              "await_ms": 2.5135135135135136,
+              "utilization": 0.0013804469453770217
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 9.41723986099987,
+          "physical_read_bytes_s": 434.9469760203293,
+          "physical_write_bytes_s": 538464.3563131677,
+          "container_average_cpu_cores": 6.6597179137095,
+          "container_throttled_cpu_seconds": 0.438543,
+          "bottleneck": null
+        }
+      ],
+      "report_target_outcome": "PASS"
+    },
+    "original_b": {
+      "state": "complete",
+      "query_memory_gib": 12,
+      "spill_gib": 4,
+      "join_algorithm": "auto",
+      "qa": {
+        "matched": true,
+        "rows": 838464,
+        "canonical_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+        "query_id": "46b2021d-3d51-427f-95b1-c9bb01ed69c6"
+      },
+      "raw_settings": [
+        {
+          "name": "max_threads",
+          "value": "'auto(18)'",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_before_external_group_by",
+          "value": "4294967296",
+          "changed": 1
+        },
+        {
+          "name": "max_bytes_before_external_sort",
+          "value": "4294967296",
+          "changed": 1
+        },
+        {
+          "name": "max_execution_time",
+          "value": "300",
+          "changed": 1
+        },
+        {
+          "name": "max_rows_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "max_bytes_in_join",
+          "value": "0",
+          "changed": 0
+        },
+        {
+          "name": "join_overflow_mode",
+          "value": "throw",
+          "changed": 0
+        },
+        {
+          "name": "join_algorithm",
+          "value": "auto",
+          "changed": 1
+        },
+        {
+          "name": "default_max_bytes_in_join",
+          "value": "1000000000",
+          "changed": 0
+        },
+        {
+          "name": "partial_merge_join_rows_in_right_blocks",
+          "value": "65536",
+          "changed": 0
+        },
+        {
+          "name": "join_on_disk_max_files_to_merge",
+          "value": "64",
+          "changed": 0
+        },
+        {
+          "name": "max_memory_usage",
+          "value": "12884901888",
+          "changed": 1
+        }
+      ],
+      "effective_settings": {
+        "max_threads": 18,
+        "max_memory_usage": 12884901888,
+        "max_bytes_before_external_group_by": 4294967296,
+        "max_bytes_before_external_sort": 4294967296,
+        "join_algorithm": "auto"
+      },
+      "settings_verified": true,
+      "plan": "Expression (Project names)\nActions: INPUT : 0 -> uniqExact(__table1.work_id) UInt64 : 0\n         INPUT : 1 -> sum(__table1.cited_by_count) UInt64 : 1\n         INPUT : 2 -> __table1.publication_year Nullable(UInt16) : 2\n         INPUT : 3 -> __table3.topic_id UInt64 : 3\n         INPUT : 4 -> __table3.display_name String : 4\n         ALIAS uniqExact(__table1.work_id) :: 0 -> works UInt64 : 5\n         ALIAS sum(__table1.cited_by_count) :: 1 -> citations UInt64 : 0\n         ALIAS __table1.publication_year :: 2 -> publication_year Nullable(UInt16) : 1\n         ALIAS __table3.topic_id :: 3 -> t.topic_id UInt64 : 2\n         ALIAS __table3.display_name :: 4 -> display_name String : 3\nPositions: 1 2 3 5 0\n  Sorting (Sorting for ORDER BY)\n  Sort description: __table1.publication_year ASC, uniqExact(__table1.work_id) DESC\n    Expression ((Before ORDER BY + Projection))\n    Actions: INPUT :: 0 -> uniqExact(__table1.work_id) UInt64 : 0\n             INPUT :: 1 -> sum(__table1.cited_by_count) UInt64 : 1\n             INPUT :: 2 -> __table1.publication_year Nullable(UInt16) : 2\n             INPUT :: 3 -> __table3.topic_id UInt64 : 3\n             INPUT :: 4 -> __table3.display_name String : 4\n    Positions: 2 0 1 3 4\n      Aggregating\n      Keys: __table1.publication_year, __table3.topic_id, __table3.display_name\n      Aggregates:\n          uniqExact(__table1.work_id)\n            Function: uniqExact(UInt64) \u2192 UInt64\n            Arguments: __table1.work_id\n          sum(__table1.cited_by_count)\n            Function: sum(UInt32) \u2192 UInt64\n            Arguments: __table1.cited_by_count\n      Skip merging: 0\n        Expression (Before GROUP BY)\n        Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n                 INPUT :: 1 -> __table1.work_id UInt64 : 1\n                 INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n                 INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                 INPUT :: 4 -> __table3.display_name String : 4\n        Positions: 0 3 4 1 2\n          Expression (Post Join Actions)\n          Actions: INPUT :: 0 -> __table1.publication_year Nullable(UInt16) : 0\n                   INPUT :: 1 -> __table1.work_id UInt64 : 1\n                   INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n                   INPUT :: 3 -> __table3.topic_id UInt64 : 3\n                   INPUT :: 4 -> __table3.display_name String : 4\n          Positions: 0 1 2 3 4\n            Join (JOIN FillRightFirst)\n            Type: INNER\n            Strictness: ALL\n            Algorithm: JoinSwitcher\n            Clauses: [(__table1.work_id) = (__table2.work_id)]\n              Expression (Left Pre Join Actions)\n              Actions: INPUT :: 0 -> __table1.work_id UInt64 : 0\n                       INPUT :: 1 -> __table1.publication_year Nullable(UInt16) : 1\n                       INPUT :: 2 -> __table1.cited_by_count UInt32 : 2\n              Positions: 0 1 2\n                Expression (Change column names to column identifiers)\n                Actions: INPUT : 0 -> publication_year Nullable(UInt16) : 0\n                         INPUT : 1 -> work_id UInt64 : 1\n                         INPUT : 2 -> cited_by_count UInt32 : 2\n                         ALIAS publication_year :: 0 -> __table1.publication_year Nullable(UInt16) : 3\n                         ALIAS work_id :: 1 -> __table1.work_id UInt64 : 0\n                         ALIAS cited_by_count :: 2 -> __table1.cited_by_count UInt32 : 1\n                Positions: 3 0 1\n                  ReadFromMergeTree (openalex_benchmark.works)\n                  ReadType: Default\n                  Parts: 5\n                  Granules: 3895\n              Expression (Right Pre Join Actions)\n              Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                       INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                       INPUT :: 2 -> __table3.display_name String : 2\n              Positions: 0 1 2\n                Expression (Post Join Actions)\n                Actions: INPUT :: 0 -> __table2.work_id UInt64 : 0\n                         INPUT :: 1 -> __table3.topic_id UInt64 : 1\n                         INPUT :: 2 -> __table3.display_name String : 2\n                Positions: 0 1 2\n                  Join (JOIN FillRightFirst)\n                  Type: INNER\n                  Strictness: ALL\n                  Algorithm: JoinSwitcher\n                  Clauses: [(__table2.topic_id) = (__table3.topic_id)]\n                    Expression (Left Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table2.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table2.work_id UInt64 : 1\n                    Positions: 0 1\n                      Expression (Change column names to column identifiers)\n                      Actions: INPUT : 0 -> work_id UInt64 : 0\n                               INPUT : 1 -> topic_id UInt64 : 1\n                               ALIAS work_id :: 0 -> __table2.work_id UInt64 : 2\n                               ALIAS topic_id :: 1 -> __table2.topic_id UInt64 : 0\n                      Positions: 2 0\n                        ReadFromMergeTree (openalex_benchmark.work_topic)\n                        ReadType: Default\n                        Parts: 6\n                        Granules: 7887\n                    Expression (Right Pre Join Actions)\n                    Actions: INPUT :: 0 -> __table3.topic_id UInt64 : 0\n                             INPUT :: 1 -> __table3.display_name String : 1\n                    Positions: 0 1\n                      Expression (Change column names to column identifiers)\n                      Actions: INPUT : 0 -> topic_id UInt64 : 0\n                               INPUT : 1 -> display_name String : 1\n                               ALIAS topic_id :: 0 -> __table3.topic_id UInt64 : 2\n                               ALIAS display_name :: 1 -> __table3.display_name String : 0\n                      Positions: 2 0\n                        ReadFromMergeTree (openalex_benchmark.topics)\n                        ReadType: Default\n                        Parts: 1\n                        Granules: 1",
+      "target_outcome": "FAIL_LATENCY",
+      "warm_seconds": [
+        65.033,
+        65.796,
+        64.994
+      ],
+      "median_seconds": 65.033,
+      "max_seconds": 65.796,
+      "resources": [
+        {
+          "query_peak_bytes": 4333736525,
+          "spill_compressed_bytes": 2679918614,
+          "telemetry_sample_count": 132,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2209852219,
+          "external_aggregation_compressed_bytes": 470066395,
+          "telemetry_max_gap_seconds": 0.5009575619999396,
+          "cpu_seconds": 313.992287,
+          "average_cpu_cores": 4.828199329571141,
+          "cpu_fraction": 0.2682332960872856,
+          "container_sampled_peak_bytes": 31632216064,
+          "container_sampled_peak_anon_bytes": 8350314496,
+          "container_sampled_peak_file_bytes": 23744712704,
+          "sampled_scratch_used_peak_bytes": 14505631744,
+          "physical_read_bytes": 20480,
+          "physical_write_bytes": 1605480448,
+          "io_stall_fraction": 2.6539404435071694e-06,
+          "io_fraction": 0.025220104561420733,
+          "physical_iops": 104.08662375257887,
+          "physical_await_ms": 4.2921149594694175,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 6785,
+              "io_wait_ms": 29122,
+              "read_bytes": 20480,
+              "write_bytes": 1605480448,
+              "iops": 104.08662375257887,
+              "await_ms": 4.2921149594694175,
+              "utilization": 0.025220104561420733
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 65.18608977200006,
+          "physical_read_bytes_s": 314.17745828339207,
+          "physical_write_bytes_s": 24629187.816226643,
+          "container_average_cpu_cores": 4.959585030039156,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 4322505583,
+          "spill_compressed_bytes": 2672579755,
+          "telemetry_sample_count": 133,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2202189265,
+          "external_aggregation_compressed_bytes": 470390490,
+          "telemetry_max_gap_seconds": 0.5008709979999821,
+          "cpu_seconds": 324.39446,
+          "average_cpu_cores": 4.930306705574806,
+          "cpu_fraction": 0.2739059280874892,
+          "container_sampled_peak_bytes": 31592202240,
+          "container_sampled_peak_anon_bytes": 8267968512,
+          "container_sampled_peak_file_bytes": 23766540288,
+          "sampled_scratch_used_peak_bytes": 14526971904,
+          "physical_read_bytes": 12288,
+          "physical_write_bytes": 1919217664,
+          "io_stall_fraction": 3.596284533426678e-05,
+          "io_fraction": 0.03421928411443513,
+          "physical_iops": 121.32153809645985,
+          "physical_await_ms": 5.112096975756061,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 8002,
+              "io_wait_ms": 40907,
+              "read_bytes": 12288,
+              "write_bytes": 1919217664,
+              "iops": 121.32153809645985,
+              "await_ms": 5.112096975756061,
+              "utilization": 0.03421928411443513
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 65.95696135699995,
+          "physical_read_bytes_s": 186.30330668948994,
+          "physical_write_bytes_s": 29098030.35970691,
+          "container_average_cpu_cores": 5.06007445057321,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        },
+        {
+          "query_peak_bytes": 4328889379,
+          "spill_compressed_bytes": 2677552957,
+          "telemetry_sample_count": 132,
+          "allocated_cpus": 18,
+          "external_join_compressed_bytes": 2205151178,
+          "external_aggregation_compressed_bytes": 472401779,
+          "telemetry_max_gap_seconds": 0.5010072669999772,
+          "cpu_seconds": 312.813556,
+          "average_cpu_cores": 4.812960519432563,
+          "cpu_fraction": 0.26738669552403127,
+          "container_sampled_peak_bytes": 31740157952,
+          "container_sampled_peak_anon_bytes": 8449900544,
+          "container_sampled_peak_file_bytes": 23797702656,
+          "sampled_scratch_used_peak_bytes": 14556790784,
+          "physical_read_bytes": 8192,
+          "physical_write_bytes": 1187262464,
+          "io_stall_fraction": 3.2343703764154e-05,
+          "io_fraction": 0.016118124799412294,
+          "physical_iops": 79.93054841003791,
+          "physical_await_ms": 3.7987324755137317,
+          "disk_windows": [
+            {
+              "device": "nvme0n1",
+              "operations": 5207,
+              "io_wait_ms": 19780,
+              "read_bytes": 8192,
+              "write_bytes": 1187262464,
+              "iops": 79.93054841003791,
+              "await_ms": 3.7987324755137317,
+              "utilization": 0.016118124799412294
+            },
+            {
+              "device": "nvme1n1",
+              "operations": 0,
+              "io_wait_ms": 0,
+              "read_bytes": 0,
+              "write_bytes": 0,
+              "iops": 0.0,
+              "await_ms": null,
+              "utilization": 0.0
+            }
+          ],
+          "telemetry_window_seconds": 65.14405447700005,
+          "physical_read_bytes_s": 125.75207462551,
+          "physical_write_bytes_s": 18225185.29943785,
+          "container_average_cpu_cores": 4.946622536578101,
+          "container_throttled_cpu_seconds": 0.0,
+          "bottleneck": null
+        }
+      ],
+      "report_target_outcome": "FAIL_LATENCY"
+    }
+  },
+  "compute_teardown_verified": true,
+  "same_ubuntu_ami": true,
+  "same_oci_image": true,
+  "clickhouse_image": {
+    "image": "clickhouse/clickhouse-server:26.3.12.3",
+    "repo_digests": [
+      "clickhouse/clickhouse-server@sha256:22886e23b57e292195cea15d1af0bba5df90e489b7093c39c85d9d63091bb09c"
+    ],
+    "image_id": "sha256:22886e23b57e292195cea15d1af0bba5df90e489b7093c39c85d9d63091bb09c",
+    "image_architecture": "arm64",
+    "resource_limits": {
+      "docker_memory_bytes": 132643467264,
+      "docker_cpus": 32,
+      "memory_bytes": 53687091200,
+      "nano_cpus": 17999998976
+    }
+  },
+  "repository_commit": "0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d",
+  "deployed_tuning_payload_sha256": "2981b06a0a9333227505f16edd602409634d486b64dbf0ec0f8cd02adde6ae9a"
+}

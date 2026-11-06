@@ -1,0 +1,1 @@
+BLOCK. The timing chart does not say that its values are **warm medians**, and “EC2 baseline” does not identify the measured path as **normalized ClickHouse** while Athena is labeled raw Parquet. Add those qualifications beside the timing controls so the comparison is clear.

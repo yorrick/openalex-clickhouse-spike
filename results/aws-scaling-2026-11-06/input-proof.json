@@ -1,0 +1,18 @@
+{
+  "snapshot_date": "2026-06-26",
+  "manifest_identity": "777330c48ef28c1c40a3ca9bf5d13b00847b427a4550ee3250aec558c85a13ea",
+  "file_count": 2771,
+  "bytes": 98301763421,
+  "every_server_copy_full_object_sha256_matches": true,
+  "every_ec2_filesystem_readback_sha256_and_footer_count_matches": true,
+  "raw_download_seconds": 1402.649967288,
+  "retained_raw_ebs_gib": 120,
+  "retained_raw_estimated_usd_month": 9.6,
+  "data_path": "S3 server-side historical version copy for Athena; direct OpenAlex version downloads into EC2 EBS",
+  "full_snapshot": {
+    "works": 510372821,
+    "works_bytes": 724970323127,
+    "all_entity_records": 630105216,
+    "all_parquet_bytes": 778038940204
+  }
+}

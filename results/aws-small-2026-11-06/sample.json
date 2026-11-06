@@ -1,0 +1,1879 @@
+{
+  "format": "OpenAlex Parquet",
+  "compression": "SNAPPY",
+  "total_files": 231,
+  "total_compressed_bytes": 2759247641,
+  "total_entity_records": 1973822,
+  "entities": {
+    "works": {
+      "files": 6,
+      "records": 1557222,
+      "compressed_bytes": 2503889158
+    },
+    "institutions": {
+      "files": 83,
+      "records": 143455,
+      "compressed_bytes": 94074125
+    },
+    "sources": {
+      "files": 136,
+      "records": 268629,
+      "compressed_bytes": 155714195
+    },
+    "topics": {
+      "files": 6,
+      "records": 4516,
+      "compressed_bytes": 5570163
+    }
+  },
+  "objects": [
+    {
+      "entity": "works",
+      "url": "s3://openalex/data/parquet/works/updated_date=2026-07-02/part_0007.parquet",
+      "bytes": 219902723,
+      "rows": 216623,
+      "etag": "\"56d8300f939cf51a026c9a45c76160f4-4\"",
+      "sha256": "f2f87a1dff6f08903b84df07f12b39ecaef9b93f45c4c0d183f65ed7ba58fb90"
+    },
+    {
+      "entity": "works",
+      "url": "s3://openalex/data/parquet/works/updated_date=2026-09-11/part_0013.parquet",
+      "bytes": 356626954,
+      "rows": 226274,
+      "etag": "\"8ef2f53ef32fb83621cd3639f05a06b8-6\"",
+      "sha256": "e67780b0308b76160f6b5e2c66409c9a4594695661855167dccdcf6ef1aa2ee2"
+    },
+    {
+      "entity": "works",
+      "url": "s3://openalex/data/parquet/works/updated_date=2026-10-10/part_0038.parquet",
+      "bytes": 511293723,
+      "rows": 400000,
+      "etag": "\"0c9240dab2a2ba27a1914bd9ca50dd88-8\"",
+      "sha256": "045998637f6a780d95b0e516683c5b311e12f9dabec093d17ebcee08efa79f4a"
+    },
+    {
+      "entity": "works",
+      "url": "s3://openalex/data/parquet/works/updated_date=2026-10-14/part_0123.parquet",
+      "bytes": 531099630,
+      "rows": 232350,
+      "etag": "\"018ed0cb8310a84186aaaa61f99c1d02-8\"",
+      "sha256": "e27b1c8a8a5a1952730fc38dba013625cec5f1ea60c978fe8b13a943efcf27b7"
+    },
+    {
+      "entity": "works",
+      "url": "s3://openalex/data/parquet/works/updated_date=2026-07-02/part_0008.parquet",
+      "bytes": 219296765,
+      "rows": 215961,
+      "etag": "\"0b9f80cf4d2c4c71d913499782c6db8f-4\"",
+      "sha256": "73443b77869efeba69256c920bff63927c7cf688d72cceb56aef179f07f8f5ba"
+    },
+    {
+      "entity": "works",
+      "url": "s3://openalex/data/parquet/works/updated_date=2026-09-27/part_0009.parquet",
+      "bytes": 665669363,
+      "rows": 266014,
+      "etag": "\"f7f2f2e2d6d7397592bbd6ebaf5cc6a5-10\"",
+      "sha256": "97d0fc3bba9f15332a297c311456129462475c35d2df3e3c0e59552a1c4c5a79"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-02-06/part_0000.parquet",
+      "bytes": 753582,
+      "rows": 4124,
+      "etag": "\"40ee4081b70a4b1b2fdf47d6409c6665\"",
+      "sha256": "362bb42a95cc9d8bd03a8cb0f547ae7ae847be81acb54917624e45958308528c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-02-09/part_0000.parquet",
+      "bytes": 23023,
+      "rows": 1,
+      "etag": "\"f56d0a69bfc7602dbf0ab78175d4e15f\"",
+      "sha256": "bb216d4877c4d65b17cafbd86eb84bae0e56053ab7497773ff5e6e43a5c57add"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-02-22/part_0000.parquet",
+      "bytes": 23179,
+      "rows": 1,
+      "etag": "\"657aeadd2de98765ef9dd310bc994e38\"",
+      "sha256": "722a1f8530818566d0dfa5a21e5a75df1b047956fa59c778a341538f0ec7ef3b"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-02-26/part_0000.parquet",
+      "bytes": 31044,
+      "rows": 26,
+      "etag": "\"8999e547930d316890f052b9eb79ef45\"",
+      "sha256": "cd229c2256e8b58bac32cf5ec9ddf5995de7ef8da0bb9fd731bd1033f5bfa552"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-03-08/part_0000.parquet",
+      "bytes": 24754,
+      "rows": 10,
+      "etag": "\"dac9c2a516cbe803f31068b1e34237cf\"",
+      "sha256": "e86ea0921b33c4e9294b150c412adaa9c30176bf5583768a44b2b2caa7f2c81c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-03-14/part_0000.parquet",
+      "bytes": 28774,
+      "rows": 18,
+      "etag": "\"93c8c7ca66093d13cce320a9faa935d0\"",
+      "sha256": "7d5c5e0b450320126984b9880f2db2c9ac63f8a9e538cd4d3564ff19e2d8fcad"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-03-18/part_0000.parquet",
+      "bytes": 22946,
+      "rows": 1,
+      "etag": "\"6169d2748946629b3501019111e89f22\"",
+      "sha256": "460c9deefe9d763e824de35e156b1dd85cef499ad0b0d4abb6067f78c67c9a40"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-03-19/part_0000.parquet",
+      "bytes": 23461,
+      "rows": 1,
+      "etag": "\"d4d7038cf8dcfbcf95013fbd825dd8e1\"",
+      "sha256": "ab4796fc32425c4363e5f59c55d36baf23de3589230c57570b0c88120120b66c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-03-28/part_0000.parquet",
+      "bytes": 23282,
+      "rows": 1,
+      "etag": "\"9d6333b0a0687ab9fcb976df2e9d4a73\"",
+      "sha256": "53d4638876607b5ae8b2c507e0d17ed39b0e7d163018fde7ef5fcbb7afc6fc0c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-04-02/part_0000.parquet",
+      "bytes": 48698,
+      "rows": 136,
+      "etag": "\"a9ba54e60709eef73dc379117eebc6c0\"",
+      "sha256": "537569288a59ddad9c883c9e242864756519a1227c4ed509a2c6e574f821ec64"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-04-14/part_0000.parquet",
+      "bytes": 23183,
+      "rows": 1,
+      "etag": "\"118dd4f6785d3541b52d100b89fd681f\"",
+      "sha256": "8951cdc05076bbbbcd98a436901ab8ececd7a899d183758b4dfedc834b3e03f9"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-04-16/part_0000.parquet",
+      "bytes": 53896,
+      "rows": 183,
+      "etag": "\"76b934603243447d3d94e566c59bc5d9\"",
+      "sha256": "126af8ecd8aa7ddec5e64eb109281da98e3698f7826a1f943d04cdab79e2414d"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-05-05/part_0000.parquet",
+      "bytes": 23135,
+      "rows": 1,
+      "etag": "\"83a8962901a3201e9fe3f327047d7fc6\"",
+      "sha256": "d0537984f6b94b9c9c6947d283958bb0f51590f08d4d504c5b2dfd20f071e625"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-05-14/part_0000.parquet",
+      "bytes": 55164,
+      "rows": 157,
+      "etag": "\"a3789f35c8801ee3c168edf5e9c35648\"",
+      "sha256": "43d71cf377b3660f7b23af31e4a70fc46bbaa5c64616bd61d2188d21bc56c30a"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-06-04/part_0000.parquet",
+      "bytes": 36206,
+      "rows": 55,
+      "etag": "\"f6ad07ea145ed2c18c9ea5668bf9c1a8\"",
+      "sha256": "617bba0fb0d22a1a0a1f6f67ae65faf97e876b4891a16eca3aaefb20609d90b5"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-06-17/part_0000.parquet",
+      "bytes": 23325,
+      "rows": 1,
+      "etag": "\"4591c251df193170efb08b5e5364bdf7\"",
+      "sha256": "7a3a7e241f0b859029e1b3c6f1222dc69d2acfdf0747d9fa6dc0a5829859b267"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-06-25/part_0000.parquet",
+      "bytes": 108967,
+      "rows": 451,
+      "etag": "\"fecec6d3b8af9dad6087d6e48eec7c90\"",
+      "sha256": "f042314b637e07d02b1dd0bd1c80a894f6a2d8d92ab2ef7e1f479b464255509c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-07-10/part_0000.parquet",
+      "bytes": 25423,
+      "rows": 10,
+      "etag": "\"12fd9962c10b42adaa5b85d028d582dc\"",
+      "sha256": "31156da052811c8f74e2c3c2b0a15e03bd00e2ab31a74d747d7bbcf0d46ec1d0"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-07-16/part_0000.parquet",
+      "bytes": 50695,
+      "rows": 135,
+      "etag": "\"1201485fe373119af6107b2499dbcd5a\"",
+      "sha256": "52bac5a7370626b126c5916823c33f3082762a8e1ddbf3c1aea42c986a6a18e1"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-07-18/part_0000.parquet",
+      "bytes": 23314,
+      "rows": 2,
+      "etag": "\"bda56d904abb85278150d77edbd9e8ad\"",
+      "sha256": "b38756a27c2bafa3f2dfe406a2413bf60b4edf6f525c04e5ea3acbb6ab82384c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-07-20/part_0000.parquet",
+      "bytes": 23097,
+      "rows": 1,
+      "etag": "\"b2a1a39c12b691c41ebbd369516619fb\"",
+      "sha256": "b008da53cd174615ed48a849e67cbb256f1450380b97a4edcba59ae1ed6ef957"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-07-22/part_0000.parquet",
+      "bytes": 162958,
+      "rows": 776,
+      "etag": "\"96348f484dbe45fbd812bd7d9cec68fa\"",
+      "sha256": "9d2fb5990d1d7e4507770e848ebe6c566020422f73c261a3a35924ca9dd6410a"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-07-30/part_0000.parquet",
+      "bytes": 27395,
+      "rows": 13,
+      "etag": "\"d924f7f41b23f922c5e9260274800014\"",
+      "sha256": "483e36f620fd142894c17a11b3996de460a81f18c8457d3ee960c3ba78f1b9ed"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-07-31/part_0000.parquet",
+      "bytes": 24684,
+      "rows": 9,
+      "etag": "\"f85618424a0cc4f6d1a123de03516df9\"",
+      "sha256": "7c8d68e3c0c2c21415eec8ebf4235ed757fcaac2600794554853b3554a1451a0"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-01/part_0000.parquet",
+      "bytes": 22991,
+      "rows": 1,
+      "etag": "\"222a510410512861010c25f5b0caaffa\"",
+      "sha256": "7c5b4591e912d05e4fb295aca3bfc4dbdeffe71a1b10e09a081bb4fc5a6dec73"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-02/part_0000.parquet",
+      "bytes": 23194,
+      "rows": 2,
+      "etag": "\"5f780ea08fec1d44117ba208d1a2123f\"",
+      "sha256": "8d9965a82946f978eb32b0a5916b328bafebe9383b647f5457c882cd4d0d2da7"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-03/part_0000.parquet",
+      "bytes": 23292,
+      "rows": 1,
+      "etag": "\"aea872f372d8f71bad0a2c43260e4fb7\"",
+      "sha256": "f335ac639aaa77267d5b17711137c3eeb6916af34ef890cbf61517f70fdb2fcf"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-04/part_0000.parquet",
+      "bytes": 23185,
+      "rows": 1,
+      "etag": "\"fb4f8c30ee1e1762c4969c748056ea33\"",
+      "sha256": "397a5d97c5f9b1e003c26191389f072b35907decc5a62ca2f570360496a432b7"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-05/part_0000.parquet",
+      "bytes": 54307,
+      "rows": 162,
+      "etag": "\"adcefbd95237bd01853b00d7786fdde3\"",
+      "sha256": "4dc356e5a422ef3080704a98c22ac70ffb0e05fd2861fa5076fb137986c5b901"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-06/part_0000.parquet",
+      "bytes": 23383,
+      "rows": 2,
+      "etag": "\"2d8d2a8681d407aa5c421538c2f4c450\"",
+      "sha256": "32c3478841171f4f493a535389ce9a72ac4a1d6049b89d786f6e162f4fe11141"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-07/part_0000.parquet",
+      "bytes": 22886,
+      "rows": 2,
+      "etag": "\"32e57d707f10c8976e37db319fd73bb9\"",
+      "sha256": "a2e9f57fb75fd762b01450b72da55a3b3431822f880eb9ddd916d3fd169e2e5d"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-08/part_0000.parquet",
+      "bytes": 23204,
+      "rows": 2,
+      "etag": "\"e87a0082469f3b382fd72cfa97a38d26\"",
+      "sha256": "1f1df2b030d265c40174ff91f95141021f57eb06a4bbb5d02b8d2d8aed3c5b8a"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-09/part_0000.parquet",
+      "bytes": 23864,
+      "rows": 3,
+      "etag": "\"a1e3898e247bb1fc9e046cafe18f0355\"",
+      "sha256": "6169fee6b97157a7c3bfbab6383162b64b70c629e9006be232967e6b99b8e4d0"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-12/part_0000.parquet",
+      "bytes": 23134,
+      "rows": 1,
+      "etag": "\"26200e6eb497fe895ed3cea687ccd52b\"",
+      "sha256": "e46caf24a6b318d38aeb49ab9e2bafc21be70cba926b9f560399ad9f3060c9f3"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-13/part_0000.parquet",
+      "bytes": 24291,
+      "rows": 2,
+      "etag": "\"9644d3ef8b492f5f95c5660e407543bd\"",
+      "sha256": "283eebde718a67299c774df8caeaa4c9607eb855a201c08b7adf513ead8e87dc"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-14/part_0000.parquet",
+      "bytes": 28698,
+      "rows": 15,
+      "etag": "\"9ceb2e0624b028cbc87abe4266b8d1fa\"",
+      "sha256": "4be5aa03eab8acac3dddcdcbc8904051461da38090aa3d4bc12e7b380b9f64f8"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-15/part_0000.parquet",
+      "bytes": 23296,
+      "rows": 1,
+      "etag": "\"992b8129cd46924f400bed0a1d5c5619\"",
+      "sha256": "705fcd5e44d4039d328c53dc07a478151bc21167125221892d62cb2a13151b5f"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-18/part_0000.parquet",
+      "bytes": 23760,
+      "rows": 5,
+      "etag": "\"a3b66182292feefad57de962781afd85\"",
+      "sha256": "de0cb29782d220c20b30197be87c4ac6a01591b3bb933176a859215a2bbff0c2"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-19/part_0000.parquet",
+      "bytes": 26386,
+      "rows": 6,
+      "etag": "\"b07758fa7433a24d77656b0e122e7489\"",
+      "sha256": "2e3cf4e94dd092da95ab499dfc0c6a4bd818b06ff5a7eef49cb5706fd81ec718"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-20/part_0000.parquet",
+      "bytes": 25828,
+      "rows": 13,
+      "etag": "\"f323d75e5da2160ad322f417a856bea1\"",
+      "sha256": "f90c3d6cbe7643c74de655d23281a42ef8ce84d2529056df844e0b7c1391cf3a"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-22/part_0000.parquet",
+      "bytes": 26936,
+      "rows": 17,
+      "etag": "\"958a579c7f0c26229b4ac83dcba7b354\"",
+      "sha256": "2f8bdaec14edcc051bcccd214cfdd3cbf422ec360e817c1d2ed05dc9fc17e612"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-23/part_0000.parquet",
+      "bytes": 23301,
+      "rows": 3,
+      "etag": "\"3727e370cc4827f1b308c813b9a5a769\"",
+      "sha256": "261c7d337449604a60b6cda68b8b06b4667d63c1c9d6d0632143426240814efd"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-24/part_0000.parquet",
+      "bytes": 25834,
+      "rows": 12,
+      "etag": "\"526b8eb65c33f250e355bf1c3443c664\"",
+      "sha256": "9f761f8b365df57a2d232634d3c8cc965f7b2d4b4c327ff9507df2ac2a338e49"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-25/part_0000.parquet",
+      "bytes": 24266,
+      "rows": 4,
+      "etag": "\"30fcb679d4319ddb11cb0ec72cad04e5\"",
+      "sha256": "561dc80e0d7b1a9658b12354120754e13d1986fc0e0b4028c33cb030e3648821"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-26/part_0000.parquet",
+      "bytes": 25403,
+      "rows": 11,
+      "etag": "\"5c95f928d44b9592cde17565207909be\"",
+      "sha256": "fcfb5e9c1262157715e05ad94fcf4e7f9c93788a60bb0fcab8ebcb8dab18deb4"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-28/part_0000.parquet",
+      "bytes": 51497,
+      "rows": 159,
+      "etag": "\"f1b88abaddd3b714c1d8a87c5e03a5e8\"",
+      "sha256": "eeb10a47f570e9fcae9fe9283e34dcd81959a4838bb260ab9f5aa6b8bd06f322"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-08-31/part_0000.parquet",
+      "bytes": 30449,
+      "rows": 30,
+      "etag": "\"bac113cfa9df2cb2d04a76a7a8af5748\"",
+      "sha256": "83b38bd7337ca434fe7d77920f72f7500577b1ac552eee92ec06a1e84e10b895"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-01/part_0000.parquet",
+      "bytes": 24567,
+      "rows": 8,
+      "etag": "\"0c2a096a12f984f627d83ceffef91342\"",
+      "sha256": "05ccef735ea31b92396939a370c95beab00ec1cf7b4c7ef82256939342854122"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-04/part_0000.parquet",
+      "bytes": 24639,
+      "rows": 8,
+      "etag": "\"adf185e66f580964ae62c95426c20732\"",
+      "sha256": "512c5cbdb72235178b16291f22e8d17bd1a2a642624514e204310e08ee50d857"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-07/part_0000.parquet",
+      "bytes": 26725,
+      "rows": 13,
+      "etag": "\"9ed7605ef7da8420b357f9936ecea320\"",
+      "sha256": "bcc104b88b9fa43754cd82b6349f8e1f2785bbc6edc4de1f50af1cbe145b2358"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-08/part_0000.parquet",
+      "bytes": 25994,
+      "rows": 10,
+      "etag": "\"f5a42c2c917dc6db731a95d5c9841f54\"",
+      "sha256": "53591f6917b01cba947494aa679c7d6f74c3c0cd6255e3a731013ea4efbc5e8c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-09/part_0000.parquet",
+      "bytes": 24773,
+      "rows": 5,
+      "etag": "\"dfee872c8c0ce91ac016ff7aabb95d08\"",
+      "sha256": "7b6997b3106a686ce11aa72bf818f10bc579734a067618704a348d9a1c81d11b"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-10/part_0000.parquet",
+      "bytes": 23085,
+      "rows": 1,
+      "etag": "\"6f657afa00efcdbd3fcfe4159a59b046\"",
+      "sha256": "f499ed9fd0a7416c5ed9d2daa406f0be42c03413b8d77e510e8904a8647d98a2"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-11/part_0000.parquet",
+      "bytes": 24304,
+      "rows": 7,
+      "etag": "\"4f72b6690231c74d2ccbc5e93f6e2ad3\"",
+      "sha256": "91a7aee77466b7a73e09444cd9550b2a8e3d29a3227b5a4186d713040c84d664"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-13/part_0000.parquet",
+      "bytes": 26719,
+      "rows": 13,
+      "etag": "\"576245bdf3008de831166f00f5166d04\"",
+      "sha256": "4a4804ad61ff403107adad29c2be4354b028b96dcfac5fab18ddf49bf13721c7"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-14/part_0000.parquet",
+      "bytes": 22936,
+      "rows": 1,
+      "etag": "\"ee700b5d5cc57b1eeb0ebbcebb74da8c\"",
+      "sha256": "c79a551466bbe28bce9dcd0892df25dd075659052a809a6b507bcda2e656d61b"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-17/part_0000.parquet",
+      "bytes": 23525,
+      "rows": 3,
+      "etag": "\"633aafebf0d82d10eb1569da2ff17055\"",
+      "sha256": "dd762f301dc65ebc18c04d25bf890ca3321d4976142fa19d89929b87da3f2ded"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-18/part_0000.parquet",
+      "bytes": 24202,
+      "rows": 5,
+      "etag": "\"187e3f8af95614d1dae1e7de9ce42577\"",
+      "sha256": "0e80b777f37de66324fd9fe1e6f644ca9751e8bbb8a5f70f6ecd39582369429e"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-20/part_0000.parquet",
+      "bytes": 53930,
+      "rows": 94,
+      "etag": "\"0f860e9cef7e752ccb4abf3b57f29225\"",
+      "sha256": "fecb356677b4ef120ec548a7bc87b96c3506b5a249e38868d55a5749179287bb"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-21/part_0000.parquet",
+      "bytes": 23314,
+      "rows": 1,
+      "etag": "\"77f055dfa7d6a0f2cd0a5f33bb752800\"",
+      "sha256": "95c985faf054f80d478757db2f673c1f023de6f0cdbd26500ec19fa1f28d9980"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-22/part_0000.parquet",
+      "bytes": 25588,
+      "rows": 9,
+      "etag": "\"10776a30219b9e047051f31ddf669328\"",
+      "sha256": "d80a5db0c34c248a1d59be7a379ea5b376e9822e275fde7ebf5f48044a2a765a"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-23/part_0000.parquet",
+      "bytes": 336960,
+      "rows": 1913,
+      "etag": "\"109893f7afbded8071fae13ea3dd343c\"",
+      "sha256": "2a60f97ade73365cbc7cc5cb4e3d72bce8a5508b83949fa7ecd674afcd858d5b"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-24/part_0000.parquet",
+      "bytes": 146954,
+      "rows": 662,
+      "etag": "\"0dd5ac3541615230f26aff80424c2d7d\"",
+      "sha256": "e444f5137de2a40db231a564e06e12237fbf9db8d89b8fccb48ef2d5acec2ec5"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-25/part_0000.parquet",
+      "bytes": 23445,
+      "rows": 1,
+      "etag": "\"93a06d8a3dee8f852edc2f7a874e490f\"",
+      "sha256": "c4e55a38bd64804713d09cf9bc5e111d161a1b80d7adbd606aef22f59551ee5e"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-26/part_0000.parquet",
+      "bytes": 26185,
+      "rows": 10,
+      "etag": "\"18f2b0bc6eaf7179dcbd464b302b7fef\"",
+      "sha256": "d28864fdef0e5290e8f1d660e33058cbaf29fea1a98e2049880b319216342c25"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-27/part_0000.parquet",
+      "bytes": 23387,
+      "rows": 2,
+      "etag": "\"476fcfc4037ba10581191b1f45033ed0\"",
+      "sha256": "aed3f287a632db3ccfbd154b7cae282d12b26d77d803ce5b21a76382d42b53b3"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-28/part_0000.parquet",
+      "bytes": 1028468,
+      "rows": 6033,
+      "etag": "\"955f2dbd43cca2ab4242b316aaf22eb6\"",
+      "sha256": "e10301bfe641d306b07fbece86d3ebfc8d5b1b0def88926c119a1a7cc67292a9"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-29/part_0000.parquet",
+      "bytes": 24509,
+      "rows": 7,
+      "etag": "\"24713deea15aeb8ec632198e28cae61c\"",
+      "sha256": "a965f199e4fc5640e0363adb79d97a69f2b5d7d2a89d5a1da84c169009e24e8e"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-09-30/part_0000.parquet",
+      "bytes": 23897,
+      "rows": 5,
+      "etag": "\"4f71182db86b1f7901876fc4dd5656d6\"",
+      "sha256": "ef72f2b95212cf334ef8790d52e5cccfc0790f03b63f73002be4a71a2b6ded93"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-01/part_0000.parquet",
+      "bytes": 28606,
+      "rows": 21,
+      "etag": "\"9b11b30bf2f7733cd30ee5a4c19b5b98\"",
+      "sha256": "7df207b67268a8416582be0b6e5e835f9047452497942c51bec8d62597088690"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-02/part_0000.parquet",
+      "bytes": 37239,
+      "rows": 47,
+      "etag": "\"dd2999ff08dccec873a757692c8d313d\"",
+      "sha256": "1ec1223e0444e2ec384950b065fbd2ec265686c608902ed7041936cf192b1ab4"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-03/part_0000.parquet",
+      "bytes": 26329,
+      "rows": 11,
+      "etag": "\"3672f5860d6f56ce60e5ea2656972e2f\"",
+      "sha256": "076a007dfee125aef8286e2b3becb463bd8daadca2dd422cfef57ac6ebcf9e72"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-04/part_0000.parquet",
+      "bytes": 27804,
+      "rows": 17,
+      "etag": "\"6f4d1376dbdd2711f9d2bc147d8879d8\"",
+      "sha256": "9fc7a3715baf01e33dc74f50b505fe64d7be03df531aa4790ea0d50ea7201a9b"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-05/part_0000.parquet",
+      "bytes": 25552,
+      "rows": 11,
+      "etag": "\"9af36a7fbf3c0d513cda8d24e079014e\"",
+      "sha256": "57178a09a52c84bd6a82fc1dbdf4c67b9b7dda57dc4c4b397e09ea011e4fd3c1"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-06/part_0000.parquet",
+      "bytes": 7857334,
+      "rows": 19153,
+      "etag": "\"c32d932a856b50442a75b783654040b5\"",
+      "sha256": "3b51128e3fe6c12384c45ddeba170f369886a9cdd80f7b2e67f8a058fbbfbdf6"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-07/part_0000.parquet",
+      "bytes": 681743,
+      "rows": 831,
+      "etag": "\"bb8166ac2ea26972767c42b123b2913f\"",
+      "sha256": "a553c4a1a715aa3abf12c6842db4afc450ab77632d01efdc4cf9b74d58dcb45e"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-08/part_0000.parquet",
+      "bytes": 1599887,
+      "rows": 3131,
+      "etag": "\"da1bb6460db249d6383fc028f9d04801\"",
+      "sha256": "f3eaad04b5b12f1812f19adb2b358cda02d39a6ed673639c1ca9aa4c3bf9ab02"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-09/part_0000.parquet",
+      "bytes": 4446593,
+      "rows": 7753,
+      "etag": "\"b848e25620cfcb3287b0d58ad6d36fda\"",
+      "sha256": "9bd52d938445d7d5647633d0ddd967e472d67deae259edd04942440e7235b057"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-10/part_0000.parquet",
+      "bytes": 1740883,
+      "rows": 2598,
+      "etag": "\"d667a65c74c444fc97143fc4e3dca8e3\"",
+      "sha256": "4715815ddbd5be3e6066cc03482048c037e4132e552f34728f7ffe8d2ebcb916"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-11/part_0000.parquet",
+      "bytes": 1172096,
+      "rows": 1459,
+      "etag": "\"300ee1cb55bd0ea0600436d2fc9b37ff\"",
+      "sha256": "89eb9d618300dfa73e51a9f36a55e220ec8dc105b8f715fd2031d5f1e735beef"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-12/part_0000.parquet",
+      "bytes": 817837,
+      "rows": 910,
+      "etag": "\"ab685e34559860e329ba6fc2509aeda6\"",
+      "sha256": "6a6f52cc83169e01f5fe38723f41290b95126eb0bc7bd17bafae217a2d3aef5b"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-13/part_0000.parquet",
+      "bytes": 26210285,
+      "rows": 38529,
+      "etag": "\"179bf353b75c48f71a1c33504e4438f6\"",
+      "sha256": "6b6c6cdec4ff4a16c6ac8fa34224ca76e972c0a706ac4736d51888aadda6f10c"
+    },
+    {
+      "entity": "institutions",
+      "url": "s3://openalex/data/parquet/institutions/updated_date=2026-10-14/part_0000.parquet",
+      "bytes": 45106261,
+      "rows": 53604,
+      "etag": "\"540522121b29195556b413993109435e\"",
+      "sha256": "c02390f546af8c46bb195244c752ba5d0766d567b26bdc35a12ac0a324aeeaa1"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-02-09/part_0000.parquet",
+      "bytes": 661372,
+      "rows": 8223,
+      "etag": "\"62f01a9731a4fd38b888156ca01a932e\"",
+      "sha256": "3b4714430f431993ce4af08801e9cf350238f6168665bcea6292db7e0cf32e19"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-02-10/part_0000.parquet",
+      "bytes": 47638,
+      "rows": 279,
+      "etag": "\"f0bfbf79af73f397af617d64c8e2fe16\"",
+      "sha256": "74f7748237a10f1a0120574f854898462ce614c6f84073ca7ff15bcf350a770a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-02-14/part_0000.parquet",
+      "bytes": 20948,
+      "rows": 2,
+      "etag": "\"23eac4bdadcc9bb125b427074d1ecf1f\"",
+      "sha256": "052e1bcef2292bcf648de45f33f0d805791e01eadbb5427c2986dafddfabcaf4"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-02-18/part_0000.parquet",
+      "bytes": 20899,
+      "rows": 1,
+      "etag": "\"a9679345f530d6dbe1bab6187d5db857\"",
+      "sha256": "09e35e5ac6b02cbb831aa2b66c617507eaa621ba42822ebb167961a1ff8a5935"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-02-26/part_0000.parquet",
+      "bytes": 181234,
+      "rows": 1504,
+      "etag": "\"f109641a80327b3c23951b78688219b8\"",
+      "sha256": "438253d55eaa4fab726365d643003b5b4a94ae7bfd7033bc1cdfe0a4b7c37c34"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-02-28/part_0000.parquet",
+      "bytes": 21396,
+      "rows": 3,
+      "etag": "\"569ac1593141369476a9ec28fed697fb\"",
+      "sha256": "c5203738df671828da41fa8f251dec349ac582f7b02449cae325231163333b74"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-02/part_0000.parquet",
+      "bytes": 32604,
+      "rows": 29,
+      "etag": "\"7df7d8d998855ac56fc0f49973921114\"",
+      "sha256": "20f62d865d80f29359f6828c35c881173450a9df47a0cedeed15aac6c653404d"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-08/part_0000.parquet",
+      "bytes": 20926,
+      "rows": 1,
+      "etag": "\"1cebdbaa66761baae7ded8a610bc08b3\"",
+      "sha256": "e7a38287a5158a2810b97b1a1b16dd257ea080e2460567319d68c403602cb7cd"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-11/part_0000.parquet",
+      "bytes": 23495,
+      "rows": 9,
+      "etag": "\"acfb5f63507dd31932eb090d77b4b7cf\"",
+      "sha256": "acea5285a65a87e0fe4641082a06a58ce18fcdb52b29d7a240f71b5bb4b04985"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-12/part_0000.parquet",
+      "bytes": 21357,
+      "rows": 2,
+      "etag": "\"6f5ea7cf9047958b8281cde9bc27869d\"",
+      "sha256": "fce598df6d7f09d583c4b4f1422b5c6dcfae3518392d739530c3fb10f1cd884e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-14/part_0000.parquet",
+      "bytes": 21488,
+      "rows": 1,
+      "etag": "\"f76311480dfe7112b1878ac1b7e66424\"",
+      "sha256": "321735b4db0a5cbdb7583e50fce139c1ddb9692cc5a5ae46a30b37b08ff82bc1"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-15/part_0000.parquet",
+      "bytes": 21463,
+      "rows": 4,
+      "etag": "\"8c724ffbadef2be6b76859b25b60ada6\"",
+      "sha256": "436b2b46b29fb0121179d433970db2644af08cb2ab94498776fc56752b886e9e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-17/part_0000.parquet",
+      "bytes": 22259,
+      "rows": 5,
+      "etag": "\"4c301c17f035be1d7176e44f4382bce4\"",
+      "sha256": "235e2fb84b539d143557301bb330baa2626f73f30a35cf195b18c1b946082afb"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-18/part_0000.parquet",
+      "bytes": 21968,
+      "rows": 4,
+      "etag": "\"0fff663a42f0db08cf85b6722d9c5d24\"",
+      "sha256": "ae726038056ec5205cfbb4d7814ccf29bae007ac06122477d3cd026aa3eec30e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-21/part_0000.parquet",
+      "bytes": 28876,
+      "rows": 57,
+      "etag": "\"2f35dc081de25464d199242548894b9c\"",
+      "sha256": "a97e77271fc6b28eef9c573204b5679a0edaaed1648d003ba373b3689b23b7dc"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-22/part_0000.parquet",
+      "bytes": 20970,
+      "rows": 1,
+      "etag": "\"e1a007d5ee709dd9b8a8921ca3e7af5f\"",
+      "sha256": "00a3642af2efaee3deb83168f19aeca6fee35602ad483929b44331f8c2344b90"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-28/part_0000.parquet",
+      "bytes": 21739,
+      "rows": 3,
+      "etag": "\"1f8fb9d0bca6e49f610584142742b197\"",
+      "sha256": "d032b56a75dbef3a5f1f10efda363da234f5c84ef107723e89c2bf2a780e8eac"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-03-29/part_0000.parquet",
+      "bytes": 21816,
+      "rows": 1,
+      "etag": "\"09001de3f550608e7b58bf433568a333\"",
+      "sha256": "cfd50acbaa40c6ab0183cb15b97fab59c4c5c4c3a9706b65908a5ba60e34f16c"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-03/part_0000.parquet",
+      "bytes": 21333,
+      "rows": 3,
+      "etag": "\"cfaaf7671bdf518db0f9a565e777d208\"",
+      "sha256": "f1c631048230f3e32757f2f7384b89598921b02dd3012468738b98b866e5b31a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-04/part_0000.parquet",
+      "bytes": 30690,
+      "rows": 24,
+      "etag": "\"cec66e6243747177b6325fbb066fd9be\"",
+      "sha256": "2ec6fe2ff5955298edc384a5663b65f9f35cfc3917f094a368cc505a177fb45e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-05/part_0000.parquet",
+      "bytes": 24587,
+      "rows": 22,
+      "etag": "\"c9e011dc557e4b8aca637881073d4d17\"",
+      "sha256": "9dee8138ceaa878647fd5fb7e81b3d1104a1c65f99438a50a419d5229d102e83"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-11/part_0000.parquet",
+      "bytes": 21973,
+      "rows": 5,
+      "etag": "\"6bc8145e6a624011527e04748f5e135d\"",
+      "sha256": "087a01cc1dbea32627e1a1ad1c4b1880fcc5b0094cef2d2aa0f46ab030635fd3"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-18/part_0000.parquet",
+      "bytes": 21462,
+      "rows": 2,
+      "etag": "\"448b401302235a48e433315a24e40a39\"",
+      "sha256": "2089be62f3f065af6f2549508e34fab884ba6fb168554f387bb18a66769f30a3"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-21/part_0000.parquet",
+      "bytes": 21497,
+      "rows": 1,
+      "etag": "\"111fb4ab48cd2dfd43e6447ddb81c591\"",
+      "sha256": "466f0b653ce538e2f0d5d977c45b5db499e0598447e9603f5668c6e27809c2cd"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-22/part_0000.parquet",
+      "bytes": 21611,
+      "rows": 2,
+      "etag": "\"28fca1da675588b9eb4867994a3c5980\"",
+      "sha256": "8277942c054521f6c73b552f57d6fb7b7837510ad4b76063663486ea45c2d97e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-04-23/part_0000.parquet",
+      "bytes": 21284,
+      "rows": 1,
+      "etag": "\"a2d518475a89d7fc60b4574b41061c83\"",
+      "sha256": "3dbc2495df7eae3dbdcd3ef871dce60c31ce6e1ed619dff93f26811f230c0db3"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-01/part_0000.parquet",
+      "bytes": 21040,
+      "rows": 1,
+      "etag": "\"c070a385cddbb80aafe15df02978d4f6\"",
+      "sha256": "8b6122588c6d0ce8de42b2ad2befc6ee99475987bf004068c1e2838060c79220"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-02/part_0000.parquet",
+      "bytes": 21685,
+      "rows": 3,
+      "etag": "\"4192c4b1f10e3855fee0edb297fbdef1\"",
+      "sha256": "cd46b6abb27f040440f97f54028e5ba5e9f56a1690606b1863d737eb49b0c927"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-05/part_0000.parquet",
+      "bytes": 20899,
+      "rows": 1,
+      "etag": "\"4f0a93377fac9dc7894c2c64c5015fb6\"",
+      "sha256": "195b0ea47cf1afe82502a2f2b213830357ea1e3f4a934cb406adb069d6d87f80"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-07/part_0000.parquet",
+      "bytes": 21291,
+      "rows": 1,
+      "etag": "\"231e69e421ed7ecfd5a9e4c95be61141\"",
+      "sha256": "a99959f79cf4755efd2f9ef69ab6d4388d4bae86ac54e007a29e3737ed2bd1b0"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-09/part_0000.parquet",
+      "bytes": 21069,
+      "rows": 1,
+      "etag": "\"40a71994d86b002bcda40d110837a302\"",
+      "sha256": "f93552e92b15f342ded92f657167f072736c7e001f560fc098085f4c5e003757"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-12/part_0000.parquet",
+      "bytes": 21576,
+      "rows": 1,
+      "etag": "\"faf7c27547c8f1a1fe27d0cb4dfd5cfb\"",
+      "sha256": "6533d57c9df4b2d1435bd9ee537dc3514ee22a4fb22269fbc1a981fa14dddf17"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-13/part_0000.parquet",
+      "bytes": 21325,
+      "rows": 1,
+      "etag": "\"4a056968dfa659c0a646152021024dca\"",
+      "sha256": "1cd7b274470cf94319e51ac7b8b24bf44b721b455d8abaabe5794dfbe2014846"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-15/part_0000.parquet",
+      "bytes": 21909,
+      "rows": 1,
+      "etag": "\"6735aa567394b34300a1e6e12ce38398\"",
+      "sha256": "f6218293b294d7836f0235e8914ec9e3853a3760823eb1ff0600fde28db6190c"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-17/part_0000.parquet",
+      "bytes": 20949,
+      "rows": 1,
+      "etag": "\"35c55a10bfd220c1593b54738cf0ae40\"",
+      "sha256": "c27b7a679a0a072f3d55c01f6cab0fef365792cf2cd8444cde300efe57bb4afd"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-05-31/part_0000.parquet",
+      "bytes": 21601,
+      "rows": 3,
+      "etag": "\"afef444cf0f458dc20398e8c3ec2f4e2\"",
+      "sha256": "a63def9633d71652c34878c65196cf83c33d42433f2be9ab89309d8029b90f2f"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-03/part_0000.parquet",
+      "bytes": 21425,
+      "rows": 2,
+      "etag": "\"747e2f47730120d01681ee5cf6a06a2e\"",
+      "sha256": "18f2a25231328294b118853d04a325083f44c8b9cc7698644c7fb02be5c4f930"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-04/part_0000.parquet",
+      "bytes": 21534,
+      "rows": 2,
+      "etag": "\"7e4338ddb8342b95cccf819dfe6b474a\"",
+      "sha256": "f55b5b623c25054445f60bfdca8fcb4ef91c0c957f07bdc4290ef5cdf0274c4f"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-06/part_0000.parquet",
+      "bytes": 22040,
+      "rows": 2,
+      "etag": "\"f0a718893cec458ba51c55e2dcb82dc3\"",
+      "sha256": "17501e7a5945e7de305dc795100e91d157a0d70f7ca213db28e23bb33fd05a02"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-07/part_0000.parquet",
+      "bytes": 20893,
+      "rows": 1,
+      "etag": "\"77024f0a8f3ce28e1ca5390414c99045\"",
+      "sha256": "956f20263fec174724601a2cf49d1befa18a1ea19d79b05656b525e80071f1a4"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-11/part_0000.parquet",
+      "bytes": 22288,
+      "rows": 1,
+      "etag": "\"71d783e774133e54b9b5edd128e54d5d\"",
+      "sha256": "bd7aa6e7674026cb1bc86be26db9cad9f4e41f14c1c7fc20a0eea8ae65bbbb65"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-12/part_0000.parquet",
+      "bytes": 22450,
+      "rows": 4,
+      "etag": "\"2f747b1508aea8330c37da8fac5ae785\"",
+      "sha256": "4e29d164c27aa36af4b7a3fc6209b76084498534f8d3d64f54b3d30ad5e037f1"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-14/part_0000.parquet",
+      "bytes": 21448,
+      "rows": 2,
+      "etag": "\"04dc0667e833dbbda40214f6c66096df\"",
+      "sha256": "2cdf86bcc67d4aae3ec0b96a53b64e468f535e9d996a8a78bc1c5853d962e247"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-15/part_0000.parquet",
+      "bytes": 24484,
+      "rows": 1,
+      "etag": "\"f7ed45da8303776d12625d0b084e078e\"",
+      "sha256": "ebc81fd378009fc47653a5f4f8b24d7b56eba1103f5df61aeff5dd001a6df42a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-20/part_0000.parquet",
+      "bytes": 23203,
+      "rows": 9,
+      "etag": "\"628b8891149875420b39ab0e7d6405e8\"",
+      "sha256": "2635ef1d35114cef54dbd4fac2af6042ccdc344317f452e422f64a2559021837"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-21/part_0000.parquet",
+      "bytes": 21512,
+      "rows": 1,
+      "etag": "\"5048ac6d45a533153579474677809152\"",
+      "sha256": "990e707b8d892c4fbbfd5a3aaeb9d4877ee608c53e3f33ce60b07c8f64338126"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-22/part_0000.parquet",
+      "bytes": 22020,
+      "rows": 2,
+      "etag": "\"d86d388c5adef11944954cc00a7273eb\"",
+      "sha256": "8e047e4befedaa59277913e341cfc3b705625a4d3b29e4d8a476a461528cb1e6"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-23/part_0000.parquet",
+      "bytes": 21424,
+      "rows": 1,
+      "etag": "\"d8565915ab8473bf57bef64e5057a785\"",
+      "sha256": "3ccfa576600b9a7dd356c8cdd8a990e1422b88d62e4d4b7a858c2f88ca6b52f2"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-24/part_0000.parquet",
+      "bytes": 25066,
+      "rows": 1,
+      "etag": "\"aac519dafb1ab44a52e5e12216ee1aca\"",
+      "sha256": "d357e898f8e98c677712a2507eb2999ff82c367a8124b09884d29eec8cacf26e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-25/part_0000.parquet",
+      "bytes": 21114,
+      "rows": 1,
+      "etag": "\"8271ce566a1692762eed779c6e82e0b6\"",
+      "sha256": "748b067d38606885a185cff04fb253c89321061bd8b405a9d690f62e0a2b724a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-26/part_0000.parquet",
+      "bytes": 21545,
+      "rows": 2,
+      "etag": "\"bd9322d506b78178208b66274a0a3246\"",
+      "sha256": "bc52659f422c83ccdd490116f0b89b3a7b6537fca0b63df0b7b0995a12490e77"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-06-30/part_0000.parquet",
+      "bytes": 22487,
+      "rows": 7,
+      "etag": "\"f75f6336118268ef8e9a26ab435c5f5c\"",
+      "sha256": "a4047d8bee5ebaf4c8e9778390a1506a8528521b2241e5af39d564ba307e93c0"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-02/part_0000.parquet",
+      "bytes": 23047,
+      "rows": 10,
+      "etag": "\"e8e2bd1a0f8a6036f5ef008456539f20\"",
+      "sha256": "59b2c86f2109506bc764076e6363407cf677f976da274cb5075370506fde6cd6"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-03/part_0000.parquet",
+      "bytes": 20927,
+      "rows": 1,
+      "etag": "\"578302470d8ad291794ea1a7d98406ad\"",
+      "sha256": "c8b485f5f048aca07acbc7e04dc6e1d0e1fa6c4eb5ec2dd30b7d6689d0d05b38"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-05/part_0000.parquet",
+      "bytes": 21017,
+      "rows": 1,
+      "etag": "\"3c7630c57ef090428449181b6688d3d4\"",
+      "sha256": "5c52f3c2576ab9b76639a4c18a5fc952a156b14397ffd6af6809940195b3b9ae"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-06/part_0000.parquet",
+      "bytes": 20948,
+      "rows": 1,
+      "etag": "\"70167b8b077fbb2999475a2f71239471\"",
+      "sha256": "0d15b09184b2e87ce11ae502ae8d8c99f521b83c9e715476e5be6cdde96a795c"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-07/part_0000.parquet",
+      "bytes": 36536,
+      "rows": 170,
+      "etag": "\"409ebbe04742fbea5cc11adbc2c056a3\"",
+      "sha256": "76ec2cebf3aa7f1754c841af281ecbd75757f681fcb7251c8378b4673541c58a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-08/part_0000.parquet",
+      "bytes": 21717,
+      "rows": 10,
+      "etag": "\"42b7b8b1d64bb7f8008e682364455ef4\"",
+      "sha256": "f3b7bee258a0fac730bef8905199948a93dcb1b6c94a1675a3390753542fbce5"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-09/part_0000.parquet",
+      "bytes": 21748,
+      "rows": 1,
+      "etag": "\"5ddf71e0eac90fd81a540aad2d4b4448\"",
+      "sha256": "df254991373d10bbf1130c0d6c41f5b58999d3ce7ac613332592f0227bb44186"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-10/part_0000.parquet",
+      "bytes": 21425,
+      "rows": 1,
+      "etag": "\"936737831f8ec8903d5e643ee5f3ef74\"",
+      "sha256": "6dc00622c7bae18c03694c17fbe27963cce9905b96a81d0fc4187569bf102204"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-11/part_0000.parquet",
+      "bytes": 21369,
+      "rows": 1,
+      "etag": "\"06414843bb8ac65af510237eb3daea4f\"",
+      "sha256": "13feecf9fe6e1be586675d24370dc3009f86495b7ed0218db30b89ebf88b8b57"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-12/part_0000.parquet",
+      "bytes": 40324,
+      "rows": 57,
+      "etag": "\"9a80a7e21d0a0fdc2d113605cc39a935\"",
+      "sha256": "9f1fa8bc9dd3a7dc839f6d6ca4ee21df45bd25035eb2668396e43b655d331a6a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-14/part_0000.parquet",
+      "bytes": 21594,
+      "rows": 4,
+      "etag": "\"efb3453ebdc19db6e9a2fa28a262b2cc\"",
+      "sha256": "e916c3d868435de7338e562c24b71ae2abb18fc83937d9f86f4823bfb89ab904"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-17/part_0000.parquet",
+      "bytes": 21759,
+      "rows": 1,
+      "etag": "\"eeed00add51cf1785dd17333782361ae\"",
+      "sha256": "2988184973d4330bf7ce778709a72e968056ae68eda070baec31eb024c7474c9"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-18/part_0000.parquet",
+      "bytes": 21611,
+      "rows": 2,
+      "etag": "\"524c91a340acb654a06c20e20b931578\"",
+      "sha256": "18042255fce19ee395553cab92d9ea70ae39ac7b9bb50b9e60ae4318e930ebf3"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-20/part_0000.parquet",
+      "bytes": 22659,
+      "rows": 1,
+      "etag": "\"451e8fe3ad6b7dfa9085651f1d514d33\"",
+      "sha256": "b4dfcad5d4d0f174f7f9a71f6f6122ade02836cc6c0be116ce3de1e2f01abc91"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-21/part_0000.parquet",
+      "bytes": 21585,
+      "rows": 4,
+      "etag": "\"190c2813fd52ee95f87b58bc243c1e5c\"",
+      "sha256": "65d5b7293d3e88dd3a50dc550fc4a3b1560cd91087f89c7f74f3624e145d4fbd"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-23/part_0000.parquet",
+      "bytes": 23992,
+      "rows": 10,
+      "etag": "\"4185e8a16318eb0782a0785fc983b154\"",
+      "sha256": "09528fae3124041d99f354bc13a62203ab3353b75ccb9662ae9923765e8860de"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-24/part_0000.parquet",
+      "bytes": 23604,
+      "rows": 3,
+      "etag": "\"75f2dd2b9965af54389ca5f40df624b3\"",
+      "sha256": "3cade01c778cfd03f3ee67e504913e12f6ffd8d477dc44e7131c172e7e2e0650"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-26/part_0000.parquet",
+      "bytes": 24253,
+      "rows": 18,
+      "etag": "\"ba83afff1efd9613c6402b6229a7da0e\"",
+      "sha256": "fe0e0b2bf7b012ec8fffad7218bf4ddc137275df0ffc40d3260683f3ab705d2c"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-27/part_0000.parquet",
+      "bytes": 40187,
+      "rows": 116,
+      "etag": "\"ae9f050a4a81182a8313d9131afe2a8e\"",
+      "sha256": "66f988a2859305ef4a5635cca9fcaba8a2aef528dc7fd928de36d0b909c650b4"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-29/part_0000.parquet",
+      "bytes": 22320,
+      "rows": 3,
+      "etag": "\"7b7e3af981a9c19a7d34cce4df194383\"",
+      "sha256": "a0c66eb2c4bf59ba92a2b4af5c0d3789ba5aa56da6b0595b0ce377c373572b5a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-07-31/part_0000.parquet",
+      "bytes": 21430,
+      "rows": 3,
+      "etag": "\"52cd0f3e66945436f547b21802877ddf\"",
+      "sha256": "e867a9e2a3a06a0c2ffe46d7969f541e791bbf0d5b2ce37b1a43187241036d2b"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-03/part_0000.parquet",
+      "bytes": 21984,
+      "rows": 5,
+      "etag": "\"32adb966ca9b3a51511a079540eb4af5\"",
+      "sha256": "50b929a1dfc93b4e1a411198db78b1baebe165e775b6a719b89976800fe60e1a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-04/part_0000.parquet",
+      "bytes": 25042,
+      "rows": 4,
+      "etag": "\"19e102459f4eef4d85eb9a87e9fea88f\"",
+      "sha256": "56be6b716fe1430f02fd8b8f7c03a8d900b82c02934bc789a22145d4c95ffd90"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-05/part_0000.parquet",
+      "bytes": 21083,
+      "rows": 1,
+      "etag": "\"f0a55e845bd518289fdb623be5255d8e\"",
+      "sha256": "4dfe6d0370661ff4606f9d7a99f1d09b530920903a56d6304dd4382d0899df78"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-06/part_0000.parquet",
+      "bytes": 21673,
+      "rows": 3,
+      "etag": "\"488670ee5a34456df07621ce4783f8f3\"",
+      "sha256": "5b86c404dc48c5be9bcb58b8f03018b9868ca862184215f721d01af3311cb27a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-08/part_0000.parquet",
+      "bytes": 134705,
+      "rows": 1095,
+      "etag": "\"2727ff9b5338955391a48c53d0ca62c1\"",
+      "sha256": "a265c8690b93b55e99f4c2563bfdb3f479327fb5b20d2844d323d90c66622fed"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-09/part_0000.parquet",
+      "bytes": 21071,
+      "rows": 1,
+      "etag": "\"f2976d4adab0cde3c80075084ed4f707\"",
+      "sha256": "9a445dc0982e67f5c25f867d71093a98b390f6802e7b18c833cc145dfe84c401"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-10/part_0000.parquet",
+      "bytes": 21301,
+      "rows": 2,
+      "etag": "\"e7a2112e809b69624192d0fdcd3fa0e1\"",
+      "sha256": "fb0c936bb16255dfa2578208e10fca160e4d36133b0f94ceb517b24179728274"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-11/part_0000.parquet",
+      "bytes": 27988,
+      "rows": 47,
+      "etag": "\"d3acebe9058690cdbf5dd9744cb43c4f\"",
+      "sha256": "c91ac471983baa2aebe61d89bd150dd332674d09116f617f01ff844ad34ca5b8"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-12/part_0000.parquet",
+      "bytes": 21851,
+      "rows": 1,
+      "etag": "\"f55924efba360722f27c2829b69abe2c\"",
+      "sha256": "3ff327e9770013be3ba1892426a9ef7fd309f27aea78281470f2895938ca66c1"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-13/part_0000.parquet",
+      "bytes": 50965,
+      "rows": 215,
+      "etag": "\"7d6eb0b9829de59cbcc241652f1af016\"",
+      "sha256": "b36fa0e81cae81cb095225f651e2b17c46e5692cefd0abf1be04435cd2b2e6d5"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-14/part_0000.parquet",
+      "bytes": 22518,
+      "rows": 4,
+      "etag": "\"f8d62b132ab6c304c4844c10e774e5d5\"",
+      "sha256": "ab90c77c628eb56ac2577f552928a258ba2d8c35ce5a6a77f943c40feb1c308b"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-15/part_0000.parquet",
+      "bytes": 34725,
+      "rows": 50,
+      "etag": "\"194200e9250ce072d43c3eafd4bfb670\"",
+      "sha256": "11799c7356955c0310c85ce2d8cfd46159f6930768871286060423d11064a043"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-17/part_0000.parquet",
+      "bytes": 23636,
+      "rows": 9,
+      "etag": "\"43170713152de0f6a45b633d0c976a0f\"",
+      "sha256": "1b2b6665cf3de5d3ec0ce44ec59788db0d28fd07a962ebbc8dedc14316b54f25"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-18/part_0000.parquet",
+      "bytes": 25169,
+      "rows": 15,
+      "etag": "\"530d1205af8da5e5a69775a597d6bebd\"",
+      "sha256": "781411e98b8b1970c0e906036af5957f636ffc2334b80c97d77124dafa85c42e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-19/part_0000.parquet",
+      "bytes": 28343,
+      "rows": 60,
+      "etag": "\"99a5d1f613c9e33ced4908a74e2f9de7\"",
+      "sha256": "a0536b1d6c66954ce759f337105e786aae3952fa3a23613e379aab3719ea97a6"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-20/part_0000.parquet",
+      "bytes": 28804,
+      "rows": 26,
+      "etag": "\"2ad78fe1512ae8df9aa61e164e35ff83\"",
+      "sha256": "bdf326dff0d0240581a6422b9d1aa184f3a083d479d04a307359471f61eba370"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-21/part_0000.parquet",
+      "bytes": 24490,
+      "rows": 9,
+      "etag": "\"27deb7745ff2eb1c27a7d66815e184eb\"",
+      "sha256": "e5698d7140a34f581d65138cf2267737865713fec627c9ba37176b006d512d34"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-22/part_0000.parquet",
+      "bytes": 21895,
+      "rows": 3,
+      "etag": "\"41a87a83bc192f699bc6bfdd1b468f79\"",
+      "sha256": "0afd42ca1756c1d2fa8c7dc83b5ab281fc12f632bd31bb274c37884c77f1e585"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-25/part_0000.parquet",
+      "bytes": 21146,
+      "rows": 1,
+      "etag": "\"299c3a53ecb7e8e3a8aad19c1224f727\"",
+      "sha256": "ff89e32319afbd187279d26c1700d7e64f1a20d86079c72ba58efa2b80355328"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-27/part_0000.parquet",
+      "bytes": 22008,
+      "rows": 1,
+      "etag": "\"c976f1ed2730dbdecad60311b02f06dc\"",
+      "sha256": "fa3b1211cdc1347beb066e6e21a8088bce3f9b65deb0cef3097088a8dc77359e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-28/part_0000.parquet",
+      "bytes": 23896,
+      "rows": 14,
+      "etag": "\"d9804676c9b051f0742a9787e4abb3d4\"",
+      "sha256": "27d61fb605aa73a145a347f25a4e66264ae00e89036acfa524bc95e659caa8fa"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-29/part_0000.parquet",
+      "bytes": 29144,
+      "rows": 58,
+      "etag": "\"0c0fa550cfc2c2ca5a83683ac21aed4e\"",
+      "sha256": "9c5e2daf19553e16d04d4e909fa00a2e5f6e675fd887b6f644449c5ccc815493"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-30/part_0000.parquet",
+      "bytes": 22735,
+      "rows": 2,
+      "etag": "\"96aeca41b4dcffa6da76c3aaa61442cd\"",
+      "sha256": "79d05c43c6a95bee6e04583eb9d2df1dc5080bb6e4e8345acbceed3bfdc47c3d"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-08-31/part_0000.parquet",
+      "bytes": 26732,
+      "rows": 11,
+      "etag": "\"fd90fcf6acfae336c1e93a10d874c376\"",
+      "sha256": "80fc450d9b71f3e425155e3aa8afd7489217f52027aec50cd461b822dc85de2a"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-01/part_0000.parquet",
+      "bytes": 25257,
+      "rows": 6,
+      "etag": "\"4950baafb6c62870361f8261c1aeb1c4\"",
+      "sha256": "bde65c233b2fc82c1e6adafc9f1060216de0660e7b623eb54314bcd0cb090e93"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-02/part_0000.parquet",
+      "bytes": 25463,
+      "rows": 31,
+      "etag": "\"651a034259e0d8a59dfedb643ec66977\"",
+      "sha256": "cef991ced7c21cef18d205cdd1c52a1b27bdda01778edd055e46bfcbd675d5fc"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-03/part_0000.parquet",
+      "bytes": 28591,
+      "rows": 28,
+      "etag": "\"bd8eba8cbcea6dc279d604c41cd6b47e\"",
+      "sha256": "1cb8f0ae0db59c932309406f98b8368fc28d9423673b430983a994ff8a22cb68"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-04/part_0000.parquet",
+      "bytes": 21866,
+      "rows": 1,
+      "etag": "\"d592f7e03bddeb9eead27cc81aa3377a\"",
+      "sha256": "33cc98783b32ae8aa1dd6b4a2d5333014ff4944b4eb96dae4cab0332fb4c9d4d"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-05/part_0000.parquet",
+      "bytes": 31457,
+      "rows": 45,
+      "etag": "\"409ada345b5543bffce087e7cb66ab67\"",
+      "sha256": "a7963de6312036f152486d44a9edbb7856df5bcd9d7886e833e8dc4961d0cdc1"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-06/part_0000.parquet",
+      "bytes": 26830,
+      "rows": 5,
+      "etag": "\"d47b72ef2a6092dee511ed0cc90e46b1\"",
+      "sha256": "d1eee801303dc37e2c3395a747ea47973432361d25ac65fe9e67680220f8157b"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-07/part_0000.parquet",
+      "bytes": 22118,
+      "rows": 2,
+      "etag": "\"5f1ffa0076eca3132e7a88bfb0e3a312\"",
+      "sha256": "11b3de94af365cf2814434a18b19edea400bc86304725272c0adb43de2adbe02"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-08/part_0000.parquet",
+      "bytes": 22402,
+      "rows": 15,
+      "etag": "\"834e682a69a088f0d2bd4b3395bc322a\"",
+      "sha256": "30e1b63ad9f8a585d12e87c3a4f4230c3a22b6c1ceebfb16739642fc87008cfb"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-09/part_0000.parquet",
+      "bytes": 23778,
+      "rows": 13,
+      "etag": "\"f40603f736831854eeca39d8c5b267ea\"",
+      "sha256": "7d946b68878b0e0f9c95171c9463c393b11195bacc203366bd188b509aeeb5ed"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-10/part_0000.parquet",
+      "bytes": 22357,
+      "rows": 2,
+      "etag": "\"7b144153637a49c3205738e799122812\"",
+      "sha256": "f6562269db8b9a231d4671ad13dc6933b552a41825c18ea99a4d90bc2c9a3e02"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-11/part_0000.parquet",
+      "bytes": 22121,
+      "rows": 2,
+      "etag": "\"b9205dd4d2b4614129d768148d8b94f0\"",
+      "sha256": "a298527434048e52dc9fe36e2065da08ef04ed1308254d36fad9794b87b266f3"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-12/part_0000.parquet",
+      "bytes": 34185,
+      "rows": 80,
+      "etag": "\"4abcb070d0e8ac5f9d103b8e2f808c4d\"",
+      "sha256": "01bb6285940cf4772cbb53986310f74042184bcbd7810062699c403712f8e8db"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-15/part_0000.parquet",
+      "bytes": 24983,
+      "rows": 3,
+      "etag": "\"e086dabfa00c314b8168e176cab4a17a\"",
+      "sha256": "4f4afb03b64e5517d1af2a2acc011c28e637b7c63944ebeb098bea1f4c746969"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-17/part_0000.parquet",
+      "bytes": 96379,
+      "rows": 702,
+      "etag": "\"aa6e0fcc5050ba4c71c0a70b034857e0\"",
+      "sha256": "910d7c10f75516253ff088cf7cb3eeaaf315011d2b31c8eb8694463ef95701cf"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-18/part_0000.parquet",
+      "bytes": 21586,
+      "rows": 2,
+      "etag": "\"a48410516c80c8652b77effb6ce0555c\"",
+      "sha256": "cddcede28a514a91d618b0fd6d2c4494f3367e11e3f2324634a27598efdf0b7f"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-19/part_0000.parquet",
+      "bytes": 52905,
+      "rows": 231,
+      "etag": "\"830fbfd0a339f18167b31401502b6ccc\"",
+      "sha256": "f594122b0aff8dd4d7aed3af611e85ecaa86c33208d768819729567f27a3a9de"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-20/part_0000.parquet",
+      "bytes": 21703,
+      "rows": 2,
+      "etag": "\"8b9eb4a86c06c57cc9911d2da857566c\"",
+      "sha256": "cbd80debfde9c8e71b5804c50ef1655f652736e1853e1df69c785457f0e8f920"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-21/part_0000.parquet",
+      "bytes": 21058,
+      "rows": 3,
+      "etag": "\"558a9604016ea3ec9b6aeb0432112574\"",
+      "sha256": "716d9addd99774203f2ccbba614a0a22c4609a28953b9c3ea85c75d5242a15cf"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-22/part_0000.parquet",
+      "bytes": 28724,
+      "rows": 25,
+      "etag": "\"53ee029bf637dae5e44373e765463d02\"",
+      "sha256": "2c01ad2d109bf5564480b7e7460ad834f032c58d8af5bd30a7fb46012fa48b16"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-23/part_0000.parquet",
+      "bytes": 21869,
+      "rows": 2,
+      "etag": "\"ba65afc144b35425092050e844abf9b2\"",
+      "sha256": "4c6992083de712557b293b07b8499a059a6436f4405b3ebf17c2099574cd2c5f"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-25/part_0000.parquet",
+      "bytes": 42316,
+      "rows": 153,
+      "etag": "\"b68b7711c9d7f51ce07e10729ebee070\"",
+      "sha256": "9d58f10eaed0977bbe0417226185770de77f7528047176bb38dc543c8a9cc1f1"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-26/part_0000.parquet",
+      "bytes": 22328,
+      "rows": 4,
+      "etag": "\"e8cb263aff7d76b87d5cfb0bd1b5070a\"",
+      "sha256": "17d4780c42487a9d335fca5c8f41dec59c33cec545a129a0102f94fd1b5bff61"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-27/part_0000.parquet",
+      "bytes": 20934,
+      "rows": 1,
+      "etag": "\"d47eb73d06cd0652da4b725871c2342f\"",
+      "sha256": "ae44236ebe5912ef6c04a602c5c78f9a5a1c28f48497c5ed5948800afca7c56e"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-28/part_0000.parquet",
+      "bytes": 33636,
+      "rows": 91,
+      "etag": "\"bd0256944d6ba2697d42597f8c5ee1db\"",
+      "sha256": "af0109dbfaf02cda0b72742d6eb45d73a5553af34c4e387ba54154a754fbfa7d"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-29/part_0000.parquet",
+      "bytes": 22503,
+      "rows": 9,
+      "etag": "\"b85a9cfce634638c28b99bac7233836f\"",
+      "sha256": "c4538557cb783105c9e2785ad58e83300f6dde78a3891594c215e3eb3020e3ea"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-09-30/part_0000.parquet",
+      "bytes": 40808,
+      "rows": 96,
+      "etag": "\"483203f74be60ac290529d108df8d7dd\"",
+      "sha256": "7adc01111abb40927e249e2a4718a74a77e04da38932cb00a869a022e5a1c538"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-01/part_0000.parquet",
+      "bytes": 23664,
+      "rows": 8,
+      "etag": "\"284f5a58e90a081c58feafbebeadfe74\"",
+      "sha256": "3a96e4de63de4433aeffd6679e10f95adcc0df19c0c345f6686bb479ed57a189"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-02/part_0000.parquet",
+      "bytes": 22170,
+      "rows": 3,
+      "etag": "\"8a63dd1e93b3a2993c3af4d6243cbc3f\"",
+      "sha256": "6e9847cafbcfc46cc401ccdacc10ad48d734bb37fcee4d9b1e9ad9b0c04d3892"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-04/part_0000.parquet",
+      "bytes": 37228,
+      "rows": 92,
+      "etag": "\"02ad222ad2c081fe7ee747fa744e3e38\"",
+      "sha256": "847cab2541d63c27560eba761be64aa34b7dcf948728e7a2549460987bef2893"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-05/part_0000.parquet",
+      "bytes": 51026049,
+      "rows": 104189,
+      "etag": "\"312f7785c50f285f33e5be5368421871\"",
+      "sha256": "b75c7df43bbfc16a0719ee33bf63edeb7a35a97bc43d179f1b506fd55c34c5ab"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-06/part_0000.parquet",
+      "bytes": 6628238,
+      "rows": 11979,
+      "etag": "\"721ad2d49fb05116dc7701235db80631\"",
+      "sha256": "6621e848a7d875db6c71cafcfeb96f80b30e9bbcaf9e3592fcd67722c3fc5df2"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-07/part_0000.parquet",
+      "bytes": 3232192,
+      "rows": 5316,
+      "etag": "\"50f4eb3c39209e0144bcf14ce68a67a2\"",
+      "sha256": "fb35979bbf2e1cbf4e1ec802a4d816ef6ab48a217965ea4a6a150878ca870c55"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-08/part_0000.parquet",
+      "bytes": 5368231,
+      "rows": 8699,
+      "etag": "\"66fd1b518460916b0ec254611bb7c03d\"",
+      "sha256": "b36b7f1a91b75236f07616ef24840e481609e991457e25e24026699b8dba4ca2"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-09/part_0000.parquet",
+      "bytes": 5833186,
+      "rows": 9594,
+      "etag": "\"d72dd01fdaded923f47659d1d0f30e72\"",
+      "sha256": "479aac85c0786d8275220dc58d33784c7093cd389eccea4e0466aab95727d259"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-10/part_0000.parquet",
+      "bytes": 2398879,
+      "rows": 3621,
+      "etag": "\"0f9a92544c9a3c7de6c17252d22e5993\"",
+      "sha256": "7d7e75edee4fad2ca0eaa2ac9865924555e8c29520272c291e3aa6008bcc7c90"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-11/part_0000.parquet",
+      "bytes": 1451225,
+      "rows": 1984,
+      "etag": "\"cdee02eb5c301bd6156440189675395d\"",
+      "sha256": "ddea1934d93d5dce142b1c0722e9dd28f30b7d7b2d90c1671ac4c9b894971c49"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-12/part_0000.parquet",
+      "bytes": 40540094,
+      "rows": 62924,
+      "etag": "\"77882fff1276569bdd219ff855963584\"",
+      "sha256": "9e873ba6e7fcb1f4c3d9d2d48d6043e164df63a7393562e104fe82d50e9e19f8"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-13/part_0000.parquet",
+      "bytes": 35118460,
+      "rows": 46357,
+      "etag": "\"9611d16bfd524b55e3ce77ab3b1c425f\"",
+      "sha256": "14c2781a81c887acb3ab1c0be752391dfadfee6449cb25bc86bc10978003e9fb"
+    },
+    {
+      "entity": "sources",
+      "url": "s3://openalex/data/parquet/sources/updated_date=2026-10-14/part_0000.parquet",
+      "bytes": 34304,
+      "rows": 12,
+      "etag": "\"9dd656b1fcce79273c94e78bf5eb2cec\"",
+      "sha256": "21833086ea7790e1f7246cd5190c6354df2a5c6df3e7e504cfac6b6061708a61"
+    },
+    {
+      "entity": "topics",
+      "url": "s3://openalex/data/parquet/topics/updated_date=2026-10-05/part_0000.parquet",
+      "bytes": 110582,
+      "rows": 103,
+      "etag": "\"fe93f7c3cb6485ff167cd479052cd3ee\"",
+      "sha256": "54b0eb50022b820105a4dc188f63fb901137b5922570e0de20b153ea862e3a99"
+    },
+    {
+      "entity": "topics",
+      "url": "s3://openalex/data/parquet/topics/updated_date=2026-10-08/part_0000.parquet",
+      "bytes": 21157,
+      "rows": 2,
+      "etag": "\"935ff3603724dde6971a86e8fcbff675\"",
+      "sha256": "ba209b8bd61707cbae5c0f06afb354dbec2ecdd751e204c76f7a705b323728ae"
+    },
+    {
+      "entity": "topics",
+      "url": "s3://openalex/data/parquet/topics/updated_date=2026-10-09/part_0000.parquet",
+      "bytes": 24257,
+      "rows": 5,
+      "etag": "\"0309aa2c8fa3d8b0a7a608ea392a6921\"",
+      "sha256": "b6f646013b8d88cc85374374dc7e52bcf3087e96f4deedd77874ca8f5537eb5d"
+    },
+    {
+      "entity": "topics",
+      "url": "s3://openalex/data/parquet/topics/updated_date=2026-10-10/part_0000.parquet",
+      "bytes": 14046,
+      "rows": 1,
+      "etag": "\"aaf02ab9b9ee39e04448a58f6538ed11\"",
+      "sha256": "da36bcc42f4cb947cdc0d8bb836807863bea53e72dd58312e47d997f0ece33c3"
+    },
+    {
+      "entity": "topics",
+      "url": "s3://openalex/data/parquet/topics/updated_date=2026-10-13/part_0000.parquet",
+      "bytes": 50132,
+      "rows": 30,
+      "etag": "\"0ec1144d82f86fe445c61e465e92bd99\"",
+      "sha256": "51fd3e266c5c67d91df57a70e99b066d29efb70e2e13db3f043c40d41c71aa74"
+    },
+    {
+      "entity": "topics",
+      "url": "s3://openalex/data/parquet/topics/updated_date=2026-10-14/part_0000.parquet",
+      "bytes": 5349989,
+      "rows": 4375,
+      "etag": "\"4f3f4b1341bb64b931a8438af9daaea8\"",
+      "sha256": "b7cd4594ebe63368a3b914771d2246807f474bbc66a86840a4cb5eec3aed8bb0"
+    }
+  ]
+}

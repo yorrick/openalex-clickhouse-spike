@@ -1,0 +1,395 @@
+{
+  "date": "2026-11-06",
+  "region": "us-east-1",
+  "environment": "AWS certification test account",
+  "instance": {
+    "type": "m7g.xlarge",
+    "vcpus": 4,
+    "memory_gib": 16,
+    "architecture": "ARM64",
+    "os": "Ubuntu24.04",
+    "ebs_type": "gp3",
+    "ebs_gib": 50,
+    "ebs_encrypted": true,
+    "ebs_performance": {
+      "requested": "gp3 defaults, no additional performance provisioning",
+      "documented_default_iops": 3000,
+      "documented_default_throughput_mib_s": 125,
+      "actual_bandwidth_measured": false,
+      "docker_io_throttle_configured": false,
+      "source": "https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html"
+    }
+  },
+  "clickhouse": {
+    "image": "clickhouse/clickhouse-server:26.3.12.3",
+    "container_memory_gib": 8,
+    "container_cpus": 4,
+    "query_max_threads": 4,
+    "query_max_memory_gib": 6,
+    "query_max_execution_seconds": 180,
+    "external_group_by_threshold_gib": 1,
+    "external_sort_threshold_gib": 1,
+    "active_normalized_table_bytes": 270957492,
+    "table_bytes": [
+      {
+        "table": "authors",
+        "bytes": 66607892
+      },
+      {
+        "table": "citation_edge",
+        "bytes": 72172610
+      },
+      {
+        "table": "institutions",
+        "bytes": 4882674
+      },
+      {
+        "table": "sources",
+        "bytes": 10373369
+      },
+      {
+        "table": "topics",
+        "bytes": 150309
+      },
+      {
+        "table": "work_author",
+        "bytes": 26656805
+      },
+      {
+        "table": "work_institution",
+        "bytes": 15269389
+      },
+      {
+        "table": "work_topic",
+        "bytes": 40204911
+      },
+      {
+        "table": "works",
+        "bytes": 34639533
+      }
+    ]
+  },
+  "sample": {
+    "total_files": 231,
+    "total_compressed_bytes": 2759247641,
+    "total_entity_records": 1973822,
+    "entities": {
+      "works": {
+        "files": 6,
+        "records": 1557222,
+        "compressed_bytes": 2503889158
+      },
+      "institutions": {
+        "files": 83,
+        "records": 143455,
+        "compressed_bytes": 94074125
+      },
+      "sources": {
+        "files": 136,
+        "records": 268629,
+        "compressed_bytes": 155714195
+      },
+      "topics": {
+        "files": 6,
+        "records": 4516,
+        "compressed_bytes": 5570163
+      }
+    },
+    "percent_of_snapshot_works": 0.3350554312353896,
+    "percent_of_all_snapshot_parquet_bytes": 0.3445213529012071,
+    "selection": "Six whole Works files, SHA-ranked across four update-date strata; not representative record sampling; complete institution/source/topic dimensions. Other snapshot entities were not sampled proportionally."
+  },
+  "download_seconds": 42.44821858899999,
+  "build_seconds": [
+    25.973617522999987,
+    26.021411551
+  ],
+  "rebuild_correctness_hashes": [
+    "67028da9091665b8dd3d97690a0a69d31b18aaccf70cec7d9ff72e1ae6acad5a",
+    "67028da9091665b8dd3d97690a0a69d31b18aaccf70cec7d9ff72e1ae6acad5a"
+  ],
+  "seed_work_id": 8295370,
+  "correctness": {
+    "all_seven_queries_matched": true,
+    "executions_per_query_per_engine": 3,
+    "comparison": "Full typed output multiset, preserving duplicates; q02/q03 qualified ClickHouse labels normalized",
+    "raw_source_identity": "Exact same original object paths and ETags, source rows verified; unchanged ETags checked before and after Athena comparison",
+    "no_raw_s3_mirror": true,
+    "sources_table_coverage": "Source files passed raw validation; none of q01-q07 exercises normalized sources."
+  },
+  "queries": {
+    "q01": {
+      "matched": true,
+      "result_rows": 6928,
+      "clickhouse_server_seconds": [
+        0.023,
+        0.023,
+        0.024
+      ],
+      "clickhouse_server_median_seconds": 0.023,
+      "athena_total_execution_seconds": [
+        3.117,
+        3.17,
+        3.224
+      ],
+      "athena_total_execution_median_seconds": 3.17,
+      "athena_engine_median_seconds": 2.977,
+      "athena_bytes_scanned_per_run": [
+        16010526,
+        16010526,
+        16010526
+      ],
+      "clickhouse_peak_query_memory_bytes": 23950648,
+      "clickhouse_external_processing_compressed_bytes_per_run": [
+        0,
+        0,
+        0
+      ],
+      "canonical_output_sha256": "f534e15353ce9fcf8b89684a1bdc0e1655c15c6bbe5d7f6cb296fa8f8cd9a197",
+      "canonical_hash_format": "UTF-8 sorted canonical JSON value arrays, newline terminated; preserves duplicate rows"
+    },
+    "q02": {
+      "matched": true,
+      "result_rows": 289215,
+      "clickhouse_server_seconds": [
+        0.939,
+        0.967,
+        0.901
+      ],
+      "clickhouse_server_median_seconds": 0.939,
+      "athena_total_execution_seconds": [
+        4.526,
+        4.577,
+        4.18
+      ],
+      "athena_total_execution_median_seconds": 4.526,
+      "athena_engine_median_seconds": 4.386,
+      "athena_bytes_scanned_per_run": [
+        72857369,
+        72857369,
+        72857369
+      ],
+      "clickhouse_peak_query_memory_bytes": 1019782062,
+      "clickhouse_external_processing_compressed_bytes_per_run": [
+        0,
+        0,
+        0
+      ],
+      "canonical_output_sha256": "2656c63f42bb9cb1a7ce364fedb4b3275584dd68f04a9e38f0bdf7543c8493d5",
+      "canonical_hash_format": "UTF-8 sorted canonical JSON value arrays, newline terminated; preserves duplicate rows"
+    },
+    "q03": {
+      "matched": true,
+      "result_rows": 1000,
+      "clickhouse_server_seconds": [
+        0.881,
+        0.773,
+        0.735
+      ],
+      "clickhouse_server_median_seconds": 0.773,
+      "athena_total_execution_seconds": [
+        4.86,
+        4.741,
+        4.71
+      ],
+      "athena_total_execution_median_seconds": 4.741,
+      "athena_engine_median_seconds": 4.599,
+      "athena_bytes_scanned_per_run": [
+        696957335,
+        696957335,
+        696957335
+      ],
+      "clickhouse_peak_query_memory_bytes": 1134065716,
+      "clickhouse_external_processing_compressed_bytes_per_run": [
+        60200284,
+        60139998,
+        60152339
+      ],
+      "canonical_output_sha256": "3a26cbd027df0394eca9718002dfcd691d0ccf194852046e42fa64c40f33efd0",
+      "canonical_hash_format": "UTF-8 sorted canonical JSON value arrays, newline terminated; preserves duplicate rows"
+    },
+    "q04": {
+      "matched": true,
+      "result_rows": 37019,
+      "clickhouse_server_seconds": [
+        0.365,
+        0.378,
+        0.403
+      ],
+      "clickhouse_server_median_seconds": 0.378,
+      "athena_total_execution_seconds": [
+        5.729,
+        6.656,
+        6.055
+      ],
+      "athena_total_execution_median_seconds": 6.055,
+      "athena_engine_median_seconds": 5.875,
+      "athena_bytes_scanned_per_run": [
+        713790470,
+        713790470,
+        713790470
+      ],
+      "clickhouse_peak_query_memory_bytes": 498610746,
+      "clickhouse_external_processing_compressed_bytes_per_run": [
+        0,
+        0,
+        0
+      ],
+      "canonical_output_sha256": "7a5a5183e9b7f6dbf478d92cbe999c8ed21a9bf15531d98c60aac94e02bd04a6",
+      "canonical_hash_format": "UTF-8 sorted canonical JSON value arrays, newline terminated; preserves duplicate rows"
+    },
+    "q05": {
+      "matched": true,
+      "result_rows": 95,
+      "clickhouse_server_seconds": [
+        0.036,
+        0.005,
+        0.005
+      ],
+      "clickhouse_server_median_seconds": 0.005,
+      "athena_total_execution_seconds": [
+        3.664,
+        3.795,
+        3.681
+      ],
+      "athena_total_execution_median_seconds": 3.681,
+      "athena_engine_median_seconds": 3.518,
+      "athena_bytes_scanned_per_run": [
+        139530219,
+        139530219,
+        139530219
+      ],
+      "clickhouse_peak_query_memory_bytes": 637016,
+      "clickhouse_external_processing_compressed_bytes_per_run": [
+        0,
+        0,
+        0
+      ],
+      "canonical_output_sha256": "ac3f14b76df0e2a8ec7ac240e11cdc1f491a76347bca6e4fb7b9a2b48e159b6c",
+      "canonical_hash_format": "UTF-8 sorted canonical JSON value arrays, newline terminated; preserves duplicate rows",
+      "outgoing_rows": 94,
+      "incoming_rows": 1
+    },
+    "q06": {
+      "matched": true,
+      "result_rows": 1,
+      "clickhouse_server_seconds": [
+        0.025,
+        0.023,
+        0.03
+      ],
+      "clickhouse_server_median_seconds": 0.025,
+      "athena_total_execution_seconds": [
+        4.357,
+        4.384,
+        4.258
+      ],
+      "athena_total_execution_median_seconds": 4.357,
+      "athena_engine_median_seconds": 4.172,
+      "athena_bytes_scanned_per_run": [
+        139530219,
+        139530219,
+        139530219
+      ],
+      "clickhouse_peak_query_memory_bytes": 678930,
+      "clickhouse_external_processing_compressed_bytes_per_run": [
+        0,
+        0,
+        0
+      ],
+      "canonical_output_sha256": "9d1f4e3a2170ce5f947bcdfa249a77885875b0d9d7af88ad3fbc7f7cd7a224fa",
+      "canonical_hash_format": "UTF-8 sorted canonical JSON value arrays, newline terminated; preserves duplicate rows",
+      "second_hop_works": 4
+    },
+    "q07": {
+      "matched": true,
+      "result_rows": 1000,
+      "clickhouse_server_seconds": [
+        0.988,
+        1.048,
+        1.109
+      ],
+      "clickhouse_server_median_seconds": 1.048,
+      "athena_total_execution_seconds": [
+        5.137,
+        4.791,
+        5.032
+      ],
+      "athena_total_execution_median_seconds": 5.032,
+      "athena_engine_median_seconds": 4.867,
+      "athena_bytes_scanned_per_run": [
+        121138979,
+        121138979,
+        121138979
+      ],
+      "clickhouse_peak_query_memory_bytes": 1581075464,
+      "clickhouse_external_processing_compressed_bytes_per_run": [
+        74245289,
+        74433784,
+        74365981
+      ],
+      "canonical_output_sha256": "d4d4414182a7022b68a753b36319bad2423de028e42fd2b31e9324d72ab9c5b0",
+      "canonical_hash_format": "UTF-8 sorted canonical JSON value arrays, newline terminated; preserves duplicate rows"
+    }
+  },
+  "cost": {
+    "athena_reported_scan_bytes_all_attempts": 7933846729,
+    "athena_estimated_billable_bytes_rounded": 8012000000,
+    "retained_s3_bytes": 110768086,
+    "estimated_components_usd": {
+      "athena": 0.04006,
+      "ec2_with_shutdown_padding": 0.02835113686666667,
+      "ebs_with_shutdown_padding": 0.0009651122299382717,
+      "public_ipv4_with_shutdown_padding": 0.0008686010069444446,
+      "s3_seven_day_storage": 0.0005944553948666666,
+      "small_requests_catalog_scheduler_allowance": 0.01
+    },
+    "estimated_total_usd_with_padding": 0.08083930549841606,
+    "actual_bill": "AWS billing delayed; estimates use live AWS Pricing API, exclude credits/tax. Zero-reported-scan cancelled query not explicitly billed; covered by allowance.",
+    "duration_method": "Known termination-request timestamps, otherwise upper bound from original cleanup-complete state.json mtime, plus one minute per instance.",
+    "published_21_query_scan_bytes": 5699445351,
+    "published_21_query_estimated_billable_bytes": 5709000000,
+    "published_21_query_scan_fees_usd": 0.028544999999999997,
+    "other_attempts_and_prechecks_reported_scan_bytes": 2234401378
+  },
+  "cleanup": {
+    "all_three_launched_instances_terminated": true,
+    "remaining_ebs_volumes": 0,
+    "remaining_schedules": 0,
+    "remaining_athena_workgroups": 0,
+    "remaining_glue_databases": 0,
+    "private_results_objects_expire_after_days": 7
+  },
+  "limits": [
+    "Small sample only; no full-corpus or simultaneous-user capacity validation",
+    "Three repeated executions per query; no p95 claim, no controlled cold-cache experiment",
+    "ClickHouse query_log server durations can include result streaming; Athena total service time excludes SDK result fetching. These are not end-to-end client latencies.",
+    "All costs are estimates from reported scans and live list pricing, including retries; AWS bill delayed"
+  ],
+  "review": {
+    "reviewer": "Claude Code",
+    "model": "claude-opus-5-5",
+    "effort": "max",
+    "result": "Required design/code/root-cause reviews completed; fixes passed follow-up review"
+  },
+  "source_repository": {
+    "commit": "0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d",
+    "role": "SQL, schema and build helpers only; fresh public repository clone on EC2, SHA checked",
+    "external_experiment_harness_included": false,
+    "deployed_guest_runner_sha256": "40e2a657e22f55835300405b28da71f1d14cfc6273c8e0e1204995061f5f3576"
+  },
+  "full_snapshot": {
+    "date": "2026-10-14",
+    "manifest_sha256": "5abb166c4ae115f8aac56021dbc1eed823e044b48406af146537485fba7f03cc",
+    "work_records": 464765485,
+    "work_compressed_bytes": 744042462611,
+    "all_entity_records": 586176148,
+    "all_parquet_bytes": 800893070274
+  },
+  "athena": {
+    "selected_engine": "Athena engine version 3",
+    "effective_engine": "Athena engine version 3",
+    "source": "GetQueryExecution from completed comparison"
+  },
+  "measurement_provenance": "Published ClickHouse timings came from the third and final small-test EC2 instance, with no ClickHouse timing samples discarded. First two instances failed before benchmark execution. Published Athena timings came from the final Athena-only comparison; earlier Athena attempts and all prechecks are excluded from those latency samples but included in all-attempt costs. One attempt failed before EC2 launch."
+}

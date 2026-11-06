@@ -1,0 +1,174 @@
+{
+  "tiers": [
+    {
+      "works": 2002982,
+      "raw_gb": 56.322915057,
+      "ch_gb": 3.619035848,
+      "full_works_pct": 0.3924546757947363,
+      "queries": {
+        "q01": {
+          "ec2_s": 0.018,
+          "athena_s": 4.345,
+          "local_s": 0.06
+        },
+        "q02": {
+          "ec2_s": 0.657,
+          "athena_s": 5.617,
+          "local_s": 1.363
+        },
+        "q03": {
+          "ec2_s": 1.042,
+          "athena_s": 148.72,
+          "local_s": 33.63
+        },
+        "q04": {
+          "ec2_s": 0.755,
+          "athena_s": 10.922,
+          "local_s": 1.109
+        },
+        "q05": {
+          "ec2_s": 0.003,
+          "athena_s": 5.06,
+          "local_s": 0.011
+        },
+        "q06": {
+          "ec2_s": 0.021,
+          "athena_s": 5.43,
+          "local_s": 0.2
+        },
+        "q07": {
+          "ec2_s": 0.182,
+          "athena_s": 5.521,
+          "local_s": 2.502
+        }
+      }
+    },
+    {
+      "works": 10109733,
+      "raw_gb": 68.18684646,
+      "ch_gb": 4.501250597,
+      "full_works_pct": 1.9808525423026004,
+      "queries": {
+        "q01": {
+          "ec2_s": 0.035,
+          "athena_s": 14.352,
+          "local_s": 0.027
+        },
+        "q02": {
+          "ec2_s": 15.99,
+          "athena_s": 13.757,
+          "local_s": 10.78
+        },
+        "q03": {
+          "ec2_s": 5.619,
+          "athena_s": 135.099,
+          "local_s": 2.978
+        },
+        "q04": {
+          "ec2_s": 5.706,
+          "athena_s": 14.325,
+          "local_s": 2.512
+        },
+        "q05": {
+          "ec2_s": 0.004,
+          "athena_s": 13.964,
+          "local_s": 0.007
+        },
+        "q06": {
+          "ec2_s": 0.055,
+          "athena_s": 13.357,
+          "local_s": 0.103
+        },
+        "q07": {
+          "ec2_s": 1.62,
+          "athena_s": 12.803,
+          "local_s": 1.25
+        }
+      }
+    },
+    {
+      "works": 31885241,
+      "raw_gb": 98.301763421,
+      "ch_gb": 6.890385687,
+      "full_works_pct": 6.247441025077626,
+      "queries": {
+        "q01": {
+          "ec2_s": 0.076,
+          "athena_s": 36.338,
+          "local_s": 1.538
+        },
+        "q02": {
+          "ec2_s": 65.512,
+          "athena_s": 43.261,
+          "local_s": 65.285
+        },
+        "q03": {
+          "ec2_s": 17.63,
+          "athena_s": 130.395,
+          "local_s": 9.896
+        },
+        "q04": {
+          "ec2_s": 24.27,
+          "athena_s": 36.921,
+          "local_s": 11.465
+        },
+        "q05": {
+          "ec2_s": 0.004,
+          "athena_s": 38.131,
+          "local_s": 0.011
+        },
+        "q06": {
+          "ec2_s": 0.174,
+          "athena_s": 39.546,
+          "local_s": 0.322
+        },
+        "q07": {
+          "ec2_s": 4.947,
+          "athena_s": 39.825,
+          "local_s": 3.781
+        }
+      }
+    }
+  ],
+  "tuning": [
+    {
+      "arm": "original_a",
+      "seconds": 65.521,
+      "cpu_cores": 5.058760560341507,
+      "query_peak_gib": 4.056641349568963,
+      "query_limit_gib": 12,
+      "spill_threshold_gib": 4
+    },
+    {
+      "arm": "memory24",
+      "seconds": 64.905,
+      "cpu_cores": 5.012901969872538,
+      "query_peak_gib": 4.853629506193101,
+      "query_limit_gib": 24,
+      "spill_threshold_gib": 8
+    },
+    {
+      "arm": "parallel_hash24",
+      "seconds": 5.64,
+      "cpu_cores": 16.18176832948695,
+      "query_peak_gib": 13.278427500277758,
+      "query_limit_gib": 24,
+      "spill_threshold_gib": 8
+    },
+    {
+      "arm": "preaggregate12",
+      "seconds": 9.258,
+      "cpu_cores": 6.571313148788928,
+      "query_peak_gib": 3.738656016997993,
+      "query_limit_gib": 12,
+      "spill_threshold_gib": 4
+    }
+  ],
+  "qa_matches": 99,
+  "temporary_aws_estimate_usd": 3.52,
+  "retained_input_usd_month": 9.6,
+  "container_cpus": 18,
+  "container_gib": 50,
+  "scratch": "400 GiB gp3, 3000 IOPS, 500 MiB/s",
+  "raw_disk": "120 GiB gp3, 3000 IOPS, 125 MiB/s, read-only during benchmarks"
+}
