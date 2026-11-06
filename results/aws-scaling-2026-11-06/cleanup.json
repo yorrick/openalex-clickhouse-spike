@@ -1,0 +1,143 @@
+{
+  "checked_at": "2026-11-06T22:05:17.461626+00:00",
+  "account": "502425560524",
+  "region": "us-east-1",
+  "instances": [
+    {
+      "id": "i-069677439092db4a5",
+      "state": "terminated",
+      "type": "m7g.8xlarge",
+      "launch_time": "2026-11-06T20:48:56+00:00"
+    },
+    {
+      "id": "i-032bcb09c2f9756d0",
+      "state": "terminated",
+      "type": "m7g.8xlarge",
+      "launch_time": "2026-11-06T21:38:56+00:00"
+    }
+  ],
+  "volumes": [
+    {
+      "Iops": 3000,
+      "Tags": [
+        {
+          "Key": "SeriesId",
+          "Value": "oascale-20261106191348-41802945"
+        },
+        {
+          "Key": "Name",
+          "Value": "OpenAlex exact 98GB input, retain"
+        },
+        {
+          "Key": "Project",
+          "Value": "openalex-retained-input"
+        }
+      ],
+      "Throughput": 125,
+      "VolumeId": "vol-039919b5eb12aeb46",
+      "Size": 120,
+      "AvailabilityZone": "us-east-1a",
+      "State": "available",
+      "Attachments": [],
+      "Encrypted": true
+    }
+  ],
+  "security_groups": [],
+  "roles": [],
+  "schedules": [],
+  "workgroups": [],
+  "databases": [],
+  "temporary_source_copy_deleted": true,
+  "only_intentional_retained_volume": "vol-039919b5eb12aeb46",
+  "recorded_compute_runs": [
+    {
+      "run": "oaspike-20261106201804-2e9d23",
+      "instance": "i-04bb433b8cdb1de0a",
+      "termination_verified": true,
+      "cleanup_errors": []
+    },
+    {
+      "run": "oaspike-20261106192239-9df040",
+      "instance": "i-016eed00ff9939cd8",
+      "termination_verified": true,
+      "cleanup_errors": []
+    },
+    {
+      "run": "oaspike-20261106213843-aa3ecc",
+      "instance": "i-032bcb09c2f9756d0",
+      "termination_verified": true,
+      "cleanup_errors": []
+    },
+    {
+      "run": "oaspike-20261106204843-b2d12b",
+      "instance": "i-069677439092db4a5",
+      "termination_verified": true,
+      "cleanup_errors": []
+    },
+    {
+      "run": "oaspike-20261106191717-99f849",
+      "instance": "i-01400a9d9b5d6cc73",
+      "termination_verified": true,
+      "cleanup_errors": []
+    },
+    {
+      "run": "oaspike-20261106191405-203a5f",
+      "instance": "i-0c8556289def2d56f",
+      "termination_verified": true,
+      "cleanup_errors": []
+    },
+    {
+      "run": "oaspike-20261106195056-5ee45f",
+      "instance": "i-007464d98fb8f1611",
+      "termination_verified": true,
+      "cleanup_errors": []
+    }
+  ],
+  "deleted_source_head_status": "404",
+  "evidence_bucket_retention": [
+    {
+      "bucket": "oaspike-20261106210810-a5f704-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106202616-0b75dd-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106201804-2e9d23-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106192239-9df040-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106213843-aa3ecc-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106204843-b2d12b-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106191717-99f849-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106190426-31e5b6-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106191405-203a5f-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106195545-2b024c-502425560524",
+      "expiration_days": 7
+    },
+    {
+      "bucket": "oaspike-20261106195056-5ee45f-502425560524",
+      "expiration_days": 7
+    }
+  ]
+}

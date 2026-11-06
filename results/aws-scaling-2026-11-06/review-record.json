@@ -1,0 +1,51 @@
+{
+  "working_directory": "~/work/data/openalex-tier-scaling-20261106",
+  "credential_handling": "Matching ~/.ssh/claude.sh sourced before each invocation; secrets not printed",
+  "reviews": [
+    {
+      "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort max --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < tuning-review-payload.txt > tuning-review-result.txt 2>&1",
+      "completed_successfully": true,
+      "process_exit_code": 0,
+      "reviewer": "Claude Code",
+      "model": "claude-opus-5-5",
+      "effort": "max",
+      "verdict": "BLOCK",
+      "payload_sha256": "e661e77b76d5f3ff2dff55a360acee43b149e24f84c3474f26a23316f3805e58",
+      "output_sha256": "aad5ed1383a3fee4f241bda8124b4d46a79f5c5bf739bb2ae27fdca6698965d1"
+    },
+    {
+      "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort max --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < tuning-followup-payload.txt > tuning-followup-result.txt 2>&1",
+      "completed_successfully": true,
+      "process_exit_code": 0,
+      "reviewer": "Claude Code",
+      "model": "claude-opus-5-5",
+      "effort": "max",
+      "verdict": "BLOCK",
+      "payload_sha256": "28209c77d554064b3a9747b1ea9d1af1c44cd9115f0068f02fda85c6d66e5aa3",
+      "output_sha256": "2ef30f7c4c4172f6d826f34fc2b1fad5b4a6277c5436062952b1deefabd9bfc9"
+    },
+    {
+      "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort high --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < resource-review-payload.txt > resource-review-result.txt 2>&1",
+      "completed_successfully": true,
+      "process_exit_code": 0,
+      "reviewer": "Claude Code",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "verdict": "BLOCK",
+      "payload_sha256": "776253e16b990e1364432b50fc437b6580d625447a684feaddde663f9d7aa379",
+      "output_sha256": "fb50a85b05da31011ebf77019301e510e9526e3af6aada46117ee49dcb764ed2"
+    },
+    {
+      "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort high --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < resource-followup-payload.txt > resource-followup-result.txt 2>&1",
+      "completed_successfully": true,
+      "process_exit_code": 0,
+      "reviewer": "Claude Code",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "verdict": "BLOCK",
+      "payload_sha256": "969b94eeb4d6857ef56eb7629732c0b5da9d8ee9677824ff142fdb515671486d",
+      "output_sha256": "47715b44ece5f77f0156261dfcc5577c0b1101d0b6ccd25362ec48dabaecf219"
+    }
+  ],
+  "final_review": "in_progress"
+}

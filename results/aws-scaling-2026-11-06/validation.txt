@@ -1,0 +1,7 @@
+......................................                                   [100%]
+38 passed in 0.31s
+
+{"tiers": {"stage2_small": {"works": 2002982, "cases": 11, "matched": true, "normalized_bytes": 3619035848}, "stage2_medium": {"works": 10109733, "cases": 11, "matched": true, "normalized_bytes": 4501250597}, "stage2_large": {"works": 31885241, "cases": 11, "matched": true, "normalized_bytes": 6890385687}}}
+{"tiers": {"stage2_small": {"works": 2002982, "cases": 11, "matched": true, "normalized_bytes": 3619035848}, "stage2_medium": {"works": 10109733, "cases": 11, "matched": true, "normalized_bytes": 4501250597}, "stage2_large": {"works": 31885241, "cases": 11, "matched": true, "normalized_bytes": 6890385687}}}
+{"exported": ["stage2_small", "stage2_medium", "stage2_large"]}
+generated_report_bytes 26206

@@ -1,0 +1,15 @@
+{
+  "local_index_digest": "sha256:1f7cd090d5c4e2b8bfe0ea5d8ae6125937e1d932c6371b4d25fbd6088829dc9c",
+  "ec2_index_digest": "sha256:22886e23b57e292195cea15d1af0bba5df90e489b7093c39c85d9d63091bb09c",
+  "local_arm_manifest_digest": "sha256:5380953acc2d9c30cf04db9956538baf009f3502816f716e64749fd73f57eace",
+  "ec2_arm_manifest_digest": "sha256:bb9a816b146317a3e14da585cb8767231f68bdb5172e0430437dc2671f42eb46",
+  "local_config_digest": "sha256:b76fe13844679c04c28354a4d12c4ec8b242b51d05abadb176c8adbe1187d5ad",
+  "ec2_config_digest": "sha256:8b66ff41e4aab7ada3d1723aa48d47800857443581e5228f952611b2d5649da1",
+  "recorded_local_image_id": "sha256:b76fe13844679c04c28354a4d12c4ec8b242b51d05abadb176c8adbe1187d5ad",
+  "same_arm_manifest": false,
+  "same_config": false,
+  "observed_types": {
+    "local": "application/vnd.oci.image.index.v1+json",
+    "ec2": "application/vnd.oci.image.index.v1+json"
+  }
+}

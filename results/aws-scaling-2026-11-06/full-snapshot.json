@@ -1,0 +1,128 @@
+{
+  "entities": {
+    "works": {
+      "date": "2026-06-26",
+      "records": 510372821,
+      "bytes": 724970323127,
+      "manifest_sha256": "4b5142cb47f22fb5f6e91fc330ed800e355e8bb9421b10d812394780b9a1443d"
+    },
+    "sdgs": {
+      "date": "2026-06-26",
+      "records": 17,
+      "bytes": 9649,
+      "manifest_sha256": "7ee9c4216aa7f516a4dc5f35b626d99d82a1b24d40976b259f7940a52cefd910"
+    },
+    "concepts": {
+      "date": "2026-06-26",
+      "records": 65026,
+      "bytes": 10309811,
+      "manifest_sha256": "25b1b8e1d79853290ca65e0e9d5ec8a277eb5a5d42d5e6ff122552dffaad6f27"
+    },
+    "fields": {
+      "date": "2026-06-26",
+      "records": 26,
+      "bytes": 19238,
+      "manifest_sha256": "3cd32e7078f9dac6be279288af58bb77f7dd55b14143fc5bd959e912bff226d3"
+    },
+    "continents": {
+      "date": "2026-06-26",
+      "records": 7,
+      "bytes": 16552,
+      "manifest_sha256": "520dbd4b8c27f7ad2846c2e772deea2788eb7374c2a75d0f18dbac31ae41e55e"
+    },
+    "work-types": {
+      "date": "2026-06-26",
+      "records": 19,
+      "bytes": 8840,
+      "manifest_sha256": "bb08eec54141650c2e78e7337c61fe9952c9733b155c086da79e4e3470eb07fa"
+    },
+    "keywords": {
+      "date": "2026-06-26",
+      "records": 65004,
+      "bytes": 3711973,
+      "manifest_sha256": "7cd9573836abf5ada371cd90f1504b5c0af395e87227f7d1b26cc943d3e29ef7"
+    },
+    "countries": {
+      "date": "2026-06-26",
+      "records": 247,
+      "bytes": 107042,
+      "manifest_sha256": "0930be4cc4d8228e5dc6b3450869e395eac43af74c4730f43c1ee2ca74be35bf"
+    },
+    "licenses": {
+      "date": "2026-06-26",
+      "records": 10,
+      "bytes": 10637,
+      "manifest_sha256": "ff50ab1b87dc2d6872130e8cc65e31effacef3dd7aae9f4472357a61b1eb6910"
+    },
+    "authors": {
+      "date": "2026-06-26",
+      "records": 119129660,
+      "bytes": 52769910496,
+      "manifest_sha256": "d39a9bad9bedbd55ee973ce6567e9cddc22a19532813600222b5596944a689df"
+    },
+    "funders": {
+      "date": "2026-06-26",
+      "records": 45640,
+      "bytes": 11920211,
+      "manifest_sha256": "6177d366c6057521576195d6dca1d45f979ca62148f9bf69858008c5dcd211fd"
+    },
+    "subfields": {
+      "date": "2026-06-26",
+      "records": 252,
+      "bytes": 174417,
+      "manifest_sha256": "87ea7ee00da8a04d6e15fc27c6e92128d0d63cc00e2506a300c3380fa1a7b034"
+    },
+    "languages": {
+      "date": "2026-06-26",
+      "records": 179,
+      "bytes": 123126,
+      "manifest_sha256": "7fc6f26c5e388e0f19848659600a6000d46418106c4c064d6930ef23816db281"
+    },
+    "topics": {
+      "date": "2026-06-26",
+      "records": 4516,
+      "bytes": 2589362,
+      "manifest_sha256": "232e920b3d30cbb3b11a148aec4ab1de996e6784f09e41db420c08f8644b9750"
+    },
+    "source-types": {
+      "date": "2026-06-26",
+      "records": 6,
+      "bytes": 3522,
+      "manifest_sha256": "7bd3cf012e21216b8add72715631f6b62c17ce609a3f45cc8e8055e4b402ea69"
+    },
+    "institutions": {
+      "date": "2026-06-26",
+      "records": 127784,
+      "bytes": 95649205,
+      "manifest_sha256": "631a5521b1344ec8d08a8eef484a703e41eaedb94d524cebcf3697519f8f33c0"
+    },
+    "sources": {
+      "date": "2026-06-26",
+      "records": 283287,
+      "bytes": 170336587,
+      "manifest_sha256": "47fc6357545f074d6f6d140703e3cfa0ca5b453d7b31bc3158e0f136f5133b1f"
+    },
+    "institution-types": {
+      "date": "2026-06-26",
+      "records": 8,
+      "bytes": 3626,
+      "manifest_sha256": "1a1a53287ca2b395cf52df2fc4a80f41ab809da30ce5d9c5e246150944b9d805"
+    },
+    "domains": {
+      "date": "2026-06-26",
+      "records": 4,
+      "bytes": 9079,
+      "manifest_sha256": "a857778dd73645164ef1b389f0a430745c51a7b0ed44fe66467cda44656a53f8"
+    },
+    "publishers": {
+      "date": "2026-06-26",
+      "records": 10703,
+      "bytes": 3703704,
+      "manifest_sha256": "fdde1da0576cf1cdd42815a0c448507f12b40d2202c18e5f39ccf950b573ac43"
+    }
+  },
+  "works": 510372821,
+  "works_bytes": 724970323127,
+  "all_entity_records": 630105216,
+  "all_parquet_bytes": 778038940204
+}
