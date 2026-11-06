@@ -1,6 +1,216 @@
 # Single-user resource benchmark results
 
+## AWS sample and Athena cross-check (2026-11-06)
+
+**Coverage:** the EC2 sample contains **1,557,222 of 464,765,485 Works
+(0.335%, about 1 in 298)** in the 2026-10-14 OpenAlex snapshot. Its **2.759 GB**
+of compressed input is **0.345% of the 800.893-GB full Parquet snapshot**. The byte
+fraction includes all snapshot entity types, while this test used sampled Works
+and complete institution/source/topic dimensions; it is not uniform coverage.
+
+### Summary: resources, data, performance and cost
+
+| Run | Works | Compressed input GB | CPUs / ClickHouse RAM | Disk | Query-median range | Cost |
+|---|---:|---:|---|---|---:|---|
+| Local small | 2,002,982 | 56.323 | 18 / 50 GiB | Bandwidth not recorded | 0.011–33.630 s | Not metered |
+| Local medium | 10,109,733 | 68.187 | 18 / 50 GiB | Bandwidth not recorded | 0.007–10.780 s | Not metered |
+| Local large | 31,885,241 | 98.302 | 18 / 50 GiB | Bandwidth not recorded | 0.011–65.285 s | Not metered |
+| EC2 small cross-check | 1,557,222 | 2.759 | 4 / 8 GiB (16-GiB host) | 50-GiB gp3, requested defaults | 0.005–1.048 s | Included in US$0.081 all-attempts total |
+| Athena small cross-check | 1,557,222 | 2.759 | AWS-managed | Original S3 Parquet | 3.170–6.055 s | US$0.040 all-attempt scan fees, included above |
+
+The seven queries cover publication counts, topic statistics, author output,
+international collaboration, one-hop and two-hop citation traversal, and cited
+work/year-pair counts. Local rows use five warm sequential observations per query;
+EC2/Athena rows use three repeated executions, not a controlled warm/cold-cache
+test. The local input totals include a complete **52.770-GB
+Authors snapshot** plus other dimensions, whereas the small EC2 test derived
+Authors from its selected Works. The source snapshots and graph seeds also differ.
+These rows describe the existing experiments, not an equal-input local/EC2 race.
+The local small-tier q03 median of 33.630 s comes from the historical unstable run.
+At 31.89m Works, local q02 already misses the 60-second target: warm median
+65.285 s and maximum 239.892 s, despite 18 CPUs and 50 GiB. The newer small EC2
+test had a 180-second query ceiling; the larger-run limit is not yet selected.
+
+ClickHouse was faster than Athena on all seven queries in the small cross-check,
+with every output matching in all three executions. ClickHouse queried preloaded,
+normalized EBS tables; Athena read raw Parquet through normalization views each
+time. Download and build time are excluded. ClickHouse query-log durations can include
+server result streaming; Athena timings exclude SDK result fetching. These are
+not end-to-end client latencies. This validates the two paths at this volume, not full-corpus capacity.
+
+### Dataset and execution
+
+The input was **2.759 GB (2.570 GiB) of Snappy-compressed Parquet**, comprising
+**1,973,822 entity records** across 231 original OpenAlex objects:
+
+| Entity | Records | Files | Compressed GB |
+|---|---:|---:|---:|
+| Works (publications) | 1,557,222 | 6 | 2.504 |
+| Institutions | 143,455 | 83 | 0.094 |
+| Publication sources | 268,629 | 136 | 0.156 |
+| Topics | 4,516 | 6 | 0.0056 |
+| Total | 1,973,822 | 231 | 2.759 |
+
+Works came from six whole files, SHA-ranked across four update-date strata; this
+is not a representative random sample of individual publications. The institution,
+source and topic dimensions were complete.
+Authors, author/work affiliations and citation edges were derived from the selected
+Works, so they are not additional independent input records in this table.
+
+The experiment ran in the certification test account in **us-east-1** on an
+Ubuntu 24.04 ARM64 **m7g.xlarge (4 vCPU, 16 GiB RAM)** with 50 GiB of encrypted
+gp3 storage. ClickHouse **26.3.12.3** ran inside Docker, limited to **4 CPUs and
+8 GiB RAM**, with four query threads, a 6-GiB per-query memory ceiling and
+1-GiB external aggregation/sort thresholds. No Docker-specific disk-I/O throttle
+was configured. The gp3 volume was requested with default performance, documented
+as 3,000 IOPS and 125 MiB/s; actual disk bandwidth was not benchmarked. See
+[AWS gp3 performance](https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html).
+
+Athena engine 3 read the original public OpenAlex S3 objects in the same region.
+Small symlink manifests listed the exact 231 objects; the ClickHouse downloader
+used that same object list and conditional ETag checks. The source paths, row
+counts, sizes and ETags were validated, including unchanged ETags before and after
+the final Athena comparison. No raw-data S3 mirror was created. The source uses
+update-date directories, which do not provide publication-year partition pruning;
+Parquet column pruning still reduced measured scan sizes.
+
+### Bibliometric query results
+
+Timing cells below are medians of three executions. ClickHouse times are server
+query durations; Athena times are total service execution durations, including
+planning, queuing and service processing. ClickHouse server duration can include result streaming; Athena total duration
+excludes SDK result fetching. Client end-to-end latency was not measured.
+Athena result reuse was disabled; repeated executions were not a controlled
+cold-cache experiment. Three samples do not justify a p95 claim.
+
+| Query | Workload | ClickHouse median | Athena median | Athena scan/run | Matched output rows |
+|---|---|---:|---:|---:|---:|
+| q01 | Works by year/type/open access/XPAC | 0.023 s | 3.170 s | 16.01 MB | 6,928 |
+| q02 | Topics by year, works and citations | 0.939 s | 4.526 s | 72.86 MB | 289,215 |
+| q03 | Top authors by works, with citations reported | 0.773 s | 4.741 s | 696.96 MB | 1,000 |
+| q04 | International collaborations by year/country pair | 0.378 s | 6.055 s | 713.79 MB | 37,019 |
+| q05 | Incoming/outgoing citation neighbours | 0.005 s | 3.681 s | 139.53 MB | 95 |
+| q06 | Distinct two-hop citation targets | 0.025 s | 4.357 s | 139.53 MB | 1 |
+| q07 | Top 1,000 cited year/work pairs overall | 1.048 s | 5.032 s | 121.14 MB | 1,000 |
+
+All returned rows were compared as typed multisets, preserving duplicates and
+NULL values, rather than comparing only counts or checksums. A label-only harness
+correction mapped ClickHouse's `t.topic_id` and `a.author_id` to Athena's column
+labels; values were unchanged. The citation seed had both incoming and outgoing
+edges (94 outgoing, 1 incoming) and 4 distinct two-hop targets, so graph agreement
+was not vacuous. These are within-sample graph checks, not corpus-level
+bibliometrics. None of q01-q07 exercises the normalized sources table; its raw
+files were validated separately.
+
+### Load, storage and memory
+
+The 2.759-GB download took **42.45 seconds**. Two independent database builds took
+**25.97 and 26.02 seconds**, with identical normalized correctness hashes. Active
+normalized table parts occupied **270,957,492 bytes (0.271 GB)**; these retain the
+fields used by this workload, rather than every field in the source objects.
+
+Peak measured query memory was **1.581 GB**. The verified
+`ExternalProcessingCompressedBytesTotal` counter was nonzero for q03
+(about 60 MB/execution) and q07 (about 74 MB/execution), with the explicit 1-GiB
+external-processing thresholds. The other five queries reported zero for this
+counter. No memory or machine-size increase was made.
+
+**Instrumentation correction for the older local results below:** their spill
+checks used counters absent from the pinned ClickHouse image; missing counter
+lookups returned zero. Historical claims of no spills, and memory conclusions
+that depend on those claims, remain unverified. This correction does not change
+the recorded historical latency measurements.
+
+### Costs, cleanup and limits
+
+Across all attempts, including startup and comparison-harness retries, Athena
+reported **7.934 GB scanned**, approximately **US$0.040 in scan fees** after the
+per-query minimum and rounding estimate. The conservative total estimate is
+**US$0.081**, including EC2, EBS, public IPv4, seven-day S3 result storage,
+shutdown padding and a US$0.01 allowance for small request/catalog/scheduler
+charges. The published 21 Athena executions scanned 5.699 GB (about US$0.029 in scan fees);
+other attempts and prechecks account for the remaining 2.234 GB. These are
+estimates from live AWS list prices; the AWS bill was not yet
+available, and credits and tax are excluded. Athena pricing is
+[US$5/TB scanned](https://aws.amazon.com/athena/pricing/).
+
+All three launched EC2 instances were terminated and their EBS volumes removed.
+The experiment's termination schedules, Athena workgroups and Glue databases were
+also deleted. Private manifest/result objects were intentionally retained in S3 with seven-day
+object expiry, plus the persistent local study evidence. Published ClickHouse timings came from the third and final small-test EC2
+instance; the first two instances failed before any benchmark timings were
+produced. No ClickHouse timing samples were discarded. Published Athena timings
+came from the final Athena-only comparison; earlier Athena attempts are excluded
+from those latency samples but included in the all-attempt cost. One other attempt failed before EC2 launch. The final comparison
+reused the completed EC2 measurements and ran only Athena; no additional EC2
+instance was launched for the column-label correction.
+
+The test stopped at these first figures. It validates this small sample and one
+query stream, with no full-corpus load, multi-user test or tuning experiment.
+
+### Committed evidence
+
+The [measurement summary](../../results/aws-small-2026-11-06/summary.json) contains
+all three timing samples, scan volumes, memory/spill counters, correctness hashes,
+and the cost breakdown. The [source manifest](../../results/aws-small-2026-11-06/sample.json)
+pins the exact public object paths, byte/row counts, ETags and downloaded SHA-256
+values. The [query catalog](../../results/aws-small-2026-11-06/queries.json) contains
+the executed ClickHouse SQL, equivalent Athena SQL and Athena normalization views.
+The [local baseline](../../results/aws-small-2026-11-06/local-baseline.json)
+records the five archived warm observations, their median/min/max summaries,
+and input/resource sizes used in the
+comparison below. Large output rows and machine-specific account/resource
+identifiers are omitted. The pinned commit supplied SQL, schema and build helpers
+from a fresh EC2 clone; the separate throwaway experiment harness is not included.
+Its deployed guest-runner hash is recorded in the measurement summary.
+
+Design, code and debugging findings were reviewed with Claude Code,
+`claude-opus-5-5`, explicit `max` effort. Initial findings were verified and either
+addressed or rejected with evidence; the relevant fixes passed follow-up review.
+
+### Matched-volume comparison to complete
+
+The requested follow-up runs target the local 2.00m, 10.11m and 31.89m Work tiers,
+one ephemeral EC2 instance at a time, with an Athena comparison on identical
+inputs and teardown after each tier. They have not run yet. The June 26 public objects behind these local tiers are now missing or changed;
+this does not affect the verified October 14 sample above. The cached local copy
+is verified at 98.302 GB.
+Using a temporary private S3 copy is awaiting the user's data-path decision.
+
+The historical local figures below are warm sequential medians, not p95 values.
+The small-run q03 anomaly and other historical tails mean these numbers cannot by
+themselves establish linear or nonlinear scaling. The new controlled EC2 series
+will measure that question and the resources needed to keep each query under
+60 seconds; full-corpus projections will remain estimates until tested.
+
+| Works | Query | Local warm median (5 observations) | EC2 median | Athena median | Output agreement |
+|---:|---|---:|---|---|---|
+| 2,002,982 | q01 | 0.060 s | Not run | Not run | Not tested |
+| 2,002,982 | q02 | 1.363 s | Not run | Not run | Not tested |
+| 2,002,982 | q03 | 33.630 s | Not run | Not run | Not tested |
+| 2,002,982 | q04 | 1.109 s | Not run | Not run | Not tested |
+| 2,002,982 | q05 | 0.011 s | Not run | Not run | Not tested |
+| 2,002,982 | q06 | 0.200 s | Not run | Not run | Not tested |
+| 2,002,982 | q07 | 2.502 s | Not run | Not run | Not tested |
+| 10,109,733 | q01 | 0.027 s | Not run | Not run | Not tested |
+| 10,109,733 | q02 | 10.780 s | Not run | Not run | Not tested |
+| 10,109,733 | q03 | 2.978 s | Not run | Not run | Not tested |
+| 10,109,733 | q04 | 2.512 s | Not run | Not run | Not tested |
+| 10,109,733 | q05 | 0.007 s | Not run | Not run | Not tested |
+| 10,109,733 | q06 | 0.103 s | Not run | Not run | Not tested |
+| 10,109,733 | q07 | 1.250 s | Not run | Not run | Not tested |
+| 31,885,241 | q01 | 1.538 s | Not run | Not run | Not tested |
+| 31,885,241 | q02 | 65.285 s | Not run | Not run | Not tested |
+| 31,885,241 | q03 | 9.896 s | Not run | Not run | Not tested |
+| 31,885,241 | q04 | 11.465 s | Not run | Not run | Not tested |
+| 31,885,241 | q05 | 0.011 s | Not run | Not run | Not tested |
+| 31,885,241 | q06 | 0.322 s | Not run | Not run | Not tested |
+| 31,885,241 | q07 | 3.781 s | Not run | Not run | Not tested |
+
 ## Outcome
+
+*Local 50-GiB results (2026-08-05). Historical no-spill claims and dependent memory
+conclusions below are unverified; see the instrumentation correction above.*
 
 The 50-GiB ClickHouse configuration is viable for the tested 98.302-GB raw
 sample and 31,885,241-Work largest tier. The current medium-tier workload is
