@@ -7,5 +7,9 @@
   "harness_tests": 38,
   "harness_test_log": "final-tests.log",
   "raw_laptop_uploads_in_final_input_path": false,
-  "full_corpus_run_performed": false
+  "full_corpus_run_performed": false,
+  "all_benchmark_and_tuning_repo_commits_verified": 4,
+  "all_seven_compute_terminations_verified": true,
+  "archived_source_hashes_verified": 21,
+  "final_review_corrections": "PASS"
 }

@@ -284,7 +284,7 @@ read-only to Docker, with EROFS verified on a write attempt. ClickHouse writes
 only to separate scratch storage. Each tier starts with a fresh guest and fresh
 ClickHouse data directory, waits for merges to become quiescent, then stops
 merges before timing. Query-log duration excludes post-query SYSTEM FLUSH LOGS.
-The repository snapshot deployed to all guests is
+The repository snapshot deployed to all four ClickHouse benchmark and tuning guests is
 0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d. Benchmark and tuning guest payloads
 are archived separately; the tuning payload SHA256 is
 2981b06a0a9333227505f16edd602409634d486b64dbf0ec0f8cd02adde6ae9a,

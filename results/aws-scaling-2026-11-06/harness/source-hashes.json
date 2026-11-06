@@ -72,7 +72,7 @@
     "original_study_file": "export_report.py"
   },
   "finalize_report.py": {
-    "sha256": "687dce500d4f476a3c014d942a85fff461fd98ed37226faff16cde162b68f637",
+    "sha256": "f4f6dae03629c678f7652d54729cd567e80d4ad4c84c0986e2685c20bdd851e8",
     "original_study_file": "finalize_report.py"
   },
   "q02_preaggregate_topic_names.sql": {
