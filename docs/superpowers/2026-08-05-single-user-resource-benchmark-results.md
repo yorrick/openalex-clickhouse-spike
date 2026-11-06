@@ -1,5 +1,7 @@
 # Single-user resource benchmark results
 
+[Interactive results diagram, created by Claude Code](https://chatgpt.com/space/page_6f224aabf09881919eef15f7eea7dd9c).
+
 ## Summary, matched local and AWS inputs (2026-11-06)
 
 The three requested volumes are complete: **2,002,982, 10,109,733 and

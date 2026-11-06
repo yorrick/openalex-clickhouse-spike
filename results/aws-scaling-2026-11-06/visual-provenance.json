@@ -1,0 +1,17 @@
+{
+  "artifact_url": "https://chatgpt.com/space/page_6f224aabf09881919eef15f7eea7dd9c",
+  "html_sha256": "07b1d37ec0f0b01f5f0d6a4088366297f73c819990bec91ab370fdc59a705684",
+  "author_command": "caffeinate -i claude -p --model claude-opus-5-5 --effort high --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < visual-claude-prompt.txt > openalex-results-artifact.html 2> visual-claude-error.log",
+  "author_exit_code": 0,
+  "review_commands": [
+    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message visual-review-output.txt - < visual-review-prompt.txt > visual-review-cli.log 2>&1",
+    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message visual-correction-output.txt - < visual-correction-prompt.txt > visual-correction-cli.log 2>&1"
+  ],
+  "review_exit_codes": [
+    0,
+    0
+  ],
+  "initial_review": "BLOCK, timing qualifiers missing; corrected",
+  "final_review": "PASS",
+  "qa": "Same supplied data verified; local Chrome rendered at360/1000px, selector updates checked, no horizontal overflow or JS errors. Page embed read back after successful insertion. Live hosted Page appearance not inspected."
+}

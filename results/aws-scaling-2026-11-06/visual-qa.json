@@ -1,0 +1,59 @@
+{
+  "viewports": [
+    {
+      "width": 1000,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 360,
+      "horizontal_overflow": false
+    }
+  ],
+  "javascript_errors": [],
+  "select_options": [
+    [
+      {
+        "value": "0",
+        "text": "2,002,982 works"
+      },
+      {
+        "value": "1",
+        "text": "10,109,733 works"
+      },
+      {
+        "value": "2",
+        "text": "31,885,241 works"
+      }
+    ],
+    [
+      {
+        "value": "q01",
+        "text": "q01 Publication counts"
+      },
+      {
+        "value": "q02",
+        "text": "q02 Topic statistics"
+      },
+      {
+        "value": "q03",
+        "text": "q03 Author output"
+      },
+      {
+        "value": "q04",
+        "text": "q04 International collaboration"
+      },
+      {
+        "value": "q05",
+        "text": "q05 One-hop citations"
+      },
+      {
+        "value": "q06",
+        "text": "q06 Two-hop citations"
+      },
+      {
+        "value": "q07",
+        "text": "q07 Citations by year"
+      }
+    ]
+  ]
+}

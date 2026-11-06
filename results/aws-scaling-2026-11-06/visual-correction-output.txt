@@ -1,0 +1,1 @@
+PASS. The timing header and text beside the controls now identify the median measurements and both paths, and the EC2 label names ClickHouse. The prior blocking finding is corrected.
