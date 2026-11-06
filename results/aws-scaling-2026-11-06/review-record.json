@@ -11,7 +11,8 @@
       "effort": "max",
       "verdict": "BLOCK",
       "payload_sha256": "e661e77b76d5f3ff2dff55a360acee43b149e24f84c3474f26a23316f3805e58",
-      "output_sha256": "aad5ed1383a3fee4f241bda8124b4d46a79f5c5bf739bb2ae27fdca6698965d1"
+      "output_sha256": "aad5ed1383a3fee4f241bda8124b4d46a79f5c5bf739bb2ae27fdca6698965d1",
+      "output_completed_at": "2026-11-06T21:33:38.681386+00:00"
     },
     {
       "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort max --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < tuning-followup-payload.txt > tuning-followup-result.txt 2>&1",
@@ -22,7 +23,8 @@
       "effort": "max",
       "verdict": "BLOCK",
       "payload_sha256": "28209c77d554064b3a9747b1ea9d1af1c44cd9115f0068f02fda85c6d66e5aa3",
-      "output_sha256": "2ef30f7c4c4172f6d826f34fc2b1fad5b4a6277c5436062952b1deefabd9bfc9"
+      "output_sha256": "2ef30f7c4c4172f6d826f34fc2b1fad5b4a6277c5436062952b1deefabd9bfc9",
+      "output_completed_at": "2026-11-06T21:46:04.369283+00:00"
     },
     {
       "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort high --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < resource-review-payload.txt > resource-review-result.txt 2>&1",
@@ -33,7 +35,8 @@
       "effort": "high",
       "verdict": "BLOCK",
       "payload_sha256": "776253e16b990e1364432b50fc437b6580d625447a684feaddde663f9d7aa379",
-      "output_sha256": "fb50a85b05da31011ebf77019301e510e9526e3af6aada46117ee49dcb764ed2"
+      "output_sha256": "fb50a85b05da31011ebf77019301e510e9526e3af6aada46117ee49dcb764ed2",
+      "output_completed_at": "2026-11-06T21:35:05.095889+00:00"
     },
     {
       "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort high --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < resource-followup-payload.txt > resource-followup-result.txt 2>&1",
@@ -44,8 +47,34 @@
       "effort": "high",
       "verdict": "BLOCK",
       "payload_sha256": "969b94eeb4d6857ef56eb7629732c0b5da9d8ee9677824ff142fdb515671486d",
-      "output_sha256": "47715b44ece5f77f0156261dfcc5577c0b1101d0b6ccd25362ec48dabaecf219"
+      "output_sha256": "47715b44ece5f77f0156261dfcc5577c0b1101d0b6ccd25362ec48dabaecf219",
+      "output_completed_at": "2026-11-06T21:47:18.583666+00:00"
+    },
+    {
+      "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort max --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < final-review-payload.txt > final-review-result.txt 2>&1",
+      "completed_successfully": true,
+      "process_exit_code": 0,
+      "reviewer": "Claude Code",
+      "model": "claude-opus-5-5",
+      "effort": "max",
+      "verdict": "BLOCK",
+      "payload_sha256": "5b4c924fbeeecfe40863f6dca22504c9b437a9d8d8ca53df720c412897bd649c",
+      "output_sha256": "62fd4befcd15b8d2749454e3e9bb4f60a1828b2603f8c216f50828e97475a232",
+      "output_completed_at": "2026-11-06T22:20:28.469562+00:00"
+    },
+    {
+      "command": "caffeinate -i claude -p --model claude-opus-5-5 --effort high --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < final-correction-payload.txt > final-correction-result.txt 2>&1",
+      "completed_successfully": true,
+      "process_exit_code": 0,
+      "reviewer": "Claude Code",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "verdict": "PASS",
+      "payload_sha256": "34b9a55b5a58299f53267b72e439d1a5a83679b64bbc2192dc4272a237d21c09",
+      "output_sha256": "3489deede4220a0824a2faa8cec541a8c5b97eeeef4772fbe8b6761a5da80907",
+      "output_completed_at": "2026-11-06T22:26:30.737142+00:00"
     }
   ],
-  "final_review": "in_progress"
+  "final_review": "PASS on known-scope corrections after completed max-effort results audit",
+  "limits": "Reviewers read supplied evidence and did not execute tests or independently open private artifacts. Initial BLOCK verdicts are preserved, not relabelled PASS."
 }

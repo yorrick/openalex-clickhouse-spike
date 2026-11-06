@@ -31,6 +31,12 @@ def main():
  result={'source_identity':d['source_identity'],'normalized_sha256':d['normalized_sha256'],'baseline_q02_sha256':d['expected_q02_sha256'],'guest_experiment_state':d['state'],'guest_control_policy':d['policy'],'report_policy':policy,'controls_median_ratio':ratio,'controls_stable_stricter_rule':stable,'cases':cases,'compute_teardown_verified':True}
  # Compare explicit recorded IDs, not tags or current latest image.
  baseline=json.loads((HERE/'stage2_large-state.json').read_text());bs=json.loads((HERE/baseline['ch_run']/'state.json').read_text());result['same_ubuntu_ami']=lifecycle['ami']==bs['ami']
+ env=json.loads((root/'cloud/environment.json').read_text());benv=json.loads((HERE/baseline['ch_run']/'cloud/environment.json').read_text())
+ result['same_oci_image']=(env['image_id']==benv['image_id'] and set(env['repo_digests'])==set(benv['repo_digests']))
+ if not result['same_oci_image']:raise RuntimeError('Tuning OCI artifact mismatch')
+ result['clickhouse_image']={k:env[k] for k in ('image','repo_digests','image_id','image_architecture','resource_limits')}
+ result['repository_commit']=lifecycle['source_commit']
+ result['deployed_tuning_payload_sha256']=hashlib.sha256((HERE/'deployed-tune-31m.py').read_bytes()).hexdigest()
  if not result['same_ubuntu_ami']:raise RuntimeError('Tuning AMI mismatch')
  write(DEST/'q02-tuning.json',result)
  trace=json.dumps({'cases':cc},sort_keys=True,separators=(',',':')).encode();(DEST/'telemetry-q02-tuning.json.gz').write_bytes(gzip.compress(trace,mtime=0))
@@ -39,8 +45,9 @@ def main():
 This follow-up keeps the **18 CPU / 50 GiB container, same Ubuntu AMI and OCI
 image, input identity, normalized-table hash and 400 GiB gp3 disk**. It tests a
 24 GiB query-memory / 8 GiB spill-threshold bundle, then forced parallel_hash
-with that bundle, and an equivalent SQL rewrite under the original 12 / 4 GiB
-query settings. The rewrite aggregates numeric topic IDs before joining names.
+with that bundle, and a SQL rewrite under the original 12 / 4 GiB
+query settings. The rewrite aggregates numeric topic IDs before joining names. It is output-identical
+on the full tested cohort and the three-Work fixture; topic-ID uniqueness was verified.
 All 838,464 output rows must hash to the baseline result independently validated
 by Athena. Original-SQL controls bracket the variants. A three-Work native
 preflight exercised all five cases, settings, telemetry and typed QA before the
@@ -59,8 +66,10 @@ measurements are preserved. The measured control ratio is **{ratio_text}**.
 A report PASS requires all three observations under 60 seconds, exact QA,
 verified effective settings and stable controls under the stricter rule.
 
-Scratch occupancy is sampled root-filesystem use, including OS, logs, tables
-and temporary files; it is not the incremental disk allocation of that query.
+Scratch occupancy is sampled root-filesystem use during timed warm windows,
+including OS, logs, tables and temporary files. It depends on run order and
+deletions, so these arm values cannot be compared as incremental query allocations
+or used to infer minimum disk capacity. Load-phase peak occupancy is unrecorded.
 Peak per-query allocation and container cache are separate in the evidence.
 The memory24 arm changes both query memory and spill thresholds, so it does not
 isolate the effect of RAM alone. CPU count and disk bandwidth are held fixed.
@@ -93,7 +102,7 @@ query-memory limit. The official 26.3.12.3 [JoinSwitcher source](https://github.
 uses that default when no explicit join limit exists and switches from a hash
 join to a merge join when exceeded. This mechanism is consistent with the
 observed external-join transition and the unchanged automatic-join latency when
-only query memory increases. The threshold itself was not varied, so the exact
+query memory and spill thresholds are raised together. The threshold itself was not varied, so the exact
 breakpoint is not an independently validated causal measurement. The forced
 hash arm still has some external aggregation; it must not be called spill-free.
 """

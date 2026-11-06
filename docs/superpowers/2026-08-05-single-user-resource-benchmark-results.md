@@ -10,7 +10,7 @@ families pass the 60-second warm target at 2m and 10m. At 31.89m, baseline topic
 statistics (q02) takes **65.153-66.142 seconds**; every other baseline case stays
 below 25 seconds. These are single-user measurements, not concurrency capacity.
 
-A focused follow-up brings q02 to **5.640 seconds** on the same 18 CPU / 50 GiB container, with exact output equality. See the tuning table for the settings and memory/CPU trade-offs.
+A focused follow-up brings q02 to **5.640 seconds** with forced parallel_hash, a 24 GiB query-memory limit and 8 GiB spill thresholds, on the same 18 CPU / 50 GiB container. The SQL rewrite, output-identical on this cohort, reaches **9.258 seconds** under the original 12 / 4 GiB query settings. Both match all output rows.
 
 In the baseline, the slow topic query uses about **4.8 of the 18 allocated CPU cores on average**,
 with about **4.1 GiB peak query memory**. It performs external join and aggregation work but has
@@ -41,7 +41,10 @@ GB means decimal bytes / 10^9; GiB and MiB are binary. All tiers include the
 complete **119,129,660 Authors (52.770 GB compressed)** and the complete
 institutions, sources and topics, in addition to their nested Works subset.
 The full June 26 snapshot contains **510,372,821 Works**, **630,105,216 records
-across entities**, and **778.039 GB compressed Parquet**. The 31.89m tier is
+across entities**, and **778.039 GB compressed Parquet**. The all-entity record
+total includes **187,148 records in 15 additional support-entity types**. Those
+support files are cached, while the benchmark loads the five core entities and
+their normalized relations; this difference is not a normalization row loss. The 31.89m tier is
 **6.247% of Works and 12.635% of all raw bytes**, not a uniform random sample.
 ClickHouse stores only the selected benchmark columns and normalized relations,
 so the reduction from raw bytes reflects field projection as well as compression.
@@ -61,10 +64,12 @@ Seconds. Local values are historical medians of five warm sequential runs.
 New ClickHouse values are server query_log medians of three round-robin warm
 FORMAT Null runs following one primer, with separate JSON output validation.
 Athena values are medians of three engine-3 TotalExecutionTime measurements,
-including queue/planning/service time but excluding CSV fetching; result reuse
+including queue/planning/service time and S3 result materialization but excluding CSV fetching; result reuse
 is disabled. For graph families, each displayed value is the maximum across the
 three fixed seeds; per-seed results are in the evidence JSON. Maxima are observed
-values, not p95 estimates. Every displayed case matched Athena on all three repeats.
+values, not p95 estimates. Every displayed case matched Athena on all three repeats. Athena materializes
+results to S3 while ClickHouse FORMAT Null discards timed output; together with
+raw versus normalized storage, this prevents an isolated engine-only comparison.
 
 | Works | Query family | Local median s | EC2 median s | EC2 max s | Athena median s | Athena scan GB/run, max | EC2 warm target |
 |---|---|---:|---:|---:|---:|---:|---|
@@ -245,6 +250,15 @@ still a candidate; a second node or a cluster is not yet
 justified by these measurements. The current 31.89m timings do not establish a
 one-minute SLA on 16 times as many Works.
 
+As arithmetic, not a prediction, uniform scaling by a factor of 16 would require no more
+than about **3.75 seconds** at 31.89m to meet 60 seconds at full volume. The q02
+fixes, q03, q04 and q07 exceed that starting time; uniform scaling of the 13.28 GiB
+hash-arm peak would be **over 210 GiB**, above this 128 GiB host. Fixed dimensions,
+group cardinalities, plans and caching make such proportional assumptions
+uncertain. A full-corpus one-minute configuration therefore depends on further
+tuning and potentially more memory/CPU; the present study does not choose a
+single larger host or a cluster.
+
 ### Data provenance and reproducibility
 
 All 2,771 historical files were recovered from public OpenAlex S3 version
@@ -261,7 +275,11 @@ read-only to Docker, with EROFS verified on a write attempt. ClickHouse writes
 only to separate scratch storage. Each tier starts with a fresh guest and fresh
 ClickHouse data directory, waits for merges to become quiescent, then stops
 merges before timing. Query-log duration excludes post-query SYSTEM FLUSH LOGS.
-The code commit deployed to guests is 0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d.
+The repository snapshot deployed to all guests is
+0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d. Benchmark and tuning guest payloads
+are archived separately; the tuning payload SHA256 is
+2981b06a0a9333227505f16edd602409634d486b64dbf0ec0f8cd02adde6ae9a,
+extracted from deployed user data and verified byte-identical.
 Graph seeds 51557542, 24222542 and 2003585639 were preregistered on eligible 2m
 vertices near outgoing-degree p50/p90/p99 and held fixed across tiers.
 
@@ -274,7 +292,9 @@ or all conceivable bibliometric definitions. Athena scans only projected
 Parquet columns but may read the whole selected cohort for broad aggregations;
 these are explicit manifests rather than a partition-pruning performance test.
 
-Measured evidence: [input proof](../../results/aws-scaling-2026-11-06/input-proof.json),
+Measured evidence: [executed SQL](../../results/aws-scaling-2026-11-06/queries.json),
+[input-file versions and fingerprints](../../results/aws-scaling-2026-11-06/input-files.json),
+[input proof](../../results/aws-scaling-2026-11-06/input-proof.json),
 [2m](../../results/aws-scaling-2026-11-06/stage2_small.json),
 [10m](../../results/aws-scaling-2026-11-06/stage2_medium.json),
 [31.89m](../../results/aws-scaling-2026-11-06/stage2_large.json).
@@ -293,8 +313,9 @@ Price/meter definitions: [Athena pricing](https://aws.amazon.com/athena/pricing/
 This follow-up keeps the **18 CPU / 50 GiB container, same Ubuntu AMI and OCI
 image, input identity, normalized-table hash and 400 GiB gp3 disk**. It tests a
 24 GiB query-memory / 8 GiB spill-threshold bundle, then forced parallel_hash
-with that bundle, and an equivalent SQL rewrite under the original 12 / 4 GiB
-query settings. The rewrite aggregates numeric topic IDs before joining names.
+with that bundle, and a SQL rewrite under the original 12 / 4 GiB
+query settings. The rewrite aggregates numeric topic IDs before joining names. It is output-identical
+on the full tested cohort and the three-Work fixture; topic-ID uniqueness was verified.
 All 838,464 output rows must hash to the baseline result independently validated
 by Athena. Original-SQL controls bracket the variants. A three-Work native
 preflight exercised all five cases, settings, telemetry and typed QA before the
@@ -317,13 +338,16 @@ measurements are preserved. The measured control ratio is **1.0075**.
 A report PASS requires all three observations under 60 seconds, exact QA,
 verified effective settings and stable controls under the stricter rule.
 
-Scratch occupancy is sampled root-filesystem use, including OS, logs, tables
-and temporary files; it is not the incremental disk allocation of that query.
+Scratch occupancy is sampled root-filesystem use during timed warm windows,
+including OS, logs, tables and temporary files. It depends on run order and
+deletions, so these arm values cannot be compared as incremental query allocations
+or used to infer minimum disk capacity. Load-phase peak occupancy is unrecorded.
 Peak per-query allocation and container cache are separate in the evidence.
 The memory24 arm changes both query memory and spill thresholds, so it does not
 isolate the effect of RAM alone. CPU count and disk bandwidth are held fixed.
 The SQL rewrite and forced join choice are experiments, not automatic fallback
-behavior in the application. Original benchmark medians remain unchanged.
+behavior in the application. Original benchmark medians remain unchanged. The tuned arms have warm measurements
+only; no cache-cleared or concurrent-user tuning trial was performed.
 
 Evidence: [tuning measurements](../../results/aws-scaling-2026-11-06/q02-tuning.json)
 and [full tuning trace](../../results/aws-scaling-2026-11-06/telemetry-q02-tuning.json.gz).
@@ -344,7 +368,7 @@ query-memory limit. The official 26.3.12.3 [JoinSwitcher source](https://github.
 uses that default when no explicit join limit exists and switches from a hash
 join to a merge join when exceeded. This mechanism is consistent with the
 observed external-join transition and the unchanged automatic-join latency when
-only query memory increases. The threshold itself was not varied, so the exact
+query memory and spill thresholds are raised together. The threshold itself was not varied, so the exact
 breakpoint is not an independently validated causal measurement. The forced
 hash arm still has some external aggregation; it must not be called spill-free.
 
@@ -355,7 +379,7 @@ approved US$15 envelope. This includes **US$1.10746** of estimated Athena
 scan fees across **221.492 GB** of rounded statements, and a full
 **US$1 allowance** for requests, S3 copies/storage, returned results, CPU credits,
 minor boundary timing and the earlier US$0.081 pilot. This is a rate-based
-upper estimate, not a settled AWS invoice; credits and tax are excluded.
+estimate with an unmetered allowance, not a proven invoice upper bound; credits and tax are excluded.
 
 | Run | Instance | Bounded lifetime | EC2 upper | Scratch upper | Public IPv4 upper |
 |---|---|---:|---:|---:|---:|
@@ -391,5 +415,22 @@ Details: [cost calculation](../../results/aws-scaling-2026-11-06/costs.json),
 Rates: [Athena](https://aws.amazon.com/athena/pricing/),
 [EBS](https://aws.amazon.com/ebs/pricing/),
 [public IPv4](https://aws.amazon.com/vpc/pricing/).
+
+## Independent review
+
+Claude Code **claude-opus-5-5** reviewed the design, tuning and final results at
+explicit **max** effort, and the resource calculations and documented corrections
+at **high** effort. Initial BLOCK findings were verified and corrected or rejected
+with evidence. The final max review found no numeric errors and one treatment
+wording error; that was corrected, and the final high-effort correction review
+returned **PASS**. All six CLI processes completed with exit0.
+
+[Exact CLI commands and verdicts](../../results/aws-scaling-2026-11-06/review-record.json),
+[finding adjudication](../../results/aws-scaling-2026-11-06/review-adjudication.md),
+[final max review](../../results/aws-scaling-2026-11-06/final-review-output.md),
+[correction PASS](../../results/aws-scaling-2026-11-06/final-correction-output.md).
+The reviewers read supplied evidence; they did not run the tests or independently
+retrieve private raw artifacts. Agent QA includes38 focused passing tests, live
+native fixtures and the complete typed output comparisons described above.
 
 Earlier pilot and local repeatability detail: [frozen pre-scaling report](2026-08-05-single-user-resource-benchmark-history.md).

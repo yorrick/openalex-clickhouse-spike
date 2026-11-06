@@ -1252,5 +1252,22 @@
     }
   },
   "compute_teardown_verified": true,
-  "same_ubuntu_ami": true
+  "same_ubuntu_ami": true,
+  "same_oci_image": true,
+  "clickhouse_image": {
+    "image": "clickhouse/clickhouse-server:26.3.12.3",
+    "repo_digests": [
+      "clickhouse/clickhouse-server@sha256:22886e23b57e292195cea15d1af0bba5df90e489b7093c39c85d9d63091bb09c"
+    ],
+    "image_id": "sha256:22886e23b57e292195cea15d1af0bba5df90e489b7093c39c85d9d63091bb09c",
+    "image_architecture": "arm64",
+    "resource_limits": {
+      "docker_memory_bytes": 132643467264,
+      "docker_cpus": 32,
+      "memory_bytes": 53687091200,
+      "nano_cpus": 17999998976
+    }
+  },
+  "repository_commit": "0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d",
+  "deployed_tuning_payload_sha256": "2981b06a0a9333227505f16edd602409634d486b64dbf0ec0f8cd02adde6ae9a"
 }

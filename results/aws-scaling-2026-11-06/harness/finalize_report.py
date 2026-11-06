@@ -127,7 +127,10 @@ GB means decimal bytes / 10^9; GiB and MiB are binary. All tiers include the
 complete **119,129,660 Authors (52.770 GB compressed)** and the complete
 institutions, sources and topics, in addition to their nested Works subset.
 The full June 26 snapshot contains **510,372,821 Works**, **630,105,216 records
-across entities**, and **778.039 GB compressed Parquet**. The 31.89m tier is
+across entities**, and **778.039 GB compressed Parquet**. The all-entity record
+total includes **187,148 records in 15 additional support-entity types**. Those
+support files are cached, while the benchmark loads the five core entities and
+their normalized relations; this difference is not a normalization row loss. The 31.89m tier is
 **6.247% of Works and 12.635% of all raw bytes**, not a uniform random sample.
 ClickHouse stores only the selected benchmark columns and normalized relations,
 so the reduction from raw bytes reflects field projection as well as compression.
@@ -147,10 +150,12 @@ Seconds. Local values are historical medians of five warm sequential runs.
 New ClickHouse values are server query_log medians of three round-robin warm
 FORMAT Null runs following one primer, with separate JSON output validation.
 Athena values are medians of three engine-3 TotalExecutionTime measurements,
-including queue/planning/service time but excluding CSV fetching; result reuse
+including queue/planning/service time and S3 result materialization but excluding CSV fetching; result reuse
 is disabled. For graph families, each displayed value is the maximum across the
 three fixed seeds; per-seed results are in the evidence JSON. Maxima are observed
-values, not p95 estimates. Every displayed case matched Athena on all three repeats.
+values, not p95 estimates. Every displayed case matched Athena on all three repeats. Athena materializes
+results to S3 while ClickHouse FORMAT Null discards timed output; together with
+raw versus normalized storage, this prevents an isolated engine-only comparison.
 
 | Works | Query family | Local median s | EC2 median s | EC2 max s | Athena median s | Athena scan GB/run, max | EC2 warm target |
 |---|---|---:|---:|---:|---:|---:|---|
@@ -254,6 +259,15 @@ still a candidate; a second node or a cluster is not yet
 justified by these measurements. The current 31.89m timings do not establish a
 one-minute SLA on 16 times as many Works.
 
+As arithmetic, not a prediction, uniform scaling by a factor of 16 would require no more
+than about **3.75 seconds** at 31.89m to meet 60 seconds at full volume. The q02
+fixes, q03, q04 and q07 exceed that starting time; uniform scaling of the 13.28 GiB
+hash-arm peak would be **over 210 GiB**, above this 128 GiB host. Fixed dimensions,
+group cardinalities, plans and caching make such proportional assumptions
+uncertain. A full-corpus one-minute configuration therefore depends on further
+tuning and potentially more memory/CPU; the present study does not choose a
+single larger host or a cluster.
+
 ### Data provenance and reproducibility
 
 All 2,771 historical files were recovered from public OpenAlex S3 version
@@ -270,7 +284,11 @@ read-only to Docker, with EROFS verified on a write attempt. ClickHouse writes
 only to separate scratch storage. Each tier starts with a fresh guest and fresh
 ClickHouse data directory, waits for merges to become quiescent, then stops
 merges before timing. Query-log duration excludes post-query SYSTEM FLUSH LOGS.
-The code commit deployed to guests is 0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d.
+The repository snapshot deployed to all guests is
+0b3d5bcfbb5062aca4d26ae5f813c4659a234b5d. Benchmark and tuning guest payloads
+are archived separately; the tuning payload SHA256 is
+2981b06a0a9333227505f16edd602409634d486b64dbf0ec0f8cd02adde6ae9a,
+extracted from deployed user data and verified byte-identical.
 Graph seeds 51557542, 24222542 and 2003585639 were preregistered on eligible 2m
 vertices near outgoing-degree p50/p90/p99 and held fixed across tiers.
 
@@ -302,10 +320,12 @@ Price/meter definitions: [Athena pricing](https://aws.amazon.com/athena/pricing/
  tuning=json.loads((DEST/'q02-tuning.json').read_text())
  successful=[(k,v) for k,v in tuning['cases'].items() if v['report_target_outcome']=='PASS' and k not in ('original_a','original_b')]
  if successful:
+  assert round(tuning['cases']['parallel_hash24']['median_seconds'],3)==5.640 and tuning['cases']['parallel_hash24']['report_target_outcome']=='PASS'
+  assert round(tuning['cases']['preaggregate12']['median_seconds'],3)==9.258 and tuning['cases']['preaggregate12']['report_target_outcome']=='PASS'
   best_name,best=min(successful,key=lambda kv:kv[1]['median_seconds'])
-  prefix=f"A focused follow-up brings q02 to **{best['median_seconds']:.3f} seconds** on the same 18 CPU / 50 GiB container, with exact output equality. See the tuning table for the settings and memory/CPU trade-offs.\n\n"
+  prefix=f"A focused follow-up brings q02 to **5.640 seconds** with forced parallel_hash, a 24 GiB query-memory limit and 8 GiB spill thresholds, on the same 18 CPU / 50 GiB container. The SQL rewrite, output-identical on this cohort, reaches **9.258 seconds** under the original 12 / 4 GiB query settings. Both match all output rows.\n\n"
   text=text.replace('The slow topic query uses',prefix+'In the baseline, the slow topic query uses',1)
- for extra in ('tuning-report.md','cost-report.md'):
+ for extra in ('tuning-report.md','cost-report.md','review-report.md'):
   if not (HERE/extra).exists():raise RuntimeError('Required final report section missing: '+extra)
   text+='\n'+(HERE/extra).read_text()
  text+='\nEarlier pilot and local repeatability detail: [frozen pre-scaling report](2026-08-05-single-user-resource-benchmark-history.md).\n'

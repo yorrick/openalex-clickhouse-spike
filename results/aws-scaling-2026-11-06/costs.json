@@ -1,5 +1,5 @@
 {
-  "computed_at": "2026-11-06T22:06:40.135711+00:00",
+  "computed_at": "2026-11-06T22:25:43.376844+00:00",
   "currency": "USD",
   "ec2_compute_upper": 1.3345487950312298,
   "temporary_root_ebs_upper": 0.06629368072115305,
@@ -7,7 +7,7 @@
   "athena_rounded_bytes": 221492000000,
   "athena_scan_fee_conservative": 1.10746,
   "other_allowance": 1.0,
-  "total_conservative_upper": 3.515988297844214,
+  "total_conservative_estimate": 3.515988297844214,
   "retained_raw_ebs_gib": 120,
   "retained_raw_usd_month": 9.6,
   "rows": [

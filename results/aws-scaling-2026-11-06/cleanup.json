@@ -139,5 +139,7 @@
       "bucket": "oaspike-20261106195056-5ee45f-502425560524",
       "expiration_days": 7
     }
-  ]
+  ],
+  "instance_profiles": [],
+  "deleted_source_absent_from_owned_bucket_listing": true
 }

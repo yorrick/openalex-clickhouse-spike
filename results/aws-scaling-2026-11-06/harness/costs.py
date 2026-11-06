@@ -29,7 +29,7 @@ def main():
  allowance=1.0
  total=compute+root+ip+scanfee+allowance
  if total>=15:raise RuntimeError('Temporary total budget exceeded')
- result={'computed_at':datetime.now(timezone.utc).isoformat(),'currency':'USD','ec2_compute_upper':compute,'temporary_root_ebs_upper':root,'public_ipv4_upper':ip,'athena_rounded_bytes':scan_bytes,'athena_scan_fee_conservative':scanfee,'other_allowance':allowance,'total_conservative_upper':total,'retained_raw_ebs_gib':120,'retained_raw_usd_month':9.6,'rows':rows,'rates':{'m7g.8xlarge_usd_hour':1.3056,'t4g.small_usd_hour':.0168,'scratch_400gib_500mibps_usd_month':47,'gp3_usd_gib_month':.08,'additional_gp3_mibps_usd_month':.04,'ipv4_usd_hour':.005,'athena_usd_per_decimal_TB':5},'limitations':['Lifecycle bounds are not an invoice','60 seconds added per VM to cover create-to-record timing','EBS root creation/deletion boundaries and small requests/copy/list/GET/result storage/data return/CPU credits/old pilot are covered by the other allowance','Scan pricing uses a conservative decimal TB assumption, not a verified invoice billing-unit interpretation','The intentionally retained raw input EBS is ongoing and separately authorized','Tax/credits excluded']}
+ result={'computed_at':datetime.now(timezone.utc).isoformat(),'currency':'USD','ec2_compute_upper':compute,'temporary_root_ebs_upper':root,'public_ipv4_upper':ip,'athena_rounded_bytes':scan_bytes,'athena_scan_fee_conservative':scanfee,'other_allowance':allowance,'total_conservative_estimate':total,'retained_raw_ebs_gib':120,'retained_raw_usd_month':9.6,'rows':rows,'rates':{'m7g.8xlarge_usd_hour':1.3056,'t4g.small_usd_hour':.0168,'scratch_400gib_500mibps_usd_month':47,'gp3_usd_gib_month':.08,'additional_gp3_mibps_usd_month':.04,'ipv4_usd_hour':.005,'athena_usd_per_decimal_TB':5},'limitations':['Lifecycle bounds are not an invoice','60 seconds added per VM to cover create-to-record timing','EBS root creation/deletion boundaries and small requests/copy/list/GET/result storage/data return/CPU credits/old pilot are covered by the other allowance','Scan pricing uses a conservative decimal TB assumption, not a verified invoice billing-unit interpretation','The intentionally retained raw input EBS is ongoing and separately authorized','Tax/credits excluded']}
  write(DEST/'costs.json',result)
  rr=[]
  for r in rows:rr.append(f"| {r['purpose']} | {r['type']} | {r['lifecycle_upper_seconds']/60:.2f} min | ${r['ec2_usd_upper']:.4f} | ${r['root_usd_upper']:.4f} | ${r['ipv4_usd_upper']:.4f} |")
@@ -40,7 +40,7 @@ approved US$15 envelope. This includes **US${scanfee:.5f}** of estimated Athena
 scan fees across **{scan_bytes/1e9:.3f} GB** of rounded statements, and a full
 **US$1 allowance** for requests, S3 copies/storage, returned results, CPU credits,
 minor boundary timing and the earlier US$0.081 pilot. This is a rate-based
-upper estimate, not a settled AWS invoice; credits and tax are excluded.
+estimate with an unmetered allowance, not a proven invoice upper bound; credits and tax are excluded.
 
 | Run | Instance | Bounded lifetime | EC2 upper | Scratch upper | Public IPv4 upper |
 |---|---|---:|---:|---:|---:|
@@ -72,6 +72,6 @@ Rates: [Athena](https://aws.amazon.com/athena/pricing/),
 [public IPv4](https://aws.amazon.com/vpc/pricing/).
 '''
  (HERE/'cost-report.md').write_text(text)
- print(json.dumps({'upper_usd':total,'scan_fee_usd':scanfee,'rows':len(rows)}))
+ print(json.dumps({'estimate_usd':total,'scan_fee_usd':scanfee,'rows':len(rows)}))
 
 if __name__=='__main__':main()
