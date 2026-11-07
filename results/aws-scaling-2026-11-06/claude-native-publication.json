@@ -1,0 +1,47 @@
+{
+  "title": "Two Paths Through OpenAlex",
+  "url": "https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H",
+  "host": "claude.ai",
+  "published_with": "Claude Code built-in Artifact tool",
+  "published_on": "2026-11-06",
+  "version": 2,
+  "version_id": "1794011484-68bf",
+  "version_label": "Query names, method notes, ruler fix",
+  "previous_version": {
+    "version": 1,
+    "version_id": "1794011089-f91b"
+  },
+  "source_html": "/Users/yorrickjansen/work/data/openalex-tier-scaling-20261106/claude-native-results.html",
+  "source_html_matches_published": true,
+  "corrections_source": "/Users/yorrickjansen/work/data/openalex-tier-scaling-20261106/claude-native-corrections.txt",
+  "runtime_capabilities": [],
+  "data": "embedded in the page",
+  "sharing": {
+    "current_state": "private",
+    "public_link_verified": false,
+    "reason": "The Artifact tool cannot change sharing. The publish result says sharing is done from the page's Share menu. Root handles sharing after this publish.",
+    "remaining_step": "Open the URL while signed in to claude.ai as the owner, open the page's Share menu, and set access to anyone with the link."
+  },
+  "corrections_applied": {
+    "query_names": "q01 Publication counts, q02 Topic statistics, q03 Author output, q04 International collaboration, q05 One-hop citations, q06 Two-hop citations, q07 Citations by year. Used in all charts, controls and copy, with q numbers as secondary labels. Figure 2 widened its label column, raised its phone-layout breakpoint to 720 px and gave phone rows a separate line for the speed ratio.",
+    "join_algorithms": "auto and parallel_hash labelled as join algorithms, as confirmed.",
+    "method_notes": [
+      "ClickHouse: preloaded normalized selected-column tables, timed with FORMAT Null, separate JSON correctness export.",
+      "Athena: results materialized to S3, CSV download excluded.",
+      "All 99 full typed multiset comparisons matched.",
+      "All five tuning arms, including a second control that is not graphed, matched 838,464 output rows.",
+      "parallel_hash24 still had aggregation spill; preaggregate12 had none in all 3 runs.",
+      "Cohorts are nested and nonrandom.",
+      "All cohorts include 119,129,660 authors plus fixed institutions, sources and topics, so raw GB is total input, not works only.",
+      "Host m7g.8xlarge 32 vCPU, 128 GiB; Docker 18 CPU, 50 GiB.",
+      "No claim of full-corpus or minimum-resource sufficiency."
+    ],
+    "figure_2_ruler": "Now draws one bar for the selected cohort at its own percentage on a track that is 100% of Works. Nested cohorts are no longer drawn together. The track label changed from 'Rest of Works: untested' to 'Outside this cohort', because for smaller cohorts that remainder includes tested larger cohorts.",
+    "cpu_and_memory": "CPU stays 'Average busy cores out of 18'. Query peak memory stays labelled as not container RSS and excluding file cache. The core-seconds figures derived in version 1 were removed.",
+    "other_copy": "The tuning intro now says the arms differed in query limits, join algorithm or SQL. Pre-aggregated SQL's memory peak is described as the lowest of the graphed arms, because the second control is not graphed."
+  },
+  "known_gaps": {
+    "rendered_preview": "This session offered no preview or screenshot tool, and neither version has been rendered or had its script run here. Root will run Playwright and independent CLI QA.",
+    "version_1_ruler_finding": "From reading the CSS, version 1's bars were absolutely positioned at left 0, so they overlapped and did not sum to 8.62% on screen. This was not checked in a browser. The ruler was still replaced as instructed, because overlapping nested cohorts was misleading."
+  }
+}

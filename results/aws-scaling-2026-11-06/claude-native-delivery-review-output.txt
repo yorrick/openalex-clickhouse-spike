@@ -1,0 +1,20 @@
+**PASS, with one condition on delivery.** There are no false claims of public access, no invalid provenance, and the link is correct.
+
+**Condition:** until sharing is enabled, the link only opens for the owner and anyone already given access. The line makes no public claim, but anyone else who gets the report can't open it. The publish receipt also says to tell the user this when presenting the page. So the delivery message must say the link is private, or the Share step must be finished and checked from a signed-out session first. After that check, update `sharing` in `visual-provenance.json` and `claude-native-publication.json`; both correctly say private for now.
+
+**Checks that passed**
+- **Report link:** the URL is identical in the proposed line, both JSON records and both publish receipts. The host is `claude.ai`, not a ChatGPT domain. "Created and hosted by Claude" is supported by the records.
+- **Public access:** both records say private, and `public_link_verified` is `false`. `visual-provenance.json` explicitly makes no public accessibility claim. The receipts confirm the artifact is private.
+- **Publish history:** the receipts show version 1 (`1794011089-f91b`), then a denied edit with nothing published, then version 2 (`1794011484-68bf`). This matches `transient_issue` and both records, and the version IDs are 395 seconds apart, the same as the gap between the receipts.
+- **Author setup:** the two author commands fit the history: Edit was missing from the first and added on resume.
+- **Review coverage:** the Codex PASS describes a ruler using only the selected cohort, which is version 2 behaviour, so it isn't a stale version 1 review.
+- **QA scope:** `visual-provenance.json` states that the hosted private viewer hasn't been inspected, so QA isn't overclaimed.
+
+**Non-blocking gaps**
+- **Hash not verified:** I didn't recompute `html_sha256`, so it's unconfirmed. The receipt says the file matched the published page at publish time, which doesn't rule out later local edits.
+- **QA and review not tied to version 2:** neither `visual-qa.json` nor the Codex review records a hash or version ID. That link rests on the review's content and on the provenance prose.
+- **QA details only in prose:** the 21 combinations, Chrome and the screenshot inspection appear only in `visual-provenance.json`, not in `visual-qa.json`.
+- **Hosted page unchecked:** the hosted page still needs its first check once access is available. This is a good moment to do it, since local QA doesn't cover the viewer.
+- **Older note in the publication record:** `known_gaps` in `claude-native-publication.json` says the page hasn't been rendered. That was true for the authoring session, and `visual-provenance.json` covers the later QA.
+
+I also read `claude-native-publish-receipts.json` and `claude-native-review-output.txt`, beyond the three files you listed, to check the provenance. I didn't read the report itself, so I reviewed only the line you quoted. No files were modified.
