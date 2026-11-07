@@ -1,6 +1,6 @@
 # Single-user resource benchmark results
 
-[Interactive results diagram, created by Claude Code](https://chatgpt.com/space/page_6f224aabf09881919eef15f7eea7dd9c).
+[Interactive results diagram, created and hosted by Claude](https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H).
 
 ## Summary, matched local and AWS inputs (2026-11-06)
 
