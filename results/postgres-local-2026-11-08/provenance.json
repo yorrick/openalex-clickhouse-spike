@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "scope": "PostgreSQL localstartercomparison,2m/10mWorks withall119mAuthorrowsandidenticalselectedfields. No31.9mPGorfullcorpustest.",
+  "user_no_claude_validation": true,
+  "validation": "ActualstockPGexecutions,3warmrepeatsafterprimer,25typedfull-outputhashmatches,all9tablecountsmatchbothcohorts. NoexternalAIreviewofPostgresinvoked.",
+  "commands": [
+    ".venv/bin/python init_local.py",
+    ".venv/bin/python load_data.py stage2_small",
+    ".venv/bin/python index_and_benchmark.py stage2_small queries",
+    ".venv/bin/python variant_bench.py stage2_small q03_preaggregate_authors q03 sql/q03_preaggregate_authors.sql",
+    ".venv/bin/python update_probe.py",
+    ".venv/bin/python scale_to.py stage2_medium",
+    ".venv/bin/python load_data.py stage2_medium works work_author work_institution work_topic citation_edge",
+    ".venv/bin/python index_and_benchmark.py stage2_medium all --bracket-q03",
+    ".venv/bin/python write_report.py",
+    ".venv/bin/python archive_results.py"
+  ],
+  "initial_harness_corrections": [
+    "FirstrawParquetprobeusedURLidintoBIGINTandfailed,correctedtomatchingnumericIDregexbeforefullbulkload;2rowfixtureSQLParquetcopythenwitnessed.",
+    "FirstqueryrunnerusedCHcount()syntaxandfailedbeforeanysuccessfultimedquery;adaptedtocount(*). Exceptionhandlerimportpsycopgwasaddedtoavoidmaskingthaterror. No datachangedbytheseerrors,initiallogsretainedinlocalstudy.",
+    "Cloudtimingsincludeprimer;artifactpayloadbuilderexcludesprimerexplicitly. Postgresrunnerseparatelylabelsprimer/warm1/2/3."
+  ],
+  "resource_scope": "CgroupCPUoverinstrumentedclientwindow,backgroundPGincluded. Containerfileincludesshmem,donotadd. SharedReadBlocks are PGbuffermisses,notphysicaldisk. HostIOcountershost-wideunisolated;VirtioFScanbypasscgroupblockaccounting. Loadtelemetryincludespostloadvalidationwhilecopysecondsdo not.",
+  "update_scope": "SyntheticstagedapplyandreplayinsideoneoutertransactionthenROLLBACK;NOcommitorstagingtime. Notactualnewsnapshotsync,notproductionthroughput. Noformalhours/financialtotalsclaimed.",
+  "storage": "HostbindmountPGDATAoutsideDockerVMdue8GBVMfree;hostinitial411GiB. Data/secretpasswordexcludedfromgit;PGimageonimmutablearchiveddigest.",
+  "study": "/Users/yorrickjansen/work/data/openalex-postgres-20261108",
+  "issue": "https://linear.app/yorrick/issue/YOR-68/comparer-postgresql-local-a-clickhouse-et-athena-sur-openalex"
+}

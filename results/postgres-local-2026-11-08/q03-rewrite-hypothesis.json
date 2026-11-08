@@ -1,0 +1,13 @@
+{
+  "declared_at": "2026-11-08T21:10:25.149577+00:00",
+  "query": "q03",
+  "tier": "stage2_small",
+  "hypothesis": "Aggregate by authorID before joining/fetchingnames reduces median byatleast50percent while retaining typedmultisetexactoutput andsame16CPU/32GiBsettings",
+  "baseline_median_seconds": 24.64283,
+  "target_median_seconds": 12.321415,
+  "repeats": 3,
+  "primer": 1,
+  "same_data_and_configuration": true,
+  "sql": "sql/q03_preaggregate_authors.sql",
+  "semantic_reason": "Authors andWorks have verifiedPKs; authoraggregates preserveCOUNTDISTINCT andsum multiplicity; namesjoinedaftergrouping, innerlateral lookup filtersmissingauthors before outerLIMIT, preservingorder andmembership"
+}

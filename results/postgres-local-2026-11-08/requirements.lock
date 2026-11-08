@@ -1,0 +1,6 @@
+duckdb==2.0.0
+psutil==7.2.2
+psycopg==3.3.8
+psycopg-binary==3.3.8
+pyarrow==26.0.1
+typing-extensions==4.16.0

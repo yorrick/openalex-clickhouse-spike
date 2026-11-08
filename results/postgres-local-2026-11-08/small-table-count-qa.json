@@ -1,0 +1,26 @@
+{
+  "matched": true,
+  "actual": {
+    "authors": 119129660,
+    "citation_edge": 15283016,
+    "institutions": 127784,
+    "sources": 283287,
+    "topics": 4516,
+    "work_author": 3852081,
+    "work_institution": 2646224,
+    "work_topic": 4139113,
+    "works": 2002982
+  },
+  "expected": {
+    "authors": 119129660,
+    "citation_edge": 15283016,
+    "institutions": 127784,
+    "sources": 283287,
+    "topics": 4516,
+    "work_author": 3852081,
+    "work_institution": 2646224,
+    "work_topic": 4139113,
+    "works": 2002982
+  },
+  "note": "After updateprobes ROLLBACK, before resettingWorkstables"
+}

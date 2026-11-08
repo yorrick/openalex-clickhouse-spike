@@ -2,6 +2,11 @@
 
 [Interactive results diagram, created and hosted by Claude](https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H).
 
+[Separate local PostgreSQL comparison, 8 November](../postgres-local-benchmark.md):
+matching 2.00m and 10.11m Works cohorts, load/index times, query timings, resource
+usage and synthetic update probes. PostgreSQL was validated against the recorded
+output oracle; no Claude Code validation was invoked for that study.
+
 ## Summary, matched local and AWS inputs (2026-11-06)
 
 The three requested volumes are complete: **2,002,982, 10,109,733 and

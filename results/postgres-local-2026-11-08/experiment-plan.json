@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-08",
+  "issue": "YOR-68",
+  "objective": "Measure stock PostgreSQL local Docker load/query/update costs on the exact retained OpenAlex analytical schema, versus recorded ClickHouse and Athena results",
+  "user_constraints": {"no_claude_validation": true, "no_ec2_without_discussion": true, "collect_cpu_memory_disk": true},
+  "baseline": "2,002,982 Works plus complete119,129,660Authors and fixed Institutions/Sources/Topics, exact historical input files",
+  "hypothesis": "All seven query families achieve median execution under60seconds at first cohort, with exact typed multiset output equality",
+  "method": "One primer then3warm EXPLAIN ANALYZE runs (TIMING OFF, BUFFERS, WAL, SETTINGS, FORMAT JSON), independent output fetch and typed canonical hash comparison to historical oracle. Separate client wall time from native PG Execution Time. Three fixed seeds for q05/q06, show maxseedmedian when summarizing families.",
+  "initial_configuration": {"image": "existing official postgres18 ARM64 image, observed18.6", "docker_cpus":16,"docker_memory_gib":32,"shared_buffers_gib":8,"work_mem_mib":128,"max_parallel_workers_per_gather":8,"max_parallel_workers":16,"durability":"logged tables, fsync/synchronous_commit/full_page_writes enabled","data_storage":"dedicated host bind mount, because Docker VM only8GBfree"},
+  "load": "Witnessed DuckDB2.0 PostgreSQL extension writes projected Parquet data to vanilla PostgreSQL through SQL; no custom per-row JSON parser and no full intermediate CSV. Nine normalized tables matching42CHcolumns. Build ordinary indexes after bulk insert, vacuum/analyze, account for load and index time separately.",
+  "scale_policy": "First get2m measured, then consider10m and31.9m if laptop resource/disk/runtime observations allow. Do not promise fullcorpus. Retain complete Authors between tiers to avoid repeated119mload.",
+  "query_timeout_seconds":300,
+  "disk_guard": "Do not expand Docker VM or stop unrelated containers. Stop further scaling if host free disk below80GiB or benchmark storage above150GiB.",
+  "updates": "After baseline query measurements, witness and time transactional upsert/replacement of changed Work rows and child relationships using staging tables, plus idempotency and tombstone behavior on small batches. Restore original dataset using transaction rollback or explicit fixture DB so baseline outputs are preserved. Clearly label synthetic update batch, not a real newer snapshot sync.",
+  "report_limits": "PostgreSQL query execution only, DuckDB used for loading, not for benchmark query execution. Memory caps and storage paths differ from historical/EC2 tests; comparisons are observed setups not isolated engine causality. Snapshot versioning/merged/deleted-ID handling discussed separately from update microexperiment. No minimum-resource or fullcorpus conclusion.",
+  "review_policy": "User explicitly excludes Claude Code validation for PostgreSQL. No Claude validation is invoked for this experiment. Separate already-authorized Claude artifact-author process does not touch PostgreSQL work."
+}

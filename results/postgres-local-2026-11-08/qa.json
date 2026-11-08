@@ -1,0 +1,259 @@
+{
+  "full_result_hash_comparisons": [
+    {
+      "tier": "stage2_small",
+      "case_file": "q01.json",
+      "matched": true,
+      "rows": 6174,
+      "expected_rows": 6174,
+      "canonical_sha256": "d5d4827e9cf37f6beac3c2c0108e7d38d0af6fd390c5e348014bd6c309a187cf",
+      "expected_sha256": "d5d4827e9cf37f6beac3c2c0108e7d38d0af6fd390c5e348014bd6c309a187cf",
+      "client_fetch_seconds": 0.05883187521249056
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q02.json",
+      "matched": true,
+      "rows": 346801,
+      "expected_rows": 346801,
+      "canonical_sha256": "63fb61d7ccf63dfad41cb94f4c8206ec1c3176f07fd0fa43a7dea289b448dbe9",
+      "expected_sha256": "63fb61d7ccf63dfad41cb94f4c8206ec1c3176f07fd0fa43a7dea289b448dbe9",
+      "client_fetch_seconds": 1.8841015007346869
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q03.json",
+      "matched": true,
+      "rows": 1000,
+      "expected_rows": 1000,
+      "canonical_sha256": "cbbe30deaa1c82d0d228712f6fc974ce4a76556a3dd54d7972f50f5f81472008",
+      "expected_sha256": "cbbe30deaa1c82d0d228712f6fc974ce4a76556a3dd54d7972f50f5f81472008",
+      "client_fetch_seconds": 46.56876725051552
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q03_preaggregate_authors.json",
+      "matched": true,
+      "canonical_sha256": "cbbe30deaa1c82d0d228712f6fc974ce4a76556a3dd54d7972f50f5f81472008",
+      "expected_sha256": "cbbe30deaa1c82d0d228712f6fc974ce4a76556a3dd54d7972f50f5f81472008",
+      "rows": 1000,
+      "expected_rows": 1000,
+      "fetch_seconds": 4.977596624754369
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q04.json",
+      "matched": true,
+      "rows": 54471,
+      "expected_rows": 54471,
+      "canonical_sha256": "f3faf088853cfbe8f533c3d3455fc521213217886b0853905071ac7d7b3d1787",
+      "expected_sha256": "f3faf088853cfbe8f533c3d3455fc521213217886b0853905071ac7d7b3d1787",
+      "client_fetch_seconds": 1.6741687078028917
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q05-s2003585639.json",
+      "matched": true,
+      "rows": 352,
+      "expected_rows": 352,
+      "canonical_sha256": "8dd4e12af04d7c3cd2e90d35a76e7f80a878071a7f4c5f33ae08c2e22488e71f",
+      "expected_sha256": "8dd4e12af04d7c3cd2e90d35a76e7f80a878071a7f4c5f33ae08c2e22488e71f",
+      "client_fetch_seconds": 0.0034594591706991196
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q05-s24222542.json",
+      "matched": true,
+      "rows": 118,
+      "expected_rows": 118,
+      "canonical_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "expected_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "client_fetch_seconds": 0.001013125292956829
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q05-s51557542.json",
+      "matched": true,
+      "rows": 44,
+      "expected_rows": 44,
+      "canonical_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "expected_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "client_fetch_seconds": 0.00560483243316412
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q06-s2003585639.json",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "83890d2cf0ebf0dbde33db73b0bfbb0598c75f7fbfa5fa8e73a79953397bb908",
+      "expected_sha256": "83890d2cf0ebf0dbde33db73b0bfbb0598c75f7fbfa5fa8e73a79953397bb908",
+      "client_fetch_seconds": 0.0016652494668960571
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q06-s24222542.json",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "3db4e2d15128484c18e33cde50510caf0a36044278b0f9e265f49f31e9bb1ee0",
+      "expected_sha256": "3db4e2d15128484c18e33cde50510caf0a36044278b0f9e265f49f31e9bb1ee0",
+      "client_fetch_seconds": 0.001151958480477333
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q06-s51557542.json",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "3bcf2afdb32ea342100e69fd054bb7052791450672fdfa8a269e36a5fa7d5b7a",
+      "expected_sha256": "3bcf2afdb32ea342100e69fd054bb7052791450672fdfa8a269e36a5fa7d5b7a",
+      "client_fetch_seconds": 0.0011090831831097603
+    },
+    {
+      "tier": "stage2_small",
+      "case_file": "q07.json",
+      "matched": true,
+      "rows": 1000,
+      "expected_rows": 1000,
+      "canonical_sha256": "9569f42ebe562919953cfb8f14d41e64b8ed72fed695472915faef3f39a3579e",
+      "expected_sha256": "9569f42ebe562919953cfb8f14d41e64b8ed72fed695472915faef3f39a3579e",
+      "client_fetch_seconds": 11.599579499103129
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q01.json",
+      "matched": true,
+      "rows": 9810,
+      "expected_rows": 9810,
+      "canonical_sha256": "c6f9c124dc7afdc1d1450222724c7ffebc4542732bb7c51b2661ad3d1cf06417",
+      "expected_sha256": "c6f9c124dc7afdc1d1450222724c7ffebc4542732bb7c51b2661ad3d1cf06417",
+      "client_fetch_seconds": 0.2664548745378852
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q02.json",
+      "matched": true,
+      "rows": 579800,
+      "expected_rows": 579800,
+      "canonical_sha256": "f3fd9508ba2527a43bc8fd2e0c3f7bdf17432202373a00f2625c08f5982fb512",
+      "expected_sha256": "f3fd9508ba2527a43bc8fd2e0c3f7bdf17432202373a00f2625c08f5982fb512",
+      "client_fetch_seconds": 9.334524749778211
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q03.json",
+      "matched": true,
+      "rows": 1000,
+      "expected_rows": 1000,
+      "canonical_sha256": "f8744f7a51c060920422528d37d774a32e94b39351da8c562440f584cd23d864",
+      "expected_sha256": "f8744f7a51c060920422528d37d774a32e94b39351da8c562440f584cd23d864",
+      "client_fetch_seconds": 56.73848587460816
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q03_control_b.json",
+      "matched": true,
+      "canonical_sha256": "f8744f7a51c060920422528d37d774a32e94b39351da8c562440f584cd23d864",
+      "expected_sha256": "f8744f7a51c060920422528d37d774a32e94b39351da8c562440f584cd23d864",
+      "rows": 1000,
+      "expected_rows": 1000,
+      "fetch_seconds": 54.75515512563288
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q03_preaggregate_authors.json",
+      "matched": true,
+      "canonical_sha256": "f8744f7a51c060920422528d37d774a32e94b39351da8c562440f584cd23d864",
+      "expected_sha256": "f8744f7a51c060920422528d37d774a32e94b39351da8c562440f584cd23d864",
+      "rows": 1000,
+      "expected_rows": 1000,
+      "fetch_seconds": 30.672173749655485
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q04.json",
+      "matched": true,
+      "rows": 110456,
+      "expected_rows": 110456,
+      "canonical_sha256": "059adfc17613097584b9c02ab9e3895b620aa1b32627c991f433e0cc28350814",
+      "expected_sha256": "059adfc17613097584b9c02ab9e3895b620aa1b32627c991f433e0cc28350814",
+      "client_fetch_seconds": 31.849977750331163
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q05-s2003585639.json",
+      "matched": true,
+      "rows": 353,
+      "expected_rows": 353,
+      "canonical_sha256": "cb8ef0ea62c87e5c37428543e2e2e6847e1dcdd2e13f15d89373870b793348e8",
+      "expected_sha256": "cb8ef0ea62c87e5c37428543e2e2e6847e1dcdd2e13f15d89373870b793348e8",
+      "client_fetch_seconds": 0.0012013325467705727
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q05-s24222542.json",
+      "matched": true,
+      "rows": 118,
+      "expected_rows": 118,
+      "canonical_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "expected_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "client_fetch_seconds": 0.0009715836495161057
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q05-s51557542.json",
+      "matched": true,
+      "rows": 44,
+      "expected_rows": 44,
+      "canonical_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "expected_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "client_fetch_seconds": 0.008616124279797077
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q06-s2003585639.json",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "5e2883c1a7025a8a6630f05b021ae54426574364d259ebf6dc50620b861834cd",
+      "expected_sha256": "5e2883c1a7025a8a6630f05b021ae54426574364d259ebf6dc50620b861834cd",
+      "client_fetch_seconds": 0.0020142504945397377
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q06-s24222542.json",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "3384246e9de7f012e91f718e85b00e46b4e5a2e39dbe6099cf396e9c140d9d36",
+      "expected_sha256": "3384246e9de7f012e91f718e85b00e46b4e5a2e39dbe6099cf396e9c140d9d36",
+      "client_fetch_seconds": 0.0012939153239130974
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q06-s51557542.json",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "3bcf2afdb32ea342100e69fd054bb7052791450672fdfa8a269e36a5fa7d5b7a",
+      "expected_sha256": "3bcf2afdb32ea342100e69fd054bb7052791450672fdfa8a269e36a5fa7d5b7a",
+      "client_fetch_seconds": 0.0010224590077996254
+    },
+    {
+      "tier": "stage2_medium",
+      "case_file": "q07.json",
+      "matched": true,
+      "rows": 1000,
+      "expected_rows": 1000,
+      "canonical_sha256": "124231a5865f480f8ab6dfb7e94ae1223723ffc5ec3ab8abbef1a62f33a9d1e4",
+      "expected_sha256": "124231a5865f480f8ab6dfb7e94ae1223723ffc5ec3ab8abbef1a62f33a9d1e4",
+      "client_fetch_seconds": 16.16921762470156
+    }
+  ],
+  "all_25_match": true,
+  "baseline_cases": 22,
+  "extra_variant_or_control_exports": 3,
+  "oracle": "Existing frozen typed ClickHouse/Athena multiset SHA256 androwcounts fromNov6; integer/bool/string normalization reused unchanged",
+  "table_counts": "AllnineactualPGtablecounts equal correspondingCHcohort before/afterupdateprobesandat10m"
+}

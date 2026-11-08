@@ -1,0 +1,276 @@
+{
+  "copy_seconds": 146.0537354592234,
+  "tables": [
+    {
+      "table": "citation_edge",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171451.398498,
+      "sql_sha256": "7ef0fe5e70f040969cd85dc05756075f8122c2567cf795b52ea25ab54aaa750a",
+      "seconds": 13.436447208747268,
+      "rows": 15283016,
+      "heap_bytes": 797835264,
+      "host_disk_before": {
+        "read_count": 5303833678,
+        "write_count": 2119442168,
+        "read_bytes": 56751039780352,
+        "write_bytes": 29826726203392,
+        "read_time": 1130583744,
+        "write_time": 150308816
+      },
+      "host_disk_after": {
+        "read_count": 5303911339,
+        "write_count": 2119448663,
+        "read_bytes": 56753104283136,
+        "write_bytes": 29830134136832,
+        "read_time": 1130592799,
+        "write_time": 150309442
+      },
+      "host_free_after": 423868833792,
+      "telemetry_samples": 23,
+      "monitor_window_seconds": 14.332744374871254,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "institutions",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171398.03899,
+      "sql_sha256": "15b2569586fb5ebf0eeb15e8b95b4d4dba241ea1a6d22b5e7a948b28819df132",
+      "seconds": 0.32907166611403227,
+      "rows": 127784,
+      "heap_bytes": 15663104,
+      "host_disk_before": {
+        "read_count": 5303469990,
+        "write_count": 2119401794,
+        "read_bytes": 56740027184640,
+        "write_bytes": 29812919812096,
+        "read_time": 1130458553,
+        "write_time": 150305460
+      },
+      "host_disk_after": {
+        "read_count": 5303472669,
+        "write_count": 2119401883,
+        "read_bytes": 56740077041152,
+        "write_bytes": 29812981440512,
+        "read_time": 1130459423,
+        "write_time": 150305470
+      },
+      "host_free_after": 423697022976,
+      "telemetry_samples": 2,
+      "monitor_window_seconds": 0.4106772495433688,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "sources",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171398.5275269,
+      "sql_sha256": "23975a309cf74f1f1d0201979d5b10935f8c071a55c65b1b3f0685d851589656",
+      "seconds": 0.39822166692465544,
+      "rows": 283287,
+      "heap_bytes": 36732928,
+      "host_disk_before": {
+        "read_count": 5303473275,
+        "write_count": 2119401900,
+        "read_bytes": 56740087727616,
+        "write_bytes": 29812989280256,
+        "read_time": 1130459807,
+        "write_time": 150305471
+      },
+      "host_disk_after": {
+        "read_count": 5303476303,
+        "write_count": 2119402105,
+        "read_bytes": 56740158424576,
+        "write_bytes": 29813121380352,
+        "read_time": 1130461545,
+        "write_time": 150305492
+      },
+      "host_free_after": 423626633216,
+      "telemetry_samples": 2,
+      "monitor_window_seconds": 0.49202924966812134,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "work_institution",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171425.6531541,
+      "sql_sha256": "b07aafd277cc3ae1ce75b724b0cb3246e1603d692a37100072a6585dc1ea876c",
+      "seconds": 16.667159625329077,
+      "rows": 2646224,
+      "heap_bytes": 138280960,
+      "host_disk_before": {
+        "read_count": 5303662345,
+        "write_count": 2119417760,
+        "read_bytes": 56745822045696,
+        "write_bytes": 29820386402304,
+        "read_time": 1130540572,
+        "write_time": 150307528
+      },
+      "host_disk_after": {
+        "read_count": 5303801268,
+        "write_count": 2119439387,
+        "read_bytes": 56750239954432,
+        "write_bytes": 29825282260992,
+        "read_time": 1130579400,
+        "write_time": 150308555
+      },
+      "host_free_after": 425624338432,
+      "telemetry_samples": 27,
+      "monitor_window_seconds": 16.9952692091465,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "authors",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171241.5873559,
+      "sql_sha256": "1756d85d86b9093c5a7f34845bfdb3b4527710e0240f40b82c553a0b4e3204dc",
+      "seconds": 81.32985654193908,
+      "rows": 119129660,
+      "heap_bytes": 11018108928,
+      "host_disk_before": {
+        "read_count": 5302902945,
+        "write_count": 2119322091,
+        "read_bytes": 56718617101824,
+        "write_bytes": 29777868075008,
+        "read_time": 1130308899,
+        "write_time": 150293065
+      },
+      "host_disk_after": {
+        "read_count": 5303469367,
+        "write_count": 2119401759,
+        "read_bytes": 56740018947584,
+        "write_bytes": 29812894126080,
+        "read_time": 1130458298,
+        "write_time": 150305455
+      },
+      "host_free_after": 423729577984,
+      "telemetry_samples": 274,
+      "monitor_window_seconds": 156.35757833253592,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "work_topic",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171442.7968588,
+      "sql_sha256": "5c734f35b26a0a336fd6afb18b97c73a37f4569c868836a9c962a2f4939578d5",
+      "seconds": 8.175053792074323,
+      "rows": 4139113,
+      "heap_bytes": 216399872,
+      "host_disk_before": {
+        "read_count": 5303802331,
+        "write_count": 2119439397,
+        "read_bytes": 56750257272320,
+        "write_bytes": 29825286676480,
+        "read_time": 1130579646,
+        "write_time": 150308556
+      },
+      "host_disk_after": {
+        "read_count": 5303832701,
+        "write_count": 2119442132,
+        "read_bytes": 56751023822336,
+        "write_bytes": 29826703028224,
+        "read_time": 1130583656,
+        "write_time": 150308812
+      },
+      "host_free_after": 425205510144,
+      "telemetry_samples": 14,
+      "monitor_window_seconds": 8.455720916390419,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "works",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171399.23645,
+      "sql_sha256": "5de281fbd1491e39e04b5dfaf7b909a93b81ac77691aee7975a2eaf488589fc7",
+      "seconds": 3.2361403331160545,
+      "rows": 2002982,
+      "heap_bytes": 234815488,
+      "host_disk_before": {
+        "read_count": 5303477794,
+        "write_count": 2119402171,
+        "read_bytes": 56740188972544,
+        "write_bytes": 29813151379456,
+        "read_time": 1130462196,
+        "write_time": 150305497
+      },
+      "host_disk_after": {
+        "read_count": 5303498465,
+        "write_count": 2119403531,
+        "read_bytes": 56740628194816,
+        "write_bytes": 29814047453184,
+        "read_time": 1130470893,
+        "write_time": 150305637
+      },
+      "host_free_after": 423172227072,
+      "telemetry_samples": 8,
+      "monitor_window_seconds": 3.434420958161354,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "work_author",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171402.7461078,
+      "sql_sha256": "93e189173db8f9f1ae174f9d72eae13c08b758c45a9a070f3aa1c17eae16fe70",
+      "seconds": 22.46867100056261,
+      "rows": 3852081,
+      "heap_bytes": 201195520,
+      "host_disk_before": {
+        "read_count": 5303498948,
+        "write_count": 2119403545,
+        "read_bytes": 56740636292608,
+        "write_bytes": 29814051487744,
+        "read_time": 1130471054,
+        "write_time": 150305638
+      },
+      "host_disk_after": {
+        "read_count": 5303661347,
+        "write_count": 2119417152,
+        "read_bytes": 56745805805056,
+        "write_bytes": 29820361211904,
+        "read_time": 1130540316,
+        "write_time": 150307517
+      },
+      "host_free_after": 422695596032,
+      "telemetry_samples": 36,
+      "monitor_window_seconds": 22.746186916716397,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    },
+    {
+      "table": "topics",
+      "tier": "stage2_small",
+      "state": "complete",
+      "start": 1794171399.088861,
+      "sql_sha256": "f93441473ee920d99d03c5266585cae2505efdc8f2724a691db5bba982f0d549",
+      "seconds": 0.013113624416291714,
+      "rows": 4516,
+      "heap_bytes": 851968,
+      "host_disk_before": {
+        "read_count": 5303476773,
+        "write_count": 2119402122,
+        "read_bytes": 56740170843648,
+        "write_bytes": 29813133414400,
+        "read_time": 1130461717,
+        "write_time": 150305493
+      },
+      "host_disk_after": {
+        "read_count": 5303477286,
+        "write_count": 2119402147,
+        "read_bytes": 56740180698624,
+        "write_bytes": 29813148553216,
+        "read_time": 1130462040,
+        "write_time": 150305496
+      },
+      "host_free_after": 423625728000,
+      "telemetry_samples": 2,
+      "monitor_window_seconds": 0.08134458307176828,
+      "monitor_scope": "Bulk INSERT plus post-load rowcount and size validation"
+    }
+  ],
+  "measured_rows_total": 147468663
+}
