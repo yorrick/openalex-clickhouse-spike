@@ -1,34 +1,32 @@
 {
-  "data_exact_match": true,
+  "html_sha256": "f0b999b9a84b17b32553554a9ec22fa6851edd1d87383e1e7e66d96ac5f33cf0",
+  "embedded_data_exact": true,
+  "case_checks": 99,
   "viewports": [
     {
       "width": 1440,
-      "overflow": false,
-      "all_cohort_query_controls": true,
-      "keyboard_row_selection": true,
-      "local_toggle": true
+      "all33cases_exact_sql": true,
+      "arms_and_flow_clicks": true,
+      "keyboard": true,
+      "no_horizontal_body_overflow": true,
+      "schema_and8views_exact": true
     },
     {
       "width": 1000,
-      "overflow": false,
-      "all_cohort_query_controls": true,
-      "keyboard_row_selection": true,
-      "local_toggle": true
+      "all33cases_exact_sql": true,
+      "arms_and_flow_clicks": true,
+      "keyboard": true,
+      "no_horizontal_body_overflow": true,
+      "schema_and8views_exact": true
     },
     {
-      "width": 360,
-      "overflow": false,
-      "all_cohort_query_controls": true,
-      "keyboard_row_selection": true,
-      "local_toggle": true
+      "width": 390,
+      "all33cases_exact_sql": true,
+      "arms_and_flow_clicks": true,
+      "keyboard": true,
+      "no_horizontal_body_overflow": true,
+      "schema_and8views_exact": true
     }
   ],
-  "javascript_errors": [],
-  "html_sha256": "5358d33346d7de21f774eb343daad21b3c3c2d2b017ff86878c670651535b97b",
-  "artifact_version": 2,
-  "artifact_version_id": "1794011484-68bf",
-  "browser": "System Google Chrome, headless Playwright1.58.0",
-  "cohort_query_combinations_per_viewport": 21,
-  "visual_inspection": "Desktop and mobile scale screenshots inspected",
-  "hosted_viewer_verified": false
+  "javascript_errors": []
 }

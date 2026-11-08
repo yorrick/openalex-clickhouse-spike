@@ -1,42 +1,56 @@
 {
   "artifact_url": "https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H",
   "artifact_host": "claude.ai",
-  "publication": "Claude Code native Artifact tool, version2, 1794011484-68bf",
-  "sharing": "private; browser approval requested to enable anyone-with-link. No public accessibility claim.",
-  "html_sha256": "5358d33346d7de21f774eb343daad21b3c3c2d2b017ff86878c670651535b97b",
+  "version": 5,
+  "version_id": "1794174385-00c6",
+  "html_sha256": "f0b999b9a84b17b32553554a9ec22fa6851edd1d87383e1e7e66d96ac5f33cf0",
+  "title": "OpenAlex query benchmark",
+  "sharing": "Private. Tool cannot enable public sharing. Browser authorization from user remains pending; no public-access or hosted-viewer QA claim.",
   "author_model": "claude-opus-5-5",
-  "author_effort": "high",
+  "author_efforts": [
+    "max (initial design/staging, interrupted)",
+    "high (implementation and published versions3/4/5)"
+  ],
   "author_commands": [
-    "claude --model claude-opus-5-5 --effort high --tools Read,Write,Artifact --allowedTools Read,Write,Artifact --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' -- \"$(cat claude-native-artifact-request.txt)\"",
-    "claude --resume 0b06df04-9483-4bbf-8c21-bcb30aa2d54e --model claude-opus-5-5 --effort high --tools Read,Write,Edit,Artifact --allowedTools Read,Write,Edit,Artifact --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' -- 'Read claude-native-corrections.txt and implement it. Edit is now allowed. Republish the same native artifact.'"
+    "claude --model claude-opus-5-5 --effort max --tools Read,Write,Edit,Bash,Artifact --allowedTools Read,Write,Edit,Bash,Artifact --add-dir /Users/yorrickjansen/work/data/openalex-technical-artifact-20261108 --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' -- 'Read /Users/yorrickjansen/work/data/openalex-technical-artifact-20261108/native-technical-request.txt and carry out the authorized artifact revision.'",
+    "claude --resume d2af6f2f-93b2-4841-89fa-7ade7de558e3 --model claude-opus-5-5 --effort high --tools Read,Write,Edit,Bash,Artifact --allowedTools Read,Write,Edit,Bash,Artifact --add-dir /Users/yorrickjansen/work/data/openalex-technical-artifact-20261108 --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' -- 'Read /Users/yorrickjansen/work/data/openalex-technical-artifact-20261108/implement-now.txt and implement the bounded artifact revision now.'"
   ],
   "author_exit_codes": [
     0,
     0
   ],
-  "author_environment": "~/.ssh/claude.sh sourced; CLAUDE_CODE_ARTIFACT_AUTO_OPEN=0. Interactive native Artifact tool required; publishing is unavailable through headless -p.",
-  "transient_issue": "First corrective publish was denied because the initial tool allowlist omitted Edit. No publish occurred. Resumed with Edit explicitly allowed and successfully published version2.",
-  "reviewer_model": "gpt-6-sol",
+  "author_execution_notes": [
+    "First prompt path was wrong; author found identical request in initial working directory. Request copied to correct study path afterwards.",
+    "Initial max-effort run was interrupted after36minutes without publication, then exited normally. This is not a completed max-review or publication claim.",
+    "Same model resumed high, assembled measuredJSONprogrammatically, published v3; targetedcopy/hash/mobilecorrections published v4/v5.",
+    "Interactive instructions qa-corrections.txt andmobile-final-correction.txt appliedinresumedCLI; no PostgreSQL work was included.",
+    "Sourced ~/.ssh/claude.sh;CLAUDE_CODE_ARTIFACT_AUTO_OPEN=0; no browser automation or public sharing enabled."
+  ],
+  "reviewer": "Codex CLI gpt-6-sol",
   "reviewer_effort": "high",
   "review_commands": [
-    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message claude-native-review-output.txt - < claude-native-review-prompt.txt > claude-native-review-cli.log 2>&1"
+    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message review-technical-output.txt - < review-technical-prompt.txt > review-technical-cli.log 2>&1",
+    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message correction-technical-output.txt - < correction-technical-prompt.txt > correction-technical-cli.log 2>&1",
+    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message final-mobile-review-output.txt - < final-mobile-review-prompt.txt > final-mobile-review-cli.log 2>&1"
   ],
   "review_exit_codes": [
+    0,
+    0,
     0
   ],
-  "final_review": "PASS",
-  "qa": "Native self-contained HTML tested in local Chrome at360/1000/1440px. All21query/cohort combinations, local toggle, keyboard selection, no horizontal overflow or JS errors. Embedded tiers and tuning values exactly match source. Desktop/mobile screenshots inspected. Hosted private viewer not yet inspected.",
-  "ruler_adjudication": "Initial suspicion that nested cohort widths summed was rejected after checking absolute positioning; they overlapped. Claude replaced them with a single selected-cohort bar for clarity. Percentages unchanged.",
-  "supersedes": "Prior ChatGPT Page presentation. All benchmark measurements unchanged.",
-  "publication_record": "claude-native-publication.json",
-  "publish_receipts": "claude-native-publish-receipts.json",
-  "review_record": "claude-native-review-output.txt",
-  "delivery_review": {
-    "model": "claude-opus-5-5",
-    "effort": "high",
-    "command": "claude -p --model claude-opus-5-5 --effort high --tools Read --allowedTools Read --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < delivery-review-prompt.txt > delivery-review-output.txt 2> delivery-review-error.log",
-    "exit_code": 0,
-    "verdict": "PASS, delivery must state private until public sharing enabled and anonymously verified",
-    "adjudication": "Accepted. Private status is explicit, public accessibility remains unclaimed. Recomputed SHA256 identical between native source and archived HTML; added hash, version and detailed QA metadata. Hosted browser sharing remains pending user approval."
-  }
+  "review_verdicts": [
+    "BLOCK, clipboardfallbackandpayloadhashlabel; data/SQL/numberspassed",
+    "PASS, targetedcorrections",
+    "PASS, finalscopedmobileCSS/doctypechanges"
+  ],
+  "adjudication": [
+    "Acceptedclipboardfallbackfinding; automaticselectionremoved, honestexplicitcopyerror.",
+    "RejectedrequesttoembedsourceJSONrawbyte-for-byte: HTML-safeescapingof< andnewlineencodingpreserveparseddataand66exactSQLtexts. ClarifiedSOURCEfilehashbeforeescapingandseparateinlineJSONhash/bytes, peerPASS.",
+    "RealChrome390pxbodyoverflow525px isolatedtoimplicitgridtracksandunbrokenhash. Targetedgridminmax andhashwrappingfixedresponsiveviewport.",
+    "Actualmobileemulation exposed separateqtableoverflow:body/inner426px vs390viewport. Removingqtablealonefixedit;scopedpaint/layout/inline-sizecontainmentandqtableoverflowvisibilityfixedwithoutglobalpageoverflowhiding. AddedDOCTYPE,focusringsdrawninsideborder; peerPASS."
+  ],
+  "qa": "Embeddedpayloadsemanticequality;all33casesat1440/1000/390px exactCH/AthenaSQL(99case/viewchecks),all6armviewsand8flowclicks,schemaSQLand8views exact,keyboardEnterselection,noJSerrors. Actualmobile390pxall33cases exactSQL/no pageoverflow; clipboardwiring simulatedsuccessanddenial,visibleerror/nofallback; OSclipboardnotchanged. Screenshotsinspecteddesktop/mobile. Hosted private viewer/public accessibility not inspected.",
+  "postgres_scope": "PostgreSQL is a separate newer local experiment. No Claude validation of PostgreSQL was invoked. This artifact revision covers the original ClickHouse/Athena/historical-local results, dated6November.",
+  "study": "/Users/yorrickjansen/work/data/openalex-technical-artifact-20261108",
+  "payload_source_sha256": "a718d4ed04996f1591e6e8b0482b6e7e9c74693cc8de734b2b2e11748991edd4"
 }

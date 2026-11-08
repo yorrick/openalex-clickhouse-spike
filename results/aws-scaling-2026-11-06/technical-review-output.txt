@@ -1,0 +1,3 @@
+**BLOCK.** The embedded payload at [claude-native-results.html:354](/Users/yorrickjansen/work/data/openalex-tier-scaling-20261106/claude-native-results.html:354) differs from `technical-payload.json`: six `<` characters are escaped and the final newline is missing, while the next line reports the source file’s byte count and hash. Embed it byte-for-byte and recheck the hash.
+
+At [line 891](/Users/yorrickjansen/work/data/openalex-tier-scaling-20261106/claude-native-results.html:891), clipboard failure automatically selects the SQL as a fallback; remove that behavior and show an honest copy error, leaving manual selection available. The parsed data, all 33 case medians, 99 QA comparisons, and recorded SQL hashes passed static checks; visual QA was outside this review.

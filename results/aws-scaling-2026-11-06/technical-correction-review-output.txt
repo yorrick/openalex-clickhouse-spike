@@ -1,0 +1,1 @@
+PASS. The deployed HTML matches the code-only artifact, the source-file and inline-JSON byte counts and hashes match their labels, and both parse to identical data. The clipboard failure path no longer selects text automatically; I found no material regression in the targeted changes.
