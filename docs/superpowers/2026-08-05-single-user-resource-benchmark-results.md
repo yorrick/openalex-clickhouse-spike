@@ -245,7 +245,9 @@ resource configuration is established by this study.
 Full-corpus deployment remains an extrapolation. Holding the complete Authors
 and support dimensions fixed, linearly scaling just the Works-derived normalized
 tables from 31.89m to 510.37m gives about **60 GB active selected-column data**.
-This excludes unused source fields, temporary processing space, inactive parts,
+The [field inventory](../openalex-field-inventory.md) catalogues the saved benchmark
+schemas and maps the fields and relationships preserved by this estimate.
+The estimate excludes unused source fields, temporary processing space, inactive parts,
 logs, replicas and distribution differences. This arithmetic does not establish
 full-corpus storage capacity, query memory or latency. A single instance is
 still a candidate; a second node or a cluster is not yet
