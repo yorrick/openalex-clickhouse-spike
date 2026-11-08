@@ -1,0 +1,18 @@
+{
+  "container": "openalex-pg-bench-20261108",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-08T20:50:28.117566846Z",
+    "FinishedAt": "2026-11-08T21:50:32.164165791Z"
+  },
+  "pgdata_retained": "/Users/yorrickjansen/work/data/openalex-postgres-20261108/pgdata",
+  "purpose": "Stoppedaftermeasurements;preserves10mWorksand119mAuthorrowsforfuturelocalresume;noothercontainerstouched"
+}
