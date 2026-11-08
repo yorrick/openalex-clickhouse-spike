@@ -1,0 +1,10 @@
+{
+  "mobile_viewport": 390,
+  "all33_mobile_cases_exact_sql": true,
+  "no_body_overflow": true,
+  "copy_wiring_simulated_success_exact_sql": true,
+  "clipboard_denial_visible": "Copy failed: clipboard unavailable here",
+  "no_auto_selection_fallback": true,
+  "os_clipboard_not_changed": true,
+  "actual_hosted_iframe_clipboard_permission_not_tested": true
+}

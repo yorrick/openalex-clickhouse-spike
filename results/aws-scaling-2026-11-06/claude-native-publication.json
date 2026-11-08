@@ -1,47 +1,69 @@
 {
-  "title": "Two Paths Through OpenAlex",
+  "title": "OpenAlex query benchmark",
   "url": "https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H",
   "host": "claude.ai",
   "published_with": "Claude Code built-in Artifact tool",
-  "published_on": "2026-11-06",
-  "version": 2,
-  "version_id": "1794011484-68bf",
-  "version_label": "Query names, method notes, ruler fix",
+  "published_on": "2026-11-08",
+  "version": 5,
+  "version_id": "1794174385-00c6",
+  "version_label": "OpenAlex query benchmark",
   "previous_version": {
-    "version": 1,
-    "version_id": "1794011089-f91b"
+    "version": 4,
+    "version_id": "1794173636-dad9"
   },
+  "receipt": "Published /Users/yorrickjansen/work/data/openalex-tier-scaling-20261106/claude-native-results.html at https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H (Version 5, version id 1794174385-00c6). This artifact is private: only its owner and the people the owner has given access can open the link. You cannot change sharing; that is done from the page's Share menu.",
   "source_html": "/Users/yorrickjansen/work/data/openalex-tier-scaling-20261106/claude-native-results.html",
-  "source_html_matches_published": true,
-  "corrections_source": "/Users/yorrickjansen/work/data/openalex-tier-scaling-20261106/claude-native-corrections.txt",
+  "source_html_bytes": 301247,
+  "source_html_sha256": "f0b999b9a84b17b32553554a9ec22fa6851edd1d87383e1e7e66d96ac5f33cf0",
+  "embedded_payload": {
+    "source_file": "technical-payload.json",
+    "source_bytes_before_escaping": 225362,
+    "source_sha256_before_escaping": "a718d4ed04996f1591e6e8b0482b6e7e9c74693cc8de734b2b2e11748991edd4",
+    "inline_script_json_bytes": 225391,
+    "inline_script_json_sha256": "7a277793dcb37b1e2f388e01b155486ecd8ecf8550cd5320b2540ae62cc401c5",
+    "inline_transform": "'<' written as \\u003c, trailing newline removed; parses to identical JSON"
+  },
   "runtime_capabilities": [],
-  "data": "embedded in the page",
+  "remote_data_loads": "none; Google Fonts stylesheet only",
   "sharing": {
     "current_state": "private",
     "public_link_verified": false,
-    "reason": "The Artifact tool cannot change sharing. The publish result says sharing is done from the page's Share menu. Root handles sharing after this publish.",
-    "remaining_step": "Open the URL while signed in to claude.ai as the owner, open the page's Share menu, and set access to anyone with the link."
+    "remaining_step": "Owner sets access from the page's Share menu."
   },
-  "corrections_applied": {
-    "query_names": "q01 Publication counts, q02 Topic statistics, q03 Author output, q04 International collaboration, q05 One-hop citations, q06 Two-hop citations, q07 Citations by year. Used in all charts, controls and copy, with q numbers as secondary labels. Figure 2 widened its label column, raised its phone-layout breakpoint to 720 px and gave phone rows a separate line for the speed ratio.",
-    "join_algorithms": "auto and parallel_hash labelled as join algorithms, as confirmed.",
-    "method_notes": [
-      "ClickHouse: preloaded normalized selected-column tables, timed with FORMAT Null, separate JSON correctness export.",
-      "Athena: results materialized to S3, CSV download excluded.",
-      "All 99 full typed multiset comparisons matched.",
-      "All five tuning arms, including a second control that is not graphed, matched 838,464 output rows.",
-      "parallel_hash24 still had aggregation spill; preaggregate12 had none in all 3 runs.",
-      "Cohorts are nested and nonrandom.",
-      "All cohorts include 119,129,660 authors plus fixed institutions, sources and topics, so raw GB is total input, not works only.",
-      "Host m7g.8xlarge 32 vCPU, 128 GiB; Docker 18 CPU, 50 GiB.",
-      "No claim of full-corpus or minimum-resource sufficiency."
+  "local_checks_performed": [
+    "line diff against version 4 shows only the 4 added lines",
+    "node --check syntax pass",
+    "stub-DOM render of all 33 cases, 6 arm views, 8 nodes: exact SQL present, no NaN or undefined"
+  ],
+  "not_performed": [
+    "real-browser or mobile-emulation check of the 390px overflow and responsiveness",
+    "in-browser focus visibility and copy behaviour",
+    "hosted viewer check"
+  ],
+  "findings_for_root": [
+    "q05/q06 family maxima can come from different seeds per engine (q05 medium, q06 medium, q05 large) and CH ties occur; inspector names the seed(s) for each engine.",
+    "Overview tuning CPU equals the median of 3 runs; overview query peak memory equals the max of 3 runs; labelled that way.",
+    "The 99 timed Athena runs sum to 198.431 GB DataScannedInBytes; the supplied 221.492 GB fee basis is shown as supplied and not reconstructed.",
+    "Schema file declares openalex_spike while executed SQL reads openalex_benchmark; noted without explanation.",
+    "Tuning effective_settings record 5 keys vs 7 for tier runs; shown as recorded.",
+    "Title kept as the existing artifact name for stability; visible H1 is a plain technical heading."
+  ],
+  "qa_corrections_applied": [
+    "1 mobile overflow: explicit minmax(0,1fr) track on section, .calc and other grid containers; .calc/.tw min-width 0, max-width 100%; tables still scroll inside .tw; no global overflow hiding",
+    "1 follow-up: inline code in notes and prose wraps (overflow-wrap anywhere, word-break break-word); pre blocks keep white-space pre and horizontal scroll",
+    "2 meta charset utf-8 and standard viewport meta at top of file",
+    "3 clipboard fallback removed: Clipboard API only, explicit failure message, no auto-selection",
+    "4 payload hash label: source-file bytes/hash before HTML-safe escaping, plus separate inline JSON bytes/hash",
+    "5 schema note states render_sql_template (src/openalex_spike/cli.py lines 267 to 271) replacement to openalex_benchmark",
+    "6 HTML title and publish label: OpenAlex query benchmark"
+  ],
+  "mobile_final_correction": {
+    "added": [
+      "<!doctype html> at file start (standalone standards mode; the artifact host wraps the page in its own doctype, so this one is ignored when hosted)",
+      "#qtable { overflow: visible; }",
+      ".tw { contain: inline-size layout paint; }",
+      ".tw :focus-visible { outline-offset: -2px; } so focus rings stay inside the paint-contained scroller"
     ],
-    "figure_2_ruler": "Now draws one bar for the selected cohort at its own percentage on a track that is 100% of Works. Nested cohorts are no longer drawn together. The track label changed from 'Rest of Works: untested' to 'Outside this cohort', because for smaller cohorts that remainder includes tested larger cohorts.",
-    "cpu_and_memory": "CPU stays 'Average busy cores out of 18'. Query peak memory stays labelled as not container RSS and excluding file cache. The core-seconds figures derived in version 1 were removed.",
-    "other_copy": "The tuning intro now says the arms differed in query limits, join algorithm or SQL. Pre-aggregated SQL's memory peak is described as the lowest of the graphed arms, because the second control is not graphed."
-  },
-  "known_gaps": {
-    "rendered_preview": "This session offered no preview or screenshot tool, and neither version has been rendered or had its script run here. Root will run Playwright and independent CLI QA.",
-    "version_1_ruler_finding": "From reading the CSS, version 1's bars were absolutely positioned at left 0, so they overlapped and did not sum to 8.62% on screen. This was not checked in a browser. The ruler was still replaced as instructed, because overlapping nested cohorts was misleading."
+    "diff_vs_version_4": "exactly these 4 added lines; payload, numbers, SQL, clipboard logic and hash metadata byte-identical"
   }
 }

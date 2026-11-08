@@ -1,0 +1,1 @@
+PASS. The v5 doctype and scoped CSS are present in both HTML copies; the only difference is the payload intentionally omitted from the code-only copy. The changes show no material issue in this review, and `publication.json` still records the artifact as private.
