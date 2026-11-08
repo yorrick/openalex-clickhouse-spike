@@ -1,17 +1,42 @@
 {
-  "artifact_url": "https://chatgpt.com/space/page_6f224aabf09881919eef15f7eea7dd9c",
-  "html_sha256": "07b1d37ec0f0b01f5f0d6a4088366297f73c819990bec91ab370fdc59a705684",
-  "author_command": "caffeinate -i claude -p --model claude-opus-5-5 --effort high --tools '' --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < visual-claude-prompt.txt > openalex-results-artifact.html 2> visual-claude-error.log",
-  "author_exit_code": 0,
-  "review_commands": [
-    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message visual-review-output.txt - < visual-review-prompt.txt > visual-review-cli.log 2>&1",
-    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message visual-correction-output.txt - < visual-correction-prompt.txt > visual-correction-cli.log 2>&1"
+  "artifact_url": "https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H",
+  "artifact_host": "claude.ai",
+  "publication": "Claude Code native Artifact tool, version2, 1794011484-68bf",
+  "sharing": "private; browser approval requested to enable anyone-with-link. No public accessibility claim.",
+  "html_sha256": "5358d33346d7de21f774eb343daad21b3c3c2d2b017ff86878c670651535b97b",
+  "author_model": "claude-opus-5-5",
+  "author_effort": "high",
+  "author_commands": [
+    "claude --model claude-opus-5-5 --effort high --tools Read,Write,Artifact --allowedTools Read,Write,Artifact --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' -- \"$(cat claude-native-artifact-request.txt)\"",
+    "claude --resume 0b06df04-9483-4bbf-8c21-bcb30aa2d54e --model claude-opus-5-5 --effort high --tools Read,Write,Edit,Artifact --allowedTools Read,Write,Edit,Artifact --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' -- 'Read claude-native-corrections.txt and implement it. Edit is now allowed. Republish the same native artifact.'"
   ],
-  "review_exit_codes": [
+  "author_exit_codes": [
     0,
     0
   ],
-  "initial_review": "BLOCK, timing qualifiers missing; corrected",
+  "author_environment": "~/.ssh/claude.sh sourced; CLAUDE_CODE_ARTIFACT_AUTO_OPEN=0. Interactive native Artifact tool required; publishing is unavailable through headless -p.",
+  "transient_issue": "First corrective publish was denied because the initial tool allowlist omitted Edit. No publish occurred. Resumed with Edit explicitly allowed and successfully published version2.",
+  "reviewer_model": "gpt-6-sol",
+  "reviewer_effort": "high",
+  "review_commands": [
+    "caffeinate -i codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message claude-native-review-output.txt - < claude-native-review-prompt.txt > claude-native-review-cli.log 2>&1"
+  ],
+  "review_exit_codes": [
+    0
+  ],
   "final_review": "PASS",
-  "qa": "Same supplied data verified; local Chrome rendered at360/1000px, selector updates checked, no horizontal overflow or JS errors. Page embed read back after successful insertion. Live hosted Page appearance not inspected."
+  "qa": "Native self-contained HTML tested in local Chrome at360/1000/1440px. All21query/cohort combinations, local toggle, keyboard selection, no horizontal overflow or JS errors. Embedded tiers and tuning values exactly match source. Desktop/mobile screenshots inspected. Hosted private viewer not yet inspected.",
+  "ruler_adjudication": "Initial suspicion that nested cohort widths summed was rejected after checking absolute positioning; they overlapped. Claude replaced them with a single selected-cohort bar for clarity. Percentages unchanged.",
+  "supersedes": "Prior ChatGPT Page presentation. All benchmark measurements unchanged.",
+  "publication_record": "claude-native-publication.json",
+  "publish_receipts": "claude-native-publish-receipts.json",
+  "review_record": "claude-native-review-output.txt",
+  "delivery_review": {
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "command": "claude -p --model claude-opus-5-5 --effort high --tools Read --allowedTools Read --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' < delivery-review-prompt.txt > delivery-review-output.txt 2> delivery-review-error.log",
+    "exit_code": 0,
+    "verdict": "PASS, delivery must state private until public sharing enabled and anonymously verified",
+    "adjudication": "Accepted. Private status is explicit, public accessibility remains unclaimed. Recomputed SHA256 identical between native source and archived HTML; added hash, version and detailed QA metadata. Hosted browser sharing remains pending user approval."
+  }
 }

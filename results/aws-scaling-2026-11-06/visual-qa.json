@@ -1,59 +1,34 @@
 {
+  "data_exact_match": true,
   "viewports": [
     {
+      "width": 1440,
+      "overflow": false,
+      "all_cohort_query_controls": true,
+      "keyboard_row_selection": true,
+      "local_toggle": true
+    },
+    {
       "width": 1000,
-      "horizontal_overflow": false
+      "overflow": false,
+      "all_cohort_query_controls": true,
+      "keyboard_row_selection": true,
+      "local_toggle": true
     },
     {
       "width": 360,
-      "horizontal_overflow": false
+      "overflow": false,
+      "all_cohort_query_controls": true,
+      "keyboard_row_selection": true,
+      "local_toggle": true
     }
   ],
   "javascript_errors": [],
-  "select_options": [
-    [
-      {
-        "value": "0",
-        "text": "2,002,982 works"
-      },
-      {
-        "value": "1",
-        "text": "10,109,733 works"
-      },
-      {
-        "value": "2",
-        "text": "31,885,241 works"
-      }
-    ],
-    [
-      {
-        "value": "q01",
-        "text": "q01 Publication counts"
-      },
-      {
-        "value": "q02",
-        "text": "q02 Topic statistics"
-      },
-      {
-        "value": "q03",
-        "text": "q03 Author output"
-      },
-      {
-        "value": "q04",
-        "text": "q04 International collaboration"
-      },
-      {
-        "value": "q05",
-        "text": "q05 One-hop citations"
-      },
-      {
-        "value": "q06",
-        "text": "q06 Two-hop citations"
-      },
-      {
-        "value": "q07",
-        "text": "q07 Citations by year"
-      }
-    ]
-  ]
+  "html_sha256": "5358d33346d7de21f774eb343daad21b3c3c2d2b017ff86878c670651535b97b",
+  "artifact_version": 2,
+  "artifact_version_id": "1794011484-68bf",
+  "browser": "System Google Chrome, headless Playwright1.58.0",
+  "cohort_query_combinations_per_viewport": 21,
+  "visual_inspection": "Desktop and mobile scale screenshots inspected",
+  "hosted_viewer_verified": false
 }
