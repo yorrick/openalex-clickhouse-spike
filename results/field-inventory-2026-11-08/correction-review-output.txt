@@ -1,0 +1,26 @@
+**Verdict: PASS**
+
+Both blocking wording issues are fixed, and the two earlier non-blocking points are dealt with. I found nothing material left. I only read files: I made no changes and ran no tests, benchmarks or AWS calls. I didn't recheck evidence you said was unchanged.
+
+**Previous findings**
+
+1. **Lookup sentence (was blocking): fixed.**
+   - Seven entities now say which retained column holds their IDs or values:
+     - countries → `institutions.country_code` (line 141)
+     - domains, fields and subfields → `topics.*_id` (lines 149, 157, 229)
+     - institution-types → `institutions.institution_type` (line 173)
+     - source-types → `sources.source_type` (line 221)
+     - work-types → `works.work_type` (line 237)
+   - The other eight (concepts, continents, funders, keywords, languages, licenses, publishers, sdgs) each say "No fields from this entity were loaded into ClickHouse."
+   - The old "Some corresponding IDs…" sentence is gone from the doc, and `build_inventory.py:109` now writes the line per entity.
+2. **Change to the original report (was blocking): resolved under your adjudication.** The diff only adds the two link lines (248–249). Nothing else in that file changed: no benchmark results, numbers or conclusions. The overclaiming "lists every available source field" is gone. The new wording ("catalogues the saved benchmark schemas and maps the fields and relationships preserved by this estimate") matches what the inventory actually supports. The link `../openalex-field-inventory.md` resolves correctly.
+3. **Works coverage (was non-blocking): fixed.** Line 3 now separates record counts from the full snapshot manifest from field lists from the saved schemas. It says the Works top-level check covers the 154 selected files (31.89m rows), not all Works shards in the full snapshot.
+4. **Query-figure citation (was non-blocking): fixed.** Line 260 links `../results/aws-scaling-2026-11-06/q02-tuning.json`, and that file exists. The other evidence links (`full-snapshot.json`, `stage2_large.json`, the `schemas/` folder with 20 files, `fields.md`, `inventory.json`, and the original report) also resolve.
+
+**Capacity and RAM wording:** nothing implies public full-corpus capacity or a RAM requirement.
+- The 59.80 GB and 164.0 GB figures are still labelled conditional, and the doc says neither is a RAM requirement (lines 243, 249).
+- 13.28 GiB is described as query memory, not total server memory, and excluding file cache (line 251).
+- Line 253 explicitly says neither "fits in RAM" nor the one-minute target has been established.
+- The original report's line 252 still says the arithmetic doesn't establish full-corpus capacity, memory or latency.
+
+**Optional:** in the original report, the new sentence now sits between the 60 GB estimate and "This excludes unused source fields…". So "This" could be read as referring to the inventory rather than the estimate. Moving the link sentence to after "…query memory or latency." or changing "This excludes" to "The estimate excludes" would remove the ambiguity. It doesn't change any meaning, so it doesn't block.

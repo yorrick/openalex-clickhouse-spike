@@ -1,0 +1,44 @@
+# Verdict: BLOCK
+
+The two blocking issues are a wrong sentence repeated in the report and a change to an original file. Neither involves numbers, arithmetic or field mapping. Every calculation and mapping I checked was correct.
+
+Note that the main report changed while I was reviewing it: it was dated 07:40 when I first read it and 07:42:54 afterwards. This verdict covers the current version (21,963 bytes, sha256 `dafbc847…20b6`). `fields.md` and `inventory.json` have not changed since 07:40:58.
+
+## Blocking findings
+
+**1. One lookup sentence is false for 8 of the 15 unloaded entities.** `build_inventory.py:108` prints the same paragraph under every unloaded entity: "Some corresponding IDs or values occur inside the five loaded entities…".
+- **True for 7:** countries (via `institutions.country_code`), domains, fields and subfields (via the `topics.*_id` columns), institution-types, source-types and work-types (via the stored type values).
+- **False for 8:** concepts :125, continents :133, funders :165, keywords :181, languages :189, licenses :197, publishers :205 and sdgs :213. No IDs or values from these entities are in any of the 42 loaded columns. Readers could take this to mean some concept, keyword, funder or language data was kept.
+
+**2. "No originals modified" is not true.** `git status` shows ` M docs/superpowers/2026-08-05-single-user-resource-benchmark-results.md`: two uncommitted lines (248–249) linking the inventory. The file is dated 07:42:54, so it was edited during this review. The new text, "lists every available source field", also goes further than the inventory, which says nested paths come from one sample schema per entity. Either revert the edit, or disclose it and soften the wording.
+
+## Verified correct (computed from the saved files)
+
+- **Field counts:** the 20 Arrow schemas give exactly 330 top-level fields and 643 leaf paths. They match `inventory.json` and the `fields.md` path/type rows, and the schema hashes match.
+- **Report lists:** every retained / partly retained / not-loaded list matches the stored status for that field, with no duplicates or omissions. The record counts, byte figures and field counts in each entity heading match too.
+- **Manifest:** the union of `compressed_columns` across the 2,771 files equals the Arrow top-level names for all 20 entities. Rows and bytes match `full-snapshot.json` for the 19 entities other than Works.
+- **Mapping:**
+  - 31 source paths map to exactly the 42 columns in `00_schema.sql`, with no missing or extra targets. The destinations in the appendix and the report tables match the inventory.
+  - `work_topic.is_primary` is correctly traced to both `topics[].id` and `primary_topic.id` (`20_load_works.sql:57-60`).
+  - Topic IDs are normalized consistently: `openalex_numeric_id` for work and topic IDs, `openalex_hierarchy_id` for subfield/field/domain (`00_schema.sql:3-7`).
+  - All 119,129,660 Authors rows are loaded but only 3 top-level fields are used.
+  - Loaded table rows equal snapshot rows for Authors, Institutions, Sources and Topics (4,516 = 4,516).
+- **SQL files:** all four hashes match both the worktree and `git show 0b3d5bcf…`.
+- **Generator fix:** `build_inventory.py:69` now indexes `table_bytes` as a list. My own recalculation from `stage2_large.json` gives:
+  - 6,890,385,687 B total (equal to `normalized_bytes`)
+  - 3,364,423,107 B for the four fixed dimensions
+  - scale factor 16.00655
+  - 59,802,932,344 B (59.80 GB) estimate
+  - 19,591,673,671 B uncompressed, scaling to 164.04 GB
+- **Unloaded entities:** the 15 sum to 30,131,427 B (30.13 MB).
+- **Query figures:**
+  - 13.28 GiB is the largest of the three `parallel_hash24` peaks in `q02-tuning.json` (14,257,602,964 B).
+  - The medians are 5.640 s and 9.258 s, and the original plan took 65.5 s.
+- **Wording and scope:** the 60 GB and 164 GB figures are labelled conditional and "not a RAM requirement". Query memory is described as excluding file cache and not being server memory. There is no full-corpus memory or speed claim, no claim that fields were kept in full, and the Awards scope note is correct.
+
+## Non-blocking
+
+- **Works field coverage:** for Works, the column union covers only the 154 selected files (31,885,241 rows), not all 510m records. Line 257 says "sealed benchmark files", which is literally accurate, but the heading pairs 49 fields with 510,372,821 records.
+- **Missing citation:** the 13.28 GiB, 5.64 s and 9.26 s figures are typed directly into `build_inventory.py:116` rather than read from data. Their source, `q02-tuning.json`, isn't linked under "Evidence and scope"; the linked benchmark doc only cites it indirectly at :356.
+
+I can't supply the exact CLI command used to invoke this review for the archive; it wasn't passed to me. `review-output.txt` and `review-error.log` in the analysis directory are empty, and I didn't modify any files.
