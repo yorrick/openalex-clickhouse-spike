@@ -1,0 +1,88 @@
+{
+  "hypothesis": "SELECT-list UNNEST removes correlated materialization/hash of whole authorship structs while preserving the projected multiset.",
+  "source": "/Users/yorrickjansen/work/openalex/.worktrees/clickhouse-stage1/.data/raw/objects/08d79ed1ee65e104cad2d982c254dcf4578c7a5784e3f26e35686501220c7e7c.parquet",
+  "runs": [
+    {
+      "label": "old",
+      "seconds": 1.3550998326390982,
+      "rows": 173399
+    },
+    {
+      "label": "stream",
+      "seconds": 0.18960033264011145,
+      "rows": 173399
+    }
+  ],
+  "scope": "Diagnostic while full loader runs, not isolated comparative timings.",
+  "differences": 0,
+  "plan_new": [
+    {
+      "name": "PROJECTION",
+      "children": [
+        {
+          "name": "PROJECTION",
+          "children": [
+            {
+              "name": "PROJECTION",
+              "children": [
+                {
+                  "name": "FILTER",
+                  "children": [
+                    {
+                      "name": "UNNEST",
+                      "children": [
+                        {
+                          "name": "READ_PARQUET",
+                          "children": [],
+                          "extra_info": {
+                            "Function": "READ_PARQUET",
+                            "Projections": [
+                              "id",
+                              "authorships"
+                            ],
+                            "Filters": "(TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                            "Estimated Cardinality": "28980"
+                          }
+                        }
+                      ],
+                      "extra_info": {}
+                    }
+                  ],
+                  "extra_info": {
+                    "Expression": "(TRY_CAST(regexp_extract(struct_extract(struct_extract(a, 'author'), 'id'), '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                    "Estimated Cardinality": "5796"
+                  }
+                }
+              ],
+              "extra_info": {
+                "Projections": [
+                  "#0",
+                  "#2"
+                ],
+                "Estimated Cardinality": "5796"
+              }
+            }
+          ],
+          "extra_info": {
+            "Projections": [
+              "id",
+              "struct_extract(struct_extract(a, 'author'), 'id')",
+              "struct_extract(a, 'author_position')",
+              "struct_extract(a, 'is_corresponding')"
+            ],
+            "Estimated Cardinality": "5796"
+          }
+        }
+      ],
+      "extra_info": {
+        "Projections": [
+          "TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+          "TRY_CAST(regexp_extract(a, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+          "a",
+          "COALESCE(a, false)"
+        ],
+        "Estimated Cardinality": "5796"
+      }
+    }
+  ]
+}

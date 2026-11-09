@@ -1,0 +1,7 @@
+{
+  "before": "128MB",
+  "within_trial_connection": "512MB",
+  "separate_connection": "128MB",
+  "empty_settings_lookup_works": true,
+  "persistent_setting_changed": false
+}

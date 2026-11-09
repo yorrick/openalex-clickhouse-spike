@@ -1,5 +1,7 @@
 # PostgreSQL local OpenAlex benchmark
 
+The [31.89m-Work extension and bounded tuning results](postgres-scaling-benchmark.md) continue this study on 9 November, with the same container CPU and memory caps.
+
 Recorded 8 November 2026. This compares stock PostgreSQL query execution against the already recorded ClickHouse and Athena setups, using the same historical input files and the same selected analytical fields. No EC2 instance was launched. This starter pass measured 2.00m and 10.11m Works; 31.89m Works and the full corpus were not run in PostgreSQL.
 
 ## Environment and timing method

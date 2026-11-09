@@ -1,0 +1,427 @@
+{
+  "sources": [
+    "/Users/yorrickjansen/work/openalex/.worktrees/clickhouse-stage1/.data/raw/objects/08d79ed1ee65e104cad2d982c254dcf4578c7a5784e3f26e35686501220c7e7c.parquet",
+    "/Users/yorrickjansen/work/openalex/.worktrees/clickhouse-stage1/.data/raw/objects/1d8adf237bceeac80c400eaf9795f760fbf78e29fe88ebd4bddbd9aafb660da1.parquet"
+  ],
+  "results": [
+    {
+      "table": "work_author",
+      "comparison": {
+        "old": {
+          "seconds": 2.6151278745383024,
+          "rows": 348303
+        },
+        "stream": {
+          "seconds": 0.30613137502223253,
+          "rows": 348303
+        }
+      },
+      "symmetric_multiset_difference_rows": 0,
+      "new_plan": [
+        {
+          "name": "PROJECTION",
+          "children": [
+            {
+              "name": "PROJECTION",
+              "children": [
+                {
+                  "name": "PROJECTION",
+                  "children": [
+                    {
+                      "name": "FILTER",
+                      "children": [
+                        {
+                          "name": "UNNEST",
+                          "children": [
+                            {
+                              "name": "READ_PARQUET",
+                              "children": [],
+                              "extra_info": {
+                                "Function": "READ_PARQUET",
+                                "Projections": [
+                                  "id",
+                                  "authorships"
+                                ],
+                                "Filters": "(TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                                "Estimated Cardinality": "58029"
+                              }
+                            }
+                          ],
+                          "extra_info": {}
+                        }
+                      ],
+                      "extra_info": {
+                        "Expression": "(TRY_CAST(regexp_extract(struct_extract(struct_extract(a, 'author'), 'id'), '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                        "Estimated Cardinality": "11605"
+                      }
+                    }
+                  ],
+                  "extra_info": {
+                    "Projections": [
+                      "#0",
+                      "#2"
+                    ],
+                    "Estimated Cardinality": "11605"
+                  }
+                }
+              ],
+              "extra_info": {
+                "Projections": [
+                  "id",
+                  "struct_extract(struct_extract(a, 'author'), 'id')",
+                  "struct_extract(a, 'author_position')",
+                  "struct_extract(a, 'is_corresponding')"
+                ],
+                "Estimated Cardinality": "11605"
+              }
+            }
+          ],
+          "extra_info": {
+            "Projections": [
+              "TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+              "TRY_CAST(regexp_extract(a, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+              "a",
+              "COALESCE(a, false)"
+            ],
+            "Estimated Cardinality": "11605"
+          }
+        }
+      ]
+    },
+    {
+      "table": "work_institution",
+      "comparison": {
+        "old": {
+          "seconds": 2.2921848744153976,
+          "rows": 175981
+        },
+        "stream": {
+          "seconds": 0.28335283417254686,
+          "rows": 175981
+        }
+      },
+      "symmetric_multiset_difference_rows": 0,
+      "new_plan": [
+        {
+          "name": "HASH_GROUP_BY",
+          "children": [
+            {
+              "name": "PROJECTION",
+              "children": [
+                {
+                  "name": "PROJECTION",
+                  "children": [
+                    {
+                      "name": "PROJECTION",
+                      "children": [
+                        {
+                          "name": "PROJECTION",
+                          "children": [
+                            {
+                              "name": "FILTER",
+                              "children": [
+                                {
+                                  "name": "UNNEST",
+                                  "children": [
+                                    {
+                                      "name": "PROJECTION",
+                                      "children": [
+                                        {
+                                          "name": "PROJECTION",
+                                          "children": [
+                                            {
+                                              "name": "FILTER",
+                                              "children": [
+                                                {
+                                                  "name": "UNNEST",
+                                                  "children": [
+                                                    {
+                                                      "name": "READ_PARQUET",
+                                                      "children": [],
+                                                      "extra_info": {
+                                                        "Function": "READ_PARQUET",
+                                                        "Projections": [
+                                                          "id",
+                                                          "authorships"
+                                                        ],
+                                                        "Filters": "(TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                                                        "Estimated Cardinality": "58029"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "extra_info": {}
+                                                }
+                                              ],
+                                              "extra_info": {
+                                                "Expression": "(TRY_CAST(regexp_extract(struct_extract(struct_extract(a, 'author'), 'id'), '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                                                "Estimated Cardinality": "11605"
+                                              }
+                                            }
+                                          ],
+                                          "extra_info": {
+                                            "Projections": [
+                                              "#0",
+                                              "#2"
+                                            ],
+                                            "Estimated Cardinality": "11605"
+                                          }
+                                        }
+                                      ],
+                                      "extra_info": {
+                                        "Projections": [
+                                          "id",
+                                          "struct_extract(struct_extract(a, 'author'), 'id')",
+                                          "struct_extract(a, 'institutions')"
+                                        ],
+                                        "Estimated Cardinality": "11605"
+                                      }
+                                    }
+                                  ],
+                                  "extra_info": {}
+                                }
+                              ],
+                              "extra_info": {
+                                "Expression": "(TRY_CAST(regexp_extract(struct_extract(institution, 'id'), '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                                "Estimated Cardinality": "2321"
+                              }
+                            }
+                          ],
+                          "extra_info": {
+                            "Projections": [
+                              "#0",
+                              "#1",
+                              "#3"
+                            ],
+                            "Estimated Cardinality": "2321"
+                          }
+                        }
+                      ],
+                      "extra_info": {
+                        "Projections": [
+                          "id",
+                          "a",
+                          "struct_extract(institution, 'id')"
+                        ],
+                        "Estimated Cardinality": "2321"
+                      }
+                    }
+                  ],
+                  "extra_info": {
+                    "Projections": [
+                      "TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+                      "TRY_CAST(regexp_extract(author_raw, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+                      "TRY_CAST(regexp_extract(institution, '[A-Z]([0-9]+)$', 1) AS BIGINT)"
+                    ],
+                    "Estimated Cardinality": "2321"
+                  }
+                }
+              ],
+              "extra_info": {
+                "Projections": [
+                  "TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+                  "TRY_CAST(regexp_extract(author_raw, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+                  "TRY_CAST(regexp_extract(institution.id, '[A-Z]([0-9]+)$', 1) AS BIGINT)"
+                ],
+                "Estimated Cardinality": "2321"
+              }
+            }
+          ],
+          "extra_info": {
+            "Groups": [
+              "#0",
+              "#1",
+              "#2"
+            ],
+            "Aggregates": "",
+            "Estimated Cardinality": "2321"
+          }
+        }
+      ]
+    },
+    {
+      "table": "work_topic",
+      "comparison": {
+        "old": {
+          "seconds": 1.8127256659790874,
+          "rows": 578081
+        },
+        "stream": {
+          "seconds": 0.19448004197329283,
+          "rows": 578081
+        }
+      },
+      "symmetric_multiset_difference_rows": 0,
+      "new_plan": [
+        {
+          "name": "PROJECTION",
+          "children": [
+            {
+              "name": "PROJECTION",
+              "children": [
+                {
+                  "name": "PROJECTION",
+                  "children": [
+                    {
+                      "name": "PROJECTION",
+                      "children": [
+                        {
+                          "name": "FILTER",
+                          "children": [
+                            {
+                              "name": "UNNEST",
+                              "children": [
+                                {
+                                  "name": "READ_PARQUET",
+                                  "children": [],
+                                  "extra_info": {
+                                    "Function": "READ_PARQUET",
+                                    "Projections": [
+                                      "id",
+                                      "primary_topic.id",
+                                      "topics"
+                                    ],
+                                    "Filters": "(TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                                    "Estimated Cardinality": "58029"
+                                  }
+                                }
+                              ],
+                              "extra_info": {}
+                            }
+                          ],
+                          "extra_info": {
+                            "Expression": "((struct_extract(topic, 'score') IS NOT NULL) AND (TRY_CAST(regexp_extract(struct_extract(topic, 'id'), '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL))",
+                            "Estimated Cardinality": "11605"
+                          }
+                        }
+                      ],
+                      "extra_info": {
+                        "Projections": [
+                          "#0",
+                          "#1",
+                          "#3"
+                        ],
+                        "Estimated Cardinality": "11605"
+                      }
+                    }
+                  ],
+                  "extra_info": {
+                    "Projections": [
+                      "id",
+                      "primary_topic",
+                      "struct_extract(topic, 'id')",
+                      "struct_extract(topic, 'score')"
+                    ],
+                    "Estimated Cardinality": "11605"
+                  }
+                }
+              ],
+              "extra_info": {
+                "Projections": [
+                  "id",
+                  "TRY_CAST(regexp_extract(topic, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+                  "topic",
+                  "primary_raw"
+                ],
+                "Estimated Cardinality": "11605"
+              }
+            }
+          ],
+          "extra_info": {
+            "Projections": [
+              "TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+              "#1",
+              "topic",
+              "COALESCE((#1 = TRY_CAST(regexp_extract(primary_raw, '[A-Z]([0-9]+)$', 1) AS BIGINT)), false)"
+            ],
+            "Estimated Cardinality": "11605"
+          }
+        }
+      ]
+    },
+    {
+      "table": "citation_edge",
+      "comparison": {
+        "old": {
+          "seconds": 0.5835411250591278,
+          "rows": 1201502
+        },
+        "stream": {
+          "seconds": 0.33985420875251293,
+          "rows": 1201502
+        }
+      },
+      "symmetric_multiset_difference_rows": 0,
+      "new_plan": [
+        {
+          "name": "HASH_GROUP_BY",
+          "children": [
+            {
+              "name": "PROJECTION",
+              "children": [
+                {
+                  "name": "PROJECTION",
+                  "children": [
+                    {
+                      "name": "FILTER",
+                      "children": [
+                        {
+                          "name": "UNNEST",
+                          "children": [
+                            {
+                              "name": "READ_PARQUET",
+                              "children": [],
+                              "extra_info": {
+                                "Function": "READ_PARQUET",
+                                "Projections": [
+                                  "id",
+                                  "publication_year",
+                                  "referenced_works"
+                                ],
+                                "Filters": "(TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                                "Estimated Cardinality": "58029"
+                              }
+                            }
+                          ],
+                          "extra_info": {}
+                        }
+                      ],
+                      "extra_info": {
+                        "Expression": "(TRY_CAST(regexp_extract(ref, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                        "Estimated Cardinality": "11605"
+                      }
+                    }
+                  ],
+                  "extra_info": {
+                    "Projections": [
+                      "#0",
+                      "#1",
+                      "#3"
+                    ],
+                    "Estimated Cardinality": "11605"
+                  }
+                }
+              ],
+              "extra_info": {
+                "Projections": [
+                  "TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+                  "TRY_CAST(regexp_extract(ref, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+                  "CASE  WHEN ((constant_or_null(true, publication_year, 0) AND constant_or_null(true, publication_year, 65535))) THEN (publication_year) ELSE NULL::INTEGER END"
+                ],
+                "Estimated Cardinality": "11605"
+              }
+            }
+          ],
+          "extra_info": {
+            "Groups": [
+              "#0",
+              "#1"
+            ],
+            "Aggregates": "min(#2)",
+            "Estimated Cardinality": "5802"
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "Concurrent with old full loader; timings diagnostic, exact multiset checks decisive."
+}

@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-09",
+  "prospective": true,
+  "trial1": {
+    "setting": {
+      "work_mem": "512MB"
+    },
+    "caps_unchanged": "16CPU32GiB shared_buffers8GiB",
+    "reason": "Observedq02warm64.246/75.887/77.586s;rootTempWrittenBlocks1080357(~8.85GB),hashbatches8,6parallelworkersbut2.29busycores;memorycurrent25.21GiBincludesfilecache.",
+    "cases": "Only families failing60s inbaseline;forq03useexistinglogicallyequivalentrewrite,notoriginalnames-join. Same1initial+3warm andexactfullQA.",
+    "target": "Allrequiredwarmfamilymedians<60s,notguaranteedperrunSLA."
+  },
+  "trial2_reserved": {
+    "condition": "q03remains>60s andplanretainsmillionsofserialnestedWorkslookups",
+    "setting": {
+      "work_mem": "512MB",
+      "enable_nestloop": "off"
+    },
+    "scope": "q03rewriteonly;actualplanandfullQArequired;unavoidablenameLATERALcanremainnested."
+  },
+  "stop": "Aftertheseprofiles,ifanyrequiredwarmmedianstill>60stopvolumegrowth;doNOTclaimallPostgresonanyhardwareimpossible.",
+  "config_scope": "Settingsapplyonlytrialconnection;separateconnectionstayswork_mem128MBandquerytimeout300s;noDockerRAMresize.",
+  "profile2_query_shape_arm_q04": {
+    "prospective": true,
+    "reason": "At32m originalcollaborationCTEselfjointimedoutonfirst300sobservation; thetwoCTEscanscanmaterializelargecountrysets.",
+    "hypothesis": "AggregateonecountryarrayperWorkandfiltertointernationalWorks beforegeneratinguniquecountrypairs reacheswarmmedian<60s andexactfulltypedQA atwork_mem512MB.",
+    "semantics": "OriginalCTEhasone(work_id,country)row;withWorksPK,eacha<bpairappearsexactlyonceperWork. countryarrayDISTINCTandHAVING>1 preservebothcountryfiltersandpairmultiplicity;count(*) equalsoriginalcountDISTINCTwork.",
+    "scope": "Atmostonequery-shapearmperstill-failingq03/q04, afteronecommonmemoryprofile. Thisisnotanunboundedoptimizationsearch."
+  },
+  "profile2_query_specific_q07": {
+    "prospective": true,
+    "reason": "Observed baseline q07 is a serialindexonlyscan/incrementalsort with143327061outputgroups,zeroHeapFetchesandzerotempwrites;median81.493508s,~1busycore. An8GBwork_mem/noIndexOnly/singleworkerEXPLAINproducedHashedAggregateonSeqScan.",
+    "settings": {
+      "work_mem": "8GB",
+      "max_parallel_workers_per_gather": "0",
+      "enable_indexonlyscan": "off"
+    },
+    "memory_bound": "Singleworker avoids multiplying16GBhashbudget acrossworkers;32GBcontainercapand8GBsharedbuffersunchanged. Actualsampledpeak/possiblefailurewillberecorded.",
+    "target": "warmmedian<60s,fulltyped1000rowoutputhashmatch",
+    "scope": "Onequery-specificarmforthisstill-failingfamilyafterthecommon512MBprofile;nomorearmsornewvolumeifcriterionstillfails."
+  }
+}

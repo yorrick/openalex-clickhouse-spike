@@ -1,0 +1,9 @@
+{
+  "table": "work_author",
+  "tier": "stage2_large",
+  "state": "interrupted",
+  "start": 1794247830.330521,
+  "sql_sha256": "207d645e59925929e25424d8cd8bc5face7d3bf29d9b8c7c78f1b4c6c8a531c4",
+  "elapsed_seconds": 867.2822968959808,
+  "reason": "CorrelatedUNNESTmaterializes/hashes fullnestedauthorships; selectingUNNEST matches all4projected multisets on2realfiles. SIGINTdidnotcompletepromptly;explicitlyterminateonlydedicatedloader. No queryperformanceclaimfromthisload."
+}

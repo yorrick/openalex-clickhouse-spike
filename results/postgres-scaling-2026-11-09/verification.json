@@ -1,0 +1,10 @@
+{
+  "completed_case_outputs_verified": 15,
+  "initial_timeouts": 2,
+  "all_sql_text_and_recorded_sha256_match": true,
+  "all_native_medians_recomputed": true,
+  "all_cgroup_cpu_and_peak_memory_recomputed": true,
+  "all9tablecounts_match": true,
+  "actual_password_scan_passed": true,
+  "external_ai_review_completed": false
+}

@@ -1,0 +1,145 @@
+{
+  "finished": true,
+  "decision": {
+    "date": "2026-11-09",
+    "tier": "stage2_large",
+    "selected_best_observed_cases": {
+      "q01": {
+        "label": "q01",
+        "median_seconds": 5.576943,
+        "warm_seconds": [
+          5.613884,
+          5.4798729999999995,
+          5.576943
+        ],
+        "settings": {},
+        "qa_matched": true
+      },
+      "q02": {
+        "label": "q02_wm512",
+        "median_seconds": 41.452837,
+        "warm_seconds": [
+          50.781317,
+          41.452837,
+          40.499246
+        ],
+        "settings": {
+          "work_mem": "512MB"
+        },
+        "qa_matched": true
+      },
+      "q03": {
+        "label": "q03_preaggregate_authors_wm512_no_nestloop",
+        "median_seconds": 25.191693,
+        "warm_seconds": [
+          24.572922,
+          25.191693,
+          27.110219
+        ],
+        "settings": {
+          "work_mem": "512MB",
+          "enable_nestloop": "off"
+        },
+        "qa_matched": true
+      },
+      "q04": {
+        "label": "q04_wm512",
+        "median_seconds": 34.192637000000005,
+        "warm_seconds": [
+          34.728813,
+          34.192637000000005,
+          32.995625999999994
+        ],
+        "settings": {
+          "work_mem": "512MB"
+        },
+        "qa_matched": true
+      },
+      "q05-s51557542": {
+        "label": "q05-s51557542",
+        "median_seconds": 9.900000000000001e-05,
+        "warm_seconds": [
+          0.00011700000000000001,
+          9.900000000000001e-05,
+          9.3e-05
+        ],
+        "settings": {},
+        "qa_matched": true
+      },
+      "q05-s24222542": {
+        "label": "q05-s24222542",
+        "median_seconds": 0.000114,
+        "warm_seconds": [
+          0.000114,
+          0.00014399999999999998,
+          0.000112
+        ],
+        "settings": {},
+        "qa_matched": true
+      },
+      "q05-s2003585639": {
+        "label": "q05-s2003585639",
+        "median_seconds": 0.00016,
+        "warm_seconds": [
+          0.00016700000000000002,
+          0.00016,
+          0.000158
+        ],
+        "settings": {},
+        "qa_matched": true
+      },
+      "q06-s51557542": {
+        "label": "q06-s51557542",
+        "median_seconds": 0.000304,
+        "warm_seconds": [
+          0.00026000000000000003,
+          0.000304,
+          0.00039600000000000003
+        ],
+        "settings": {},
+        "qa_matched": true
+      },
+      "q06-s24222542": {
+        "label": "q06-s24222542",
+        "median_seconds": 0.000651,
+        "warm_seconds": [
+          0.000651,
+          0.000695,
+          0.0005899999999999999
+        ],
+        "settings": {},
+        "qa_matched": true
+      },
+      "q06-s2003585639": {
+        "label": "q06-s2003585639",
+        "median_seconds": 0.001509,
+        "warm_seconds": [
+          0.001509,
+          0.00163,
+          0.001444
+        ],
+        "settings": {},
+        "qa_matched": true
+      },
+      "q07": {
+        "label": "q07_wm512",
+        "median_seconds": 54.50739299999999,
+        "warm_seconds": [
+          55.340076,
+          53.781552000000005,
+          54.50739299999999
+        ],
+        "settings": {
+          "work_mem": "512MB"
+        },
+        "qa_matched": true
+      }
+    },
+    "all_required_warm_medians_under_60_seconds": true,
+    "still_failing_cases": [],
+    "volume_growth_stopped": false,
+    "conclusion": "The bounded tuning profiles meet the warm-median criterion at 31.89m Works; a 100m run still requires a source and peak-disk preflight.",
+    "limits": "This tests one 16-CPU / 32-GiB Docker configuration and selected analytical fields on a shared laptop with VirtioFS. It does not rule out PostgreSQL on a larger native Linux server, establish a scaling law or a full-corpus SLA. Best observed settings across exploratory profiles are reported explicitly; no isolated causal speedup is claimed without controls.",
+    "query_specific_q07_arm_considered": true
+  }
+}

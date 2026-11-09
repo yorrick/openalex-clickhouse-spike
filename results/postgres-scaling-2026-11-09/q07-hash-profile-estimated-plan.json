@@ -1,0 +1,89 @@
+{
+  "settings": {
+    "work_mem": "8GB",
+    "max_parallel_workers_per_gather": "0",
+    "enable_indexonlyscan": "off"
+  },
+  "plan": {
+    "Plan": {
+      "Node Type": "Limit",
+      "Parallel Aware": false,
+      "Async Capable": false,
+      "Startup Cost": 6337433.62,
+      "Total Cost": 6337436.12,
+      "Plan Rows": 1000,
+      "Plan Width": 20,
+      "Disabled": false,
+      "Plans": [
+        {
+          "Node Type": "Sort",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 6337433.62,
+          "Total Cost": 6389632.59,
+          "Plan Rows": 20879590,
+          "Plan Width": 20,
+          "Disabled": false,
+          "Sort Key": [
+            "(count(*)) DESC",
+            "cited_work_id",
+            "citing_year"
+          ],
+          "Plans": [
+            {
+              "Node Type": "Aggregate",
+              "Strategy": "Hashed",
+              "Partial Mode": "Simple",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 4983832.32,
+              "Total Cost": 5192628.22,
+              "Plan Rows": 20879590,
+              "Plan Width": 20,
+              "Disabled": false,
+              "Group Key": [
+                "citing_year",
+                "cited_work_id"
+              ],
+              "Planned Partitions": 0,
+              "Plans": [
+                {
+                  "Node Type": "Seq Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Relation Name": "citation_edge",
+                  "Alias": "citation_edge",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 3417863.04,
+                  "Plan Rows": 208795904,
+                  "Plan Width": 12,
+                  "Disabled": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Settings": {
+      "work_mem": "8GB",
+      "max_parallel_workers_per_gather": "0",
+      "max_parallel_workers": "16",
+      "effective_cache_size": "24GB",
+      "enable_indexonlyscan": "off"
+    },
+    "JIT": {
+      "Functions": 4,
+      "Options": {
+        "Inlining": true,
+        "Optimization": true,
+        "Expressions": true,
+        "Deforming": true
+      }
+    }
+  },
+  "scope": "EXPLAINonly,nodatamodification/noexecutiontiming"
+}

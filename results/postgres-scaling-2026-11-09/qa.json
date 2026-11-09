@@ -1,0 +1,167 @@
+{
+  "typed_output_comparisons": [
+    {
+      "case": "q01",
+      "matched": true,
+      "rows": 11928,
+      "expected_rows": 11928,
+      "canonical_sha256": "6a131cfbbe08c1a9485a6f2ebe324f89bcf150d4bd9342767b6108a4d96a43f5",
+      "expected_sha256": "6a131cfbbe08c1a9485a6f2ebe324f89bcf150d4bd9342767b6108a4d96a43f5",
+      "client_fetch_seconds": 4.53946091607213
+    },
+    {
+      "case": "q02",
+      "matched": true,
+      "rows": 838464,
+      "expected_rows": 838464,
+      "canonical_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+      "expected_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+      "client_fetch_seconds": 75.36883941758424
+    },
+    {
+      "case": "q02_wm512",
+      "matched": true,
+      "canonical_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+      "expected_sha256": "49bfb17b7f7f884cd6e0295d03329621b22364dd02314dc1b6605753fe488d9e",
+      "rows": 838464,
+      "expected_rows": 838464,
+      "fetch_seconds": 40.1282092500478
+    },
+    {
+      "case": "q03_preaggregate_authors",
+      "matched": true,
+      "canonical_sha256": "a429d1971258d3e89c92e5a5135776de6853bb051087c2e2e3c114cf94ed81d4",
+      "expected_sha256": "a429d1971258d3e89c92e5a5135776de6853bb051087c2e2e3c114cf94ed81d4",
+      "rows": 1000,
+      "expected_rows": 1000,
+      "fetch_seconds": 176.25037033297122
+    },
+    {
+      "case": "q03_preaggregate_authors_wm512",
+      "matched": true,
+      "canonical_sha256": "a429d1971258d3e89c92e5a5135776de6853bb051087c2e2e3c114cf94ed81d4",
+      "expected_sha256": "a429d1971258d3e89c92e5a5135776de6853bb051087c2e2e3c114cf94ed81d4",
+      "rows": 1000,
+      "expected_rows": 1000,
+      "fetch_seconds": 126.78134270850569
+    },
+    {
+      "case": "q03_preaggregate_authors_wm512_no_nestloop",
+      "matched": true,
+      "canonical_sha256": "a429d1971258d3e89c92e5a5135776de6853bb051087c2e2e3c114cf94ed81d4",
+      "expected_sha256": "a429d1971258d3e89c92e5a5135776de6853bb051087c2e2e3c114cf94ed81d4",
+      "rows": 1000,
+      "expected_rows": 1000,
+      "fetch_seconds": 24.53016195818782
+    },
+    {
+      "case": "q04_wm512",
+      "matched": true,
+      "canonical_sha256": "bc1652dd7d22a3ad975da3fa47e769cbcd98b0d689074db48973679dd5121ba9",
+      "expected_sha256": "bc1652dd7d22a3ad975da3fa47e769cbcd98b0d689074db48973679dd5121ba9",
+      "rows": 173617,
+      "expected_rows": 173617,
+      "fetch_seconds": 31.449659541249275
+    },
+    {
+      "case": "q05-s2003585639",
+      "matched": true,
+      "rows": 353,
+      "expected_rows": 353,
+      "canonical_sha256": "cb8ef0ea62c87e5c37428543e2e2e6847e1dcdd2e13f15d89373870b793348e8",
+      "expected_sha256": "cb8ef0ea62c87e5c37428543e2e2e6847e1dcdd2e13f15d89373870b793348e8",
+      "client_fetch_seconds": 0.0024400409311056137
+    },
+    {
+      "case": "q05-s24222542",
+      "matched": true,
+      "rows": 118,
+      "expected_rows": 118,
+      "canonical_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "expected_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "client_fetch_seconds": 0.001430249772965908
+    },
+    {
+      "case": "q05-s51557542",
+      "matched": true,
+      "rows": 44,
+      "expected_rows": 44,
+      "canonical_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "expected_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "client_fetch_seconds": 0.20716683380305767
+    },
+    {
+      "case": "q06-s2003585639",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "f103fb247b1b619a66e1fca1c8bc70f0b428470bc44faef2f062844d04d9bbf5",
+      "expected_sha256": "f103fb247b1b619a66e1fca1c8bc70f0b428470bc44faef2f062844d04d9bbf5",
+      "client_fetch_seconds": 0.003081374801695347
+    },
+    {
+      "case": "q06-s24222542",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "0e9a1cf5577afb1c40c606d8dbabda219d2956c1f5cd5ca8168d5f0844d177e1",
+      "expected_sha256": "0e9a1cf5577afb1c40c606d8dbabda219d2956c1f5cd5ca8168d5f0844d177e1",
+      "client_fetch_seconds": 0.0018240837380290031
+    },
+    {
+      "case": "q06-s51557542",
+      "matched": true,
+      "rows": 1,
+      "expected_rows": 1,
+      "canonical_sha256": "2dbe74fef49e2e8390183a9bc0e94501bb4a3486e9dfec32a7b685e86acefbab",
+      "expected_sha256": "2dbe74fef49e2e8390183a9bc0e94501bb4a3486e9dfec32a7b685e86acefbab",
+      "client_fetch_seconds": 0.001714416779577732
+    },
+    {
+      "case": "q07",
+      "matched": true,
+      "rows": 1000,
+      "expected_rows": 1000,
+      "canonical_sha256": "2de2dec170ab7b4ea598d82ef986c709ccdd0087bfbbb16606c02b3a994b62fd",
+      "expected_sha256": "2de2dec170ab7b4ea598d82ef986c709ccdd0087bfbbb16606c02b3a994b62fd",
+      "client_fetch_seconds": 46.02765033300966
+    },
+    {
+      "case": "q07_wm512",
+      "matched": true,
+      "canonical_sha256": "2de2dec170ab7b4ea598d82ef986c709ccdd0087bfbbb16606c02b3a994b62fd",
+      "expected_sha256": "2de2dec170ab7b4ea598d82ef986c709ccdd0087bfbbb16606c02b3a994b62fd",
+      "rows": 1000,
+      "expected_rows": 1000,
+      "fetch_seconds": 45.98643866647035
+    }
+  ],
+  "all_compared_outputs_match": true,
+  "baseline_complete": 9,
+  "baseline_expected": 11,
+  "table_counts": {
+    "matched": true,
+    "actual": {
+      "authors": 119129660,
+      "citation_edge": 208787187,
+      "institutions": 127784,
+      "sources": 283287,
+      "topics": 4516,
+      "work_author": 51816498,
+      "work_institution": 39499697,
+      "work_topic": 64589578,
+      "works": 31885241
+    },
+    "expected": {
+      "authors": 119129660,
+      "citation_edge": 208787187,
+      "institutions": 127784,
+      "sources": 283287,
+      "topics": 4516,
+      "work_author": 51816498,
+      "work_institution": 39499697,
+      "work_topic": 64589578,
+      "works": 31885241
+    }
+  }
+}

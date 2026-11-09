@@ -1,0 +1,178 @@
+[
+  {
+    "name": "PROJECTION",
+    "children": [
+      {
+        "name": "CTE",
+        "children": [
+          {
+            "name": "FILTER",
+            "children": [
+              {
+                "name": "PROJECTION",
+                "children": [
+                  {
+                    "name": "STREAMING_WINDOW",
+                    "children": [
+                      {
+                        "name": "READ_PARQUET",
+                        "children": [],
+                        "extra_info": {
+                          "Function": "READ_PARQUET",
+                          "Projections": [
+                            "authorships",
+                            "id"
+                          ],
+                          "Estimated Cardinality": "31885241"
+                        }
+                      }
+                    ],
+                    "extra_info": {
+                      "Projections": "limit_rownum",
+                      "Estimated Cardinality": "31885241"
+                    }
+                  }
+                ],
+                "extra_info": {
+                  "Projections": [
+                    "#0",
+                    "#1",
+                    "#2"
+                  ],
+                  "Estimated Cardinality": "31885241"
+                }
+              }
+            ],
+            "extra_info": {
+              "Expression": "(TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+              "Estimated Cardinality": "6377048"
+            }
+          },
+          {
+            "name": "PROJECTION",
+            "children": [
+              {
+                "name": "HASH_JOIN",
+                "children": [
+                  {
+                    "name": "CTE_SCAN",
+                    "children": [],
+                    "extra_info": {
+                      "CTE Index": "19",
+                      "Estimated Cardinality": "6377048"
+                    }
+                  },
+                  {
+                    "name": "PROJECTION",
+                    "children": [
+                      {
+                        "name": "FILTER",
+                        "children": [
+                          {
+                            "name": "INOUT_FUNCTION",
+                            "children": [
+                              {
+                                "name": "PROJECTION",
+                                "children": [
+                                  {
+                                    "name": "HASH_GROUP_BY",
+                                    "children": [
+                                      {
+                                        "name": "PROJECTION",
+                                        "children": [
+                                          {
+                                            "name": "CTE_SCAN",
+                                            "children": [],
+                                            "extra_info": {
+                                              "CTE Index": "19",
+                                              "Estimated Cardinality": "6377048"
+                                            }
+                                          }
+                                        ],
+                                        "extra_info": {
+                                          "Projections": [
+                                            "#[9.0]",
+                                            "#[0.0]"
+                                          ],
+                                          "Estimated Cardinality": "6377048"
+                                        }
+                                      }
+                                    ],
+                                    "extra_info": {
+                                      "Groups": [
+                                        "#0",
+                                        "#1"
+                                      ],
+                                      "Aggregates": "",
+                                      "Estimated Cardinality": "3188524"
+                                    }
+                                  }
+                                ],
+                                "extra_info": {
+                                  "Projections": [
+                                    "authorships",
+                                    "delim_index",
+                                    "authorships"
+                                  ],
+                                  "Estimated Cardinality": "3188524"
+                                }
+                              }
+                            ],
+                            "extra_info": {
+                              "Name": "unnest",
+                              "Estimated Cardinality": "0"
+                            }
+                          }
+                        ],
+                        "extra_info": {
+                          "Expression": "(TRY_CAST(regexp_extract(struct_extract(struct_extract(a, 'author'), 'id'), '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL)",
+                          "Estimated Cardinality": "637704"
+                        }
+                      }
+                    ],
+                    "extra_info": {
+                      "Projections": [
+                        "#0",
+                        "#1"
+                      ],
+                      "Estimated Cardinality": "637704"
+                    }
+                  }
+                ],
+                "extra_info": {
+                  "Join Type": "INNER",
+                  "Conditions": "delim_index IS NOT DISTINCT FROM delim_index",
+                  "Estimated Cardinality": "6377048"
+                }
+              }
+            ],
+            "extra_info": {
+              "Projections": [
+                "#0",
+                "struct_extract(struct_extract(#1, 'author'), 'id')",
+                "struct_extract(#1, 'author_position')",
+                "struct_extract(#1, 'is_corresponding')"
+              ],
+              "Estimated Cardinality": "6377048"
+            }
+          }
+        ],
+        "extra_info": {
+          "CTE Name": "__duckdb_delim_19",
+          "Table Index": "19",
+          "Execution Mode": "PIPELINE_DEPENDENT",
+          "Estimated Cardinality": "6377048"
+        }
+      }
+    ],
+    "extra_info": {
+      "Projections": [
+        "TRY_CAST(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+        "TRY_CAST(regexp_extract(a, '[A-Z]([0-9]+)$', 1) AS BIGINT)",
+        "a",
+        "COALESCE(a, false)"
+      ],
+      "Estimated Cardinality": "6377048"
+    }
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "scope": "Experiment plan review, not completed",
+  "reviewers": [
+    {
+      "command": "source ~/.ssh/openrouter-yorrick.sh; PATH=\"$HOME/.opencode/bin:$PATH\" opencode run -m openrouter/deepseek/deepseek-v4.1-flash --variant max --auto < scaling-plan-review-prompt.txt > scaling-plan-review.txt 2>&1",
+      "status": "failed",
+      "failure": "OpenRouter personal API key total limit exceeded: $100.00 of $100.00 used; does not reset.",
+      "exit_code": 1
+    },
+    {
+      "command": "source ~/.ssh/openrouter-yorrick.sh; PATH=\"$HOME/.opencode/bin:$PATH\" opencode run -m openrouter/z-ai/glm-5.3-flash --variant max --auto < scaling-plan-review-prompt.txt > scaling-plan-review-glm.txt 2>&1",
+      "status": "failed",
+      "failure": "Same OpenRouter personal API key total limit exceeded.",
+      "exit_code": 1
+    }
+  ],
+  "claude_used": false,
+  "company_credentials_used": false,
+  "validation": "Use real PostgreSQL executions, frozen typed result hashes, exact tablecounts and archived resource traces. No completed externalAIreviewclaim."
+}

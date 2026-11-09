@@ -7,6 +7,9 @@ matching 2.00m and 10.11m Works cohorts, load/index times, query timings, resour
 usage and synthetic update probes. PostgreSQL was validated against the recorded
 output oracle; no Claude Code validation was invoked for that study.
 
+[PostgreSQL extension at 31.89m Works, 9 November](../postgres-scaling-benchmark.md)
+records the next local tier, resource usage, timeouts and bounded query tuning.
+
 ## Summary, matched local and AWS inputs (2026-11-06)
 
 The three requested volumes are complete: **2,002,982, 10,109,733 and

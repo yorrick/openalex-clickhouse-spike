@@ -1,0 +1,71 @@
+{
+  "host_memory": {
+    "total": 137438953472,
+    "available": 30292492288,
+    "percent": 78.0,
+    "used": 41477160960,
+    "free": 65191936,
+    "active": 30258364416,
+    "inactive": 28928606208,
+    "wired": 11218796544
+  },
+  "container_count": 65,
+  "other_containers_top_cpu": [
+    {
+      "BlockIO": "0B / 15.9GB",
+      "CPUPerc": "54.39%",
+      "Container": "186dbfd876b1319b7573a77c9003e5c12924c9d9d0b31240c4d4947b34d7adc3",
+      "ID": "186dbfd876b1",
+      "MemPerc": "0.57%",
+      "MemUsage": "272.8MiB / 46.96GiB",
+      "Name": "confident_knuth",
+      "NetIO": "2.45GB / 66.6MB",
+      "PIDs": "7"
+    },
+    {
+      "BlockIO": "0B / 0B",
+      "CPUPerc": "22.24%",
+      "Container": "88c476bf270e19e489159d5e002207c5c33a5017f6f2de84bfa3188cff8f8978",
+      "ID": "88c476bf270e",
+      "MemPerc": "0.21%",
+      "MemUsage": "98.64MiB / 46.96GiB",
+      "Name": "supabase_pg_meta_portal-vault-finalchain-qa",
+      "NetIO": "27kB / 126B",
+      "PIDs": "25"
+    },
+    {
+      "BlockIO": "0B / 0B",
+      "CPUPerc": "22.00%",
+      "Container": "2eae3f7e1d77b58c609ade2c6504333f8f8cbd11c753f9286436efc2c5e5bacf",
+      "ID": "2eae3f7e1d77",
+      "MemPerc": "0.19%",
+      "MemUsage": "92.02MiB / 46.96GiB",
+      "Name": "supabase_pg_meta_vr-email-signature",
+      "NetIO": "21.8kB / 126B",
+      "PIDs": "26"
+    },
+    {
+      "BlockIO": "0B / 0B",
+      "CPUPerc": "19.59%",
+      "Container": "c0d654cd8b2118c5d0049c0a887249d93c761f0146fccb70bcf738f5e8ebc90f",
+      "ID": "c0d654cd8b21",
+      "MemPerc": "0.19%",
+      "MemUsage": "92.98MiB / 46.96GiB",
+      "Name": "supabase_pg_meta_virtual-receptionist",
+      "NetIO": "51.3kB / 126B",
+      "PIDs": "26"
+    },
+    {
+      "BlockIO": "32.8kB / 0B",
+      "CPUPerc": "18.74%",
+      "Container": "b789931ec1454883055597a3fe3c00b431bb08573961f4c4248b449bf6dba1d7",
+      "ID": "b789931ec145",
+      "MemPerc": "0.20%",
+      "MemUsage": "97.23MiB / 46.96GiB",
+      "Name": "supabase_pg_meta_econoflip-insights-20261023",
+      "NetIO": "13kB / 126B",
+      "PIDs": "20"
+    }
+  ],
+  "scope": "During DuckDBload; not an isolated query baseline"
+}

@@ -1,0 +1,7 @@
+{
+  "reason": "Firstcitationindex294.234s close to5minquerydeadline;giveDDLseparate30mindeadline;queriesremain300s.",
+  "canceled_statement": "CREATE INDEX citation_edge_cited_citing ON citation_edge(cited_work_id,citing_work_id) INCLUDE(citing_year)",
+  "elapsed_before_cancel_seconds": 80.052861,
+  "time": 1794250365.826356,
+  "baseline_query_settings_changed": false
+}
