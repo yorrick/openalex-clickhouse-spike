@@ -1,0 +1,14 @@
+Loaded works 100087422 146.959 seconds
+Loaded work_author 161436293 149.791 seconds
+Loaded work_institution 118632954 112.134 seconds
+Loaded work_topic 205306863 149.753 seconds
+Traceback (most recent call last):
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/run_postgres.py", line 136, in <module>
+    if len(sys.argv)==1 or sys.argv[1]=='load':load()
+                                               ^^^^^^
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/run_postgres.py", line 52, in load
+    n=pg.execute('SELECT count(*) FROM '+table).fetchone()[0]
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/.venv/lib/python3.12/site-packages/psycopg/connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.QueryCanceled: canceling statement due to statement timeout

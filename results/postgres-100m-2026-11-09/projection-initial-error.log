@@ -1,0 +1,17 @@
+All historical source footer counts match: 100087422
+Traceback (most recent call last):
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/project_inputs.py", line 104, in <module>
+    main()
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/project_inputs.py", line 84, in main
+    body = projection(table, 'stage100', source) if table in COLUMNS and table not in ('authors', 'institutions', 'sources', 'topics') else original.projection(table, 'stage2_large')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/load_streaming.py", line 10, in projection
+    return BASE_PROJECTION(table, tier)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/load_data.py", line 33, in projection
+    s=source('works',tier);w=NUM('w.id');year='CASE WHEN w.publication_year BETWEEN 0 AND 65535 THEN CAST(w.publication_year AS INTEGER) ELSE NULL END';valid=f'{w} IS NOT NULL'
+      ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/load_data.py", line 23, in source
+    fs=[byurl[f['url']]['local_path'] for f in selection['tiers'][tier]['files']] if e=='works' else allfiles[e]
+                                               ~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'stage100'

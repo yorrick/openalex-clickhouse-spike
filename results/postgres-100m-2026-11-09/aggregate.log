@@ -1,0 +1,22 @@
+Prepared works 4.41
+Prepared work_author 3.32
+Prepared work_institution 3.29
+Prepared work_topic 3.95
+Prepared authors 4.15
+Prepared institutions 0.25
+Prepared sources 0.3
+Prepared topics 0.13
+AGGREGATEQUERIESREADY
+q01 primer 20.801752
+q01 warm1 16.836854
+q01 warm2 19.504828
+q01 warm3 15.983585
+q01 median 16.836854 QA True
+q02 timeout
+q03 primer 113.261254
+q03 warm1 109.453242
+q03 warm2 102.888743
+q03 warm3 102.08994100000001
+q03 median 102.888743 QA True
+q04 timeout
+AGGREGATEPROBECOMPLETE {"missed_60_seconds": ["q02", "q03", "q04"]}

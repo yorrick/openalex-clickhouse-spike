@@ -1,0 +1,9 @@
+SWITCHEDTO24GiBHASH
+Traceback (most recent call last):
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/switch_ch_profile.py", line 47, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/Users/yorrickjansen/work/data/openalex-postgres-100m-20261109/switch_ch_profile.py", line 45, in main
+    dump(HERE/'results/ch-profile24-driver-exit.json',{'exit_code':code,'at':time.time()});assert code==0,code
+                                                                                           ^^^^^^^^^^^^^^^^^^^
+AssertionError: 1

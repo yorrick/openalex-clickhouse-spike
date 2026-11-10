@@ -1,0 +1,64 @@
+q02_targeted_100m primer 78.269575
+q02_targeted_100m warm1 84.083428
+q02_targeted_100m warm2 80.338555
+q02_targeted_100m warm3 85.481634
+q02_targeted_100m median 84.083428 QA True
+q03_targeted_100m primer 79.753466
+q03_targeted_100m warm1 83.56112300000001
+q03_targeted_100m warm2 81.33843399999999
+q03_targeted_100m warm3 78.59985499999999
+q03_targeted_100m median 81.33843399999999 QA True
+q04_targeted_100m primer 74.833468
+q04_targeted_100m warm1 74.793879
+q04_targeted_100m warm2 74.583536
+q04_targeted_100m warm3 71.859612
+q04_targeted_100m median 74.583536 QA True
+TARGETEDTRIALSDONE {
+  "at": 1794266945.3568482,
+  "cohort_works": 100087422,
+  "scope": "Fouraggregatefamilieswithcompleteunchangedrelatedindexes;citationfamiliesnotyetmeasuredat100m",
+  "selected": {
+    "q01": {
+      "label": "q01",
+      "state": "complete",
+      "median_seconds": 16.836854,
+      "settings": {}
+    },
+    "q02": {
+      "label": "q02_targeted_100m",
+      "state": "complete",
+      "median_seconds": 84.083428,
+      "settings": {
+        "work_mem": "2GB",
+        "enable_nestloop": "off"
+      }
+    },
+    "q03": {
+      "label": "q03_targeted_100m",
+      "state": "complete",
+      "median_seconds": 81.33843399999999,
+      "settings": {
+        "work_mem": "2GB",
+        "enable_nestloop": "off"
+      }
+    },
+    "q04": {
+      "label": "q04_targeted_100m",
+      "state": "complete",
+      "median_seconds": 74.583536,
+      "settings": {
+        "work_mem": "2GB",
+        "enable_nestloop": "off"
+      }
+    }
+  },
+  "missed_60_seconds": [
+    "q02",
+    "q03",
+    "q04"
+  ],
+  "volume_growth_stopped": true,
+  "one_trial_per_failed_family": true,
+  "no_larger_cohort_started": true,
+  "citation_indexes_not_completed_due_host_disk_guard": true
+}

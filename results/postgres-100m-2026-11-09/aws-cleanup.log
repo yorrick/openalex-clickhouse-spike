@@ -1,0 +1,39 @@
+{
+  "at": 1794264736.6079319,
+  "account": "502425560524",
+  "bucket": "oapg100-20261109-854be6ee-502425560524",
+  "database": "oapg100_20261109_854be6ee",
+  "workgroup": "oapg100-20261109-854be6ee",
+  "deleted_tables": [
+    "authors",
+    "citation_edge",
+    "institutions",
+    "pg100_ctas_probe",
+    "projected_citation_edge",
+    "projected_work_author",
+    "projected_work_institution",
+    "projected_work_topic",
+    "projected_works",
+    "raw_authors",
+    "raw_institutions",
+    "raw_sources",
+    "raw_topics",
+    "raw_works",
+    "topics",
+    "work_author",
+    "work_institution",
+    "work_topic",
+    "works"
+  ],
+  "deleted_objects": 3359,
+  "deleted_bytes": 204918931902,
+  "absence_probes": {
+    "bucket": "404",
+    "database": "EntityNotFoundException",
+    "workgroup": "InvalidRequestException"
+  },
+  "all_queries_terminal": true,
+  "billable_athena_bytes": 484261000000,
+  "no_ec2_resources_created": true,
+  "retained_old_raw_ebs_untouched": true
+}
