@@ -1,0 +1,133 @@
+{
+  "date": "2026-11-09",
+  "works": 100087422,
+  "columns": 42,
+  "table_counts": {
+    "works": 100087422,
+    "work_author": 161436293,
+    "work_institution": 118632954,
+    "work_topic": 205306863,
+    "citation_edge": 622671173,
+    "authors": 119129660,
+    "institutions": 127784,
+    "sources": 283287,
+    "topics": 4516
+  },
+  "total_rows": 1327679952,
+  "postgres_family_medians": {
+    "q01": 16.836854,
+    "q02": 84.083428,
+    "q03": 81.33843399999999,
+    "q04": 74.583536,
+    "q05": null,
+    "q06": null,
+    "q07": null
+  },
+  "clickhouse_family_medians": {
+    "q01": 0.186,
+    "q02": 13.601,
+    "q03": 18.14,
+    "q04": 34.348,
+    "q05": 0.029,
+    "q06": 0.193,
+    "q07": 18.867
+  },
+  "athena_family_service_medians": {
+    "q01": 83.15,
+    "q02": 77.877,
+    "q03": 103.381,
+    "q04": 78.959,
+    "q05": 74.504,
+    "q06": 79.273,
+    "q07": 81.556
+  },
+  "decision": {
+    "at": 1794266945.3568482,
+    "cohort_works": 100087422,
+    "scope": "Fouraggregatefamilieswithcompleteunchangedrelatedindexes;citationfamiliesnotyetmeasuredat100m",
+    "selected": {
+      "q01": {
+        "label": "q01",
+        "state": "complete",
+        "median_seconds": 16.836854,
+        "settings": {}
+      },
+      "q02": {
+        "label": "q02_targeted_100m",
+        "state": "complete",
+        "median_seconds": 84.083428,
+        "settings": {
+          "work_mem": "2GB",
+          "enable_nestloop": "off"
+        }
+      },
+      "q03": {
+        "label": "q03_targeted_100m",
+        "state": "complete",
+        "median_seconds": 81.33843399999999,
+        "settings": {
+          "work_mem": "2GB",
+          "enable_nestloop": "off"
+        }
+      },
+      "q04": {
+        "label": "q04_targeted_100m",
+        "state": "complete",
+        "median_seconds": 74.583536,
+        "settings": {
+          "work_mem": "2GB",
+          "enable_nestloop": "off"
+        }
+      }
+    },
+    "missed_60_seconds": [
+      "q02",
+      "q03",
+      "q04"
+    ],
+    "volume_growth_stopped": true,
+    "one_trial_per_failed_family": true,
+    "no_larger_cohort_started": true,
+    "citation_indexes_not_completed_due_host_disk_guard": true,
+    "required_families_unmeasured_at_100m": [
+      "q05",
+      "q06",
+      "q07"
+    ],
+    "unmeasured_not_timeouts": true,
+    "schema_index_count": 12,
+    "all_table_rows_loaded": true,
+    "measured_scope": "q01-q04,same8noncitationWorkindexesand4dimensionPKsas32m",
+    "full_7_family_60s_criterion_failed": true,
+    "larger_datasets_not_started": true,
+    "limits": "DoesnotruleoutPostgreSQLonlargerhardware,differentindexes/queryalgorithms,nativeLinuxorpreaggregatedlayouts. No100mPGcitationperformanceor14-indexstorageclaim."
+  },
+  "verification": {
+    "pass": true,
+    "checks": [
+      "480pinnedWorkversions,fullS3checksumsandhistoricalfooterrowcountsconsistent",
+      "All154previousWorkfilesareincludedin100mcohort",
+      "All9normalizedpayloadsfullSHA-reverified,42columns,andexactPGtablecounts/12validnoncitationindexesmatch;100mGraphcasecoverageexplicit",
+      "15completePG/CHfull-resulttypedhashesmatchrawAthena;60nativeobservations/medians/CPU/memoryindependentlyrecomputed",
+      "33fullAthenaCSVresultsreparsedandtypedhashesindependentlyrecomputed",
+      "OwnedAWSresourcesabsent,allqueriesterminal,700GBscanbudgetrespected"
+    ],
+    "table_counts": {
+      "works": 100087422,
+      "work_author": 161436293,
+      "work_institution": 118632954,
+      "work_topic": 205306863,
+      "citation_edge": 622671173,
+      "authors": 119129660,
+      "institutions": 127784,
+      "sources": 283287,
+      "topics": 4516
+    },
+    "total_rows": 1327679952,
+    "pg_qa_matches": 4,
+    "ch_qa_matches": 11,
+    "athena_csv_checks": 33
+  },
+  "athena_billable_bytes": 484261000000,
+  "athena_scan_cost_estimate_usd_at_5_per_decimal_tb": 2.421305
+}

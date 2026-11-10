@@ -1,5 +1,7 @@
 # PostgreSQL scaling on the local laptop
 
+The extension to **100,087,422 Works**, with a matched local ClickHouse comparison, is in [the 100m report](postgres-100m-benchmark.md). PostgreSQL volume growth stopped there after the bounded aggregate profiles remained above one minute.
+
 Measured 9 November 2026. The next tier contains **31,885,241 Works** (6.247% of the historical 510,372,821-Work snapshot), with all **119,129,660 Authors**, 127,784 Institutions, 283,287 Sources and 4,516 Topics retained. This is every record in those selected cohorts and the same 42 selected analytical columns as the prior comparison, not all available fields or every OpenAlex entity type.
 
 ## Decision

@@ -1,0 +1,531 @@
+{
+  "files": [
+    {
+      "path": "aggregate.log",
+      "bytes": 540,
+      "sha256": "9634a46e99ab9572ecba9884519ab8239ec456e72eb11f90f7e0d7fd43dbcdd7"
+    },
+    {
+      "path": "athena-cases.json.gz",
+      "bytes": 3363,
+      "sha256": "82adde430fdcad038107d643b6509a595678f29bf9eb9eba2c9b385bd11ca1f8"
+    },
+    {
+      "path": "athena-resume.log",
+      "bytes": 796,
+      "sha256": "725f2ad8c8b15d006a18babb251b8dedcd22f4fef528a51fa56a5df65c563978"
+    },
+    {
+      "path": "athena-statements.json.gz",
+      "bytes": 8644,
+      "sha256": "a41e15cd8f828ea1748ca4149d53c369b62e6171e444659286a06e74a6718281"
+    },
+    {
+      "path": "athena.log",
+      "bytes": 926,
+      "sha256": "1d81d461fa8c1c007fe7788f83a43050103cd7735da890ee63c72be9355685b9"
+    },
+    {
+      "path": "aws-cleanup.log",
+      "bytes": 982,
+      "sha256": "0e453472d7126c8785ccbe12bd4c1c60c881bdd42ff133aea031a8c8d2030127"
+    },
+    {
+      "path": "aws-state.json",
+      "bytes": 471,
+      "sha256": "65ade3452a4346f29ebed328e2963d894b97e1b2628c0433fb5b83fe4d03ad1e"
+    },
+    {
+      "path": "ch-profile-switch.log",
+      "bytes": 591,
+      "sha256": "c0e406fdead2a7ca8aef41c5053eaadafb8304d95c25b59dee624fc78ac853db"
+    },
+    {
+      "path": "clickhouse-author-tuning.log",
+      "bytes": 195,
+      "sha256": "542f00a09c4215f3b8080072a8bd559961b3ae5fb0f1a4a26d369b3eb0b61e87"
+    },
+    {
+      "path": "clickhouse-cases.json.gz",
+      "bytes": 27837,
+      "sha256": "f391735b7e8e9be272a55ff20a00e0795a8c165c16b1847e3a9a7c19f62b6293"
+    },
+    {
+      "path": "clickhouse-initial24-cases.json.gz",
+      "bytes": 26134,
+      "sha256": "0e022f92743902b7613a5142f39c07e881ea1d88efba1a533401b2deedd955e5"
+    },
+    {
+      "path": "clickhouse-profile24-resumed.log",
+      "bytes": 1200,
+      "sha256": "33c7cd7f94dc589dae1e38a1b50b3caf2da0f82de8cbcb30a8cbe747d1f5bea0"
+    },
+    {
+      "path": "clickhouse.log",
+      "bytes": 411,
+      "sha256": "235a0b7f2d1fa88d023c40ed3ad5efce8ffa9559a65e1ff0720ab0b65f7134a5"
+    },
+    {
+      "path": "experiment-plan-original.json",
+      "bytes": 2507,
+      "sha256": "cc6bb31112e56c2ed32c9269fccdb508531a6a012c6dc34a7bfe655e1f32c8a7"
+    },
+    {
+      "path": "experiment-plan.json",
+      "bytes": 4487,
+      "sha256": "8812780365c87eaf7c4945592015560293cdbe9ea1dec0baaf6d2e98ee3a1b3a"
+    },
+    {
+      "path": "harness/athena_reference.py",
+      "bytes": 15307,
+      "sha256": "e07c67fac4c3decdefe73c5fc9625cce8becc32774ac3ddcc0b46ca25052e93b"
+    },
+    {
+      "path": "harness/benchmark_helpers.py",
+      "bytes": 7825,
+      "sha256": "19cc572ff001d115bfe3a2496a6d86229ca38ed1412965f684ac6bf29f290ed1"
+    },
+    {
+      "path": "harness/cleanup_aws.py",
+      "bytes": 4749,
+      "sha256": "1af8d0b829d3c8e3ed6f622f228b934d0198b81b461348d54e6703a9b6fc9db9"
+    },
+    {
+      "path": "harness/export_report.py",
+      "bytes": 18690,
+      "sha256": "66301d3a427af7c616433f5ce92c99675deb56d212de8f5f593507c402de58ea"
+    },
+    {
+      "path": "harness/finalize_postgres.py",
+      "bytes": 2906,
+      "sha256": "2ffb981088bdb1f90c242127929b4199d727012ed919827755f8f7db35ec3c42"
+    },
+    {
+      "path": "harness/load_data.py",
+      "bytes": 6443,
+      "sha256": "72ebbcc498d8039bff69a24572fc63d4662029a74708eee4d37bed715701cc7e"
+    },
+    {
+      "path": "harness/load_streaming.py",
+      "bytes": 2119,
+      "sha256": "5c682e3bce6cf1292a00e14115830fe9a71268e02ec319274d2bb857ad5a3841"
+    },
+    {
+      "path": "harness/pg_helpers.py",
+      "bytes": 2427,
+      "sha256": "b822980d58a8d74a251a34200208f18096c4b9f33b5b53fb5ed46709eb595147"
+    },
+    {
+      "path": "harness/project_inputs.py",
+      "bytes": 5989,
+      "sha256": "4b3c5f725c7145fef364f933df845c0dbb709fcdc319c173db3bc4d60955e1c8"
+    },
+    {
+      "path": "harness/recover_validation.py",
+      "bytes": 1710,
+      "sha256": "1b93c08fe0ea64f9a1e86fb0459ee127f406c94e788f3859b97463d6a0e2fe18"
+    },
+    {
+      "path": "harness/resume_athena.py",
+      "bytes": 2402,
+      "sha256": "15c8691c285b2ab49d842a3bd628a8789bd948793154f7e8a167d3315d42438d"
+    },
+    {
+      "path": "harness/run_aggregate_probe.py",
+      "bytes": 3301,
+      "sha256": "e31adef1ecd5fb0c5d4945a02c016ff76106effded68a43a3aa39e59235970ec"
+    },
+    {
+      "path": "harness/run_clickhouse-executed-profile12.py",
+      "bytes": 11723,
+      "sha256": "25d03f82e063d386158744a4c8f0c49b253ea068328ebb3bb30d62f8dc5fdf81"
+    },
+    {
+      "path": "harness/run_clickhouse.py",
+      "bytes": 11907,
+      "sha256": "0f8be58aed4aa4e82e386590af3c40d0ca05793e67f3b2bdb9d9082c23c3aaf3"
+    },
+    {
+      "path": "harness/run_local_comparison.py",
+      "bytes": 1393,
+      "sha256": "b828a8b8526c74d6adc0fccacd4c6a9b21a7bde90db1bd592d5306d85c660ef8"
+    },
+    {
+      "path": "harness/run_postgres-executed-initial.py",
+      "bytes": 9330,
+      "sha256": "471e1dd3bd3e8dee62fe98537a9392126ce9f26081118c885b292e1a8f8b7e56"
+    },
+    {
+      "path": "harness/run_postgres-executed-resumed.py",
+      "bytes": 9761,
+      "sha256": "ad8e9b13d5da0c02653d7d0279e41ebc4c24a52a9a473802e41ecde62c3f35d0"
+    },
+    {
+      "path": "harness/run_postgres.py",
+      "bytes": 9761,
+      "sha256": "3580f3337fa040d491014da817a35e9a9d7feebf57c69e4c82583acf310ca26a"
+    },
+    {
+      "path": "harness/run_targeted_trials.py",
+      "bytes": 1848,
+      "sha256": "14ff482b9bcfc7e5954454474e61de23e39de3e399798a2c3ab094e3a8bbec3c"
+    },
+    {
+      "path": "harness/server_project.py",
+      "bytes": 7904,
+      "sha256": "7a68243588683f855e219b08c925c8b0e2f686fe3fc4c124aebf730544ae753a"
+    },
+    {
+      "path": "harness/switch_ch_profile.py",
+      "bytes": 3826,
+      "sha256": "7cbdbf4b884e868cdfc1580dc09b8f12c642b21875a2729e4ceaa0394572237a"
+    },
+    {
+      "path": "harness/tier_sql.py",
+      "bytes": 8943,
+      "sha256": "05f15e50dfeea6075368991d90f3bb91ccdf11b234a88ff4af274b45d35f6b70"
+    },
+    {
+      "path": "harness/tune_clickhouse_author.py",
+      "bytes": 3755,
+      "sha256": "8962dae33270f1368c3e87d8088ea46eeaea20882c1681e2e96725b5b8a082bd"
+    },
+    {
+      "path": "harness/verify_ctas_normalization.py",
+      "bytes": 2643,
+      "sha256": "53f434f03f556b5e79fe730ac9e8ba082bd95f720bd27fe4782ebc6865c59468"
+    },
+    {
+      "path": "harness/verify_results.py",
+      "bytes": 5590,
+      "sha256": "8adfa51a70915b32f4a3079b7ad58e1f2c72234ed48d6d7b22d08511ee15210c"
+    },
+    {
+      "path": "harness/watch_ch_disk.py",
+      "bytes": 980,
+      "sha256": "555e3615ca402c504086f16b4649021c51729ed44be568720ea483e36b851268"
+    },
+    {
+      "path": "harness/watch_disk.py",
+      "bytes": 1022,
+      "sha256": "b60743ba0b3a8d8a67b5e19f9eebd21c4a663d0c5c8a9dbeb4f042632c11bc18"
+    },
+    {
+      "path": "harness/watch_pg_memory.py",
+      "bytes": 561,
+      "sha256": "cba0e4e54b7ad42f62eb4c2044e1bfa30e65fc405b30209cf1b30706587da64d"
+    },
+    {
+      "path": "normalization-qa.log",
+      "bytes": 226,
+      "sha256": "b94958326c361aa029447c2951a4f76ef4fbd9ab132fb0f7adda9abdbbf22e56"
+    },
+    {
+      "path": "postgres-baseline-aggregates.json.gz",
+      "bytes": 6835,
+      "sha256": "a14666dff44a5d08f8c542df99c7eeed4352b1510ebe67b9ca6c90a7177ae172"
+    },
+    {
+      "path": "postgres-cases.json.gz",
+      "bytes": 12919,
+      "sha256": "98d2b0e60b60b80586af2e5134c83394cbd7b8c01c1a4efd087eff66bd26b825"
+    },
+    {
+      "path": "postgres-decision-final.json",
+      "bytes": 1688,
+      "sha256": "7e14458fc849f944e36c453f25b5096ea8b0f91c74b561f97b93652825d5e748"
+    },
+    {
+      "path": "postgres-first-driver.log",
+      "bytes": 908,
+      "sha256": "15a876a86b8a9fda17b240cc45b08e45f6c8a9ff7f81af507cdf1a513aa68c1e"
+    },
+    {
+      "path": "postgres-memory-events.jsonl.gz",
+      "bytes": 48310,
+      "sha256": "2d35eab9a6ceaaf2b4515c94331b3df609cdf7dc3fbcec2558ad62cd723b8344"
+    },
+    {
+      "path": "postgres-resumed.log",
+      "bytes": 298,
+      "sha256": "0c60dd91efca4a3e8e2c06b4a7d149927c73270c1ade4e8dd21197054b3383cb"
+    },
+    {
+      "path": "postgres-targeted-trials.json.gz",
+      "bytes": 10215,
+      "sha256": "ec2c3f3c464d5f7e92fe98df7e84129d3c8e2b20aaa5793e94f946ac3956dc3a"
+    },
+    {
+      "path": "postgres.log",
+      "bytes": 908,
+      "sha256": "15a876a86b8a9fda17b240cc45b08e45f6c8a9ff7f81af507cdf1a513aa68c1e"
+    },
+    {
+      "path": "projection-initial-error.log",
+      "bytes": 1370,
+      "sha256": "d8720664c514d011619dfabc35257cdb6e555bec76a98df35413492735bc3a23"
+    },
+    {
+      "path": "projection.log",
+      "bytes": 70,
+      "sha256": "ba9eb333629c2ad98ce117ada0c96caeefeaf1efa70af05a3c097c05945e0494"
+    },
+    {
+      "path": "proofs.json.gz",
+      "bytes": 169796,
+      "sha256": "a74f5628bd23e1d564a4b85acc0cdab677732040f2d08c01fc243ce6f5a54bcd"
+    },
+    {
+      "path": "remote-inputs.json.gz",
+      "bytes": 502620,
+      "sha256": "5cea4eca0752a60a03c3d16f1f0dc689e0f92d6bb1b5add12d1a90b8b431203e"
+    },
+    {
+      "path": "requirements.lock",
+      "bytes": 320,
+      "sha256": "e50733e86912ae7d0dbfeaf257e9017e40a226b156f40f261831ff51ef8b6561"
+    },
+    {
+      "path": "server-project.log",
+      "bytes": 2507,
+      "sha256": "760d3e3bc12277608ee09ebbfcef2df67f8a262ac474f20a3e877746fa1f0b98"
+    },
+    {
+      "path": "sql/clickhouse-q01.sql",
+      "bytes": 159,
+      "sha256": "589baabee36e09075de05b226f74852c608fba64db29fa07e3292b4ac0685125"
+    },
+    {
+      "path": "sql/clickhouse-q02.sql",
+      "bytes": 554,
+      "sha256": "632fc9329696b52b44923603c5a0c3de980937b573a6a9a0f89f8ed2c79de1c5"
+    },
+    {
+      "path": "sql/clickhouse-q03.sql",
+      "bytes": 391,
+      "sha256": "2b17ba62e111affdee970d2a0caf479a1fa52cba98f1093b3dea4b424f64fb59"
+    },
+    {
+      "path": "sql/clickhouse-q03_numeric_top_ids.sql",
+      "bytes": 546,
+      "sha256": "bbd358e87277d59a95ee3999a61ca390920b5f2cc7248240beb4bb8eca48c740"
+    },
+    {
+      "path": "sql/clickhouse-q04.sql",
+      "bytes": 670,
+      "sha256": "24a22bd5c6bff338ff2d62d8487b3fe279300f9127eacb0f24cf51f1a5f1b512"
+    },
+    {
+      "path": "sql/clickhouse-q05-s2003585639.sql",
+      "bytes": 295,
+      "sha256": "76707108e489c30208ca1e2972112872b55d377925b0a10dd0e0fcd07a9d5fc0"
+    },
+    {
+      "path": "sql/clickhouse-q05-s24222542.sql",
+      "bytes": 291,
+      "sha256": "9953494f19b66dd141b0ffad047e03cfe38ca2ca8aab029d5b635d72f7cf579d"
+    },
+    {
+      "path": "sql/clickhouse-q05-s51557542.sql",
+      "bytes": 291,
+      "sha256": "e3cd8ccb2c1504ccd7fa0a8aad85df42bd59d7b681fb6f506ca440f16a2c561f"
+    },
+    {
+      "path": "sql/clickhouse-q06-s2003585639.sql",
+      "bytes": 196,
+      "sha256": "7ce64af62ecf0567300f68d370db451e8306ddaf5914bc9f3b3e798e7e9ee40e"
+    },
+    {
+      "path": "sql/clickhouse-q06-s24222542.sql",
+      "bytes": 194,
+      "sha256": "7349d65a930b02e3a4dfef47bd8eb565ccbcd63bfac59e245b1b7dfd0d40a698"
+    },
+    {
+      "path": "sql/clickhouse-q06-s51557542.sql",
+      "bytes": 194,
+      "sha256": "d27d64a7a080daacf39f478ca6f9b8c4d65c6d8e608533c766980e6004baddae"
+    },
+    {
+      "path": "sql/clickhouse-q07.sql",
+      "bytes": 211,
+      "sha256": "7f5700f59940f79fc224c138765efe009d66439c146fe19b0288c0694bf421d1"
+    },
+    {
+      "path": "sql/clickhouse-schema.sql",
+      "bytes": 2243,
+      "sha256": "14f4127774af1bd4aaa18a77201968b92b08380a98c599b75c28125dba32a2c9"
+    },
+    {
+      "path": "sql/ctas-citation_edge.sql",
+      "bytes": 706,
+      "sha256": "5f94117c401e91723ed159643caaa70ef3c459092610c4dfd20b43578eecad6e"
+    },
+    {
+      "path": "sql/ctas-work_author.sql",
+      "bytes": 546,
+      "sha256": "4621f11a4564263226f929aec49bf17443a418f2b29aafb38d8766a987a93f6a"
+    },
+    {
+      "path": "sql/ctas-work_institution.sql",
+      "bytes": 687,
+      "sha256": "78e1a7b5d47c2e29203661bb1dbf8497d5f3682bac68fa1b4089702494fed882"
+    },
+    {
+      "path": "sql/ctas-work_topic.sql",
+      "bytes": 675,
+      "sha256": "bcb1fc9e2a0cb23a072c61902053dc5ef9b6e482e61e24c57559d2348fe5f98e"
+    },
+    {
+      "path": "sql/ctas-works.sql",
+      "bytes": 725,
+      "sha256": "ec0fbeb43ecc505a1ce7097d49ff911996f227fc18db9e3db4a67f464efe4c57"
+    },
+    {
+      "path": "sql/load-citation_edge.sql",
+      "bytes": 162,
+      "sha256": "2cfaa252a65d325db3d8a7fbf85133cf5f39c12a92164e411c2c40e92fa8897e"
+    },
+    {
+      "path": "sql/load-work_author.sql",
+      "bytes": 158,
+      "sha256": "f3f27e0d3c10bdbfa01772374074cf4ad86ad70fe0da300fe2beb362ee64a3e0"
+    },
+    {
+      "path": "sql/load-work_institution.sql",
+      "bytes": 168,
+      "sha256": "27c51a256b44a2e2202586d2e1af4bdee85871b5491e452b90f96849ba8e625c"
+    },
+    {
+      "path": "sql/load-work_topic.sql",
+      "bytes": 156,
+      "sha256": "64249e9205ab686dc8eb0734a3667dcea5f118d157529d3dad4812fe9166b844"
+    },
+    {
+      "path": "sql/load-works.sql",
+      "bytes": 146,
+      "sha256": "1896a03123887cc1933faa49983636097fe75c10dd8e79bca7263dd1f15d0f62"
+    },
+    {
+      "path": "sql/postgres-100m-measured-schema.sql",
+      "bytes": 5469,
+      "sha256": "c86268ade24afe47042036c4e68af2f23c59cd83d8efce6f0dbbddee64d8eb53"
+    },
+    {
+      "path": "sql/project-works.sql",
+      "bytes": 70676,
+      "sha256": "72234b7c56ce778442ba1b4c2ef5aba7b83f30808bbec1a4cca84e1f986b5489"
+    },
+    {
+      "path": "sql/q01-postgres.sql",
+      "bytes": 195,
+      "sha256": "59936cab6cfe600ea9cf160bd07e5516380b612923e85d63da6262421ed3910d"
+    },
+    {
+      "path": "sql/q02-postgres.sql",
+      "bytes": 385,
+      "sha256": "6baaa73835d2c118dc60d1b4b701a6e9bcdb1e07f4f6284b889104cb29d25fd9"
+    },
+    {
+      "path": "sql/q02_preaggregate_topic_names.sql",
+      "bytes": 456,
+      "sha256": "ec6233e2818f803d7213cca82d84db783425df06f8e940bac2eb66b493f5f93c"
+    },
+    {
+      "path": "sql/q03-postgres.sql",
+      "bytes": 352,
+      "sha256": "89168c1467c3cd4b7a3a7c6bdcb9a70eea151587d6935b36fb56b4daa4a80be9"
+    },
+    {
+      "path": "sql/q03_preaggregate_authors.sql",
+      "bytes": 479,
+      "sha256": "d77c499f8ba2dcd65d58676a8827b419044a2b14110b240b828995226b774ab2"
+    },
+    {
+      "path": "sql/q03_rank_valid_ids_before_names.sql",
+      "bytes": 769,
+      "sha256": "90b887227634d957c8db10e329b29ca10b63d5b3e59f03a8ec2055d60eb68740"
+    },
+    {
+      "path": "sql/q04-postgres.sql",
+      "bytes": 687,
+      "sha256": "171e9d2f6120adfc18e954051958e524d0d6690d4128c19aa2d4e602225599d1"
+    },
+    {
+      "path": "sql/q04_country_pairs.sql",
+      "bytes": 1024,
+      "sha256": "30ef6c698fa8a118b9f45d0546208af7db4505cd756bef2d718a72c8ec45678c"
+    },
+    {
+      "path": "sql/q05-s2003585639-postgres.sql",
+      "bytes": 265,
+      "sha256": "5da12c3973651bef9e348dc0578477e965e68c7ef4aeecb7e7ff63ac3e5e62bc"
+    },
+    {
+      "path": "sql/q05-s24222542-postgres.sql",
+      "bytes": 261,
+      "sha256": "f6ab632bcc0ae4e710fdedbea5689040a8a968a7bcea2a18cfc0633d2b104fb4"
+    },
+    {
+      "path": "sql/q05-s51557542-postgres.sql",
+      "bytes": 261,
+      "sha256": "613e9a8d8e855972037e83e59e9c40bde63f27dd8bf42284a6ff57b2e9760df1"
+    },
+    {
+      "path": "sql/q06-s2003585639-postgres.sql",
+      "bytes": 233,
+      "sha256": "52c56134da1daa7d96bcf3b0046f22bb0a8d686d4064d5b7ae215f42368d4c6e"
+    },
+    {
+      "path": "sql/q06-s24222542-postgres.sql",
+      "bytes": 231,
+      "sha256": "bb7c531c9b36c6a83b10c20c7686f09d35925ce1eb49431fbf13cf75d31ef438"
+    },
+    {
+      "path": "sql/q06-s51557542-postgres.sql",
+      "bytes": 231,
+      "sha256": "72a5b9e27da9ba82278e610afe4afa6a1a370257e5b39ec6de80f363cfb3882a"
+    },
+    {
+      "path": "sql/q07-postgres.sql",
+      "bytes": 206,
+      "sha256": "57932215ce88fa3d7da4702ccda44dba0f1453707090604195c5a7723bbeeefe"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 3843,
+      "sha256": "0960c211bd7cb274b7b0782731a66b1df72355c93472b64da3af6c3a18f03d41"
+    },
+    {
+      "path": "targeted-tuning-plan.json",
+      "bytes": 28372,
+      "sha256": "bdc4fd2bcdcc9eba7dafeda12d748074ad43cfa2e00da09c89584b6eed5fbe15"
+    },
+    {
+      "path": "targeted.log",
+      "bytes": 1762,
+      "sha256": "cb0ae2555e03d399a1525bc2633975627daddcc6213b7fecac35426812b177a1"
+    },
+    {
+      "path": "telemetry.json.gz",
+      "bytes": 1953531,
+      "sha256": "212730b361dd05e234142ff97877c3d780bd46f458f8a463068e60f27a630607"
+    },
+    {
+      "path": "validation-recovery.log",
+      "bytes": 69,
+      "sha256": "a0f6a8038392507017d5d9a98b066d3c267fdd208f5b42acadca2048f9cc1944"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 958,
+      "sha256": "675c2be43f25ecebb0791c973050990be169bc1df0baa724c61f2dd097e7194d"
+    },
+    {
+      "path": "works-input-manifest.json.gz",
+      "bytes": 76132,
+      "sha256": "61f9b2684ed38e79653b49077402c84606e5998f7c6787c5d5937677fd51be6a"
+    }
+  ],
+  "file_count": 105,
+  "raw_OpenAlex_or_password_payloads_included": false
+}

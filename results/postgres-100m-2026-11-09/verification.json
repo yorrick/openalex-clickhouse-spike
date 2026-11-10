@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "checks": [
+    "480pinnedWorkversions,fullS3checksumsandhistoricalfooterrowcountsconsistent",
+    "All154previousWorkfilesareincludedin100mcohort",
+    "All9normalizedpayloadsfullSHA-reverified,42columns,andexactPGtablecounts/12validnoncitationindexesmatch;100mGraphcasecoverageexplicit",
+    "15completePG/CHfull-resulttypedhashesmatchrawAthena;60nativeobservations/medians/CPU/memoryindependentlyrecomputed",
+    "33fullAthenaCSVresultsreparsedandtypedhashesindependentlyrecomputed",
+    "OwnedAWSresourcesabsent,allqueriesterminal,700GBscanbudgetrespected"
+  ],
+  "table_counts": {
+    "works": 100087422,
+    "work_author": 161436293,
+    "work_institution": 118632954,
+    "work_topic": 205306863,
+    "citation_edge": 622671173,
+    "authors": 119129660,
+    "institutions": 127784,
+    "sources": 283287,
+    "topics": 4516
+  },
+  "total_rows": 1327679952,
+  "pg_qa_matches": 4,
+  "ch_qa_matches": 11,
+  "athena_csv_checks": 33
+}

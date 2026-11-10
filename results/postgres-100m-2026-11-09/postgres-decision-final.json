@@ -1,0 +1,61 @@
+{
+  "at": 1794266945.3568482,
+  "cohort_works": 100087422,
+  "scope": "Fouraggregatefamilieswithcompleteunchangedrelatedindexes;citationfamiliesnotyetmeasuredat100m",
+  "selected": {
+    "q01": {
+      "label": "q01",
+      "state": "complete",
+      "median_seconds": 16.836854,
+      "settings": {}
+    },
+    "q02": {
+      "label": "q02_targeted_100m",
+      "state": "complete",
+      "median_seconds": 84.083428,
+      "settings": {
+        "work_mem": "2GB",
+        "enable_nestloop": "off"
+      }
+    },
+    "q03": {
+      "label": "q03_targeted_100m",
+      "state": "complete",
+      "median_seconds": 81.33843399999999,
+      "settings": {
+        "work_mem": "2GB",
+        "enable_nestloop": "off"
+      }
+    },
+    "q04": {
+      "label": "q04_targeted_100m",
+      "state": "complete",
+      "median_seconds": 74.583536,
+      "settings": {
+        "work_mem": "2GB",
+        "enable_nestloop": "off"
+      }
+    }
+  },
+  "missed_60_seconds": [
+    "q02",
+    "q03",
+    "q04"
+  ],
+  "volume_growth_stopped": true,
+  "one_trial_per_failed_family": true,
+  "no_larger_cohort_started": true,
+  "citation_indexes_not_completed_due_host_disk_guard": true,
+  "required_families_unmeasured_at_100m": [
+    "q05",
+    "q06",
+    "q07"
+  ],
+  "unmeasured_not_timeouts": true,
+  "schema_index_count": 12,
+  "all_table_rows_loaded": true,
+  "measured_scope": "q01-q04,same8noncitationWorkindexesand4dimensionPKsas32m",
+  "full_7_family_60s_criterion_failed": true,
+  "larger_datasets_not_started": true,
+  "limits": "DoesnotruleoutPostgreSQLonlargerhardware,differentindexes/queryalgorithms,nativeLinuxorpreaggregatedlayouts. No100mPGcitationperformanceor14-indexstorageclaim."
+}

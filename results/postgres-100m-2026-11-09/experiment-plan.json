@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-09",
+  "objective": "Test nextnestedhistoricalcohort locallyusingwinning32mPGqueryprofiles,andcomparewithAthenaonidenticalrawS3versions;CH100m ifresourcebudgetallowssequentialmatchedlocalrun.",
+  "hypothesis": "All7requiredPGfamiliesremainwarmmedian<60seconds atapproximately100mWorks withall119129660Authors;fulltypedoutputmatchesindependentAthenaqueries.",
+  "baseline_32m_medians_s": {
+    "q01": 5.576943,
+    "q02": 41.452837,
+    "q03": 25.191693,
+    "q04": 34.192637,
+    "q05": 0.00016,
+    "q06": 0.001509,
+    "q07": 54.507393
+  },
+  "data": {
+    "works": 100087422,
+    "files": 480,
+    "raw_work_bytes": 141981190499,
+    "fixed_dimensions": "SamefullJuneAuthors/Institutions/Sources/Topicsas32m"
+  },
+  "resources": {
+    "container": "openalex-pg-bench-20261108",
+    "cpus": 16,
+    "memory_gib": 32,
+    "shared_buffers_gib": 8,
+    "query_profiles": "512MBwork_mem forq02/q03/q04/q07,q03preaggregate+enable_nestloopoff;othersbaseline128MB"
+  },
+  "load": "Range-readrequiredParquetcolumnsfrompinnedpublichistoricalversions,streamingUNNESTinto5normalizedZSTDParquetpayloads,thenPGbulkCOPY. DoNOTcache145GBrawpayloadsoruploadlaptopdata. Materialize4fixeddimensionpayloadsforfuturelocalCHcomparison.",
+  "query_method": "1firstobservation+3warmnativeEXPLAINANALYZE,CPU/mem/IOcapture,fulltypedoutputQA;sequentialqueries;no deliberatecoldcacheclaim.",
+  "stop": "No largervolume ifanyrequiredwarmmedian>=60afteratmostoneevidence-directed100mspecifictrial;reporttestedconfiglimitnotuniversalPGimpossibility. Hostfree>=80GiBguard.",
+  "aws": {
+    "profile": "certification",
+    "account": "502425560524",
+    "region": "us-east-1",
+    "ec2_instances": 0,
+    "services": "TemporaryprivateS3server-sidecopy+Glue/Athenaonly;exactversionIDs,fullchecksumrecording,deleteephemeralownedresourcesafterevidencecapture.",
+    "max_athena_scan_bytes_per_query": 64000000000,
+    "athena_total_billable_scan_budget_bytes": 700000000000,
+    "athena_rate_usd_per_decimal_tb": 5,
+    "estimated_cloud_budget_usd": 5,
+    "pricing_source": "https://aws.amazon.com/athena/pricing/",
+    "cap_scope": "Global700GBscanreservationbudgetstillboundsallqueries;40GBperqueryallowsmultipleUNNEST/citationviewscanswithoutscanningfullpublicsnapshot.",
+    "per_query_amendment": "Observedq04crossing40GB;raised64GBwhilekeeping700GBglobalbillablebudgetand$5overallestimate"
+  },
+  "review": "NoClaudeCodevalidationperuser;existingreviewCLIkeyquotaexhausted,bothDeepSeek/GLMreviewattemptsfailed;noexternalreviewcompletionclaim.",
+  "prior_32m_report_pr": "https://github.com/yorrick/openalex-clickhouse-spike/pull/9",
+  "ingestion_amendment": {
+    "at": 1794260009.47154,
+    "witness_file": "results/ingestion-optimization.json",
+    "new_method": "SamehistoricalversionedrawS3objects, AthenaCTAS5flatretainedtables, download andlocalDuckDBflatParquetconsolidation, PGbinaryCOPY;4fixeddimensionpayloadsfromoldverifiedlocalcache",
+    "reason": "Remotecolumnprojectionstalledonnetwork:18.8MB/s,0.055busyCPUcores;unsealedWorksoutputafter>30min. CTASrealvalue/compressionprobePASS beforefullETL.",
+    "query_workload_unchanged": true,
+    "same_aws_scan_budget": true,
+    "same_container_limits": true,
+    "initial_uncompleted_projection_excluded_from_completed_load_timings_but_retained_as_overhead": true,
+    "ctas_billed_as_dml": true
+  },
+  "maintenance_amendment": {
+    "at": 1794262236.69242,
+    "deadline": "30minforvalidationandindexcreation,300sforbibliometricqueries",
+    "maintenance_work_mem": "8GB",
+    "max_parallel_maintenance_workers": 8,
+    "scope": "Permaintenanceconnectiononly;unchanged16CPU32GiBcontainerandnativequeryprofiles",
+    "reason": "100msetupdata/indexsize;usemoreofexistingallocationforindexcreation",
+    "memory_semantics_source": "https://www.postgresql.org/docs/18/runtime-config-resource.html",
+    "validation": "EffectiveSETvaluesandrealindexvalidity/telemetryrecorded;noassumedspeedup"
+  },
+  "disk_and_staging_amendment": {
+    "at": 1794264307.991884,
+    "old_soft_reserve_gib": 80,
+    "new_runtime_reserve_gib": 40,
+    "reason": "Citationindexbuildhitconservative80GiBguardonsharedlaptop. Measure4aggregatefamiliesusingtheircompleteunchangedindexesfirst. NoneoftheseSQLreferencescitation_edge. Preservedalltabledata,existingindexes,andTimeMachinebackups.",
+    "scope": "Noadditionalvolumegrowth;40GiBreserveprotectsqueryworkspaceevery2s. Citationfamilycoveragewillbereportedseparately;no14-index100mbaselineclaim."
+  }
+}

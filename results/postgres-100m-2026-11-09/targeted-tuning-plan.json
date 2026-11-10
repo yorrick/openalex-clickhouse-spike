@@ -1,0 +1,698 @@
+{
+  "at": 1794265657.766891,
+  "scope": "Oneprospectivecandidateperfailedaggregatefamily;noextradatavolume;16CPU32GiBcapsunchanged",
+  "settings": {
+    "work_mem": "2GB",
+    "enable_nestloop": "off"
+  },
+  "cases": {
+    "q02": "q02_preaggregate_topic_names.sql",
+    "q03": "q03_rank_valid_ids_before_names.sql",
+    "q04": "q04_country_pairs.sql"
+  },
+  "hypotheses": {
+    "q02": "Latejoinoftopicnamesnarrowssortrows;noNestLoopavoidstheobserved10.2mWorksPKlookupswithin300s. Distinctcountsretained.",
+    "q03": "ValidateauthorIDsbeforerankingTop1000,thenfetchonly1000names;avoidtheobservedfullsortof42.95mauthorstats. Preserveorphanexclusion,distinctworksandduplicatecitationmultiplicity.",
+    "q04": "Existingreservedcountry-setpairsSQLemitsoneunorderedpairperWork,thenCOUNTstar;equivalenceusesWorksPKanddistinctcountryarrays."
+  },
+  "native_actual_baseline_evidence": "results/q02-post-timeout-diagnostic.json and results/postgres/q03.json",
+  "estimated_plans": {
+    "q02": {
+      "Plan": {
+        "Node Type": "Sort",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Startup Cost": 34505641.18,
+        "Total Cost": 34508794.78,
+        "Plan Rows": 1261440,
+        "Plan Width": 89,
+        "Disabled": false,
+        "Sort Key": [
+          "w.publication_year",
+          "(count(DISTINCT w.work_id)) DESC"
+        ],
+        "Plans": [
+          {
+            "Node Type": "Hash Join",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Join Type": "Inner",
+            "Startup Cost": 7069616.15,
+            "Total Cost": 34377815.43,
+            "Plan Rows": 1261440,
+            "Plan Width": 89,
+            "Disabled": false,
+            "Inner Unique": true,
+            "Hash Cond": "(wt.topic_id = t.topic_id)",
+            "Plans": [
+              {
+                "Node Type": "Aggregate",
+                "Strategy": "Sorted",
+                "Partial Mode": "Simple",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 7069458.54,
+                "Total Cost": 34361729.03,
+                "Plan Rows": 1261440,
+                "Plan Width": 52,
+                "Disabled": false,
+                "Group Key": [
+                  "w.publication_year",
+                  "wt.topic_id"
+                ],
+                "Plans": [
+                  {
+                    "Node Type": "Gather Merge",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Startup Cost": 7069458.54,
+                    "Total Cost": 32292890.95,
+                    "Plan Rows": 205307008,
+                    "Plan Width": 28,
+                    "Disabled": false,
+                    "Workers Planned": 7,
+                    "Plans": [
+                      {
+                        "Node Type": "Sort",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 7068458.42,
+                        "Total Cost": 7141782.35,
+                        "Plan Rows": 29329573,
+                        "Plan Width": 28,
+                        "Disabled": false,
+                        "Sort Key": [
+                          "w.publication_year",
+                          "wt.topic_id",
+                          "w.work_id"
+                        ],
+                        "Plans": [
+                          {
+                            "Node Type": "Hash Join",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": true,
+                            "Async Capable": false,
+                            "Join Type": "Inner",
+                            "Startup Cost": 1752759.22,
+                            "Total Cost": 3430733.08,
+                            "Plan Rows": 29329573,
+                            "Plan Width": 28,
+                            "Disabled": false,
+                            "Inner Unique": true,
+                            "Hash Cond": "(wt.work_id = w.work_id)",
+                            "Plans": [
+                              {
+                                "Node Type": "Seq Scan",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": true,
+                                "Async Capable": false,
+                                "Relation Name": "work_topic",
+                                "Alias": "wt",
+                                "Startup Cost": 0.0,
+                                "Total Cost": 1600983.73,
+                                "Plan Rows": 29329573,
+                                "Plan Width": 16,
+                                "Disabled": false
+                              },
+                              {
+                                "Node Type": "Hash",
+                                "Parent Relationship": "Inner",
+                                "Parallel Aware": true,
+                                "Async Capable": false,
+                                "Startup Cost": 1574020.21,
+                                "Total Cost": 1574020.21,
+                                "Plan Rows": 14299121,
+                                "Plan Width": 20,
+                                "Disabled": false,
+                                "Plans": [
+                                  {
+                                    "Node Type": "Seq Scan",
+                                    "Parent Relationship": "Outer",
+                                    "Parallel Aware": true,
+                                    "Async Capable": false,
+                                    "Relation Name": "works",
+                                    "Alias": "w",
+                                    "Startup Cost": 0.0,
+                                    "Total Cost": 1574020.21,
+                                    "Plan Rows": 14299121,
+                                    "Plan Width": 20,
+                                    "Disabled": false
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Node Type": "Hash",
+                "Parent Relationship": "Inner",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 101.16,
+                "Total Cost": 101.16,
+                "Plan Rows": 4516,
+                "Plan Width": 45,
+                "Disabled": false,
+                "Plans": [
+                  {
+                    "Node Type": "Seq Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Relation Name": "topics",
+                    "Alias": "t",
+                    "Startup Cost": 0.0,
+                    "Total Cost": 101.16,
+                    "Plan Rows": 4516,
+                    "Plan Width": 45,
+                    "Disabled": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "JIT": {
+        "Functions": 22,
+        "Options": {
+          "Inlining": true,
+          "Optimization": true,
+          "Expressions": true,
+          "Deforming": true
+        }
+      }
+    },
+    "q03": {
+      "Plan": {
+        "Node Type": "Nested Loop",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Join Type": "Inner",
+        "Startup Cost": 30365410.64,
+        "Total Cost": 30374025.07,
+        "Plan Rows": 1000,
+        "Plan Width": 64,
+        "Disabled": true,
+        "Inner Unique": false,
+        "Plans": [
+          {
+            "Node Type": "Limit",
+            "Parent Relationship": "InitPlan",
+            "Subplan Name": "CTE top_author_ids",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 30365407.57,
+            "Total Cost": 30365410.07,
+            "Plan Rows": 1000,
+            "Plan Width": 48,
+            "Disabled": false,
+            "Plans": [
+              {
+                "Node Type": "Sort",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 30365407.57,
+                "Total Cost": 30366487.87,
+                "Plan Rows": 432118,
+                "Plan Width": 48,
+                "Disabled": false,
+                "Sort Key": [
+                  "(count(DISTINCT wa.work_id)) DESC",
+                  "wa.author_id"
+                ],
+                "Plans": [
+                  {
+                    "Node Type": "Merge Join",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Join Type": "Inner",
+                    "Startup Cost": 5893591.36,
+                    "Total Cost": 30341715.01,
+                    "Plan Rows": 432118,
+                    "Plan Width": 48,
+                    "Disabled": false,
+                    "Inner Unique": true,
+                    "Merge Cond": "(authors.author_id = wa.author_id)",
+                    "Plans": [
+                      {
+                        "Node Type": "Index Only Scan",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Scan Direction": "Forward",
+                        "Index Name": "authors_pk",
+                        "Relation Name": "authors",
+                        "Alias": "authors",
+                        "Startup Cost": 0.57,
+                        "Total Cost": 3094888.37,
+                        "Plan Rows": 119220520,
+                        "Plan Width": 8,
+                        "Disabled": false
+                      },
+                      {
+                        "Node Type": "Aggregate",
+                        "Strategy": "Sorted",
+                        "Partial Mode": "Simple",
+                        "Parent Relationship": "Inner",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 5893590.79,
+                        "Total Cost": 26943373.86,
+                        "Plan Rows": 432118,
+                        "Plan Width": 48,
+                        "Disabled": false,
+                        "Group Key": [
+                          "wa.author_id"
+                        ],
+                        "Plans": [
+                          {
+                            "Node Type": "Gather Merge",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Startup Cost": 5893590.79,
+                            "Total Cost": 25727199.75,
+                            "Plan Rows": 161436352,
+                            "Plan Width": 24,
+                            "Disabled": false,
+                            "Workers Planned": 7,
+                            "Plans": [
+                              {
+                                "Node Type": "Sort",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Startup Cost": 5892590.67,
+                                "Total Cost": 5950246.51,
+                                "Plan Rows": 23062336,
+                                "Plan Width": 24,
+                                "Disabled": false,
+                                "Sort Key": [
+                                  "wa.author_id",
+                                  "wa.work_id"
+                                ],
+                                "Plans": [
+                                  {
+                                    "Node Type": "Hash Join",
+                                    "Parent Relationship": "Outer",
+                                    "Parallel Aware": true,
+                                    "Async Capable": false,
+                                    "Join Type": "Inner",
+                                    "Startup Cost": 1752759.22,
+                                    "Total Cost": 3072178.22,
+                                    "Plan Rows": 23062336,
+                                    "Plan Width": 24,
+                                    "Disabled": false,
+                                    "Inner Unique": true,
+                                    "Hash Cond": "(wa.work_id = w.work_id)",
+                                    "Plans": [
+                                      {
+                                        "Node Type": "Seq Scan",
+                                        "Parent Relationship": "Outer",
+                                        "Parallel Aware": true,
+                                        "Async Capable": false,
+                                        "Relation Name": "work_author",
+                                        "Alias": "wa",
+                                        "Startup Cost": 0.0,
+                                        "Total Cost": 1258880.36,
+                                        "Plan Rows": 23062336,
+                                        "Plan Width": 16,
+                                        "Disabled": false
+                                      },
+                                      {
+                                        "Node Type": "Hash",
+                                        "Parent Relationship": "Inner",
+                                        "Parallel Aware": true,
+                                        "Async Capable": false,
+                                        "Startup Cost": 1574020.21,
+                                        "Total Cost": 1574020.21,
+                                        "Plan Rows": 14299121,
+                                        "Plan Width": 16,
+                                        "Disabled": false,
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Seq Scan",
+                                            "Parent Relationship": "Outer",
+                                            "Parallel Aware": true,
+                                            "Async Capable": false,
+                                            "Relation Name": "works",
+                                            "Alias": "w",
+                                            "Startup Cost": 0.0,
+                                            "Total Cost": 1574020.21,
+                                            "Plan Rows": 14299121,
+                                            "Plan Width": 16,
+                                            "Disabled": false
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "Node Type": "CTE Scan",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "CTE Name": "top_author_ids",
+            "Alias": "t",
+            "Startup Cost": 0.0,
+            "Total Cost": 20.0,
+            "Plan Rows": 1000,
+            "Plan Width": 48,
+            "Disabled": false
+          },
+          {
+            "Node Type": "Limit",
+            "Parent Relationship": "Inner",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 0.57,
+            "Total Cost": 8.59,
+            "Plan Rows": 1,
+            "Plan Width": 16,
+            "Disabled": false,
+            "Plans": [
+              {
+                "Node Type": "Index Scan",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Scan Direction": "Forward",
+                "Index Name": "authors_pk",
+                "Relation Name": "authors",
+                "Alias": "a",
+                "Startup Cost": 0.57,
+                "Total Cost": 8.59,
+                "Plan Rows": 1,
+                "Plan Width": 16,
+                "Disabled": false,
+                "Index Cond": "(author_id = t.author_id)"
+              }
+            ]
+          }
+        ]
+      },
+      "JIT": {
+        "Functions": 25,
+        "Options": {
+          "Inlining": true,
+          "Optimization": true,
+          "Expressions": true,
+          "Deforming": true
+        }
+      }
+    },
+    "q04": {
+      "Plan": {
+        "Node Type": "Sort",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Startup Cost": 21579347.49,
+        "Total Cost": 21579420.49,
+        "Plan Rows": 29200,
+        "Plan Width": 76,
+        "Disabled": false,
+        "Sort Key": [
+          "w.publication_year",
+          "(count(*)) DESC"
+        ],
+        "Plans": [
+          {
+            "Node Type": "Aggregate",
+            "Strategy": "Sorted",
+            "Partial Mode": "Simple",
+            "Parent Relationship": "InitPlan",
+            "Subplan Name": "CTE international",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 2789758.95,
+            "Total Cost": 16709577.42,
+            "Plan Rows": 728986,
+            "Plan Width": 40,
+            "Disabled": false,
+            "Group Key": [
+              "wi.work_id"
+            ],
+            "Filter": "(count(DISTINCT i.country_code) > 1)",
+            "Plans": [
+              {
+                "Node Type": "Gather Merge",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 2789758.95,
+                "Total Cost": 15877794.14,
+                "Plan Rows": 106530519,
+                "Plan Width": 11,
+                "Disabled": false,
+                "Workers Planned": 7,
+                "Plans": [
+                  {
+                    "Node Type": "Sort",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Startup Cost": 2788758.83,
+                    "Total Cost": 2826805.45,
+                    "Plan Rows": 15218646,
+                    "Plan Width": 11,
+                    "Disabled": false,
+                    "Sort Key": [
+                      "wi.work_id",
+                      "i.country_code"
+                    ],
+                    "Plans": [
+                      {
+                        "Node Type": "Hash Join",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": true,
+                        "Async Capable": false,
+                        "Join Type": "Inner",
+                        "Startup Cost": 3636.33,
+                        "Total Cost": 973224.84,
+                        "Plan Rows": 15218646,
+                        "Plan Width": 11,
+                        "Disabled": false,
+                        "Inner Unique": true,
+                        "Hash Cond": "(wi.institution_id = i.institution_id)",
+                        "Plans": [
+                          {
+                            "Node Type": "Seq Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": true,
+                            "Async Capable": false,
+                            "Relation Name": "work_institution",
+                            "Alias": "wi",
+                            "Startup Cost": 0.0,
+                            "Total Cost": 925099.67,
+                            "Plan Rows": 16947567,
+                            "Plan Width": 16,
+                            "Disabled": false
+                          },
+                          {
+                            "Node Type": "Hash",
+                            "Parent Relationship": "Inner",
+                            "Parallel Aware": true,
+                            "Async Capable": false,
+                            "Startup Cost": 2792.59,
+                            "Total Cost": 2792.59,
+                            "Plan Rows": 67499,
+                            "Plan Width": 11,
+                            "Disabled": false,
+                            "Plans": [
+                              {
+                                "Node Type": "Seq Scan",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": true,
+                                "Async Capable": false,
+                                "Relation Name": "institutions",
+                                "Alias": "i",
+                                "Startup Cost": 0.0,
+                                "Total Cost": 2792.59,
+                                "Plan Rows": 67499,
+                                "Plan Width": 11,
+                                "Disabled": false,
+                                "Filter": "((country_code IS NOT NULL) AND (country_code <> ''::text))"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "Node Type": "Aggregate",
+            "Strategy": "Hashed",
+            "Partial Mode": "Simple",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 4867312.35,
+            "Total Cost": 4867604.35,
+            "Plan Rows": 29200,
+            "Plan Width": 76,
+            "Disabled": false,
+            "Group Key": [
+              "w.publication_year",
+              "a.country_code",
+              "b.country_code"
+            ],
+            "Planned Partitions": 0,
+            "Plans": [
+              {
+                "Node Type": "Nested Loop",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Join Type": "Inner",
+                "Startup Cost": 23692.05,
+                "Total Cost": 4624317.02,
+                "Plan Rows": 24299533,
+                "Plan Width": 68,
+                "Disabled": true,
+                "Inner Unique": false,
+                "Join Filter": "(a.country_code < b.country_code)",
+                "Plans": [
+                  {
+                    "Node Type": "Nested Loop",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Join Type": "Inner",
+                    "Startup Cost": 23692.05,
+                    "Total Cost": 2984098.52,
+                    "Plan Rows": 7289860,
+                    "Plan Width": 68,
+                    "Disabled": true,
+                    "Inner Unique": false,
+                    "Plans": [
+                      {
+                        "Node Type": "Hash Join",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Join Type": "Inner",
+                        "Startup Cost": 23692.05,
+                        "Total Cost": 2838301.31,
+                        "Plan Rows": 728986,
+                        "Plan Width": 36,
+                        "Disabled": false,
+                        "Inner Unique": false,
+                        "Hash Cond": "(w.work_id = c.work_id)",
+                        "Plans": [
+                          {
+                            "Node Type": "Seq Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Relation Name": "works",
+                            "Alias": "w",
+                            "Startup Cost": 0.0,
+                            "Total Cost": 2431967.48,
+                            "Plan Rows": 100093848,
+                            "Plan Width": 12,
+                            "Disabled": false
+                          },
+                          {
+                            "Node Type": "Hash",
+                            "Parent Relationship": "Inner",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Startup Cost": 14579.72,
+                            "Total Cost": 14579.72,
+                            "Plan Rows": 728986,
+                            "Plan Width": 40,
+                            "Disabled": false,
+                            "Plans": [
+                              {
+                                "Node Type": "CTE Scan",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "CTE Name": "international",
+                                "Alias": "c",
+                                "Startup Cost": 0.0,
+                                "Total Cost": 14579.72,
+                                "Plan Rows": 728986,
+                                "Plan Width": 40,
+                                "Disabled": false
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "Function Scan",
+                        "Parent Relationship": "Inner",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Function Name": "unnest",
+                        "Alias": "a",
+                        "Startup Cost": 0.0,
+                        "Total Cost": 0.1,
+                        "Plan Rows": 10,
+                        "Plan Width": 32,
+                        "Disabled": false
+                      }
+                    ]
+                  },
+                  {
+                    "Node Type": "Function Scan",
+                    "Parent Relationship": "Inner",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Function Name": "unnest",
+                    "Alias": "b",
+                    "Startup Cost": 0.0,
+                    "Total Cost": 0.1,
+                    "Plan Rows": 10,
+                    "Plan Width": 32,
+                    "Disabled": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "JIT": {
+        "Functions": 38,
+        "Options": {
+          "Inlining": true,
+          "Optimization": true,
+          "Expressions": true,
+          "Deforming": true
+        }
+      }
+    }
+  },
+  "comparison_limit": "Exploratoryselectedprofiles,notisolatedcausalspeedup;fullrawAthenatypedhashQArequired;stopvolumegrowthifanyrequiredcasefails60s.",
+  "q03_refinement": "Orderedauthor-ID-onlysubqueryusesall-visibleAuthorsPKforvaliditybeforeTopN;finalnamesstill1000LATERALPKlookups. Noheuristicoverfetchandnoorphanassumption."
+}
