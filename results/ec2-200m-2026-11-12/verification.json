@@ -1,0 +1,182 @@
+{
+  "verified": true,
+  "scope": "Every completed selected native case matches raw Athena; independent median/resource recomputation; full archived CSV reparse; source checksum/footer equivalence. Incomplete cases remain explicit.",
+  "coverage": {
+    "postgres": {
+      "q01": "complete",
+      "q02": "timeout",
+      "q03": "timeout",
+      "q04": "complete",
+      "q05-s51557542": "complete",
+      "q06-s51557542": "complete",
+      "q07": "timeout",
+      "q05-s24222542": "complete",
+      "q06-s24222542": "complete",
+      "q05-s2003585639": "complete",
+      "q06-s2003585639": "complete"
+    },
+    "clickhouse": {
+      "q01": "complete",
+      "q02": "complete",
+      "q03": "failed",
+      "q04": "complete",
+      "q05-s51557542": "complete",
+      "q06-s51557542": "complete",
+      "q07": "complete",
+      "q05-s24222542": "complete",
+      "q06-s24222542": "complete",
+      "q05-s2003585639": "complete",
+      "q06-s2003585639": "complete"
+    }
+  },
+  "completed_full_output_checks": [
+    {
+      "engine": "postgres",
+      "case": "q01",
+      "rows": 15047,
+      "sha256": "eeb048310288cc0a1798466c609a7fd9a1700e018c97d426965538c7ba5fb6e0",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "postgres",
+      "case": "q04",
+      "rows": 325177,
+      "sha256": "fb64b2f858a509ec588e0a8a50d0fa14230d358f7e89324bbcb8fa6d7835dea1",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "postgres",
+      "case": "q05-s51557542",
+      "rows": 44,
+      "sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "postgres",
+      "case": "q06-s51557542",
+      "rows": 1,
+      "sha256": "e76a9e71ea6bb190c72b874f75ad5bf980869690d8fada1cab348d16e48ca829",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "postgres",
+      "case": "q05-s24222542",
+      "rows": 118,
+      "sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "postgres",
+      "case": "q06-s24222542",
+      "rows": 1,
+      "sha256": "d30989880c49ec8c6e7bc6ca62da717a48503e959c81aa4a5738c2f788cfc29d",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "postgres",
+      "case": "q05-s2003585639",
+      "rows": 358,
+      "sha256": "060e4a438e32c9b94f4bb2df011b55cfc600304beea3520713f98537a0dc2699",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "postgres",
+      "case": "q06-s2003585639",
+      "rows": 1,
+      "sha256": "f51972a6de86a530b707160da9248b0f2f975479a1e1340a2596d491c2f112eb",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q01",
+      "rows": 15047,
+      "sha256": "eeb048310288cc0a1798466c609a7fd9a1700e018c97d426965538c7ba5fb6e0",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q02",
+      "rows": 1264122,
+      "sha256": "73d142aaa9963a40d8a4779f8ef9ff01c498a764ce549c62a3641a186bea3603",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q04",
+      "rows": 325177,
+      "sha256": "fb64b2f858a509ec588e0a8a50d0fa14230d358f7e89324bbcb8fa6d7835dea1",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q05-s51557542",
+      "rows": 44,
+      "sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q06-s51557542",
+      "rows": 1,
+      "sha256": "e76a9e71ea6bb190c72b874f75ad5bf980869690d8fada1cab348d16e48ca829",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q07",
+      "rows": 1000,
+      "sha256": "0d3c62221ca65d11f5de9ab45b8947b48d3ec4cb1f9a3c5c7b74aa722fa903c4",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q05-s24222542",
+      "rows": 118,
+      "sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q06-s24222542",
+      "rows": 1,
+      "sha256": "d30989880c49ec8c6e7bc6ca62da717a48503e959c81aa4a5738c2f788cfc29d",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q05-s2003585639",
+      "rows": 358,
+      "sha256": "060e4a438e32c9b94f4bb2df011b55cfc600304beea3520713f98537a0dc2699",
+      "matched_raw_athena": true
+    },
+    {
+      "engine": "clickhouse",
+      "case": "q06-s2003585639",
+      "rows": 1,
+      "sha256": "f51972a6de86a530b707160da9248b0f2f975479a1e1340a2596d491c2f112eb",
+      "matched_raw_athena": true
+    }
+  ],
+  "native_observations_recomputed": 72,
+  "all_profile_trace_observations_recomputed": 94,
+  "full_csv_results_reparsed": 33,
+  "all3572source_server_host_sha_footer_matches": true,
+  "loaded_counts": {
+    "works": 200313862,
+    "work_author": 324997581,
+    "work_institution": 240576651,
+    "work_topic": 410939659,
+    "citation_edge": 1250072961,
+    "authors": 119129660,
+    "institutions": 127784,
+    "sources": 283287,
+    "topics": 4516
+  },
+  "independent_value_sample": {
+    "works": 2322,
+    "authors": 512,
+    "institutions": 193,
+    "sources": 352,
+    "topics": 160
+  }
+}

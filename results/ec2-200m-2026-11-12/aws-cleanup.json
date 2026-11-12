@@ -1,0 +1,26 @@
+{
+  "cleanup_complete": true,
+  "at": "2026-11-12T22:44:35.229165+00:00",
+  "instance_id": "i-02e2b39cf610bfd9c",
+  "instance_state": "terminated",
+  "deleted_ephemeral_volumes_absent": [
+    "vol-06d8b55351c112ce0",
+    "vol-02bc4d92adc6989c6"
+  ],
+  "bucket_absent": "oa200-20261112-e504ff-502425560524",
+  "workgroup_deleted": "oa200-20261112-e504ff-athena",
+  "database_deleted": "oa200_20261112_e504ff_qa",
+  "absence_checks": {
+    "bucket": true,
+    "ephemeral_volumes": true,
+    "glue_database": true,
+    "athena_workgroup": true,
+    "schedule": true,
+    "security_group": true,
+    "instance_profile": true,
+    "instance_role": true,
+    "scheduler_role": true
+  },
+  "retained_prior_raw_volume_preserved": "vol-039919b5eb12aeb46",
+  "launch_at": "2026-11-12T18:58:35.931405+00:00"
+}

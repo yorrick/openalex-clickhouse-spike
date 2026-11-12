@@ -1,7 +1,8 @@
+from cli_session import certification
 from pathlib import Path
 import boto3,json,sys,time,tarfile,hashlib,shlex
 HERE=Path(__file__).resolve().parent
-STATE=json.loads((HERE/'cloud-state.json').read_text());s=boto3.Session(profile_name='certification',region_name='us-east-1');assert s.client('sts').get_caller_identity()['Account']==STATE['account'];ssm=s.client('ssm');s3=s.client('s3');instance=STATE['instance_id']
+STATE=json.loads((HERE/'cloud-state.json').read_text());s=certification();assert s.client('sts').get_caller_identity()['Account']==STATE['account'];ssm=s.client('ssm');s3=s.client('s3');instance=STATE['instance_id']
 def command(cmd):
  r=ssm.send_command(InstanceIds=[instance],DocumentName='AWS-RunShellScript',Parameters={'commands':['/bin/bash -c '+shlex.quote(cmd)],'executionTimeout':['600']});cid=r['Command']['CommandId'];print('CommandId',cid,flush=True)
  for _ in range(90):

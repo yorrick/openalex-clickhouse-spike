@@ -1,0 +1,10 @@
+{
+  "ready_for_cleanup": true,
+  "at": "2026-11-12T22:43:37.068073+00:00",
+  "verification_sha256": "06ee8a423e3d9804fe5b16c1931cc170097e9fe011ab10775f12315bc5f20d75",
+  "frozen_archive_sha256": "2f0127b9df11c4450ac8ad39d12b49e4b42bc094da10dac626295a3118467f53",
+  "all_10928_frozen_file_hashes_verified": true,
+  "complete_full_output_checks": 18,
+  "all_profile_trace_observations_recomputed": 94,
+  "raw_datasets_not_copied_to_laptop": true
+}

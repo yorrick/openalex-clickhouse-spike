@@ -4,8 +4,16 @@ set -euo pipefail
 cd /opt/oa200
 test -f results/postgres-cases.json
 test -f results/clickhouse-cases.json
+.venv/bin/python -c 'import json; assert json.load(open("results/experiment-settled.json"))["settled"] is True'
 systemctl stop oa200-sync.timer
 systemctl stop oa200-bench.service
+.venv/bin/python - <<'PY'
+import subprocess
+for unit in ['oa200-pg-repair.service','oa200-ch-trial.service']:
+ state=subprocess.run(['systemctl','show','--property=LoadState','--value',unit],capture_output=True,text=True).stdout.strip()
+ assert state in ['loaded','not-found'],(unit,state)
+ if state=='loaded':subprocess.run(['systemctl','stop',unit],check=True)
+PY
 systemctl stop oa200-sync.service
 .venv/bin/python - <<'PY'
 from pathlib import Path
@@ -14,10 +22,18 @@ p=Path('/opt/oa200').resolve()
 for name in ['oa200-pg','oa200-ch']:
  r=subprocess.run(['docker','inspect',name],capture_output=True,text=True,check=True);x=json.loads(r.stdout)[0];assert x['Config']['Labels'].get('openalex.study')=='ec2-200m-20261112'
  if x['State']['Running']:subprocess.run(['docker','stop',name],check=True)
+samplers=[]
 for process in psutil.process_iter(['pid','cmdline']):
- if process.info['cmdline'] in [['iostat','-x','-d','-t','1'],['vmstat','-t','1']]:process.terminate()
+ args=process.info['cmdline'] or []
+ if args and [Path(args[0]).name,*args[1:]] in [['iostat','-x','-d','-t','1'],['vmstat','-t','1']]:
+  process.terminate();samplers.append(process)
+_,alive=psutil.wait_procs(samplers,timeout=5)
+assert not alive, 'Host telemetry writers must stop before evidence is sealed'
 for name in ['oa200-bootstrap.log','cloud-init-output.log']:
  source=Path('/var/log')/name
+ if source.exists():shutil.copy2(source,p/'results'/name)
+for name in ['runtime.log','runtime-repair.log','runtime-ch-trial.log']:
+ source=p/name
  if source.exists():shutil.copy2(source,p/'results'/name)
 password=(p/'secrets/password').read_bytes()
 files=sorted(set([f for f in (p/'results').rglob('*') if f.is_file() and f.name!='frozen-manifest.json']+[f for f in (p/'sql').rglob('*') if f.is_file()]+[f for f in p.glob('*.py')]+[f for f in p.glob('*.sh')]+[p/'input-manifest.json',p/'projection-templates.json',p/'plan.md']))

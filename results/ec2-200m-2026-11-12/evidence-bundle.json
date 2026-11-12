@@ -1,0 +1,8 @@
+{
+  "bundle_bytes": 4378247,
+  "bundle_sha256": "a88c0c5ab39fa99f6d17cdf1fdb65a56b026c84f03d43405fe2175edd509fce2",
+  "json_bytes": 31737871,
+  "included_files": 10778,
+  "frozen_full_archive": "/Users/yorrickjansen/work/data/openalex-ec2-200m-20261112/frozen-evidence.tar.gz",
+  "frozen_archive_sha256": "2f0127b9df11c4450ac8ad39d12b49e4b42bc094da10dac626295a3118467f53"
+}

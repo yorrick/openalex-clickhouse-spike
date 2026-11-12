@@ -22,7 +22,9 @@ def start_pg():
  pw=HERE/'secrets/password'
  if not pw.exists():pw.write_text(secrets.token_urlsafe(32));pw.chmod(0o600)
  if not exists(PG):
-  docker('run','-d','--name',PG,'--label','openalex.study=ec2-200m-20261112','--cpus','16','--memory','32g','--memory-swap','32g','--shm-size','8g','-p','127.0.0.1:15432:5432','-v',str(HERE/'pgdata')+':/var/lib/postgresql','-v',str(HERE/'secrets')+':/run/secrets:ro','-e','POSTGRES_PASSWORD_FILE=/run/secrets/password','-e','POSTGRES_USER=openalex','-e','POSTGRES_DB=openalex',PGIMAGE,'-c','shared_buffers=8GB','-c','work_mem=128MB','-c','max_parallel_workers_per_gather=8','-c','max_parallel_workers=16','-c','max_worker_processes=32','-c','max_wal_size=4GB','-c','track_io_timing=on')
+  # DSM is charged to the same 32 GiB cgroup limit. The tmpfs ceiling must not
+  # independently fail an otherwise memory-accounted parallel hash join.
+  docker('run','-d','--name',PG,'--label','openalex.study=ec2-200m-20261112','--cpus','16','--memory','32g','--memory-swap','32g','--shm-size','32g','-p','127.0.0.1:15432:5432','-v',str(HERE/'pgdata')+':/var/lib/postgresql','-v',str(HERE/'secrets')+':/run/secrets:ro','-e','POSTGRES_PASSWORD_FILE=/run/secrets/password','-e','POSTGRES_USER=openalex','-e','POSTGRES_DB=openalex',PGIMAGE,'-c','shared_buffers=8GB','-c','work_mem=128MB','-c','max_parallel_workers_per_gather=8','-c','max_parallel_workers=16','-c','max_worker_processes=32','-c','max_wal_size=4GB','-c','track_io_timing=on')
  elif not owned(PG)['State']['Running']:docker('start',PG)
  for _ in range(120):
   try:
@@ -136,23 +138,23 @@ def load_ch():
   else:raise RuntimeError('CH merges or inactive parts remain')
   dump(folder/'prepared.json',{'counts':COUNTS,'storage':chquery("SELECT table,sum(rows) AS rows,sum(bytes_on_disk) AS bytes_on_disk,sum(data_compressed_bytes) AS data_compressed_bytes FROM system.parts WHERE database='openalex_spike' AND active GROUP BY table ORDER BY table"),'projections':chquery("SELECT table,name,sum(rows) AS rows,sum(bytes_on_disk) AS bytes_on_disk FROM system.projection_parts WHERE active GROUP BY table,name")})
 
-def ch_case(name,sql,settings):
- folder=HERE/'results/clickhouse';out=folder/(name+'.json')
+def ch_case(name,sql,settings,label=None):
+ folder=HERE/'results/clickhouse';label=label or name;out=folder/(label+'.json')
  if out.exists() and json.loads(out.read_text()).get('state') in ['complete','failed','timeout']:return json.loads(out.read_text())
- rec={'name':name,'state':'running','sql':sql,'sql_sha256':hashlib.sha256(sql.encode()).hexdigest(),'requested_settings':settings,'runs':[]};dump(out,rec);(HERE/'sql'/('executed-clickhouse-'+name+'.sql')).write_text(sql)
+ rec={'name':name,'label':label,'state':'running','sql':sql,'sql_sha256':hashlib.sha256(sql.encode()).hexdigest(),'requested_settings':settings,'runs':[]};dump(out,rec);(HERE/'sql'/('executed-clickhouse-'+label+'.sql')).write_text(sql)
  for i in range(5):
-  guard();qid='oa200-'+name+'-'+uuid.uuid4().hex;mon=Monitor().start();st=time.monotonic();rows=[];error=None
+  guard();qid='oa200-'+label+'-'+uuid.uuid4().hex;mon=Monitor().start();st=time.monotonic();rows=[];error=None
   try:rows=chquery(sql,fmt='JSONEachRow' if i==4 else 'Null',settings=settings,qid=qid,deadline=360)
   except subprocess.TimeoutExpired:
    chquery("KILL QUERY WHERE query_id='"+qid+"' SYNC",fmt='TabSeparatedRaw');error='Client deadline 360s, owned query killed'
   except subprocess.CalledProcessError as e:error=e.stderr[-4000:]
-  finally:xs=mon.stop();dump(folder/(name+f'-{i}-telemetry.json'),xs)
+  finally:xs=mon.stop();dump(folder/(label+f'-{i}-telemetry.json'),xs)
   chquery('SYSTEM FLUSH LOGS',fmt='TabSeparatedRaw');stats=chquery("SELECT type,query_duration_ms/1000.0 AS seconds,read_rows,read_bytes,result_rows,memory_usage AS peak_memory_bytes,ProfileEvents,Settings,exception_code,exception FROM system.query_log WHERE query_id='"+qid+"' AND type IN ('QueryFinish','ExceptionWhileProcessing','ExceptionBeforeStart') ORDER BY event_time_microseconds DESC LIMIT 1")
   r={'query_id':qid,'kind':'qa' if i==4 else 'primer' if i==0 else f'warm{i}','client_seconds':time.monotonic()-st,'query_log':stats[0] if stats else None,'resources':summary(xs),'error':error}
   if i<4:rec['runs'].append(r)
   else:rec['qa_execution']=r
-  if error:rec.update(state='failed',error=error);dump(out,rec);print('CH',name,'FAILED',error,flush=True);return rec
-  assert stats and stats[0]['type']=='QueryFinish';dump(out,rec);print('CH',name,i,stats[0]['seconds'],flush=True)
+  if error:rec.update(state='failed',error=error);dump(out,rec);print('CH',label,'FAILED',error,flush=True);return rec
+  assert stats and stats[0]['type']=='QueryFinish';dump(out,rec);print('CH',label,i,stats[0]['seconds'],flush=True)
   if i==4:
    canon=canonical_rows(name[:3],rows);rec['qa']={'rows':len(rows),'canonical_sha256':hashlib.sha256('\n'.join(canon).encode()).hexdigest()}
  rec.update(state='complete',warm_seconds=[r['query_log']['seconds'] for r in rec['runs'][1:]]);rec['median_seconds']=statistics.median(rec['warm_seconds']);dump(out,rec);return rec
