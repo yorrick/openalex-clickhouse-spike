@@ -1,0 +1,18 @@
+{
+  "completed": false,
+  "reason": "Personal OpenRouter key has reached hard USD100/100 total quota, no reset; user excluded Claude Code validation for PostgreSQL. Company credentials were not used.",
+  "commands": [
+    {
+      "model": "openrouter/deepseek/deepseek-v4.1-flash",
+      "effort": "max",
+      "command": "source /Users/yorrickjansen/.ssh/openrouter-yorrick.sh; PATH=\"$HOME/.opencode/bin:$PATH\" opencode run -m openrouter/deepseek/deepseek-v4.1-flash --variant max --auto < review/prompt.txt > review/deepseek-plan.txt 2>&1",
+      "result": "No review; Key limit exceeded (total limit). USD100.00 of USD100.00 used; does not reset."
+    },
+    {
+      "model": "openrouter/z-ai/glm-5.3-flash",
+      "effort": "max",
+      "command": "source /Users/yorrickjansen/.ssh/openrouter-yorrick.sh; PATH=\"$HOME/.opencode/bin:$PATH\" opencode run -m openrouter/z-ai/glm-5.3-flash --variant max --auto < review/prompt.txt > review/glm-plan.txt 2>&1",
+      "result": "No review; Key limit exceeded (total limit). USD100.00 of USD100.00 used; does not reset."
+    }
+  ]
+}

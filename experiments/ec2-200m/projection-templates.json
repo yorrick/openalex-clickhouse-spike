@@ -1,0 +1,134 @@
+{
+  "columns": {
+    "works": [
+      "work_id",
+      "canonical_id",
+      "publication_year",
+      "work_type",
+      "source_id",
+      "is_oa",
+      "is_xpac",
+      "cited_by_count",
+      "primary_topic_id"
+    ],
+    "work_author": [
+      "work_id",
+      "author_id",
+      "author_position",
+      "is_corresponding"
+    ],
+    "work_institution": [
+      "work_id",
+      "author_id",
+      "institution_id"
+    ],
+    "work_topic": [
+      "work_id",
+      "topic_id",
+      "score",
+      "is_primary"
+    ],
+    "citation_edge": [
+      "citing_work_id",
+      "cited_work_id",
+      "citing_year"
+    ],
+    "authors": [
+      "author_id",
+      "canonical_id",
+      "display_name",
+      "orcid"
+    ],
+    "institutions": [
+      "institution_id",
+      "canonical_id",
+      "display_name",
+      "country_code",
+      "institution_type"
+    ],
+    "sources": [
+      "source_id",
+      "canonical_id",
+      "display_name",
+      "issn_l",
+      "source_type"
+    ],
+    "topics": [
+      "topic_id",
+      "display_name",
+      "subfield_id",
+      "field_id",
+      "domain_id"
+    ]
+  },
+  "sql": {
+    "works": "SELECT * FROM (SELECT try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS BIGINT),w.id,CASE WHEN w.publication_year BETWEEN 0 AND 65535 THEN CAST(w.publication_year AS INTEGER) ELSE NULL END,w.type,try_cast(regexp_extract(w.primary_location.source.id, '[A-Z]([0-9]+)$', 1) AS BIGINT),coalesce(w.open_access.is_oa,false),coalesce(w.is_xpac,false),CAST(w.cited_by_count AS BIGINT),try_cast(regexp_extract(w.primary_topic.id, '[A-Z]([0-9]+)$', 1) AS BIGINT) FROM read_parquet('__INPUT__') w WHERE try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL) normalized(work_id,canonical_id,publication_year,work_type,source_id,is_oa,is_xpac,cited_by_count,primary_topic_id)",
+    "work_author": "SELECT * FROM (SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),try_cast(regexp_extract(a.author.id, '[A-Z]([0-9]+)$', 1) AS BIGINT),a.author_position,coalesce(a.is_corresponding,false) FROM (SELECT id,unnest(authorships) AS a FROM read_parquet('__INPUT__')) WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(a.author.id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL) normalized(work_id,author_id,author_position,is_corresponding)",
+    "work_institution": "SELECT * FROM (SELECT DISTINCT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),try_cast(regexp_extract(author_raw, '[A-Z]([0-9]+)$', 1) AS BIGINT),try_cast(regexp_extract(institution.id, '[A-Z]([0-9]+)$', 1) AS BIGINT) FROM (SELECT id,a.author.id AS author_raw,unnest(a.institutions) AS institution FROM (SELECT id,unnest(authorships) AS a FROM read_parquet('__INPUT__'))) WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(author_raw, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(institution.id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL) normalized(work_id,author_id,institution_id)",
+    "work_topic": "SELECT * FROM (SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),try_cast(regexp_extract(topic.id, '[A-Z]([0-9]+)$', 1) AS BIGINT),CAST(topic.score AS FLOAT),coalesce(try_cast(regexp_extract(topic.id, '[A-Z]([0-9]+)$', 1) AS BIGINT)=try_cast(regexp_extract(primary_raw, '[A-Z]([0-9]+)$', 1) AS BIGINT),false) FROM (SELECT id,primary_topic.id AS primary_raw,unnest(topics) AS topic FROM read_parquet('__INPUT__')) WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(topic.id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND topic.score IS NOT NULL) normalized(work_id,topic_id,score,is_primary)",
+    "citation_edge": "SELECT * FROM (SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),try_cast(regexp_extract(ref, '[A-Z]([0-9]+)$', 1) AS BIGINT),min(CASE WHEN publication_year BETWEEN 0 AND 65535 THEN CAST(publication_year AS INTEGER) ELSE NULL END) FROM (SELECT id,publication_year,unnest(referenced_works) AS ref FROM read_parquet('__INPUT__')) WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(ref, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL GROUP BY 1,2) normalized(citing_work_id,cited_work_id,citing_year)",
+    "authors": "SELECT * FROM (SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),id,display_name,nullif(orcid,'') FROM read_parquet('__INPUT__') WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL) normalized(author_id,canonical_id,display_name,orcid)",
+    "institutions": "SELECT * FROM (SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),id,display_name,nullif(country_code,''),type FROM read_parquet('__INPUT__') WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL) normalized(institution_id,canonical_id,display_name,country_code,institution_type)",
+    "sources": "SELECT * FROM (SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),id,display_name,nullif(issn_l,''),type FROM read_parquet('__INPUT__') WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL) normalized(source_id,canonical_id,display_name,issn_l,source_type)",
+    "topics": "SELECT * FROM (SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT),display_name,try_cast(regexp_extract(subfield.id, '/([0-9]+)$', 1) AS BIGINT),try_cast(regexp_extract(field.id, '/([0-9]+)$', 1) AS BIGINT),try_cast(regexp_extract(domain.id, '/([0-9]+)$', 1) AS BIGINT) FROM read_parquet('__INPUT__') WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(subfield.id, '/([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(field.id, '/([0-9]+)$', 1) AS BIGINT) IS NOT NULL AND try_cast(regexp_extract(domain.id, '/([0-9]+)$', 1) AS BIGINT) IS NOT NULL) normalized(topic_id,display_name,subfield_id,field_id,domain_id)"
+  },
+  "pg_schema": "CREATE TABLE IF NOT EXISTS authors(author_id bigint,canonical_id text,display_name text,orcid text);\nCREATE TABLE IF NOT EXISTS institutions(institution_id bigint,canonical_id text,display_name text,country_code text,institution_type text);\nCREATE TABLE IF NOT EXISTS sources(source_id bigint,canonical_id text,display_name text,issn_l text,source_type text);\nCREATE TABLE IF NOT EXISTS topics(topic_id bigint,display_name text,subfield_id bigint,field_id bigint,domain_id bigint);\nCREATE TABLE IF NOT EXISTS works(work_id bigint,canonical_id text,publication_year integer,work_type text,source_id bigint,is_oa boolean,is_xpac boolean,cited_by_count bigint,primary_topic_id bigint);\nCREATE TABLE IF NOT EXISTS work_author(work_id bigint,author_id bigint,author_position text,is_corresponding boolean);\nCREATE TABLE IF NOT EXISTS work_institution(work_id bigint,author_id bigint,institution_id bigint);\nCREATE TABLE IF NOT EXISTS work_topic(work_id bigint,topic_id bigint,score real,is_primary boolean);\nCREATE TABLE IF NOT EXISTS citation_edge(citing_work_id bigint,cited_work_id bigint,citing_year integer);",
+  "indexes": [
+    [
+      "authors_pk",
+      "ALTER TABLE authors ADD CONSTRAINT authors_pk PRIMARY KEY(author_id)"
+    ],
+    [
+      "institutions_pk",
+      "ALTER TABLE institutions ADD CONSTRAINT institutions_pk PRIMARY KEY(institution_id)"
+    ],
+    [
+      "sources_pk",
+      "ALTER TABLE sources ADD CONSTRAINT sources_pk PRIMARY KEY(source_id)"
+    ],
+    [
+      "topics_pk",
+      "ALTER TABLE topics ADD CONSTRAINT topics_pk PRIMARY KEY(topic_id)"
+    ],
+    [
+      "works_pk",
+      "ALTER TABLE works ADD CONSTRAINT works_pk PRIMARY KEY(work_id)"
+    ],
+    [
+      "works_year_id",
+      "CREATE INDEX works_year_id ON works(publication_year,work_id)"
+    ],
+    [
+      "work_author_author_work",
+      "CREATE INDEX work_author_author_work ON work_author(author_id,work_id)"
+    ],
+    [
+      "work_author_work_author",
+      "CREATE INDEX work_author_work_author ON work_author(work_id,author_id)"
+    ],
+    [
+      "work_institution_institution_work_author",
+      "CREATE INDEX work_institution_institution_work_author ON work_institution(institution_id,work_id,author_id)"
+    ],
+    [
+      "work_institution_work_institution",
+      "CREATE INDEX work_institution_work_institution ON work_institution(work_id,institution_id)"
+    ],
+    [
+      "work_topic_topic_work",
+      "CREATE INDEX work_topic_topic_work ON work_topic(topic_id,work_id)"
+    ],
+    [
+      "work_topic_work_topic",
+      "CREATE INDEX work_topic_work_topic ON work_topic(work_id,topic_id)"
+    ],
+    [
+      "citation_edge_citing_cited",
+      "CREATE UNIQUE INDEX citation_edge_citing_cited ON citation_edge(citing_work_id,cited_work_id) INCLUDE(citing_year)"
+    ],
+    [
+      "citation_edge_cited_citing",
+      "CREATE INDEX citation_edge_cited_citing ON citation_edge(cited_work_id,citing_work_id) INCLUDE(citing_year)"
+    ]
+  ]
+}

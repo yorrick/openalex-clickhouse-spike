@@ -1,0 +1,168 @@
+{
+  "at": "2026-11-12T18:56:12.278294+00:00",
+  "account": "502425560524",
+  "region": "us-east-1",
+  "price_source": "AWS Price List API GetProducts",
+  "ec2_rates": [
+    {
+      "sku": "KR9EVAFX4677NQ9A",
+      "usd_per_hour": 0.6528,
+      "description": "$0.6528 per On Demand Linux m7g.4xlarge Instance Hour"
+    }
+  ],
+  "cost": {
+    "ec2_hourly": 0.6528,
+    "hours_max": 12,
+    "root_gib": 32,
+    "scratch_gib": 1024,
+    "gp3_storage_gib_month": 0.08,
+    "gp3_extra_iops": 3000,
+    "gp3_iops_month": 0.005,
+    "gp3_extra_throughput_mibs": 375,
+    "gp3_throughput_month": 0.04,
+    "public_ipv4_hourly": 0.005,
+    "athena_reserved_usd": 8,
+    "other_requests_reserved_usd": 1,
+    "budget_usd": 25,
+    "infrastructure_upper_estimate_usd": 9.77546301369863,
+    "total_reserved_estimate_usd": 18.77546301369863
+  },
+  "instance_type": {
+    "InstanceType": "m7g.4xlarge",
+    "CurrentGeneration": true,
+    "FreeTierEligible": false,
+    "SupportedUsageClasses": [
+      "on-demand",
+      "spot"
+    ],
+    "SupportedRootDeviceTypes": [
+      "ebs"
+    ],
+    "SupportedVirtualizationTypes": [
+      "hvm"
+    ],
+    "BareMetal": false,
+    "Hypervisor": "nitro",
+    "ProcessorInfo": {
+      "SupportedArchitectures": [
+        "arm64"
+      ],
+      "SustainedClockSpeedInGhz": 2.6,
+      "Manufacturer": "AWS"
+    },
+    "VCpuInfo": {
+      "DefaultVCpus": 16,
+      "DefaultCores": 16,
+      "DefaultThreadsPerCore": 1,
+      "ValidCores": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "ValidThreadsPerCore": [
+        1
+      ]
+    },
+    "MemoryInfo": {
+      "SizeInMiB": 65536
+    },
+    "InstanceStorageSupported": false,
+    "EbsInfo": {
+      "EbsOptimizedSupport": "default",
+      "EncryptionSupport": "supported",
+      "EbsOptimizedInfo": {
+        "BaselineBandwidthInMbps": 5000,
+        "BaselineThroughputInMBps": 625.0,
+        "BaselineIops": 20000,
+        "MaximumBandwidthInMbps": 10000,
+        "MaximumThroughputInMBps": 1250.0,
+        "MaximumIops": 40000
+      },
+      "NvmeSupport": "required",
+      "MaximumEbsAttachments": 27,
+      "AttachmentLimitType": "shared"
+    },
+    "NetworkInfo": {
+      "NetworkPerformance": "Up to 15 Gigabit",
+      "MaximumNetworkInterfaces": 8,
+      "MaximumNetworkCards": 1,
+      "DefaultNetworkCardIndex": 0,
+      "NetworkCards": [
+        {
+          "NetworkCardIndex": 0,
+          "NetworkPerformance": "Up to 15 Gigabit",
+          "MaximumNetworkInterfaces": 8,
+          "BaselineBandwidthInGbps": 7.5,
+          "PeakBandwidthInGbps": 15.0,
+          "DefaultEnaQueueCountPerInterface": 8,
+          "InterfaceTypes": [
+            "interface"
+          ]
+        }
+      ],
+      "Ipv4AddressesPerInterface": 30,
+      "Ipv6AddressesPerInterface": 30,
+      "Ipv6Supported": true,
+      "EnaSupport": "required",
+      "EfaSupported": false,
+      "EncryptionInTransitSupported": true,
+      "EnaSrdSupported": false,
+      "FlexibleEnaQueuesSupport": "unsupported",
+      "ConnectionTrackingConfiguration": {
+        "DefaultTcpEstablishedTimeout": 432000,
+        "DefaultUdpTimeout": 30,
+        "DefaultUdpStreamTimeout": 180
+      },
+      "SecondaryNetworkSupported": false,
+      "Ipv4AddressesPerSecondaryInterface": 0
+    },
+    "PlacementGroupInfo": {
+      "SupportedStrategies": [
+        "cluster",
+        "partition",
+        "spread"
+      ]
+    },
+    "HibernationSupported": true,
+    "BurstablePerformanceSupported": false,
+    "DedicatedHostsSupported": true,
+    "AutoRecoverySupported": true,
+    "SupportedBootModes": [
+      "uefi"
+    ],
+    "NitroEnclavesSupport": "supported",
+    "NitroTpmSupport": "supported",
+    "NitroTpmInfo": {
+      "SupportedVersions": [
+        "2.0"
+      ]
+    },
+    "PhcSupport": "supported",
+    "RebootMigrationSupport": "supported",
+    "SupportedInRegion": true
+  },
+  "vpc": "vpc-0b103567822b7c972",
+  "subnet": "subnet-04fbe27a2c65e6218",
+  "az": "us-east-1a",
+  "ami": "ami-0f6435163a86ffc8c",
+  "ami_name": "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-arm64-server-20261108",
+  "public_historical_probe": {
+    "key": "data/parquet/works/updated_date=2025-11-06/part_0772.parquet",
+    "version": "Q1POt1gmk4Sywtnc1gXpMIBGZFzES_DE",
+    "magic": "PAR1",
+    "range": "bytes 0-3/180206723"
+  }
+}
