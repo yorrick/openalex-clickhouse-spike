@@ -1,0 +1,9 @@
+{
+  "source_query": "41923bcd-ca6f-4a8c-aba4-ccc44eefebcd",
+  "scope": "q01 full rawAthena output, chosen historical200mcohort",
+  "counts_by_is_xpac": {
+    "False": 127375852,
+    "True": 72938010
+  },
+  "sum": 200313862
+}

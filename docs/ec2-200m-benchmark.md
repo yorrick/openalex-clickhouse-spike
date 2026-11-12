@@ -1,6 +1,6 @@
 # PostgreSQL and ClickHouse at 200 million Works on EC2
 
-Status: experiment in progress. No 200m database-query latency is claimed yet. The earlier [100m laptop results](postgres-100m-benchmark.md) are a different hardware environment and cannot isolate the effect of doubling volume. The required external CLI review has not completed: both prescribed OpenRouter reviewer attempts hit the personal key's hard quota; Claude Code was excluded for PostgreSQL by the user. This report stays a draft.
+Status: experiment in progress. All33rawAthena repetitions have completed, with result reuse disabled and complete archived CSV fingerprints rechecked. Native results remain pending until each three-warm case finishes. The earlier [100m laptop results](postgres-100m-benchmark.md) are a different hardware environment and cannot isolate the effect of doubling volume. The required external CLI review has not completed: both prescribed OpenRouter reviewer attempts hit the personal key's hard quota; Claude Code was excluded for PostgreSQL by the user. This report stays a draft.
 
 ## Cohort and resources
 
@@ -30,13 +30,13 @@ One first observation and three warm native executions are planned for each of e
 
 | Family | PostgreSQL EC2 200m median s | ClickHouse EC2 200m median s | Raw Athena 200m median s |
 |---|---|---|---|
-| q01 Year/type/open-access counts | Pending | Pending | Pending |
-| q02 Topic/year metrics | Pending | Pending | Pending |
-| q03 Top 1000 authors | Pending | Pending | Pending |
-| q04 International collaboration | Pending | Pending | Pending |
-| q05 One-hop citations, 3 seeds | Pending | Pending | Pending |
-| q06 Two-hop citations, 3 seeds | Pending | Pending | Pending |
-| q07 Top cited Works/year | Pending | Pending | Pending |
+| q01 Year/type/open-access counts | Pending | Pending | 162.242 |
+| q02 Topic/year metrics | Pending | Pending | 158.519 |
+| q03 Top 1000 authors | Pending | Pending | 160.842 |
+| q04 International collaboration | Pending | Pending | 147.467 |
+| q05 One-hop citations, 3 seeds | Pending | Pending | 160.851 |
+| q06 Two-hop citations, 3 seeds | Pending | Pending | 163.949 |
+| q07 Top cited Works/year | Pending | Pending | 174.883 |
 
 CPU, current/anonymous/file memory, memory events, native I/O and host iostat/vmstat traces are collected. Cache is cleared on this dedicated host before each engine's query phase; the three reported repetitions are warm and are not a cold-cache SLA. Short graph queries have coarse resource attribution. Preparation, maintenance, output QA and native timing have distinct scopes.
 
@@ -48,4 +48,4 @@ All raw downloads passed size, full SHA256 and Parquet footer checks in859.252s.
 
 The official AWS Price List API reports $0.6528/hour for this EC2 type. Twelve hours of instance, public IPv4 and provisioned EBS are estimated at $9.7755 using explicit gp3 storage/IOPS/throughput rates. Athena has a 128 GB per-query scan fuse and 1.6 TB series reservation budget ($8 at the assumed $5/decimal TB); an additional $1 is reserved for requests/storage/downloads. The total estimate is $18.7755 within a $25 experiment envelope. These are estimates, not a reconciled invoice; local hardware/electricity and previously retained EBS are excluded.
 
-Final costs, coverage, fingerprints, observed resource tables and cleanup receipts will be added after the run. No full-corpus feasibility or hardware minimum is established by this experiment. [Frozen input and preflight evidence](../results/ec2-200m-2026-11-12/) and [exact experiment harness](../experiments/ec2-200m/) are retained alongside the [plan](../experiments/ec2-200m/plan.md).
+The53Athena statements are terminal and total775.650GB of rounded billable scan, an estimated$3.87825 at the explicit$5/decimalTB assumption. Full outputs from39successfulSELECTstatements (including setup probes and all33timed queries) are archived locally; all33timed fingerprints were recomputed successfully. Native figures, observed resource tables, total cost and cleanup receipts will be added after the run. No full-corpus feasibility or hardware minimum is established by this experiment. [Frozen input and preflight evidence](../results/ec2-200m-2026-11-12/) and [exact experiment harness](../experiments/ec2-200m/) are retained alongside the [plan](../experiments/ec2-200m/plan.md).

@@ -1,0 +1,32 @@
+{
+  "EBS:VolumeUsage.gp3": [
+    {
+      "sku": "JG3KUJMBRGHV3N8G",
+      "unit": "GB-Mo",
+      "usd": "0.0800000000",
+      "description": "$0.08 per GB-month of General Purpose (gp3) provisioned storage - US East (N. Virginia)",
+      "begin": "0",
+      "end": "Inf"
+    }
+  ],
+  "EBS:VolumeP-IOPS.gp3": [
+    {
+      "sku": "7Q58NR58VQEASA4W",
+      "unit": "IOPS-Mo",
+      "usd": "0.0050000000",
+      "description": "$0.005 per provisioned IOPS-month of gp3 - US East (N. Virginia)",
+      "begin": "0",
+      "end": "Inf"
+    }
+  ],
+  "EBS:VolumeP-Throughput.gp3": [
+    {
+      "sku": "SQUFRQX4K92S4SBB",
+      "unit": "GiBps-mo",
+      "usd": "40.9600000000",
+      "description": "$0.04 per provisioned MiBps-month of gp3 - US East (N. Virginia)",
+      "begin": "0",
+      "end": "Inf"
+    }
+  ]
+}

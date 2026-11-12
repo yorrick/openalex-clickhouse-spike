@@ -1,0 +1,239 @@
+{
+  "passed": true,
+  "full_completed_timed_csv_results_reparsed": 33,
+  "all_result_reuse_disabled": true,
+  "seconds": 10.9904725831002,
+  "checks": [
+    {
+      "case": "q01",
+      "query_id": "41923bcd-ca6f-4a8c-aba4-ccc44eefebcd",
+      "rows": 15047,
+      "canonical_sha256": "eeb048310288cc0a1798466c609a7fd9a1700e018c97d426965538c7ba5fb6e0",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q01",
+      "query_id": "58128c37-06bc-4b9b-a734-9fb098cdc14f",
+      "rows": 15047,
+      "canonical_sha256": "eeb048310288cc0a1798466c609a7fd9a1700e018c97d426965538c7ba5fb6e0",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q01",
+      "query_id": "216ae7fa-dcc2-4095-a663-77efff2b0d00",
+      "rows": 15047,
+      "canonical_sha256": "eeb048310288cc0a1798466c609a7fd9a1700e018c97d426965538c7ba5fb6e0",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q02",
+      "query_id": "cbfe09ef-33cb-48a6-bcda-7fca198c22e8",
+      "rows": 1264122,
+      "canonical_sha256": "73d142aaa9963a40d8a4779f8ef9ff01c498a764ce549c62a3641a186bea3603",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q02",
+      "query_id": "2ec5eada-6a6c-4089-aa43-aac5b49de388",
+      "rows": 1264122,
+      "canonical_sha256": "73d142aaa9963a40d8a4779f8ef9ff01c498a764ce549c62a3641a186bea3603",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q02",
+      "query_id": "24985a00-b9ca-46f2-88e9-39a76eb388a4",
+      "rows": 1264122,
+      "canonical_sha256": "73d142aaa9963a40d8a4779f8ef9ff01c498a764ce549c62a3641a186bea3603",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q03",
+      "query_id": "7e08044f-deb4-497b-beaa-c90da45ad5da",
+      "rows": 1000,
+      "canonical_sha256": "98141640c6c266dca8b6c4c4851e7d989ba82bc84146bf3eec23e13d11d25ae6",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q03",
+      "query_id": "adbfe9b0-757f-4651-ac16-6edd42c3fdb6",
+      "rows": 1000,
+      "canonical_sha256": "98141640c6c266dca8b6c4c4851e7d989ba82bc84146bf3eec23e13d11d25ae6",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q03",
+      "query_id": "c246b58c-3573-4117-85b5-6d82c9e2e3f3",
+      "rows": 1000,
+      "canonical_sha256": "98141640c6c266dca8b6c4c4851e7d989ba82bc84146bf3eec23e13d11d25ae6",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q04",
+      "query_id": "54344a44-3fc0-4fad-8f4c-0e3d090d2f38",
+      "rows": 325177,
+      "canonical_sha256": "fb64b2f858a509ec588e0a8a50d0fa14230d358f7e89324bbcb8fa6d7835dea1",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q04",
+      "query_id": "f12f601d-4a7c-481a-915b-a1683afe18b9",
+      "rows": 325177,
+      "canonical_sha256": "fb64b2f858a509ec588e0a8a50d0fa14230d358f7e89324bbcb8fa6d7835dea1",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q04",
+      "query_id": "b0a11771-cb76-4a8c-9dd8-c5ebe704c1d2",
+      "rows": 325177,
+      "canonical_sha256": "fb64b2f858a509ec588e0a8a50d0fa14230d358f7e89324bbcb8fa6d7835dea1",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s51557542",
+      "query_id": "9d6f4126-01f8-4b2c-9944-fbb8fb932c86",
+      "rows": 44,
+      "canonical_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s51557542",
+      "query_id": "b9f46c1d-6843-4155-b897-082c9b142017",
+      "rows": 44,
+      "canonical_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s51557542",
+      "query_id": "f7508e35-67b7-4899-b75b-695868d24ecd",
+      "rows": 44,
+      "canonical_sha256": "61bb246d9d3191685d293cd0c1279a0dbfa80d4e79939f592a263cd57eedee8f",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s51557542",
+      "query_id": "1fcf8d9a-268f-4633-8a33-65ba6450c375",
+      "rows": 1,
+      "canonical_sha256": "e76a9e71ea6bb190c72b874f75ad5bf980869690d8fada1cab348d16e48ca829",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s51557542",
+      "query_id": "0f1d8b4d-a847-4db9-88e7-82646635b05e",
+      "rows": 1,
+      "canonical_sha256": "e76a9e71ea6bb190c72b874f75ad5bf980869690d8fada1cab348d16e48ca829",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s51557542",
+      "query_id": "3952ba17-da8b-4e2e-85d0-c11fc4e25fac",
+      "rows": 1,
+      "canonical_sha256": "e76a9e71ea6bb190c72b874f75ad5bf980869690d8fada1cab348d16e48ca829",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q07",
+      "query_id": "bac5c51a-0ce2-46d6-8734-6ffc6451a151",
+      "rows": 1000,
+      "canonical_sha256": "0d3c62221ca65d11f5de9ab45b8947b48d3ec4cb1f9a3c5c7b74aa722fa903c4",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q07",
+      "query_id": "d2665a7c-6660-437c-864f-68b956991612",
+      "rows": 1000,
+      "canonical_sha256": "0d3c62221ca65d11f5de9ab45b8947b48d3ec4cb1f9a3c5c7b74aa722fa903c4",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q07",
+      "query_id": "a36f74a7-8802-4942-8df8-e81e53071350",
+      "rows": 1000,
+      "canonical_sha256": "0d3c62221ca65d11f5de9ab45b8947b48d3ec4cb1f9a3c5c7b74aa722fa903c4",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s24222542",
+      "query_id": "0551133c-99cf-4e0f-b262-1e9119fb5aa5",
+      "rows": 118,
+      "canonical_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s24222542",
+      "query_id": "8cc3b6ff-23f3-40c0-8926-66727652c42a",
+      "rows": 118,
+      "canonical_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s24222542",
+      "query_id": "a5aa8cff-8fbb-4254-92d6-2ceec9626b81",
+      "rows": 118,
+      "canonical_sha256": "ba4968942911288f08d6d25006e2a501105420529decbb1ca784b6d5ee4c2a70",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s24222542",
+      "query_id": "60b80287-243a-42e6-b32f-a4aabadb2737",
+      "rows": 1,
+      "canonical_sha256": "d30989880c49ec8c6e7bc6ca62da717a48503e959c81aa4a5738c2f788cfc29d",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s24222542",
+      "query_id": "1f467fa6-634d-4802-bfba-49d5c10442a1",
+      "rows": 1,
+      "canonical_sha256": "d30989880c49ec8c6e7bc6ca62da717a48503e959c81aa4a5738c2f788cfc29d",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s24222542",
+      "query_id": "2793a0a1-86c7-4a29-ab64-ae2ea1fc8d77",
+      "rows": 1,
+      "canonical_sha256": "d30989880c49ec8c6e7bc6ca62da717a48503e959c81aa4a5738c2f788cfc29d",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s2003585639",
+      "query_id": "3dc73f2a-75f8-4d33-9bf0-4c4d51815c9e",
+      "rows": 358,
+      "canonical_sha256": "060e4a438e32c9b94f4bb2df011b55cfc600304beea3520713f98537a0dc2699",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s2003585639",
+      "query_id": "32461394-fd6b-4d3d-af34-65211dce016c",
+      "rows": 358,
+      "canonical_sha256": "060e4a438e32c9b94f4bb2df011b55cfc600304beea3520713f98537a0dc2699",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q05-s2003585639",
+      "query_id": "b6c15176-10de-4322-afd1-d4ef5aeb5ad5",
+      "rows": 358,
+      "canonical_sha256": "060e4a438e32c9b94f4bb2df011b55cfc600304beea3520713f98537a0dc2699",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s2003585639",
+      "query_id": "b5e1de01-d848-4809-a39e-68a21711c47f",
+      "rows": 1,
+      "canonical_sha256": "f51972a6de86a530b707160da9248b0f2f975479a1e1340a2596d491c2f112eb",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s2003585639",
+      "query_id": "7cbbe2d1-c064-4936-bce6-f7af513c451c",
+      "rows": 1,
+      "canonical_sha256": "f51972a6de86a530b707160da9248b0f2f975479a1e1340a2596d491c2f112eb",
+      "reparsed_full_csv_match": true
+    },
+    {
+      "case": "q06-s2003585639",
+      "query_id": "25c63ffb-881e-4e66-8036-ff6fda2f91c7",
+      "rows": 1,
+      "canonical_sha256": "f51972a6de86a530b707160da9248b0f2f975479a1e1340a2596d491c2f112eb",
+      "reparsed_full_csv_match": true
+    }
+  ]
+}

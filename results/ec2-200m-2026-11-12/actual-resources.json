@@ -1,0 +1,127 @@
+{
+  "instance": {
+    "InstanceId": "i-02e2b39cf610bfd9c",
+    "InstanceType": "m7g.4xlarge",
+    "LaunchTime": "2026-11-12 18:58:35+00:00",
+    "State": {
+      "Code": 16,
+      "Name": "running"
+    },
+    "BlockDeviceMappings": [
+      {
+        "DeviceName": "/dev/sda1",
+        "Ebs": {
+          "AttachTime": "2026-11-12 18:58:36+00:00",
+          "DeleteOnTermination": true,
+          "Status": "attached",
+          "VolumeId": "vol-06d8b55351c112ce0",
+          "EbsCardIndex": 0
+        }
+      },
+      {
+        "DeviceName": "/dev/sdf",
+        "Ebs": {
+          "AttachTime": "2026-11-12 18:58:35.607000+00:00",
+          "DeleteOnTermination": true,
+          "Status": "attached",
+          "VolumeId": "vol-02bc4d92adc6989c6",
+          "EbsCardIndex": 0
+        }
+      }
+    ],
+    "MetadataOptions": {
+      "State": "applied",
+      "HttpTokens": "required",
+      "HttpPutResponseHopLimit": 1,
+      "HttpEndpoint": "enabled",
+      "HttpProtocolIpv6": "disabled",
+      "InstanceMetadataTags": "disabled"
+    }
+  },
+  "volumes": [
+    {
+      "AvailabilityZoneId": "use1-az4",
+      "Iops": 6000,
+      "Tags": [
+        {
+          "Key": "Project",
+          "Value": "openalex-200m-comparison"
+        },
+        {
+          "Key": "RunId",
+          "Value": "oa200-20261112-e504ff"
+        }
+      ],
+      "VolumeType": "gp3",
+      "MultiAttachEnabled": false,
+      "Throughput": 500,
+      "Operator": {
+        "Managed": false,
+        "HiddenByDefault": false
+      },
+      "VolumeArn": "arn:aws:ec2:us-east-1:502425560524:volume/vol-02bc4d92adc6989c6",
+      "OwnerId": "502425560524",
+      "VolumeId": "vol-02bc4d92adc6989c6",
+      "Size": 1024,
+      "SnapshotId": "",
+      "AvailabilityZone": "us-east-1a",
+      "State": "in-use",
+      "CreateTime": "2026-11-12 18:58:35.678000+00:00",
+      "Attachments": [
+        {
+          "DeleteOnTermination": true,
+          "EbsCardIndex": 0,
+          "VolumeId": "vol-02bc4d92adc6989c6",
+          "InstanceId": "i-02e2b39cf610bfd9c",
+          "Device": "/dev/sdf",
+          "State": "attached",
+          "AttachTime": "2026-11-12 18:58:35+00:00"
+        }
+      ],
+      "Encrypted": true,
+      "KmsKeyId": "arn:aws:kms:us-east-1:502425560524:key/ccff9570-2312-4501-a967-732c12ff8ba2"
+    },
+    {
+      "AvailabilityZoneId": "use1-az4",
+      "Iops": 3000,
+      "Tags": [
+        {
+          "Key": "Project",
+          "Value": "openalex-200m-comparison"
+        },
+        {
+          "Key": "RunId",
+          "Value": "oa200-20261112-e504ff"
+        }
+      ],
+      "VolumeType": "gp3",
+      "MultiAttachEnabled": false,
+      "Throughput": 125,
+      "Operator": {
+        "Managed": false,
+        "HiddenByDefault": false
+      },
+      "VolumeArn": "arn:aws:ec2:us-east-1:502425560524:volume/vol-06d8b55351c112ce0",
+      "OwnerId": "502425560524",
+      "VolumeId": "vol-06d8b55351c112ce0",
+      "Size": 32,
+      "SnapshotId": "snap-01910878a8ccb356f",
+      "AvailabilityZone": "us-east-1a",
+      "State": "in-use",
+      "CreateTime": "2026-11-12 18:58:36.915000+00:00",
+      "Attachments": [
+        {
+          "DeleteOnTermination": true,
+          "EbsCardIndex": 0,
+          "VolumeId": "vol-06d8b55351c112ce0",
+          "InstanceId": "i-02e2b39cf610bfd9c",
+          "Device": "/dev/sda1",
+          "State": "attached",
+          "AttachTime": "2026-11-12 18:58:36+00:00"
+        }
+      ],
+      "Encrypted": true,
+      "KmsKeyId": "arn:aws:kms:us-east-1:502425560524:key/ccff9570-2312-4501-a967-732c12ff8ba2"
+    }
+  ]
+}
