@@ -10,6 +10,12 @@ complete small dimensions. Across 60 real-manifest seeds, the Works selection
 ranged from 1.00 to 2.07 GiB; the pinned run is 1.17 GiB. It is sample-scale
 evidence, not a full-size capacity prediction.
 
+## Current benchmark evidence
+
+The latest paired EC2 experiment covers **200,313,862 Works**, complete historical Authors, Institutions, Sources and Topics, and 1.25 billion citation edges across nine tables with 42 selected columns. With matching 16-CPU / 32-GiB containers, ClickHouse established warm medians below 60 seconds for six of seven query families and PostgreSQL for three; ClickHouse author aggregation failed its 24-GiB query-memory cap. These are selected-schema, single-stream results, not full-corpus or concurrency guarantees.
+
+Start with the [interactive Claude artifact](https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H), the [200m EC2 report](docs/ec2-200m-benchmark.md), the [100m laptop comparison](docs/postgres-100m-benchmark.md), and the [2m/10m/32m PostgreSQL scaling report](docs/postgres-scaling-benchmark.md). The [citation timing interpretation](docs/citation-timing-interpretation.md) explains the tiny cached PostgreSQL numbers, different timing scopes and practical limits. The [data-retention policy](docs/benchmark-data-retention.md) records what must be kept for future tests; the historical 200m volumes were deleted without snapshots.
+
 ## Prerequisites
 
 - Apple-silicon Docker Desktop capable of running native `linux/arm64` images.

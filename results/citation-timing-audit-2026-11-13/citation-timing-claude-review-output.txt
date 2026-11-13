@@ -1,0 +1,45 @@
+## Verdict: bounded PASS
+
+Every audited number reproduces exactly from the raw files. The main recommendation holds: keep the server timings, and stop reading 1300x/150x as application speed. Three findings need amending and several limits are missing. I ran no databases or AWS, made no writes, used no credentials and called no other agents.
+
+### What checks out
+- **File hashes and values:** all 6 `source_sha256` values match the raw files. Every audited value and every plan-node field matches the raw JSON, with 0 mismatches.
+- **Units:** the runner stores `Execution Time/1000` (`/Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m/experiments/ec2-200m/run_engines.py:83`). EXPLAIN reports milliseconds, and all 24 runs match exactly. `TIMING OFF` drops per-node times but still measures the statement total, and the audit makes no per-node timing claims.
+- **Actual rows vs planner estimates:** the audit correctly uses actual row counts. The planner's estimates are identical for all three seeds and far too high: about 5–42x for q05 and 144–719x for q06. Only one plan shape was ever exercised.
+- **Warm cache:** every warm run reads nothing from outside PostgreSQL's buffer cache, including during planning. The container's disk-read counter shows zero over those windows, and no plan used JIT.
+- **Connection and QA fetch:** the client is on the same host, connecting over loopback to Docker's published port 127.0.0.1:15432, with a fresh backend per case. The QA timing is a single fifth run that covers parse, plan, execute, transfer, row decoding, canonicalization and hashing (`run_engines.py:84-88`). Results and row counts match ClickHouse in all 6 cases.
+
+### Findings to amend
+1. **The timing scopes differ, and the audit doesn't say so.** This is the most material gap. `ch_median_execution_ms` is really ClickHouse's `query_log.query_duration_ms`: total server time, including query analysis and planning, in whole milliseconds. PostgreSQL's Execution Time leaves planning out. Adding PG planning back changes the ratios a lot:
+
+   | Case | CH / PG execution | CH / PG (execution + planning) | CH minus PG QA fetch |
+   |---|---|---|---|
+   | q05, 3 seeds | 3159x / 2482x / 1321x | 959x / 1022x / 722x | about 138 ms |
+   | q06, 3 seeds | 806x / 524x / 151x | 581x / 417x / 140x | 394–412 ms |
+
+2. **Finding 9 is true but doesn't matter much.** For q06, pairing maxima from different seeds gives 152.5x; the same-seed ratio for that PG seed is 151.4x. Family-max is actually the most conservative pairing; the other seeds give 524x and 806x. For q05 both maxima come from the same seed (1320.8x). Also, "1300x/150x" appears only in the audit and the review prompts. The artifact shows the values side by side, labelled "family max of three seeds".
+3. **Finding 7 understates the overhead.** The client timer also includes writing the telemetry file to disk. Each monitor sample also runs a `docker inspect` subprocess (`helpers.py:18`). Every run took exactly 2 samples. Between 23.4 and 25.2 ms of each warm client window falls outside PG planning and execution. The QA fetch, which has no monitor, takes only 0.68–2.96 ms in total.
+
+### Limits to add
+- **Primer (first run):** 94–99% of primer execution time is spent reading pages. The container's disk counters show real storage reads, for example 737 read I/Os against 729 blocks PG read in for the largest q06 seed. Each 8 KiB block took about 0.6–0.77 ms. It is still not a controlled cold run:
+  - The OS cache was dropped only once, before the whole PG phase (`run_engines.py:186`).
+  - In all three q06 primers, the first hop was already cached from the q05 run on the same seed (0 reads).
+  - Each fresh backend starts with an empty catalog cache, so primer planning took 0.8–8.0 ms.
+- **How representative "warm" is:** "warm" just means the same seed repeated. The two citation indexes total 94.4 GiB, against 8 GiB of PostgreSQL buffer cache and a 32 GiB container, so traffic on random seeds would not stay warm. ClickHouse's citation table is 17.2 GB including its projection, which does fit in memory.
+- **Graph coverage:**
+  - All three seeds are low-degree: 44, 118 and 352 outgoing citations, and 0, 0 and 6 incoming. Highly cited "hub" works are untested.
+  - JIT is on, and q06's estimated plan cost (91,397) sits just under the default JIT threshold (100,000). Seeds with higher estimates could add JIT compile time.
+  - Zero heap fetches reflect a freshly vacuumed table with no writes.
+  - The build is 200.31M works and 1.25B citation edges, not the full corpus, and nothing was tested under concurrent load.
+- **Wording nit:** q05's counts (44/118/358) are rows from a UNION ALL of both directions, not distinct neighbours.
+
+### Your practical point
+It's right that these numbers don't demonstrate a material user-facing reason to choose PostgreSQL. They also don't show the difference is immaterial; that simply wasn't measured.
+- **Where you're right:** executor-only medians can't show user-facing benefit, and ratios are the wrong lens. The defensible figure is the absolute gap per isolated query: about 138 ms for one-hop and 394–412 ms for two-hop. ClickHouse's server time is a floor on its request time. PostgreSQL's single QA fetch on the same host took 0.7–3.0 ms. Neither engine has a valid client-side timing in the archive; ClickHouse's 0.48–0.88 s client windows include `docker exec` and client startup.
+- **Against "both under 1 s, so it doesn't matter":**
+  - ClickHouse's two-hop query scans the whole edge table each time (about 1.25B rows, 10 GB) and uses 5.1–5.4 CPU-seconds.
+  - Its one-hop query uses about 0.14 CPU-seconds while reading only 6–7 data blocks, which looks like a fixed per-query cost.
+  - PostgreSQL's warm runs used 0.3–3.2 ms of CPU. On 16 vCPUs, that two-hop cost implies a ceiling of about 3 queries per second. That is arithmetic, not a measurement.
+  - UI actions that chain several hops also stack the ~140 ms one-hop cost.
+- **In your favour:** PostgreSQL's advantage depends on cached index pages. The uncached two-hop run for the largest seed took 437.9 ms plus 1.2 ms planning, roughly equal to ClickHouse (410 ms warm, 421 ms first run). Uncached one-hop PostgreSQL (3.6–6.4 ms) still beats 139 ms.
+- **What would settle it (not run):** random seeds including hubs, steady-state caching at realistic memory sizes, a concurrency sweep, and client-side latency over persistent connections for both engines.

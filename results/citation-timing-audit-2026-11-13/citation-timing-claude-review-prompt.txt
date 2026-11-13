@@ -1,0 +1,384 @@
+You are a leaf reviewer; do not call any other AI or agents. Read-only review of archived evidence, not a new benchmark. Validate the following diagnosis for correctness and overclaims, especially units, timing scopes, warm cache and graph cardinality. No credentials, no AWS, no writes or database operations. Return a concise verdict.
+
+{
+  "cases": [
+    {
+      "case": "q05",
+      "seed": 51557542,
+      "source_sha256": "5dab75955681e8f000dcfc684c4e490d62afb4dfc8351f06760bd43738c69341",
+      "pg_median_execution_ms": 0.044,
+      "ch_median_execution_ms": 139.0,
+      "pg_primer_execution_ms": 6.37,
+      "pg_warm_execution_ms": [
+        0.042,
+        0.044,
+        0.045
+      ],
+      "pg_warm_planning_ms": [
+        0.091,
+        0.106,
+        0.1
+      ],
+      "pg_warm_instrumented_client_ms": [
+        23.52021499973489,
+        24.19428500070353,
+        23.86809100062237
+      ],
+      "pg_single_qa_fetch_and_canonicalization_ms": 0.6829239991930081,
+      "pg_qa_returned_rows": 44,
+      "same_result_fingerprint_as_ch": true,
+      "last_warm_plan_nodes": [
+        {
+          "Node Type": "Append",
+          "Actual Rows": 44.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 9,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 44.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 5,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_cited_citing",
+          "Actual Rows": 0.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 4,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        }
+      ]
+    },
+    {
+      "case": "q05",
+      "seed": 24222542,
+      "source_sha256": "7b1f4e1abd4377feff781b16d59dc5d94119f0607853328bb792271f8ebe100e",
+      "pg_median_execution_ms": 0.056,
+      "ch_median_execution_ms": 139.0,
+      "pg_primer_execution_ms": 3.605,
+      "pg_warm_execution_ms": [
+        0.07,
+        0.056,
+        0.056
+      ],
+      "pg_warm_planning_ms": [
+        0.089,
+        0.08,
+        0.079
+      ],
+      "pg_warm_instrumented_client_ms": [
+        24.491567999575636,
+        23.84931599954143,
+        24.068609998721513
+      ],
+      "pg_single_qa_fetch_and_canonicalization_ms": 0.9194369995384477,
+      "pg_qa_returned_rows": 118,
+      "same_result_fingerprint_as_ch": true,
+      "last_warm_plan_nodes": [
+        {
+          "Node Type": "Append",
+          "Actual Rows": 118.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 10,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 118.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 6,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_cited_citing",
+          "Actual Rows": 0.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 4,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        }
+      ]
+    },
+    {
+      "case": "q05",
+      "seed": 2003585639,
+      "source_sha256": "1262a79c015f9d11ee97fafbf138288e247d08cf706ca53307bd786c0c94983c",
+      "pg_median_execution_ms": 0.106,
+      "ch_median_execution_ms": 140.0,
+      "pg_primer_execution_ms": 5.311,
+      "pg_warm_execution_ms": [
+        0.107,
+        0.103,
+        0.106
+      ],
+      "pg_warm_planning_ms": [
+        0.109,
+        0.087,
+        0.088
+      ],
+      "pg_warm_instrumented_client_ms": [
+        23.875158000009833,
+        24.002853000638424,
+        23.939643999256077
+      ],
+      "pg_single_qa_fetch_and_canonicalization_ms": 2.109019000272383,
+      "pg_qa_returned_rows": 358,
+      "same_result_fingerprint_as_ch": true,
+      "last_warm_plan_nodes": [
+        {
+          "Node Type": "Append",
+          "Actual Rows": 358.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 51,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 352.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 41,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_cited_citing",
+          "Actual Rows": 6.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 10,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        }
+      ]
+    },
+    {
+      "case": "q06",
+      "seed": 51557542,
+      "source_sha256": "324cca77b9a88d78dd39217b9dbaa5e52f61321ca82093703d742fd5a8c0c49b",
+      "pg_median_execution_ms": 0.49,
+      "ch_median_execution_ms": 395.0,
+      "pg_primer_execution_ms": 90.487,
+      "pg_warm_execution_ms": [
+        0.505,
+        0.49,
+        0.481
+      ],
+      "pg_warm_planning_ms": [
+        0.203,
+        0.19,
+        0.197
+      ],
+      "pg_warm_instrumented_client_ms": [
+        24.792103000436327,
+        25.248441999792703,
+        24.54036100061785
+      ],
+      "pg_single_qa_fetch_and_canonicalization_ms": 1.0035870000137947,
+      "pg_qa_returned_rows": 1,
+      "same_result_fingerprint_as_ch": true,
+      "last_warm_plan_nodes": [
+        {
+          "Node Type": "Aggregate",
+          "Actual Rows": 1.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 292,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Sort",
+          "Actual Rows": 920.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 292,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Nested Loop",
+          "Actual Rows": 920.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 292,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 44.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 5,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 20.91,
+          "Actual Loops": 44,
+          "Shared Hit Blocks": 287,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        }
+      ]
+    },
+    {
+      "case": "q06",
+      "seed": 24222542,
+      "source_sha256": "5ca13da9ee977a9e33c31135ed9b2d17fa2a82ac3eaccaf390606249d75b794c",
+      "pg_median_execution_ms": 0.788,
+      "ch_median_execution_ms": 413.0,
+      "pg_primer_execution_ms": 160.954,
+      "pg_warm_execution_ms": [
+        0.788,
+        0.782,
+        0.791
+      ],
+      "pg_warm_planning_ms": [
+        0.211,
+        0.202,
+        0.199
+      ],
+      "pg_warm_instrumented_client_ms": [
+        24.9096309999004,
+        25.36408199921425,
+        26.19786999821372
+      ],
+      "pg_single_qa_fetch_and_canonicalization_ms": 1.2917229996673996,
+      "pg_qa_returned_rows": 1,
+      "same_result_fingerprint_as_ch": true,
+      "last_warm_plan_nodes": [
+        {
+          "Node Type": "Aggregate",
+          "Actual Rows": 1.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 657,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Sort",
+          "Actual Rows": 848.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 657,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Nested Loop",
+          "Actual Rows": 848.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 657,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 118.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 6,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 7.19,
+          "Actual Loops": 118,
+          "Shared Hit Blocks": 651,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        }
+      ]
+    },
+    {
+      "case": "q06",
+      "seed": 2003585639,
+      "source_sha256": "35261ae11615bba79368d41cc41f816cf05154ffaba37c4fe20363037e40b17f",
+      "pg_median_execution_ms": 2.708,
+      "ch_median_execution_ms": 410.0,
+      "pg_primer_execution_ms": 437.932,
+      "pg_warm_execution_ms": [
+        2.743,
+        2.708,
+        2.698
+      ],
+      "pg_warm_planning_ms": [
+        0.212,
+        0.225,
+        0.2
+      ],
+      "pg_warm_instrumented_client_ms": [
+        26.81154499987315,
+        27.462104000733234,
+        26.678267000534106
+      ],
+      "pg_single_qa_fetch_and_canonicalization_ms": 2.9559850008809008,
+      "pg_qa_returned_rows": 1,
+      "same_result_fingerprint_as_ch": true,
+      "last_warm_plan_nodes": [
+        {
+          "Node Type": "Aggregate",
+          "Actual Rows": 1.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 2514,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Sort",
+          "Actual Rows": 4230.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 2514,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Nested Loop",
+          "Actual Rows": 4230.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 2514,
+          "Shared Read Blocks": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 352.0,
+          "Actual Loops": 1,
+          "Shared Hit Blocks": 41,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        },
+        {
+          "Node Type": "Index Only Scan",
+          "Index Name": "citation_edge_citing_cited",
+          "Actual Rows": 12.02,
+          "Actual Loops": 352,
+          "Shared Hit Blocks": 2473,
+          "Shared Read Blocks": 0,
+          "Heap Fetches": 0
+        }
+      ]
+    }
+  ],
+  "findings": [
+    "All stored seconds equal raw EXPLAIN Execution Time in milliseconds divided by 1000; no unit conversion error found.",
+    "Warm plans use index-only scans; root Shared Read Blocks is zero for all six cases. This is PostgreSQL-buffer evidence, not a claim about host-wide I/O.",
+    "q05 returns 44,118,358 neighbors; incoming branches return 0,0,6. The seeds provide narrow incoming-citation coverage.",
+    "q06 is one-seed outgoing-outgoing count DISTINCT, not global graph analytics; joined pairs are 920,848,4230.",
+    "Warm largest-seed q06 execution median2.708ms vs primer437.932ms. Primer is not a controlled cold-cache experiment.",
+    "EXPLAIN omits planning and actual result delivery. The reported server medians are not network-inclusive request times.",
+    "client_seconds is not clean request latency: timer includes Monitor.start/stop and sampling plus plan transfer; these windows are around23\u201327ms for warm graph cases.",
+    "qa.fetch_seconds is one later same-host SELECT/fetch/canonicalization observation, not three warm latency repeats or a remote-client benchmark.",
+    "The reported family ratios compare maximum seed medians independently; the q06 maxima come from different seeds. Same-seed q06 ratios differ.",
+    "Keep server timings unchanged; retract broad 1300x/150x application-speed interpretation. Request-level speedup is unmeasured."
+  ],
+  "official_timing_reference": "https://www.postgresql.org/docs/18/using-explain.html",
+  "no_new_db_or_aws_run": true
+}
+Runner: /Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m/experiments/ec2-200m/run_engines.py pg_case lines71-89. Monitor: helpers.py lines29-36. Raw plans: /Users/yorrickjansen/work/data/openalex-ec2-200m-20261112/cloud-results/postgres/q05-s*.json and q06-s*.json.
+
+The user has now explicitly authorized Claude Code to review this PostgreSQL timing investigation, superseding the earlier exclusion for this review. User's practical point: ClickHouse one-hop is about140ms and two-hop about410ms, both below1s, so these tiny warm PostgreSQL executor measurements alone do not demonstrate a material user-facing reason to choose PostgreSQL. Assess this interpretation too.
+Please inspect actual source and sample raw plans, verify the existing compact audit against originals, and return concrete findings or a bounded PASS. In particular: units, actual execution vs planner estimates, psycopg same-host connection, monitor overhead in client_seconds, QA fetch/canonicalization timing, seed cardinality/cache conditions, incomparable family-max ratios, and limits of conclusions about practical latency or full-corpus graph performance. Read-only: do not rerun databases or AWS, install software, access credentials or mutate any files. Do not call other AI CLIs or agents. Your stdout is saved by root.

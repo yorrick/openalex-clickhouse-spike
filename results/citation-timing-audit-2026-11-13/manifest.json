@@ -1,0 +1,44 @@
+{
+  "files": {
+    "citation-timing-audit-amended.json": {
+      "bytes": 13317,
+      "sha256": "40361c1ee558af09627223d1eab5c1655b4f79401af59c8ca60409ebf3cea364"
+    },
+    "citation-timing-audit.json": {
+      "bytes": 11621,
+      "sha256": "cc88fcb8b60d7669bf6e22383b338e4c57c720aec8f9e8b95396ee91bd372fa8"
+    },
+    "citation-timing-claude-review-output.txt": {
+      "bytes": 6508,
+      "sha256": "0874a8465d0be944659ebbf0369ac4414ceedfb09083da419788c45c206eb5e2"
+    },
+    "citation-timing-claude-review-prompt.txt": {
+      "bytes": 13291,
+      "sha256": "03772801356de4760a1f68696c069fc00f715ea9068579798dd86e037471d70e"
+    },
+    "documentation-review-status.json": {
+      "bytes": 579,
+      "sha256": "ee099acd5be9858b2785e56958fb113ad38ea362854cdaa85521c63007286322"
+    },
+    "main-docs-qa.json": {
+      "bytes": 138,
+      "sha256": "9f48d75d2af9e3a116e93300b4fb6fad648a696c9928ab1f1bbd8c45de927dc1"
+    },
+    "main-docs-review-output.txt": {
+      "bytes": 3718,
+      "sha256": "9fca880f4d0f49ed32c2ede2b860d73d681f7ec7cc798e3852ff58ea0ba95149"
+    },
+    "main-docs-review-prompt.txt": {
+      "bytes": 823,
+      "sha256": "0b2337f69f82c73eaa01483bd8c68cd3fc7b9f42b0e2df7a567ca91207283b63"
+    },
+    "review-adjudication.md": {
+      "bytes": 1908,
+      "sha256": "b840be1e61e67627315765be846301cc0b1c3206b6aaf1cb7a7b8a097f849449"
+    },
+    "review-status.json": {
+      "bytes": 764,
+      "sha256": "e78df8e22062a8d66bde5bd3c0834c30d471ad0c543c990d61672c4332c7d063"
+    }
+  }
+}

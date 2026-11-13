@@ -1,0 +1,17 @@
+# Citation lookup timing interpretation
+
+The PostgreSQL q05/q06 numbers are measured `EXPLAIN ANALYZE` execution times from archived runs, not planner estimates or network-inclusive latency. Python used psycopg over loopback to PostgreSQL's Docker port on the same EC2 machine. Each case had a primer and three repetitions, followed by a separate SELECT/fetch to verify output. ClickHouse's query-log duration includes server analysis/planning, whereas PostgreSQL's reported execution time excludes planning. The timing scopes differ.
+
+At 200,313,862 Works, the largest recorded seed median (independently for each engine) was 0.106 ms for PostgreSQL q05 versus 140 ms for ClickHouse, and 2.708 ms versus 413 ms for q06. Both engines were below one second on these tests. The large ratios do not establish a material application-level preference for PostgreSQL, nor do these measurements prove that the absolute latency gap is immaterial.
+
+The graph samples were small and cached: q05 returned 44, 118 and 358 UNION ALL rows across citation directions (not necessarily distinct neighbors), with incoming counts of 0, 0 and 6. The q06 two-hop joins processed 920, 848 and 4,230 pairs. All PostgreSQL warm plans used index-only scans with zero shared-buffer reads and zero heap fetches. The largest seed's first observed q06 execution was 437.932 ms; it is not a controlled cold-cache observation. Only the selected Works supply outgoing edges, so paths through excluded intermediate Works are absent.
+
+The runner's `client_seconds` includes monitoring, `docker inspect` sampling and telemetry-file writing, so it is not a clean connector-latency measurement. The separate PostgreSQL QA fetch took about 0.68–2.96 ms, including canonicalization and hashing, but has only one observation per case on the same host. Neither engine has a comparable repeated request-latency benchmark in this archive. ClickHouse's q06 reads about 1.25 billion rows / 10 GB logical bytes and uses about 5.1–5.4 CPU-seconds per execution; this does not measure physical disk bandwidth or multi-user throughput. Hubs, random-seed cache churn, concurrency and full-corpus graph behavior remain unvalidated.
+
+[Audit data, CLI review and adjudication](../results/citation-timing-audit-2026-11-13/) record the independently checked evidence. Claude Code used claude-opus-5-5 at max effort and returned a bounded PASS; scope is these six timing cases, not the full underlying experiment. Raw server timings remain unchanged.
+
+## Ingestion and SQL configuration
+
+The original ClickHouse SQL in [20_load_works.sql](../sql/20_load_works.sql) reads raw OpenAlex Parquet and flattens its nested arrays directly into native tables. Python/DuckDB normalization was introduced for the later paired comparison so both engines consumed identical nine-table inputs. An external Python transformation engine is not a ClickHouse requirement; transformations and loading still exist as SQL.
+
+The SQL query text in the artifact does not contain the benchmark memory cap. The runner passed `max_memory_usage=25769803776` (24 GiB) and other options separately to clickhouse-client, and the artifact lists them under Execution settings. This benchmark configuration is not evidence that ordinary ClickHouse SQL requires manual memory allocation. Specialized array expressions and engine-specific execution tuning are the actual maintenance considerations demonstrated by these tests.

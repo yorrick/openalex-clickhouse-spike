@@ -1,0 +1,10 @@
+{
+  "reviewer": "Claude Code",
+  "model": "claude-opus-5-5",
+  "effort": "max",
+  "command": "source ~/.ssh/claude.sh\nclaude -p --model claude-opus-5-5 --effort max --tools Read,Bash --allowedTools Read,Bash --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' --add-dir /Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m --add-dir /Users/yorrickjansen/work/data/openalex-ec2-200m-20261112 < citation-timing-claude-review-prompt.txt > citation-timing-claude-review-output.txt 2> citation-timing-claude-review-stderr.txt",
+  "exit_code": 0,
+  "verdict": "bounded PASS, amendments adjudicated",
+  "scope": "Archived six-case citation timing audit, not full benchmark validation",
+  "rerun_databases_or_aws": false
+}

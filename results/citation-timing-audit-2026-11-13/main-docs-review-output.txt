@@ -1,0 +1,24 @@
+**PASS.** I found no material problems. The accepted, accepted-with-limits and rejected claims are qualified correctly in all five files, and every link I checked resolves.
+
+**How the claims are handled**
+- **Accepted claims:** the doc changes match `citation-timing-claude-review-output.txt` and the amended audit (`citation-timing-audit-amended.json`). The numbers I checked match: PG 0.106 ms vs CH 140 ms for q05, PG 2.708 ms vs CH 413 ms for q06, row counts 44/118/358 and 920/848/4,230, a primer of 437.932 ms, and QA fetch times of 0.68–2.96 ms.
+  - Different timing scopes, client_seconds overhead (`docker inspect` sampling and telemetry-file writing), QA fetch including canonicalization, q05 counts being UNION ALL rows rather than distinct neighbours, and missing out-of-cohort edges are all stated.
+  - The amended audit records 152.5x vs 151.4x for the q06 pairing, and the adjudication correctly treats it as minor.
+- **Accepted with limits:** the ClickHouse q06 figures (about 1.25B rows, 10 GB, 5.1–5.4 CPU-seconds) are labelled as logical reads and query-log counters. They are not presented as physical EBS reads or as throughput. No queries-per-second figure was adopted, so the review's ~3 QPS arithmetic is rightly left out.
+- **Rejected claim:** no doc says the 17.2 GB ClickHouse table fits in query memory. `docs/ec2-200m-benchmark.md:43` says the opposite: compressed size does not equal working memory.
+- **Primer runs:** every doc calls them not controlled cold-cache tests. None uses the review's "uncached" shorthand.
+- **Practical point:** the docs say the results show neither a material advantage for PostgreSQL nor that the gap doesn't matter. This matches the review.
+- **Scope and history:** "bounded PASS", "six timing cases" and "not a full review" are stated. The historical review is still marked incomplete in `ec2-200m-benchmark.md:5,139` and `benchmark-artifact.md:9`, which is consistent with `review-status.json` (`completed: false`). The adjudication records the user's later authorization of Claude Code.
+
+**Links checked:** `results/citation-timing-audit-2026-11-13/`, `docs/citation-timing-interpretation.md`, `sql/20_load_works.sql`, `docs/benchmark-data-retention.md`, `docs/postgres-100m-benchmark.md`, `docs/postgres-scaling-benchmark.md`, `results/ec2-200m-2026-11-12/review-status.json` and `results/benchmark-artifact-2026-11-13/`. I also confirmed the 24 GiB figure: 24 × 2³⁰ = 25,769,803,776.
+
+**Optional wording fixes**
+1. `docs/citation-timing-interpretation.md:5`: "the largest recorded seed median … 2.708 ms versus 413 ms" pairs two different seeds (2003585639 for PG, 24222542 for CH). The EC2 report says the maxima are taken "independently for each engine", but this doc doesn't. Adding "(per-engine maxima)" would fix it.
+2. The amended audit adds its corrections at the end rather than editing the original entries. So the old finding "q05 returns 44,118,358 neighbors" still sits next to the "not necessarily distinct" correction, and the old client_seconds finding sits next to the fuller one. That's acceptable as a record of history, but a reader could see it as contradictory.
+3. The adjudication says the amendments are "explicit in the amended audit and documentation". QA hashing and the rejected memory claim are actually recorded only in the docs and the adjudication, not in the JSON. This is a small overstatement.
+
+**Not verified**
+- The "max effort" and model ID come only from the adjudication; the review output itself doesn't record them.
+- I didn't check the artifact's "Execution settings" label.
+- I didn't check that `frozen-evidence.tar.gz` exists.
+- I didn't recheck raw logs or source line references, as you asked.

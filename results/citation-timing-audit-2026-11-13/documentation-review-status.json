@@ -1,0 +1,8 @@
+{
+  "model": "claude-opus-5-5",
+  "effort": "high",
+  "command": "source ~/.ssh/claude.sh\nclaude -p --model claude-opus-5-5 --effort high --tools Read --allowedTools Read --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' --add-dir /Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m < main-docs-review-prompt.txt > main-docs-review-output.txt 2> main-docs-review-stderr.txt",
+  "exit_code": 0,
+  "verdict": "PASS; optional clarity amendments applied",
+  "scope": "Documentation only; six-case timing review already complete"
+}
