@@ -1,5 +1,7 @@
 # OpenAlex ClickHouse validation spike
 
+[Interactive benchmark results on Claude](https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H) compare ClickHouse, PostgreSQL and Athena through 200m Works, with exact SQL, tuning profiles, resources and costs. See the [artifact documentation and evidence](docs/benchmark-artifact.md) for methodology, limitations, publication records and access details.
+
 This repository tests whether the public OpenAlex Parquet snapshot can support
 interactive bibliometric SQL in ClickHouse without first reconstructing a full
 transactional relational database. Stage 1 is a correctness and query-smoke
