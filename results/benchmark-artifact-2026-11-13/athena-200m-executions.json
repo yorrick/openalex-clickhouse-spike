@@ -1,0 +1,2373 @@
+{
+  "scope": "All53recordedAthenaGetQueryExecutionreceiptsfromthecompleted200mstudy;exactsubmittedSQL,nottemplates. No new queries executed.",
+  "executions": [
+    {
+      "QueryExecutionId": "25c63ffb-881e-4e66-8036-ff6fda2f91c7",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=2003585639",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/25c63ffb-881e-4e66-8036-ff6fda2f91c7.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:54:50.813000-05:00",
+        "CompletionDateTime": "2026-11-12 15:57:17.634000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 146599,
+        "DataScannedInBytes": 16320863535,
+        "TotalExecutionTimeInMillis": 146821,
+        "QueryQueueTimeInMillis": 98,
+        "ServicePreProcessingTimeInMillis": 72,
+        "QueryPlanningTimeInMillis": 872,
+        "ServiceProcessingTimeInMillis": 52,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "eb245e44b06dc60d40e742b55f93ba9eed3c2c358ef24c1eeca69e9b651f4c69"
+    },
+    {
+      "QueryExecutionId": "7cbbe2d1-c064-4936-bce6-f7af513c451c",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=2003585639",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/7cbbe2d1-c064-4936-bce6-f7af513c451c.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:52:14.741000-05:00",
+        "CompletionDateTime": "2026-11-12 15:54:50.266000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 155334,
+        "DataScannedInBytes": 16320863535,
+        "TotalExecutionTimeInMillis": 155525,
+        "QueryQueueTimeInMillis": 100,
+        "ServicePreProcessingTimeInMillis": 60,
+        "QueryPlanningTimeInMillis": 1028,
+        "ServiceProcessingTimeInMillis": 31,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "eb245e44b06dc60d40e742b55f93ba9eed3c2c358ef24c1eeca69e9b651f4c69"
+    },
+    {
+      "QueryExecutionId": "b5e1de01-d848-4809-a39e-68a21711c47f",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=2003585639",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/b5e1de01-d848-4809-a39e-68a21711c47f.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:49:44.561000-05:00",
+        "CompletionDateTime": "2026-11-12 15:52:13.850000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 149071,
+        "DataScannedInBytes": 16320863535,
+        "TotalExecutionTimeInMillis": 149289,
+        "QueryQueueTimeInMillis": 138,
+        "ServicePreProcessingTimeInMillis": 43,
+        "QueryPlanningTimeInMillis": 864,
+        "ServiceProcessingTimeInMillis": 37,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "eb245e44b06dc60d40e742b55f93ba9eed3c2c358ef24c1eeca69e9b651f4c69"
+    },
+    {
+      "QueryExecutionId": "b6c15176-10de-4322-afd1-d4ef5aeb5ad5",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=2003585639\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=2003585639",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/b6c15176-10de-4322-afd1-d4ef5aeb5ad5.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:47:03.034000-05:00",
+        "CompletionDateTime": "2026-11-12 15:49:43.301000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 160097,
+        "DataScannedInBytes": 16320863535,
+        "TotalExecutionTimeInMillis": 160267,
+        "QueryQueueTimeInMillis": 96,
+        "ServicePreProcessingTimeInMillis": 38,
+        "QueryPlanningTimeInMillis": 775,
+        "ServiceProcessingTimeInMillis": 36,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "88b19b946ecc4d4527513c82b00c237dc3e631aa9bf2e84262704d9bbbc91ed6"
+    },
+    {
+      "QueryExecutionId": "32461394-fd6b-4d3d-af34-65211dce016c",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=2003585639\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=2003585639",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/32461394-fd6b-4d3d-af34-65211dce016c.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:44:33.265000-05:00",
+        "CompletionDateTime": "2026-11-12 15:47:01.768000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 148280,
+        "DataScannedInBytes": 16320863535,
+        "TotalExecutionTimeInMillis": 148503,
+        "QueryQueueTimeInMillis": 97,
+        "ServicePreProcessingTimeInMillis": 63,
+        "QueryPlanningTimeInMillis": 809,
+        "ServiceProcessingTimeInMillis": 63,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "88b19b946ecc4d4527513c82b00c237dc3e631aa9bf2e84262704d9bbbc91ed6"
+    },
+    {
+      "QueryExecutionId": "3dc73f2a-75f8-4d33-9bf0-4c4d51815c9e",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=2003585639\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=2003585639",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/3dc73f2a-75f8-4d33-9bf0-4c4d51815c9e.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:42:02.269000-05:00",
+        "CompletionDateTime": "2026-11-12 15:44:32.794000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 150251,
+        "DataScannedInBytes": 16320863535,
+        "TotalExecutionTimeInMillis": 150525,
+        "QueryQueueTimeInMillis": 181,
+        "ServicePreProcessingTimeInMillis": 57,
+        "QueryPlanningTimeInMillis": 780,
+        "ServiceProcessingTimeInMillis": 36,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "88b19b946ecc4d4527513c82b00c237dc3e631aa9bf2e84262704d9bbbc91ed6"
+    },
+    {
+      "QueryExecutionId": "2793a0a1-86c7-4a29-ab64-ae2ea1fc8d77",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=24222542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/2793a0a1-86c7-4a29-ab64-ae2ea1fc8d77.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:39:25.396000-05:00",
+        "CompletionDateTime": "2026-11-12 15:42:01.413000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 155821,
+        "DataScannedInBytes": 16320759909,
+        "TotalExecutionTimeInMillis": 156017,
+        "QueryQueueTimeInMillis": 97,
+        "ServicePreProcessingTimeInMillis": 49,
+        "QueryPlanningTimeInMillis": 788,
+        "ServiceProcessingTimeInMillis": 50,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "2c6ac9c1e795961a6977995d0fbbbb380951111f372163f2f74c32942f15e318"
+    },
+    {
+      "QueryExecutionId": "1f467fa6-634d-4802-bfba-49d5c10442a1",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=24222542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/1f467fa6-634d-4802-bfba-49d5c10442a1.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:36:50.887000-05:00",
+        "CompletionDateTime": "2026-11-12 15:39:24.569000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 153467,
+        "DataScannedInBytes": 16320759909,
+        "TotalExecutionTimeInMillis": 153682,
+        "QueryQueueTimeInMillis": 116,
+        "ServicePreProcessingTimeInMillis": 71,
+        "QueryPlanningTimeInMillis": 850,
+        "ServiceProcessingTimeInMillis": 28,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "2c6ac9c1e795961a6977995d0fbbbb380951111f372163f2f74c32942f15e318"
+    },
+    {
+      "QueryExecutionId": "60b80287-243a-42e6-b32f-a4aabadb2737",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=24222542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/60b80287-243a-42e6-b32f-a4aabadb2737.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:34:15.827000-05:00",
+        "CompletionDateTime": "2026-11-12 15:36:49.900000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 153896,
+        "DataScannedInBytes": 16320759909,
+        "TotalExecutionTimeInMillis": 154073,
+        "QueryQueueTimeInMillis": 69,
+        "ServicePreProcessingTimeInMillis": 56,
+        "QueryPlanningTimeInMillis": 821,
+        "ServiceProcessingTimeInMillis": 52,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "2c6ac9c1e795961a6977995d0fbbbb380951111f372163f2f74c32942f15e318"
+    },
+    {
+      "QueryExecutionId": "a5aa8cff-8fbb-4254-92d6-2ceec9626b81",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=24222542\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=24222542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/a5aa8cff-8fbb-4254-92d6-2ceec9626b81.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:31:37.719000-05:00",
+        "CompletionDateTime": "2026-11-12 15:34:14.403000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 156505,
+        "DataScannedInBytes": 16320759909,
+        "TotalExecutionTimeInMillis": 156684,
+        "QueryQueueTimeInMillis": 95,
+        "ServicePreProcessingTimeInMillis": 56,
+        "QueryPlanningTimeInMillis": 1183,
+        "ServiceProcessingTimeInMillis": 28,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "54cd3bb84f7ade39ddd7bf19b9a68819265fa50aeea4501f268dc351b512c01f"
+    },
+    {
+      "QueryExecutionId": "8cc3b6ff-23f3-40c0-8926-66727652c42a",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=24222542\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=24222542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/8cc3b6ff-23f3-40c0-8926-66727652c42a.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:28:55.914000-05:00",
+        "CompletionDateTime": "2026-11-12 15:31:36.765000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 160642,
+        "DataScannedInBytes": 16320759909,
+        "TotalExecutionTimeInMillis": 160851,
+        "QueryQueueTimeInMillis": 94,
+        "ServicePreProcessingTimeInMillis": 53,
+        "QueryPlanningTimeInMillis": 1156,
+        "ServiceProcessingTimeInMillis": 62,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "54cd3bb84f7ade39ddd7bf19b9a68819265fa50aeea4501f268dc351b512c01f"
+    },
+    {
+      "QueryExecutionId": "0551133c-99cf-4e0f-b262-1e9119fb5aa5",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=24222542\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=24222542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/0551133c-99cf-4e0f-b262-1e9119fb5aa5.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:26:06.914000-05:00",
+        "CompletionDateTime": "2026-11-12 15:28:51.977000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 164892,
+        "DataScannedInBytes": 16320759909,
+        "TotalExecutionTimeInMillis": 165063,
+        "QueryQueueTimeInMillis": 62,
+        "ServicePreProcessingTimeInMillis": 77,
+        "QueryPlanningTimeInMillis": 1016,
+        "ServiceProcessingTimeInMillis": 32,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "54cd3bb84f7ade39ddd7bf19b9a68819265fa50aeea4501f268dc351b512c01f"
+    },
+    {
+      "QueryExecutionId": "a36f74a7-8802-4942-8df8-e81e53071350",
+      "Query": "SELECT citing_year, cited_work_id, count(*) AS citations\n            FROM citation_edge GROUP BY citing_year, cited_work_id\n            ORDER BY citations DESC, cited_work_id, citing_year NULLS LAST LIMIT 1000",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/a36f74a7-8802-4942-8df8-e81e53071350.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:23:14.233000-05:00",
+        "CompletionDateTime": "2026-11-12 15:26:04.891000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 170466,
+        "DataScannedInBytes": 14769829315,
+        "TotalExecutionTimeInMillis": 170658,
+        "QueryQueueTimeInMillis": 97,
+        "ServicePreProcessingTimeInMillis": 57,
+        "QueryPlanningTimeInMillis": 959,
+        "ServiceProcessingTimeInMillis": 38,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "a3a44d13e8838a441b61b206306db6a6c3417edbe41871d4b28c063428759e81"
+    },
+    {
+      "QueryExecutionId": "d2665a7c-6660-437c-864f-68b956991612",
+      "Query": "SELECT citing_year, cited_work_id, count(*) AS citations\n            FROM citation_edge GROUP BY citing_year, cited_work_id\n            ORDER BY citations DESC, cited_work_id, citing_year NULLS LAST LIMIT 1000",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/d2665a7c-6660-437c-864f-68b956991612.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:20:18.453000-05:00",
+        "CompletionDateTime": "2026-11-12 15:23:13.336000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 174672,
+        "DataScannedInBytes": 14769829315,
+        "TotalExecutionTimeInMillis": 174883,
+        "QueryQueueTimeInMillis": 92,
+        "ServicePreProcessingTimeInMillis": 66,
+        "QueryPlanningTimeInMillis": 986,
+        "ServiceProcessingTimeInMillis": 53,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "a3a44d13e8838a441b61b206306db6a6c3417edbe41871d4b28c063428759e81"
+    },
+    {
+      "QueryExecutionId": "bac5c51a-0ce2-46d6-8734-6ffc6451a151",
+      "Query": "SELECT citing_year, cited_work_id, count(*) AS citations\n            FROM citation_edge GROUP BY citing_year, cited_work_id\n            ORDER BY citations DESC, cited_work_id, citing_year NULLS LAST LIMIT 1000",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/bac5c51a-0ce2-46d6-8734-6ffc6451a151.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:17:19.131000-05:00",
+        "CompletionDateTime": "2026-11-12 15:20:17.973000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 178627,
+        "DataScannedInBytes": 14769829315,
+        "TotalExecutionTimeInMillis": 178842,
+        "QueryQueueTimeInMillis": 102,
+        "ServicePreProcessingTimeInMillis": 63,
+        "QueryPlanningTimeInMillis": 990,
+        "ServiceProcessingTimeInMillis": 50,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "a3a44d13e8838a441b61b206306db6a6c3417edbe41871d4b28c063428759e81"
+    },
+    {
+      "QueryExecutionId": "3952ba17-da8b-4e2e-85d0-c11fc4e25fac",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=51557542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/3952ba17-da8b-4e2e-85d0-c11fc4e25fac.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:14:35.479000-05:00",
+        "CompletionDateTime": "2026-11-12 15:17:17.712000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 162031,
+        "DataScannedInBytes": 16317108371,
+        "TotalExecutionTimeInMillis": 162233,
+        "QueryQueueTimeInMillis": 95,
+        "ServicePreProcessingTimeInMillis": 72,
+        "QueryPlanningTimeInMillis": 874,
+        "ServiceProcessingTimeInMillis": 35,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "73eee955edc442cdd80d524c8c0de6e18f14c1e0a4583f703e0aa95f2992b927"
+    },
+    {
+      "QueryExecutionId": "0f1d8b4d-a847-4db9-88e7-82646635b05e",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=51557542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/0f1d8b4d-a847-4db9-88e7-82646635b05e.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:11:50.112000-05:00",
+        "CompletionDateTime": "2026-11-12 15:14:34.977000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 164662,
+        "DataScannedInBytes": 16317108371,
+        "TotalExecutionTimeInMillis": 164865,
+        "QueryQueueTimeInMillis": 99,
+        "ServicePreProcessingTimeInMillis": 72,
+        "QueryPlanningTimeInMillis": 1201,
+        "ServiceProcessingTimeInMillis": 32,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "73eee955edc442cdd80d524c8c0de6e18f14c1e0a4583f703e0aa95f2992b927"
+    },
+    {
+      "QueryExecutionId": "1fcf8d9a-268f-4633-8a33-65ba6450c375",
+      "Query": "SELECT count(DISTINCT b.cited_work_id) AS second_hop_works\n            FROM citation_edge a JOIN citation_edge b\n            ON a.cited_work_id=b.citing_work_id WHERE a.citing_work_id=51557542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/1fcf8d9a-268f-4633-8a33-65ba6450c375.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:09:05.361000-05:00",
+        "CompletionDateTime": "2026-11-12 15:11:49.310000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 163532,
+        "DataScannedInBytes": 16317108371,
+        "TotalExecutionTimeInMillis": 163949,
+        "QueryQueueTimeInMillis": 99,
+        "ServicePreProcessingTimeInMillis": 230,
+        "QueryPlanningTimeInMillis": 1169,
+        "ServiceProcessingTimeInMillis": 88,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "73eee955edc442cdd80d524c8c0de6e18f14c1e0a4583f703e0aa95f2992b927"
+    },
+    {
+      "QueryExecutionId": "f7508e35-67b7-4899-b75b-695868d24ecd",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=51557542\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=51557542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/f7508e35-67b7-4899-b75b-695868d24ecd.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:06:25.338000-05:00",
+        "CompletionDateTime": "2026-11-12 15:09:04.717000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 159167,
+        "DataScannedInBytes": 16317108371,
+        "TotalExecutionTimeInMillis": 159379,
+        "QueryQueueTimeInMillis": 105,
+        "ServicePreProcessingTimeInMillis": 57,
+        "QueryPlanningTimeInMillis": 949,
+        "ServiceProcessingTimeInMillis": 50,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "9c17e9eac387abe866a13a318c19bc96aa551a40a1be97f5d0f644f6bb1002c0"
+    },
+    {
+      "QueryExecutionId": "b9f46c1d-6843-4155-b897-082c9b142017",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=51557542\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=51557542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/b9f46c1d-6843-4155-b897-082c9b142017.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:02:53.997000-05:00",
+        "CompletionDateTime": "2026-11-12 15:06:24.364000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 153763,
+        "DataScannedInBytes": 16317108371,
+        "TotalExecutionTimeInMillis": 210367,
+        "QueryQueueTimeInMillis": 56521,
+        "ServicePreProcessingTimeInMillis": 57,
+        "QueryPlanningTimeInMillis": 131,
+        "ServiceProcessingTimeInMillis": 26,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "9c17e9eac387abe866a13a318c19bc96aa551a40a1be97f5d0f644f6bb1002c0"
+    },
+    {
+      "QueryExecutionId": "9d6f4126-01f8-4b2c-9944-fbb8fb932c86",
+      "Query": "SELECT 'outgoing' AS direction, cited_work_id AS neighbour_work_id\n            FROM citation_edge WHERE citing_work_id=51557542\n            UNION ALL\n            SELECT 'incoming' AS direction, citing_work_id AS neighbour_work_id\n            FROM citation_edge WHERE cited_work_id=51557542",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/9d6f4126-01f8-4b2c-9944-fbb8fb932c86.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 15:00:19.077000-05:00",
+        "CompletionDateTime": "2026-11-12 15:02:52.559000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 153262,
+        "DataScannedInBytes": 16317108371,
+        "TotalExecutionTimeInMillis": 153482,
+        "QueryQueueTimeInMillis": 99,
+        "ServicePreProcessingTimeInMillis": 84,
+        "QueryPlanningTimeInMillis": 1092,
+        "ServiceProcessingTimeInMillis": 37,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "9c17e9eac387abe866a13a318c19bc96aa551a40a1be97f5d0f644f6bb1002c0"
+    },
+    {
+      "QueryExecutionId": "b0a11771-cb76-4a8c-9dd8-c5ebe704c1d2",
+      "Query": "WITH work_country AS (\n            SELECT DISTINCT wi.work_id, i.country_code\n            FROM work_institution wi JOIN institutions i\n            ON wi.institution_id=i.institution_id\n            WHERE i.country_code IS NOT NULL AND i.country_code != '')\n            SELECT w.publication_year, a.country_code AS country_a,\n            b.country_code AS country_b,\n            count(DISTINCT a.work_id) AS collaborative_works\n            FROM work_country a JOIN work_country b ON a.work_id=b.work_id\n            AND a.country_code < b.country_code\n            JOIN works w ON a.work_id=w.work_id\n            GROUP BY w.publication_year, a.country_code, b.country_code",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/b0a11771-cb76-4a8c-9dd8-c5ebe704c1d2.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:57:48.901000-05:00",
+        "CompletionDateTime": "2026-11-12 15:00:16.368000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 147270,
+        "DataScannedInBytes": 87835904928,
+        "TotalExecutionTimeInMillis": 147467,
+        "QueryQueueTimeInMillis": 101,
+        "ServicePreProcessingTimeInMillis": 56,
+        "QueryPlanningTimeInMillis": 780,
+        "ServiceProcessingTimeInMillis": 40,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "ff0e30a861e7a708e64c6707cdfe1b2a9ea2633d6521cab61943d394a8440348"
+    },
+    {
+      "QueryExecutionId": "f12f601d-4a7c-481a-915b-a1683afe18b9",
+      "Query": "WITH work_country AS (\n            SELECT DISTINCT wi.work_id, i.country_code\n            FROM work_institution wi JOIN institutions i\n            ON wi.institution_id=i.institution_id\n            WHERE i.country_code IS NOT NULL AND i.country_code != '')\n            SELECT w.publication_year, a.country_code AS country_a,\n            b.country_code AS country_b,\n            count(DISTINCT a.work_id) AS collaborative_works\n            FROM work_country a JOIN work_country b ON a.work_id=b.work_id\n            AND a.country_code < b.country_code\n            JOIN works w ON a.work_id=w.work_id\n            GROUP BY w.publication_year, a.country_code, b.country_code",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/f12f601d-4a7c-481a-915b-a1683afe18b9.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:55:20.462000-05:00",
+        "CompletionDateTime": "2026-11-12 14:57:46.022000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 145376,
+        "DataScannedInBytes": 87835904928,
+        "TotalExecutionTimeInMillis": 145560,
+        "QueryQueueTimeInMillis": 96,
+        "ServicePreProcessingTimeInMillis": 49,
+        "QueryPlanningTimeInMillis": 1027,
+        "ServiceProcessingTimeInMillis": 39,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "ff0e30a861e7a708e64c6707cdfe1b2a9ea2633d6521cab61943d394a8440348"
+    },
+    {
+      "QueryExecutionId": "54344a44-3fc0-4fad-8f4c-0e3d090d2f38",
+      "Query": "WITH work_country AS (\n            SELECT DISTINCT wi.work_id, i.country_code\n            FROM work_institution wi JOIN institutions i\n            ON wi.institution_id=i.institution_id\n            WHERE i.country_code IS NOT NULL AND i.country_code != '')\n            SELECT w.publication_year, a.country_code AS country_a,\n            b.country_code AS country_b,\n            count(DISTINCT a.work_id) AS collaborative_works\n            FROM work_country a JOIN work_country b ON a.work_id=b.work_id\n            AND a.country_code < b.country_code\n            JOIN works w ON a.work_id=w.work_id\n            GROUP BY w.publication_year, a.country_code, b.country_code",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/54344a44-3fc0-4fad-8f4c-0e3d090d2f38.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:52:45.135000-05:00",
+        "CompletionDateTime": "2026-11-12 14:55:17.879000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 152517,
+        "DataScannedInBytes": 87835904928,
+        "TotalExecutionTimeInMillis": 152744,
+        "QueryQueueTimeInMillis": 114,
+        "ServicePreProcessingTimeInMillis": 82,
+        "QueryPlanningTimeInMillis": 931,
+        "ServiceProcessingTimeInMillis": 31,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "ff0e30a861e7a708e64c6707cdfe1b2a9ea2633d6521cab61943d394a8440348"
+    },
+    {
+      "QueryExecutionId": "c246b58c-3573-4117-85b5-6d82c9e2e3f3",
+      "Query": "SELECT a.author_id, a.display_name,\n            count(DISTINCT wa.work_id) AS works,\n            sum(w.cited_by_count) AS citations\n            FROM work_author wa JOIN authors a ON wa.author_id=a.author_id\n            JOIN works w ON wa.work_id=w.work_id\n            GROUP BY a.author_id, a.display_name\n            ORDER BY works DESC, a.author_id LIMIT 1000",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/c246b58c-3573-4117-85b5-6d82c9e2e3f3.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:50:03.714000-05:00",
+        "CompletionDateTime": "2026-11-12 14:52:44.556000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 160633,
+        "DataScannedInBytes": 47598778282,
+        "TotalExecutionTimeInMillis": 160842,
+        "QueryQueueTimeInMillis": 98,
+        "ServicePreProcessingTimeInMillis": 66,
+        "QueryPlanningTimeInMillis": 838,
+        "ServiceProcessingTimeInMillis": 45,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "13ebf23d124ba660da4ed928e2eba367424681954ef625ad5706fd5977455e17"
+    },
+    {
+      "QueryExecutionId": "adbfe9b0-757f-4651-ac16-6edd42c3fdb6",
+      "Query": "SELECT a.author_id, a.display_name,\n            count(DISTINCT wa.work_id) AS works,\n            sum(w.cited_by_count) AS citations\n            FROM work_author wa JOIN authors a ON wa.author_id=a.author_id\n            JOIN works w ON wa.work_id=w.work_id\n            GROUP BY a.author_id, a.display_name\n            ORDER BY works DESC, a.author_id LIMIT 1000",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/adbfe9b0-757f-4651-ac16-6edd42c3fdb6.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:47:29.800000-05:00",
+        "CompletionDateTime": "2026-11-12 14:50:03.239000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 153246,
+        "DataScannedInBytes": 47598778282,
+        "TotalExecutionTimeInMillis": 153439,
+        "QueryQueueTimeInMillis": 91,
+        "ServicePreProcessingTimeInMillis": 45,
+        "QueryPlanningTimeInMillis": 699,
+        "ServiceProcessingTimeInMillis": 57,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "13ebf23d124ba660da4ed928e2eba367424681954ef625ad5706fd5977455e17"
+    },
+    {
+      "QueryExecutionId": "7e08044f-deb4-497b-beaa-c90da45ad5da",
+      "Query": "SELECT a.author_id, a.display_name,\n            count(DISTINCT wa.work_id) AS works,\n            sum(w.cited_by_count) AS citations\n            FROM work_author wa JOIN authors a ON wa.author_id=a.author_id\n            JOIN works w ON wa.work_id=w.work_id\n            GROUP BY a.author_id, a.display_name\n            ORDER BY works DESC, a.author_id LIMIT 1000",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/7e08044f-deb4-497b-beaa-c90da45ad5da.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:44:47.139000-05:00",
+        "CompletionDateTime": "2026-11-12 14:47:28.535000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 161225,
+        "DataScannedInBytes": 47598778282,
+        "TotalExecutionTimeInMillis": 161396,
+        "QueryQueueTimeInMillis": 98,
+        "ServicePreProcessingTimeInMillis": 44,
+        "QueryPlanningTimeInMillis": 790,
+        "ServiceProcessingTimeInMillis": 29,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "13ebf23d124ba660da4ed928e2eba367424681954ef625ad5706fd5977455e17"
+    },
+    {
+      "QueryExecutionId": "24985a00-b9ca-46f2-88e9-39a76eb388a4",
+      "Query": "SELECT w.publication_year, t.topic_id, t.display_name,\n            count(DISTINCT w.work_id) AS works,\n            sum(w.cited_by_count) AS citations\n            FROM works w JOIN work_topic wt ON w.work_id=wt.work_id\n            JOIN topics t ON wt.topic_id=t.topic_id\n            GROUP BY w.publication_year, t.topic_id, t.display_name",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/24985a00-b9ca-46f2-88e9-39a76eb388a4.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:41:40.274000-05:00",
+        "CompletionDateTime": "2026-11-12 14:44:19.848000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 159387,
+        "DataScannedInBytes": 8395056705,
+        "TotalExecutionTimeInMillis": 159574,
+        "QueryQueueTimeInMillis": 97,
+        "ServicePreProcessingTimeInMillis": 62,
+        "QueryPlanningTimeInMillis": 1039,
+        "ServiceProcessingTimeInMillis": 28,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "fb4a3d3b5977a63abe37305252dec61c204a329b256cabcae769aafe0cd4e76e"
+    },
+    {
+      "QueryExecutionId": "2ec5eada-6a6c-4089-aa43-aac5b49de388",
+      "Query": "SELECT w.publication_year, t.topic_id, t.display_name,\n            count(DISTINCT w.work_id) AS works,\n            sum(w.cited_by_count) AS citations\n            FROM works w JOIN work_topic wt ON w.work_id=wt.work_id\n            JOIN topics t ON wt.topic_id=t.topic_id\n            GROUP BY w.publication_year, t.topic_id, t.display_name",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/2ec5eada-6a6c-4089-aa43-aac5b49de388.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:38:46.341000-05:00",
+        "CompletionDateTime": "2026-11-12 14:41:21.622000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 155159,
+        "DataScannedInBytes": 8395056705,
+        "TotalExecutionTimeInMillis": 155281,
+        "QueryQueueTimeInMillis": 61,
+        "ServicePreProcessingTimeInMillis": 36,
+        "QueryPlanningTimeInMillis": 1197,
+        "ServiceProcessingTimeInMillis": 25,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "fb4a3d3b5977a63abe37305252dec61c204a329b256cabcae769aafe0cd4e76e"
+    },
+    {
+      "QueryExecutionId": "cbfe09ef-33cb-48a6-bcda-7fca198c22e8",
+      "Query": "SELECT w.publication_year, t.topic_id, t.display_name,\n            count(DISTINCT w.work_id) AS works,\n            sum(w.cited_by_count) AS citations\n            FROM works w JOIN work_topic wt ON w.work_id=wt.work_id\n            JOIN topics t ON wt.topic_id=t.topic_id\n            GROUP BY w.publication_year, t.topic_id, t.display_name",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/cbfe09ef-33cb-48a6-bcda-7fca198c22e8.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:35:47.122000-05:00",
+        "CompletionDateTime": "2026-11-12 14:38:25.641000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 158281,
+        "DataScannedInBytes": 8395056705,
+        "TotalExecutionTimeInMillis": 158519,
+        "QueryQueueTimeInMillis": 116,
+        "ServicePreProcessingTimeInMillis": 96,
+        "QueryPlanningTimeInMillis": 1114,
+        "ServiceProcessingTimeInMillis": 26,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "fb4a3d3b5977a63abe37305252dec61c204a329b256cabcae769aafe0cd4e76e"
+    },
+    {
+      "QueryExecutionId": "216ae7fa-dcc2-4095-a663-77efff2b0d00",
+      "Query": "SELECT publication_year, work_type, is_oa, is_xpac,\n            count(*) AS works FROM works\n            GROUP BY publication_year, work_type, is_oa, is_xpac",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/216ae7fa-dcc2-4095-a663-77efff2b0d00.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:33:07.485000-05:00",
+        "CompletionDateTime": "2026-11-12 14:35:45.651000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 157966,
+        "DataScannedInBytes": 2008078953,
+        "TotalExecutionTimeInMillis": 158166,
+        "QueryQueueTimeInMillis": 95,
+        "ServicePreProcessingTimeInMillis": 78,
+        "QueryPlanningTimeInMillis": 1030,
+        "ServiceProcessingTimeInMillis": 27,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "4b88e25a557104e528c55470c82d00b16be064a1350085d680c310ce04554e62"
+    },
+    {
+      "QueryExecutionId": "58128c37-06bc-4b9b-a734-9fb098cdc14f",
+      "Query": "SELECT publication_year, work_type, is_oa, is_xpac,\n            count(*) AS works FROM works\n            GROUP BY publication_year, work_type, is_oa, is_xpac",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/58128c37-06bc-4b9b-a734-9fb098cdc14f.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:30:24.559000-05:00",
+        "CompletionDateTime": "2026-11-12 14:33:06.801000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 161982,
+        "DataScannedInBytes": 2008078953,
+        "TotalExecutionTimeInMillis": 162242,
+        "QueryQueueTimeInMillis": 111,
+        "ServicePreProcessingTimeInMillis": 71,
+        "QueryPlanningTimeInMillis": 1160,
+        "ServiceProcessingTimeInMillis": 78,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "4b88e25a557104e528c55470c82d00b16be064a1350085d680c310ce04554e62"
+    },
+    {
+      "QueryExecutionId": "41923bcd-ca6f-4a8c-aba4-ccc44eefebcd",
+      "Query": "SELECT publication_year, work_type, is_oa, is_xpac,\n            count(*) AS works FROM works\n            GROUP BY publication_year, work_type, is_oa, is_xpac",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/41923bcd-ca6f-4a8c-aba4-ccc44eefebcd.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:36.892000-05:00",
+        "CompletionDateTime": "2026-11-12 14:30:22.966000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 165859,
+        "DataScannedInBytes": 2008078953,
+        "TotalExecutionTimeInMillis": 166074,
+        "QueryQueueTimeInMillis": 100,
+        "ServicePreProcessingTimeInMillis": 67,
+        "QueryPlanningTimeInMillis": 1022,
+        "ServiceProcessingTimeInMillis": 48,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "4b88e25a557104e528c55470c82d00b16be064a1350085d680c310ce04554e62"
+    },
+    {
+      "QueryExecutionId": "a18af9b0-3604-4185-a2b6-bc990fde8771",
+      "Query": "CREATE VIEW citation_edge AS SELECT try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS citing_work_id,\n            try_cast(regexp_extract(ref, '[A-Z]([0-9]+)$', 1) AS bigint) AS cited_work_id, min(CASE WHEN w.publication_year BETWEEN 0 AND 65535 THEN w.publication_year END) AS citing_year\n            FROM raw_works w CROSS JOIN UNNEST(w.referenced_works) AS u(ref)\n            WHERE try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL AND try_cast(regexp_extract(ref, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL\n            GROUP BY try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint), try_cast(regexp_extract(ref, '[A-Z]([0-9]+)$', 1) AS bigint)",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/a18af9b0-3604-4185-a2b6-bc990fde8771.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:35.675000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:36.390000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 581,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 715,
+        "QueryQueueTimeInMillis": 91,
+        "ServicePreProcessingTimeInMillis": 18,
+        "ServiceProcessingTimeInMillis": 25,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "ee08a65adaa51836e8e982969243a38785c37f542fe2953f0d60ad6b24b740d9"
+    },
+    {
+      "QueryExecutionId": "8ba8d1a5-ff4c-48bb-a081-1430b173f837",
+      "Query": "CREATE VIEW work_topic AS SELECT try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS work_id, try_cast(regexp_extract(t.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS topic_id\n            FROM raw_works w CROSS JOIN UNNEST(w.topics) AS u(t)\n            WHERE try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL AND try_cast(regexp_extract(t.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL\n            AND t.score IS NOT NULL",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/8ba8d1a5-ff4c-48bb-a081-1430b173f837.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:34.401000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:34.909000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 427,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 508,
+        "QueryQueueTimeInMillis": 38,
+        "ServicePreProcessingTimeInMillis": 18,
+        "ServiceProcessingTimeInMillis": 25,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "5869fba22b59427cebbcd6b6b87d0810781d0cec866808e9420b647ceb7e3e24"
+    },
+    {
+      "QueryExecutionId": "f1018ba1-ac23-4e50-8031-ea0f2d7c1d42",
+      "Query": "CREATE VIEW topics AS SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS bigint) AS topic_id, display_name\n            FROM raw_topics WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL\n            AND try_cast(regexp_extract(subfield.id, '/([0-9]+)$', 1) AS bigint) IS NOT NULL\n            AND try_cast(regexp_extract(field.id, '/([0-9]+)$', 1) AS bigint) IS NOT NULL\n            AND try_cast(regexp_extract(domain.id, '/([0-9]+)$', 1) AS bigint) IS NOT NULL",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/f1018ba1-ac23-4e50-8031-ea0f2d7c1d42.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:33.173000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:33.740000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 442,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 567,
+        "QueryQueueTimeInMillis": 79,
+        "ServicePreProcessingTimeInMillis": 17,
+        "ServiceProcessingTimeInMillis": 29,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "08d010c0720a6e8a01e7f566959f0110b0a257206b61dc7d3e2cb752782b87fe"
+    },
+    {
+      "QueryExecutionId": "7921ce97-c456-4134-92be-b742eddad890",
+      "Query": "CREATE VIEW institutions AS SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS bigint) AS institution_id,\n            nullif(country_code, '') AS country_code\n            FROM raw_institutions WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/7921ce97-c456-4134-92be-b742eddad890.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:31.816000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:32.615000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 678,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 799,
+        "QueryQueueTimeInMillis": 75,
+        "ServicePreProcessingTimeInMillis": 18,
+        "ServiceProcessingTimeInMillis": 28,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "d6d0e064f6e1984c797229911a0b83af83a805ddd638a82ae25505bbb0b0ab9d"
+    },
+    {
+      "QueryExecutionId": "afe69917-8c71-434d-99c6-4c1ad832b7a4",
+      "Query": "CREATE VIEW work_institution AS SELECT DISTINCT try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS work_id,\n            try_cast(regexp_extract(a.author.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS author_id, try_cast(regexp_extract(i.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS institution_id\n            FROM raw_works w CROSS JOIN UNNEST(w.authorships) AS u(a)\n            CROSS JOIN UNNEST(a.institutions) AS v(i)\n            WHERE try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL AND try_cast(regexp_extract(a.author.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL\n            AND try_cast(regexp_extract(i.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/afe69917-8c71-434d-99c6-4c1ad832b7a4.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:30.563000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:31.245000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 565,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 682,
+        "QueryQueueTimeInMillis": 75,
+        "ServicePreProcessingTimeInMillis": 20,
+        "ServiceProcessingTimeInMillis": 22,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "2f4f6c90f36f056227bd5f32b459519ed060eab0d3995648dfb415d08e384ed7"
+    },
+    {
+      "QueryExecutionId": "2774989e-1eb0-4e70-923f-d495ea0dc8d1",
+      "Query": "CREATE VIEW work_author AS SELECT try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS work_id, try_cast(regexp_extract(a.author.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS author_id\n            FROM raw_works w CROSS JOIN UNNEST(w.authorships) AS u(a)\n            WHERE try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL AND try_cast(regexp_extract(a.author.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/2774989e-1eb0-4e70-923f-d495ea0dc8d1.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:29.321000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:30.018000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 574,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 697,
+        "QueryQueueTimeInMillis": 78,
+        "ServicePreProcessingTimeInMillis": 20,
+        "ServiceProcessingTimeInMillis": 25,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "9c448274d80aafe662057fe524737e3b250cb9fe26e8d022136dc68215c42279"
+    },
+    {
+      "QueryExecutionId": "79af62d4-7518-4a5a-8f38-edd6458e68fd",
+      "Query": "CREATE VIEW authors AS SELECT try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS bigint) AS author_id, display_name\n            FROM raw_authors WHERE try_cast(regexp_extract(id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/79af62d4-7518-4a5a-8f38-edd6458e68fd.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:28.103000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:28.707000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 486,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 604,
+        "QueryQueueTimeInMillis": 73,
+        "ServicePreProcessingTimeInMillis": 14,
+        "ServiceProcessingTimeInMillis": 31,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "c478fdf2a1bb51df92a88eb234138e0072674a474e321ce4184c6bd59b62fed2"
+    },
+    {
+      "QueryExecutionId": "ed94c10d-12bf-412d-b83d-d983811d1132",
+      "Query": "CREATE VIEW works AS SELECT try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) AS work_id, CASE WHEN w.publication_year BETWEEN 0 AND 65535 THEN w.publication_year END AS publication_year,\n            w.type AS work_type, coalesce(w.open_access.is_oa, false) AS is_oa,\n            coalesce(w.is_xpac, false) AS is_xpac,\n            cast(w.cited_by_count AS bigint) AS cited_by_count\n            FROM raw_works w WHERE try_cast(regexp_extract(w.id, '[A-Z]([0-9]+)$', 1) AS bigint) IS NOT NULL",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/ed94c10d-12bf-412d-b83d-d983811d1132.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:26.887000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:27.521000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 551,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 634,
+        "QueryQueueTimeInMillis": 41,
+        "ServicePreProcessingTimeInMillis": 23,
+        "ServiceProcessingTimeInMillis": 19,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_VIEW",
+      "exact_query_sha256": "cf68e131870d11cdbfcb0ea8af329685bfc537853938e8b3df5e962c23701e8e"
+    },
+    {
+      "QueryExecutionId": "418678b2-7db4-4fec-ab84-f51f52a1d2f5",
+      "Query": "SELECT \"$path\" AS path,count(*) AS n_rows FROM raw_topics GROUP BY \"$path\"",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/418678b2-7db4-4fec-ab84-f51f52a1d2f5.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:24.409000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:26.041000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 1428,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 1632,
+        "QueryQueueTimeInMillis": 89,
+        "ServicePreProcessingTimeInMillis": 89,
+        "QueryPlanningTimeInMillis": 738,
+        "ServiceProcessingTimeInMillis": 26,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "fa07cc8588bf533a8dc35d65b68802b961bfc0a9d6637aa614804ab2999329e0"
+    },
+    {
+      "QueryExecutionId": "acb4307f-43a0-44ef-879f-7e6c91fce6e3",
+      "Query": "CREATE EXTERNAL TABLE raw_topics (`id` string,\n`display_name` string,\n`subfield` struct<`id`:string,`display_name`:string>,\n`field` struct<`id`:string,`display_name`:string>,\n`domain` struct<`id`:string,`display_name`:string>)\nROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'\nWITH SERDEPROPERTIES ('parquet.column.index.access'='false')\nSTORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'\nOUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'\nLOCATION 's3://oa200-20261112-e504ff-502425560524/manifests/topics/'",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/acb4307f-43a0-44ef-879f-7e6c91fce6e3.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:23.168000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:23.716000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 422,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 548,
+        "QueryQueueTimeInMillis": 83,
+        "ServicePreProcessingTimeInMillis": 19,
+        "ServiceProcessingTimeInMillis": 24,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_TABLE",
+      "exact_query_sha256": "f6ac5ec73c96b05f3e3f3300190d9055108f9b88182f36427197551c60c0bcdd"
+    },
+    {
+      "QueryExecutionId": "2b7fb778-1855-4105-bf62-48e5203a6c22",
+      "Query": "SELECT \"$path\" AS path,count(*) AS n_rows FROM raw_sources GROUP BY \"$path\"",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/2b7fb778-1855-4105-bf62-48e5203a6c22.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:14.128000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:22.144000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 7852,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 8016,
+        "QueryQueueTimeInMillis": 75,
+        "ServicePreProcessingTimeInMillis": 54,
+        "QueryPlanningTimeInMillis": 5335,
+        "ServiceProcessingTimeInMillis": 35,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "806a56d2c877be777dd40b301752a601ca141fb346337ed0dbced12f9637c43a"
+    },
+    {
+      "QueryExecutionId": "fe18f8f8-96e7-43c5-b22f-2f38f96ffcfa",
+      "Query": "CREATE EXTERNAL TABLE raw_sources (`id` string,\n`display_name` string,\n`issn_l` string,\n`type` string)\nROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'\nWITH SERDEPROPERTIES ('parquet.column.index.access'='false')\nSTORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'\nOUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'\nLOCATION 's3://oa200-20261112-e504ff-502425560524/manifests/sources/'",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/fe18f8f8-96e7-43c5-b22f-2f38f96ffcfa.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:12.904000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:13.415000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 394,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 511,
+        "QueryQueueTimeInMillis": 79,
+        "ServicePreProcessingTimeInMillis": 18,
+        "ServiceProcessingTimeInMillis": 20,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_TABLE",
+      "exact_query_sha256": "fe8ff6f396939c6054580b801fe3beb0774b1a2caab0c75b67f6b83ff01a0066"
+    },
+    {
+      "QueryExecutionId": "406df9c9-52e6-4c5f-b9d4-21dd042d1518",
+      "Query": "SELECT \"$path\" AS path,count(*) AS n_rows FROM raw_institutions GROUP BY \"$path\"",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/406df9c9-52e6-4c5f-b9d4-21dd042d1518.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:04.834000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:11.534000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 6508,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 6700,
+        "QueryQueueTimeInMillis": 89,
+        "ServicePreProcessingTimeInMillis": 70,
+        "QueryPlanningTimeInMillis": 5280,
+        "ServiceProcessingTimeInMillis": 33,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "76fe943a9f3196e5d2b49552ab3dd16cf3989f778cbdf72070cd164160758367"
+    },
+    {
+      "QueryExecutionId": "4ef862c3-5408-4d83-9ff5-ec1edf58c52b",
+      "Query": "CREATE EXTERNAL TABLE raw_institutions (`id` string,\n`display_name` string,\n`country_code` string,\n`type` string)\nROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'\nWITH SERDEPROPERTIES ('parquet.column.index.access'='false')\nSTORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'\nOUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'\nLOCATION 's3://oa200-20261112-e504ff-502425560524/manifests/institutions/'",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/4ef862c3-5408-4d83-9ff5-ec1edf58c52b.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:27:03.584000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:04.093000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 394,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 509,
+        "QueryQueueTimeInMillis": 77,
+        "ServicePreProcessingTimeInMillis": 17,
+        "ServiceProcessingTimeInMillis": 21,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_TABLE",
+      "exact_query_sha256": "aec6d09bb34c9937d39777cca21120d3866587f3c9e5a21e0679e3eef9fd6589"
+    },
+    {
+      "QueryExecutionId": "802ef3d5-a130-4989-a801-1e058ed70db6",
+      "Query": "SELECT \"$path\" AS path,count(*) AS n_rows FROM raw_works GROUP BY \"$path\"",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/802ef3d5-a130-4989-a801-1e058ed70db6.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:24:12.402000-05:00",
+        "CompletionDateTime": "2026-11-12 14:27:02.452000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 169857,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 170050,
+        "QueryQueueTimeInMillis": 88,
+        "ServicePreProcessingTimeInMillis": 58,
+        "QueryPlanningTimeInMillis": 895,
+        "ServiceProcessingTimeInMillis": 47,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "1135bffe8c67b5e5648bf8ec8c44d98eddbd5f57d10c3486dc8cfee7ccc2a66d"
+    },
+    {
+      "QueryExecutionId": "2863c6fb-5632-450b-8cf4-7a16807bfa56",
+      "Query": "CREATE EXTERNAL TABLE raw_works (`id` string,\n`publication_year` int,\n`type` string,\n`authorships` array<struct<`author`:struct<`display_name`:string,`id`:string,`orcid`:string>,`author_position`:string,`affiliations`:array<struct<`institution_ids`:array<string>,`raw_affiliation_string`:string>>,`countries`:array<string>,`raw_author_name`:string,`raw_orcid`:string,`is_corresponding`:boolean,`raw_affiliation_strings`:array<string>,`institutions`:array<struct<`country_code`:string,`display_name`:string,`id`:string,`lineage`:array<string>,`ror`:string,`type`:string>>>>,\n`primary_topic` struct<`id`:string,`display_name`:string,`score`:float,`subfield`:struct<`id`:string,`display_name`:string>,`field`:struct<`id`:string,`display_name`:string>,`domain`:struct<`id`:string,`display_name`:string>>,\n`topics` array<struct<`id`:string,`display_name`:string,`score`:float,`subfield`:struct<`id`:string,`display_name`:string>,`field`:struct<`id`:string,`display_name`:string>,`domain`:struct<`id`:string,`display_name`:string>>>,\n`open_access` struct<`is_oa`:boolean,`oa_status`:string,`any_repository_has_fulltext`:boolean,`oa_url`:string>,\n`is_xpac` boolean,\n`cited_by_count` int,\n`referenced_works` array<string>)\nROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'\nWITH SERDEPROPERTIES ('parquet.column.index.access'='false')\nSTORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'\nOUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'\nLOCATION 's3://oa200-20261112-e504ff-502425560524/manifests/works/'",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/2863c6fb-5632-450b-8cf4-7a16807bfa56.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:24:11.170000-05:00",
+        "CompletionDateTime": "2026-11-12 14:24:11.638000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 399,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 468,
+        "QueryQueueTimeInMillis": 37,
+        "ServicePreProcessingTimeInMillis": 13,
+        "ServiceProcessingTimeInMillis": 19,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_TABLE",
+      "exact_query_sha256": "87dec407ca232f0d4f0be520b6f62a6e9936963207efdaa260835a80199c825c"
+    },
+    {
+      "QueryExecutionId": "836149f7-7edd-4f0d-9180-1ce4b2d357b2",
+      "Query": "SELECT \"$path\" AS path,count(*) AS n_rows FROM raw_authors GROUP BY \"$path\"",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/836149f7-7edd-4f0d-9180-1ce4b2d357b2.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:22:19.559000-05:00",
+        "CompletionDateTime": "2026-11-12 14:24:10.195000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 110411,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 110636,
+        "QueryQueueTimeInMillis": 104,
+        "ServicePreProcessingTimeInMillis": 62,
+        "QueryPlanningTimeInMillis": 5324,
+        "ServiceProcessingTimeInMillis": 59,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "06a2c38dc1817a2aeee1b1988fc5bd292bec383c804d76f9b05d5de950a36a22"
+    },
+    {
+      "QueryExecutionId": "0e3f813e-4f4e-4690-9a6a-1f7fc61204e2",
+      "Query": "CREATE EXTERNAL TABLE raw_authors (`id` string,\n`display_name` string)\nROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'\nWITH SERDEPROPERTIES ('parquet.column.index.access'='false')\nSTORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'\nOUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'\nLOCATION 's3://oa200-20261112-e504ff-502425560524/manifests/authors/'",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/0e3f813e-4f4e-4690-9a6a-1f7fc61204e2.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:22:18.329000-05:00",
+        "CompletionDateTime": "2026-11-12 14:22:18.870000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 462,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 541,
+        "QueryQueueTimeInMillis": 39,
+        "ServicePreProcessingTimeInMillis": 19,
+        "ServiceProcessingTimeInMillis": 21,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_TABLE",
+      "exact_query_sha256": "33e97dcc841d9b4344c93f9a4ef54e8a0477dc1db865d83b052ee0e0119df721"
+    },
+    {
+      "QueryExecutionId": "78dd0c80-3f3a-43e0-8459-e2153e424258",
+      "Query": "SELECT CAST(NULL AS varchar) AS n,'' AS e,true AS b,CAST('9007199254740993' AS bigint) AS i,concat('a',chr(10),'b\"c') AS s,'null' AS literal",
+      "StatementType": "DML",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/78dd0c80-3f3a-43e0-8459-e2153e424258.csv",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {
+        "Database": "oa200_20261112_e504ff_qa",
+        "Catalog": "awsdatacatalog"
+      },
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:22:16.585000-05:00",
+        "CompletionDateTime": "2026-11-12 14:22:17.047000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 233,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 462,
+        "QueryQueueTimeInMillis": 104,
+        "ServicePreProcessingTimeInMillis": 96,
+        "QueryPlanningTimeInMillis": 17,
+        "ServiceProcessingTimeInMillis": 29,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "SELECT",
+      "exact_query_sha256": "dc242c1878761b5c206bd5eab0fda7f75013df03ef907b0c5b984d587ea928ad"
+    },
+    {
+      "QueryExecutionId": "3576030c-1ed3-495c-9033-e4c6d5c06d9c",
+      "Query": "CREATE DATABASE oa200_20261112_e504ff_qa",
+      "StatementType": "DDL",
+      "ResultConfiguration": {
+        "OutputLocation": "s3://oa200-20261112-e504ff-502425560524/athena/3576030c-1ed3-495c-9033-e4c6d5c06d9c.txt",
+        "EncryptionConfiguration": {
+          "EncryptionOption": "SSE_S3"
+        },
+        "ExpectedBucketOwner": "502425560524"
+      },
+      "ResultReuseConfiguration": {
+        "ResultReuseByAgeConfiguration": {
+          "Enabled": false
+        }
+      },
+      "QueryExecutionContext": {},
+      "Status": {
+        "State": "SUCCEEDED",
+        "SubmissionDateTime": "2026-11-12 14:22:15.355000-05:00",
+        "CompletionDateTime": "2026-11-12 14:22:15.903000-05:00"
+      },
+      "Statistics": {
+        "EngineExecutionTimeInMillis": 425,
+        "DataScannedInBytes": 0,
+        "TotalExecutionTimeInMillis": 548,
+        "QueryQueueTimeInMillis": 76,
+        "ServicePreProcessingTimeInMillis": 21,
+        "ServiceProcessingTimeInMillis": 26,
+        "ResultReuseInformation": {
+          "ReusedPreviousResult": false
+        }
+      },
+      "WorkGroup": "oa200-20261112-e504ff-athena",
+      "EngineVersion": {
+        "SelectedEngineVersion": "Athena engine version 3",
+        "EffectiveEngineVersion": "Athena engine version 3"
+      },
+      "SubstatementType": "CREATE_DATABASE",
+      "exact_query_sha256": "d0822dcafe9ecc29edf335f3dac3fbe093f8912b9dcbfc008ec7dd08262456a9"
+    }
+  ]
+}
