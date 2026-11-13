@@ -1,0 +1,5 @@
+{
+  "received_body_bytes": 64058,
+  "nettop_after_connections_closed": ",bytes_in,bytes_out,\npython3.12.24218,69797,1033,\n",
+  "scope": "Observed only after unsigned client connections were closed; tests whether end snapshot includes all prior traffic."
+}

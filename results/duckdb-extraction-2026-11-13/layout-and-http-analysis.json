@@ -1,0 +1,55 @@
+{
+  "full_http_get_payload_bytes": 494008109,
+  "full_http_get_requests": 453,
+  "unique_requested_source_bytes": 390189183,
+  "overlapping_or_repeated_range_bytes": 103818926,
+  "byte_ranges_union": [
+    [
+      4,
+      390189186
+    ]
+  ],
+  "exact_duplicate_range_count": 0,
+  "source_bytes": 390189187,
+  "source_rows": 400000,
+  "selected_2018_rows": 17644,
+  "selected_row_fraction": 0.04411,
+  "source_top_level_columns": 51,
+  "source_physical_columns": 200,
+  "footer_and_trailer_bytes": 151473,
+  "row_groups": [
+    {
+      "rows": 118740,
+      "publication_year_min": 1590,
+      "publication_year_max": 2026,
+      "id_year_column_compressed_bytes": 1214729,
+      "all_column_compressed_bytes": 116391259,
+      "has_any_column_page_index": true
+    },
+    {
+      "rows": 117640,
+      "publication_year_min": 1462,
+      "publication_year_max": 2026,
+      "id_year_column_compressed_bytes": 1203362,
+      "all_column_compressed_bytes": 114648158,
+      "has_any_column_page_index": true
+    },
+    {
+      "rows": 118200,
+      "publication_year_min": 1513,
+      "publication_year_max": 2025,
+      "id_year_column_compressed_bytes": 1205602,
+      "all_column_compressed_bytes": 114454295,
+      "has_any_column_page_index": true
+    },
+    {
+      "rows": 45420,
+      "publication_year_min": 1400,
+      "publication_year_max": 2025,
+      "id_year_column_compressed_bytes": 465367,
+      "all_column_compressed_bytes": 44250894,
+      "has_any_column_page_index": true
+    }
+  ],
+  "interpretation": "Row-group retained compressed bytes describe this layout, not a universal lower bound: page-level filtering or other readers may behave differently. Payload sums include overlaps, exclude protocol overhead, and require network cross-check."
+}

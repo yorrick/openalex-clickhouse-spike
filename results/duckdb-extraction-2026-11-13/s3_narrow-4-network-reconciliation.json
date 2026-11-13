@@ -1,0 +1,31 @@
+{
+  "secret_selection": [
+    [
+      "openalex_anonymous"
+    ]
+  ],
+  "configured_secret_metadata": [
+    [
+      "openalex_anonymous",
+      "config",
+      false
+    ]
+  ],
+  "after": {
+    "bytes_in": 4418077,
+    "bytes_out": 17479,
+    "raw_csv": ",bytes_in,bytes_out,\npython3.12.7898,4418077,17479,\n",
+    "matched_process": true
+  },
+  "before": {
+    "bytes_in": 0,
+    "bytes_out": 0,
+    "raw_csv": ",bytes_in,bytes_out,\n",
+    "matched_process": false
+  },
+  "os_bytes_received": 4418077,
+  "successful_get_payload_bytes": 4351204,
+  "os_bytes_minus_payload": 66873,
+  "os_to_payload_ratio": 1.0153688496333428,
+  "scope": "Dedicated fresh process, nettop TCP/UDP per-process cumulative counters before S3 and before connection close; OS count includes protocol overhead, unlike HTTP body Content-Length sum."
+}

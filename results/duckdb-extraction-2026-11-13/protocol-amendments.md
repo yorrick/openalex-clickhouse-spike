@@ -1,0 +1,26 @@
+# Protocol amendments and limits
+
+The initial plan review was not PASS. Before the main result is considered complete, findings are adjudicated below and the measured evidence is reviewed again.
+
+The executed harness already uses Parquet explicitly, independently checks all exported row values against a raw PyArrow reader, hashes a sorted list of per-row digests preserving duplicates, uses RUSAGE_SELF in each fresh process (macOS bytes), configures8GB DuckDB memory with a separate12GiB parent RSS watchdog, and uses the Python API (no .duckdbrc). AWS environment/config paths and stored secrets are isolated in parent and children, with unsigned boto3 and explicit empty DuckDB config. The matched anonymous secret was witnessed in an extra observation. No credentials are used.
+
+The original400000-row sample has17644matching2018records. Offline layout analysis records allfourrowgroups containing2018,51top-level fields,200physical leaves,Snappy compression, column-chunk sizes and page-index presence. Row-group retained bytes are not a universal lower bound for all readers: page pruning and reader behavior can differ. The original <=10% narrow and <=25% full payload criteria were declared before these values were seen.
+
+Local COPY runs use the same SQL options/thread/memory budget and three repeats, but their file is likely OS-cache resident after download. Single full GetObject baseline is only one observation and includes streaming SHA256 plus fsync; it is not a repeated bandwidth comparison. Complete output QA is outside the extraction timing.
+
+The initial GET payload metric sums successful HTTP response Content-Length, preserving overlapping ranges, cross-checked against DuckDB's I/O metric. A one-shot post-query nettop counter was inadequate for the long full-record run. A separate continuous per-process observation from before query start measured495856504receivedbytes versus494008109HTTPpayloadbytes, consistent with protocol overhead. Per-flow1s peaks alone miss some short flows; no exact wire-byte claim is made. Extra instrumentation observations are excluded from the primary three-run medians. This resolves the proposed counter ambiguity with measured evidence rather than assuming promised bytes were delivered.
+
+The first12cases had an8GB database cap and12GiB process watchdog, with no explicit temp-space cap; recorded peak spill was zero. Additional instrumentation/follow-up runs set a4GB temp-space cap. CPU comes from process usage around COPY, not the profiler's operator timing (which can include waiting). Logs and output dumps are outside the query timer.
+
+After observing overlap, a separate follow-up enables the DEFAULT external-file cache inside each fresh process. Disabling it was unnecessary to prevent cross-run cache reuse and can distort typical remote behavior. Original cache-disabled results remain intact. The original self-imposed3GiB transfer guard is raised to5GiB solely for these three narrow/full default-cache repetitions; user imposed no byte limit. No new cloud services or authentication are introduced. New test criterion: default-cache full-record reads <=1.02times object bytes, with exact output values; no assumed runtime improvement.
+
+The user subsequently requested an API comparison. This exploratory arm retrieves the same17644knownIDs anonymously in100-ID batches, four pooled connections and a0.21s request-start spacing (about4.76requests/s). Three repeats consume0.0531USD of the anonymous FREE allowance, not paid credits; known-ID discovery is excluded. API results are live JSONL, not the same snapshot or Parquet schema:15705rows,15701distinctIDs,15232exactrequestedIDmatches,469otherreturnedIDs,2412originalIDsabsent and4duplicate rows. No equality of full API records to snapshot records is claimed. Three individually sampled absent IDs returned404; causes for the whole missing set are not established.
+
+The shard-redistribution idea is a potential follow-up, not an implemented service. No800GB download,full2018export,hosting,concurrency test orDuckDB-versus-ClickHouse analytical benchmark is authorized by this protocol or claimed as completed.
+
+
+## Final review clarifications
+
+Primary cache arms were sequential, not interleaved; network throughput drift prevents attributing the entire wall-time change to caching. The byte reduction is corroborated by range overlap. The fourth narrow/full network observations overlapped each other and are excluded from medians. API start spacing imposes a 36.96 s floor before the last response; this was not a maximum-throughput test. The 5 GiB follow-up transfer guard was checked after the fact rather than enforced live by default_cache_variant.py. The post-run total was 4,063,697,670 bytes, within that guard. Nested population checks were also performed after the main runs and confirmed 15,595 nonempty authorship records. These deviations affect interpretation and procedure, not the recorded values.
+
+HTTP header values are redacted by DuckDB, while header names remain available. Absence of signing-related header names across 3,702 requests, isolated empty credential paths, explicit empty-key config and runtime secret selection jointly support anonymous access. ETag/version/size and the raw SHA-256 were verified again after all phases. No universal page-pruning lower bound is claimed.

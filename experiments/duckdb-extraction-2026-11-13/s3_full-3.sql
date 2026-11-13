@@ -1,0 +1,1 @@
+COPY (SELECT * FROM read_parquet('s3://openalex/data/parquet/works/updated_date=2025-11-06/part_0004.parquet',hive_partitioning=false) WHERE publication_year=2018) TO '/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/outputs/s3_full-3.parquet' (FORMAT PARQUET,COMPRESSION ZSTD);

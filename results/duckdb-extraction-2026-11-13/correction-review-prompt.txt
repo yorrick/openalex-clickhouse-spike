@@ -1,0 +1,10 @@
+You are a leaf reviewer. Do not invoke another AI, subagents, network or credentials. Read only the local files below. This is a bounded follow-up to your completed final review, not a request to re-audit the dataset. Confirm that required F1 and F2 interpretive corrections and F3/F4/F5/F7 disclosures have been applied faithfully, with no new unsupported claim. F6 was optional and is deliberately omitted because synthetic page sizes are not observed physical page layouts. Report PASS or remaining material wording issues, in at most 200 words.
+
+Original review:
+/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/results-review-output.txt
+Revised report:
+/Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m/docs/duckdb-extraction-benchmark.md
+Revised R&D draft:
+/Users/yorrickjansen/work/yorrick-jansen-solutions-eoy-docs/.claude/worktrees/openalex-duckdb-20261113/suivi-rsde/brouillons/2026-11-13-openalex-duckdb.md
+Revised protocol:
+/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/protocol-amendments.md

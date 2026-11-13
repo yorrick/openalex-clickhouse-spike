@@ -1,0 +1,12 @@
+**PASS.** The required F1 and F2 corrections and the F3, F4, F5 and F7 disclosures are all applied faithfully. I found no new unsupported claim in the material I reviewed.
+
+- **F1 (cache and time):** report `:21`, R&D `:17` and protocol `:24` now attribute the byte saving to less range overlap. They also say the arms weren't interleaved and throughput drifted, so the time difference can't all be credited to caching.
+- **F2 (API pacing):** report `:35`/`:41`, R&D `:21` and protocol `:24` state the 36.96 s floor, that maximum API throughput wasn't measured, and that S3 was bandwidth-bound. The ~5.8 MB/s figure matches 390.959 MB / 66.94 s.
+- **F3 (concurrent extra runs):** report `:23` and protocol `:24` label them as concurrent and excluded from medians.
+- **F4 (auth basis):** report `:47` and protocol `:26` correctly say header values are redacted but names are kept. The anonymity claim rests on header names, isolation and secret selection.
+- **F5 (source consistency):** report `:25` now says "across all phases" and cites `final-qa.json`/`extra-qa.json`.
+- **F7 (process deviations):** the protocol covers the after-the-fact 5 GiB guard check (4,063,697,670 B), the late nested-value check and the non-alternated arms. The R&D tag `repetitions_statistiques` has been replaced.
+
+Two small notes, neither blocking:
+- My original review didn't check the claim that the raw SHA-256 was "rechecked after the follow-ups" (report `:25`, protocol `:26`). Please confirm `final-qa.json` records it.
+- The new R&D tag `reproduction_controlee` is fine for three fresh-process repeats per arm. Just don't present it as a controlled comparison between arms.

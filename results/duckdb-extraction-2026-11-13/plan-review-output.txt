@@ -1,0 +1,40 @@
+**Verdict: not a PASS yet.** The scope and bounds are sound. All six gaps can be fixed inside the plan without redesigning it.
+
+1. **The QA only proves remote matches local, not that the extraction is correct** (`plan.md:9`). DuckDB produces the local reference the same way it produces the remote output. So any loss both sides share passes silently: nested or logical types that get converted, or, if the source is JSONL, fields dropped because the schema was inferred from a sample. That is exactly the "full nested record" claim.
+   - Add one offline check of the reference against the downloaded object using a non-DuckDB reader. Compare the 2018 id multiset and the canonical values, with type-normalization rules written down in advance.
+   - Before the direct runs, require more than zero 2018 rows with populated nested columns. Decide in advance what happens if the shard has none or very few.
+   - The order-insensitive digest must keep duplicate counts. Use sorted per-row digests, not XOR (cancels pairs) or a set (merges them).
+
+2. **The transfer ratios can't be interpreted without format, selectivity and a floor** (`plan.md:5,11`). The plan never states the input format.
+   - Before the direct runs, work out offline from the downloaded copy:
+     - the format and the row-group/page layout
+     - the share of rows and of bytes that are 2018
+     - the id/year floor: bytes of the id and year column chunks plus the footer
+     - the full-record floor: bytes of the row groups (or pages, if indexed) that contain at least one 2018 row, and whether stats can skip any
+   - If 2018 rows sit in every row group, or the source is non-seekable gzip JSONL, about 100% is the floor for any reader, and both targets are settled before any run. The 25% target only means something next to that floor and share.
+   - Report measured bytes against the floor. That separates "the file layout forces whole-object reads" from "DuckDB over-reads", which is the user's actual question.
+
+3. **The counter check doesn't cover DuckDB's partial range reads** (`plan.md:7`). Range/Content-Length sums are bytes promised, not bytes received: they miss retries and failed attempts, and over-count bodies cut off early. A full-object check doesn't validate partial-read accounting, whether it's the baseline client's download or the 64 KB file (DuckDB probably fetches that in one request).
+   - On every direct run, count every request, including HEAD, non-2xx responses and retries.
+   - List repeat fetches of the same byte range separately; they are more likely with the external-file cache off.
+   - Reconcile against an OS per-process byte counter (e.g. `nettop` bytes_in). Preinstall extensions and turn off autoinstall so the process makes no non-S3 traffic.
+   - Apply the 3 GiB cap to whichever count is larger.
+
+4. **Anonymous-access gaps** (`plan.md:5`).
+   - The DuckDB CLI runs `~/.duckdbrc` at startup, which could create secrets or set keys. Skip it with an empty `-init` file, or use the API. Don't open the file to check.
+   - If the baseline download or HEAD checks use botocore or the AWS CLI: unsigned mode skips credentials, but an empty config may still query the instance metadata endpoint for a region. Set the region/endpoint explicitly and `AWS_EC2_METADATA_DISABLED=true`.
+   - Apply the same environment cleanup to the harness itself if it calls S3 directly, not just to child processes.
+   - "No Authorization header in the logs" only counts if the logger is shown to record request headers without redacting them. A positive test with credentials is off-limits, so the main proof has to be the setup itself: `which_secret('s3://openalex/…','s3')` and `duckdb_secrets()` should show only the explicit empty secret.
+
+5. **Limits and resource measurement** (`plan.md:9,11`).
+   - Per-run peak memory and CPU must come from that child's own usage stats (`os.wait4` or `/usr/bin/time -l`). `RUSAGE_CHILDREN` reports the highest peak of any finished child so far, and macOS reports `ru_maxrss` in bytes, not KiB.
+   - The stop conditions need a live watchdog that kills the process, not checks after the fact. Set DuckDB's `memory_limit` below the 8 GiB memory kill line, because the process can use more than `memory_limit`.
+   - Pin `temp_directory` under `~/work/data` and set `max_temp_directory_size`. For an in-memory database the default is `.tmp` in the current directory, which may be the Git checkout.
+   - If the id/year runs also read nearly the whole object, 1 baseline plus 6 direct runs is about 2.54 GiB. That leaves room for only about 1.25 more object reads under 3 GiB. Alternate the two variants so that if the cap stops the study, both have the same number of runs.
+   - If the baseline download takes close to 240 s, full-record timeouts measure bandwidth, not the method.
+
+6. **Fairness** (`plan.md:9,11`).
+   - The local reference COPY is half of the "download, then filter locally" alternative. Run it with the same DuckDB/extension versions, memory and thread limits, read options and COPY options, and measure it. It's offline, so three runs use none of the transfer budget.
+   - Decide in advance how the three runs are judged against the targets (e.g. the worst run must pass).
+
+**Fine as written:** the bounded scope with no extrapolation, the ETag check before and after, `hive_partitioning=false`, no count-only shortcuts, anonymous access only, and local-only outputs.

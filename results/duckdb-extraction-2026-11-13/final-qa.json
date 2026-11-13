@@ -1,0 +1,9 @@
+{
+  "source_version_etag_and_size_unchanged_across_all_phases": true,
+  "recorded_s3_get_payload_bytes_including_repeats": 4063697670,
+  "api_export_body_bytes_three_repeats": 58000610,
+  "recorded_major_reads_within_followup_5GiB_guard": true,
+  "local_links_checked": 15,
+  "raw_source_retained": true,
+  "private_network_addresses_excluded_from_repo": true
+}

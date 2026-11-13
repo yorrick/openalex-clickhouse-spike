@@ -1,0 +1,22 @@
+{
+  "snapshot_manifest": "/Users/yorrickjansen/work/data/openalex-slicing-20261113/works-manifest.json",
+  "manifest_date": "2026-10-14",
+  "file": {
+    "url": "s3://openalex/data/parquet/works/updated_date=2025-11-06/part_0004.parquet",
+    "meta": {
+      "content_length": 390189187,
+      "record_count": 400000
+    }
+  },
+  "target_publication_year": 2018,
+  "methods": [
+    "local_full_download_then_filter",
+    "direct_s3_ids_year",
+    "direct_s3_full_records"
+  ],
+  "repeat_direct": 3,
+  "threads": 8,
+  "memory_limit": "8GB",
+  "timeout_seconds": 240,
+  "whole_study_network_budget_bytes": 3221225472
+}

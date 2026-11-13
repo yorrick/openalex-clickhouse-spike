@@ -1,0 +1,9 @@
+{
+  "extra_observation_value_qa_passed": [
+    "s3_full-4.json",
+    "s3_narrow-4.json",
+    "s3_full-5.json"
+  ],
+  "raw_source_sha256_rechecked": "0b7caaea2c5ea83455ce016be5f6c4f0a1c08438ec91dd21d5e480e587986db8",
+  "null_year_partition_names": []
+}

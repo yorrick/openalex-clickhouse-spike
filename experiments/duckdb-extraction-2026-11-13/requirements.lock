@@ -1,0 +1,5 @@
+duckdb==2.0.0
+pyarrow==26.0.1
+boto3==1.43.126
+psutil==7.2.2
+urllib3==2.8.0

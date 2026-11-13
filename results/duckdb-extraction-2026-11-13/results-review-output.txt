@@ -1,0 +1,58 @@
+**Verdict: PASS on the numbers and on integrity. Two interpretive sentences need fixing before final reporting.** I found no material error in the table values, units, ID coverage, source/version consistency, auth isolation, CPU/RSS/spill or network assertions. Plan-review findings 1, 3, 4, 5 and 6 are resolved by the evidence. Finding 2 (the layout floor) is resolved well enough; see F6.
+
+## Must fix
+
+**F1 — The cache's effect on time is overstated** (`duckdb-extraction-benchmark.md:21`, RD draft `:17`).
+- The byte saving is genuinely caused by the cache: body bytes fell 20.9% (overlap went from 103,818,926 B to 770,048 B, with 453 GETs in both arms).
+- The 28.9% time drop is not. It compares arms that weren't interleaved: cache disabled ran 15:34–15:39, default cache ran 16:10–16:14.
+- Throughput rose during the session: 4.95, 5.24 and 5.69 MB/s in disabled runs 1–3; 5.87 MB/s in disabled run 5 at 16:00; 5.71–5.87 MB/s for default cache.
+- Against the nearest disabled run (`s3_full-5`, 84.13 s, measured even with nettop running), default cache is 20.5% faster. That matches the byte saving.
+- Suggested wording: time fell roughly in proportion to bytes on a bandwidth-bound link; the 94→67 s comparison also includes network drift.
+
+**F2 — The API time is set by the script's own pacing** (`:35-41`, RD `:21`).
+- In every run, wall time = 176 × 0.21 s (36.96 s) plus the last request's latency (0.25–0.34 s). This matches 37.218–37.374 s to within 0.13 s.
+- The slowest request took 0.81 s, under the 0.84 s at which the 4 connections would have limited throughput.
+- So 37.3 s is a chosen constant, not a measure of what the API can do. The S3 full-record times, by contrast, are limited by this host's ~5.8 MB/s link (the single-stream baseline was 3.74 MB/s).
+- The API run also returned only 89% of the records, and as JSONL with no Parquet write.
+- "Shorter" is literally true, but it compares chosen pacing against link bandwidth. Say so.
+
+## Should fix or disclose
+
+- **F3:** The extra runs `s3_narrow-4` and `s3_full-4` ran at the same time (first requests at 15:48:22 and 15:48:21). That explains narrow's 16.35 s and full's 103.2 s. Excluding them from medians is correct, but label them as concurrent in the archive.
+- **F4 (auth basis):** DuckDB 2.0.0's logger replaces the values of Host, If-Match, ETag and x-amz-* headers with `redacted`, but keeps the header names. So the plan-review condition "logger shown to be unredacted" isn't literally met. The anonymity claim still holds, on three grounds:
+  - Across all 3,702 requests, the only request header names are user-agent, host, range and if-match.
+  - There is no authorization, x-amz-date or x-amz-content-sha256 header, so nothing was SigV4-signed.
+  - `which_secret` returned only `openalex_anonymous` (config, non-persistent).
+
+  State that this is the basis (`:47`).
+- **F5:** The report understates source consistency (`:25`, "during the original runs"). Since the report was written (16:26), `source-head-final.json` (16:30:52) shows the same ETag, VersionId and size after all phases. Last-Modified is also identical in all 3,702 logged responses. Change to "across all phases", and cite `final-qa.json`/`extra-qa.json`. The extra-observation QA now passes too.
+- **F6 (optional, strengthens a claim):** Using 2018 row positions as a proxy for page contents, the share of rows sitting in pages that contain at least one 2018 row is 66% for 50-row pages, 78% for 100, 97.8% for 1,000 and 100% for 10,000. Even page-index pruning couldn't approach 25%, so the rejection comes from the layout, not from DuckDB over-reading (apart from the disabled-cache overlap).
+- **F7 (process deviations, results unaffected):**
+  - `default_cache_variant.py` has no live check against the 5 GiB guard. Checked after the fact, the total is 4,063,697,670 B (3.78 GiB); I recomputed it and it matches.
+  - The nested-value population check (`selectivity-qa.json`, 16:27) ran after the main runs rather than before. Its result is positive: 15,595 rows have non-empty authorships.
+  - The original arms weren't alternated, which is the root cause of F1.
+  - The RD tag `repetitions_statistiques` (RD `:9`) overstates three repeats summarised by medians.
+
+## Verified, no issue
+
+- **Table:** every median, byte count, output size and max RSS reproduces exactly. Bytes are identical across the runs of each arm. DuckDB's I/O counter equals the HTTP body sums. All GETs returned 200/206, with Content-Range, Range and Content-Length consistent.
+- **Coverage ratios:** 1.126% (ID/year), 1.00197× (default-cache full) and 1.266× (disabled full). All five disabled-cache full runs cover bytes [4, N−1] with 103,818,926 B of overlap.
+- **Outputs:**
+  - 51 top-level fields and 200 leaves, with identical leaf paths and no Arrow type differences. Input is Snappy, output ZSTD.
+  - All 18 outputs match the PyArrow raw hash.
+  - The API ID list equals the snapshot's 2018 ID set.
+- **Partitioning:** all figures check out, with 0 HTTP requests and no NULL partition.
+- **API:**
+  - Every page has meta.count equal to rows returned (maximum 100).
+  - Coverage is identical across runs.
+  - 15,671 rows still report 2018, and 52 fields are present.
+  - Cost is $0.0001 per page, for $0.0531 in total.
+- **Resources and network:**
+  - Spill is 0 in all 24 profiles.
+  - Process CPU vs profiler: profiler `cpu_time` of 347 s against 6.2 s of process CPU confirms it was right to exclude it.
+  - The runtime User-Agent shows DuckDB v2.0.0.
+  - nettop's +0.37% over HTTP bodies is plausible protocol overhead.
+- **Archive:** the committed scripts and SQL are byte-identical to the executed ones, and the committed results contain no private-address patterns.
+- **RD draft:** hours are null, no approval was requested, there is no eligibility claim, and the numbers match the report.
+
+My review covers the files as they stood at about 16:32. Several QA files were added between 16:30 and 16:32, while I was reviewing.

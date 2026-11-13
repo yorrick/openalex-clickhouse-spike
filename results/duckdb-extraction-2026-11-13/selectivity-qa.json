@@ -1,0 +1,18 @@
+{
+  "actual_2018_rows_by_row_group": [
+    5708,
+    4766,
+    5069,
+    2101
+  ],
+  "selected_nested_values": {
+    "authorships": {
+      "non_null_rows": 17644,
+      "nonempty_rows": 15595
+    },
+    "referenced_works": {
+      "non_null_rows": 17644,
+      "nonempty_rows": 742
+    }
+  }
+}

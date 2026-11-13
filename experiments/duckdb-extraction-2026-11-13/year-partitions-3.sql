@@ -1,0 +1,1 @@
+COPY (SELECT * FROM read_parquet('/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/raw.parquet',hive_partitioning=false)) TO '/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/year-partitions-3' (FORMAT PARQUET, COMPRESSION ZSTD, PARTITION_BY (publication_year), WRITE_PARTITION_COLUMNS true);

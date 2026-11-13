@@ -1,0 +1,823 @@
+{
+  "scope": "One current snapshot shard, not all2018Works, not analytical DuckDB-vs-ClickHouse comparison",
+  "host": {
+    "cpu": "Apple M5 Max",
+    "logical_cpus": 18,
+    "physical_cpus": 18,
+    "ram_bytes": 137438953472,
+    "os": "macOS-26.5.1-arm64-arm-64bit",
+    "python": "3.12.2",
+    "versions": {
+      "duckdb": "2.0.0",
+      "pyarrow": "26.0.1",
+      "boto3": "1.43.126",
+      "psutil": "7.2.2",
+      "urllib3": "2.8.0"
+    }
+  },
+  "input": {
+    "snapshot_manifest": "/Users/yorrickjansen/work/data/openalex-slicing-20261113/works-manifest.json",
+    "manifest_date": "2026-10-14",
+    "file": {
+      "url": "s3://openalex/data/parquet/works/updated_date=2025-11-06/part_0004.parquet",
+      "meta": {
+        "content_length": 390189187,
+        "record_count": 400000
+      }
+    },
+    "target_publication_year": 2018,
+    "methods": [
+      "local_full_download_then_filter",
+      "direct_s3_ids_year",
+      "direct_s3_full_records"
+    ],
+    "repeat_direct": 3,
+    "threads": 8,
+    "memory_limit": "8GB",
+    "timeout_seconds": 240,
+    "whole_study_network_budget_bytes": 3221225472
+  },
+  "raw_source_sha256": "0b7caaea2c5ea83455ce016be5f6c4f0a1c08438ec91dd21d5e480e587986db8",
+  "source_head_before": {
+    "ContentLength": 390189187,
+    "ETag": "\"d2dc99892a495b165b644f7cbdb179a6-6\"",
+    "VersionId": "3gGZlMY631rYHCxMhmQXgF5lhH_hZHON",
+    "LastModified": "2026-10-14 18:30:04+00:00"
+  },
+  "source_head_after_initial": {
+    "ContentLength": 390189187,
+    "ETag": "\"d2dc99892a495b165b644f7cbdb179a6-6\"",
+    "VersionId": "3gGZlMY631rYHCxMhmQXgF5lhH_hZHON",
+    "LastModified": "2026-10-14 18:30:04+00:00"
+  },
+  "reference": {
+    "narrow": {
+      "rows": 17644,
+      "canonical_multiset_sha256": "919e0b791fd8603bea094f781d893e3ac3e7417be4d41a898dff5e5cb81601d4",
+      "column_names": [
+        "id",
+        "publication_year"
+      ]
+    },
+    "full": {
+      "rows": 17644,
+      "canonical_multiset_sha256": "907418df7051b5dc2242ae87df98ba918998b733df2a13a3c857c0a17c9e31ea",
+      "column_names": [
+        "id",
+        "doi",
+        "title",
+        "display_name",
+        "ids",
+        "indexed_in",
+        "publication_date",
+        "publication_year",
+        "language",
+        "type",
+        "authorships",
+        "authors_count",
+        "corresponding_author_ids",
+        "corresponding_institution_ids",
+        "primary_topic",
+        "topics",
+        "keywords",
+        "concepts",
+        "locations",
+        "locations_count",
+        "primary_location",
+        "best_oa_location",
+        "sustainable_development_goals",
+        "study_designs",
+        "awards",
+        "funders",
+        "institutions",
+        "countries_distinct_count",
+        "institutions_distinct_count",
+        "open_access",
+        "is_paratext",
+        "is_retracted",
+        "is_xpac",
+        "biblio",
+        "volume",
+        "referenced_works",
+        "referenced_works_count",
+        "related_works",
+        "abstract_inverted_index",
+        "cited_by_count",
+        "counts_by_year",
+        "apc_list",
+        "apc_paid",
+        "fwci",
+        "citation_normalized_percentile",
+        "cited_by_percentile_year",
+        "mesh",
+        "has_content",
+        "has_fulltext",
+        "created_date",
+        "updated_date"
+      ]
+    }
+  },
+  "variants": {
+    "local_narrow": {
+      "runs": 3,
+      "seconds": [
+        0.013629707507789135,
+        0.005661374889314175,
+        0.005366167053580284
+      ],
+      "median_seconds": 0.005661374889314175,
+      "http_get_payload_bytes": [
+        0,
+        0,
+        0
+      ],
+      "http_get_requests": [
+        0,
+        0,
+        0
+      ],
+      "http_head_requests": [
+        0,
+        0,
+        0
+      ],
+      "output_bytes": [
+        101731,
+        101731,
+        101731
+      ],
+      "output_rows": [
+        17644,
+        17644,
+        17644
+      ],
+      "process_peak_rss_bytes": 86605824,
+      "query_cpu_seconds": [
+        0.014174999999999993,
+        0.010043999999999997,
+        0.010553999999999994
+      ],
+      "average_busy_cores": [
+        1.0400076444706707,
+        1.7741273447476535,
+        1.966766948292899
+      ],
+      "all_independent_row_value_qa_match": true,
+      "settings": {
+        "enable_external_file_cache": "false",
+        "enable_global_s3_configuration": "false",
+        "httpfs_enable_credential_refresh": "false",
+        "memory_limit": "7.4 GiB",
+        "secret_directory": "/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/empty-secrets",
+        "threads": "8"
+      }
+    },
+    "local_full": {
+      "runs": 3,
+      "seconds": [
+        1.090566041879356,
+        0.6295472085475922,
+        0.6461354596540332
+      ],
+      "median_seconds": 0.6461354596540332,
+      "http_get_payload_bytes": [
+        0,
+        0,
+        0
+      ],
+      "http_get_requests": [
+        0,
+        0,
+        0
+      ],
+      "http_head_requests": [
+        0,
+        0,
+        0
+      ],
+      "output_bytes": [
+        13526016,
+        13526016,
+        13526016
+      ],
+      "output_rows": [
+        17644,
+        17644,
+        17644
+      ],
+      "process_peak_rss_bytes": 995655680,
+      "query_cpu_seconds": [
+        1.898102,
+        1.640551,
+        1.664413
+      ],
+      "average_busy_cores": [
+        1.740474145636361,
+        2.6059221258162064,
+        2.575950561343891
+      ],
+      "all_independent_row_value_qa_match": true,
+      "settings": {
+        "enable_external_file_cache": "false",
+        "enable_global_s3_configuration": "false",
+        "httpfs_enable_credential_refresh": "false",
+        "memory_limit": "7.4 GiB",
+        "secret_directory": "/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/empty-secrets",
+        "threads": "8"
+      }
+    },
+    "s3_narrow": {
+      "runs": 3,
+      "seconds": [
+        1.3657891256734729,
+        1.2072995835915208,
+        1.4219979587942362
+      ],
+      "median_seconds": 1.3657891256734729,
+      "http_get_payload_bytes": [
+        4351204,
+        4351204,
+        4351204
+      ],
+      "http_get_requests": [
+        9,
+        9,
+        9
+      ],
+      "http_head_requests": [
+        1,
+        1,
+        1
+      ],
+      "output_bytes": [
+        101731,
+        101731,
+        101731
+      ],
+      "output_rows": [
+        17644,
+        17644,
+        17644
+      ],
+      "process_peak_rss_bytes": 98467840,
+      "query_cpu_seconds": [
+        0.096117,
+        0.099302,
+        0.09818799999999998
+      ],
+      "average_busy_cores": [
+        0.07037470001278898,
+        0.08225133293311726,
+        0.06904932555828502
+      ],
+      "all_independent_row_value_qa_match": true,
+      "settings": {
+        "enable_external_file_cache": "false",
+        "enable_global_s3_configuration": "false",
+        "httpfs_enable_credential_refresh": "false",
+        "memory_limit": "7.4 GiB",
+        "secret_directory": "/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/empty-secrets",
+        "threads": "8"
+      }
+    },
+    "s3_full": {
+      "runs": 3,
+      "seconds": [
+        99.79113345779479,
+        94.19022141676396,
+        86.88358470797539
+      ],
+      "median_seconds": 94.19022141676396,
+      "http_get_payload_bytes": [
+        494008109,
+        494008109,
+        494008109
+      ],
+      "http_get_requests": [
+        453,
+        453,
+        453
+      ],
+      "http_head_requests": [
+        1,
+        1,
+        1
+      ],
+      "output_bytes": [
+        13526016,
+        13526016,
+        13526016
+      ],
+      "output_rows": [
+        17644,
+        17644,
+        17644
+      ],
+      "process_peak_rss_bytes": 920698880,
+      "query_cpu_seconds": [
+        6.240894,
+        5.741843,
+        5.472475
+      ],
+      "average_busy_cores": [
+        0.06253956422530761,
+        0.06096007540521683,
+        0.06298629388271154
+      ],
+      "all_independent_row_value_qa_match": true,
+      "settings": {
+        "enable_external_file_cache": "false",
+        "enable_global_s3_configuration": "false",
+        "httpfs_enable_credential_refresh": "false",
+        "memory_limit": "7.4 GiB",
+        "secret_directory": "/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/empty-secrets",
+        "threads": "8"
+      }
+    },
+    "s3_default_narrow": {
+      "runs": 3,
+      "seconds": [
+        1.300833291374147,
+        1.377624874934554,
+        1.2128047086298466
+      ],
+      "median_seconds": 1.300833291374147,
+      "http_get_payload_bytes": [
+        4395139,
+        4395139,
+        4395139
+      ],
+      "http_get_requests": [
+        9,
+        9,
+        9
+      ],
+      "http_head_requests": [
+        1,
+        1,
+        1
+      ],
+      "output_bytes": [
+        101731,
+        101731,
+        101731
+      ],
+      "output_rows": [
+        17644,
+        17644,
+        17644
+      ],
+      "process_peak_rss_bytes": 100466688,
+      "query_cpu_seconds": [
+        0.098883,
+        0.09158700000000002,
+        0.08724499999999999
+      ],
+      "average_busy_cores": [
+        0.07601512096568812,
+        0.0664818134939317,
+        0.0719365610796186
+      ],
+      "all_independent_row_value_qa_match": true,
+      "settings": {
+        "enable_external_file_cache": "true",
+        "enable_global_s3_configuration": "false",
+        "httpfs_enable_credential_refresh": "false",
+        "memory_limit": "7.4 GiB",
+        "secret_directory": "/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/empty-secrets",
+        "threads": "8"
+      }
+    },
+    "s3_default_full": {
+      "runs": 3,
+      "seconds": [
+        68.5027900421992,
+        66.55538195837289,
+        66.94122458435595
+      ],
+      "median_seconds": 66.94122458435595,
+      "http_get_payload_bytes": [
+        390959235,
+        390959235,
+        390959235
+      ],
+      "http_get_requests": [
+        453,
+        453,
+        453
+      ],
+      "http_head_requests": [
+        1,
+        1,
+        1
+      ],
+      "output_bytes": [
+        13526016,
+        13526016,
+        13526016
+      ],
+      "output_rows": [
+        17644,
+        17644,
+        17644
+      ],
+      "process_peak_rss_bytes": 1234829312,
+      "query_cpu_seconds": [
+        5.3215319999999995,
+        5.072761,
+        4.81353
+      ],
+      "average_busy_cores": [
+        0.07768343445167447,
+        0.07621864454437001,
+        0.07190681123459629
+      ],
+      "all_independent_row_value_qa_match": true,
+      "settings": {
+        "enable_external_file_cache": "true",
+        "enable_global_s3_configuration": "false",
+        "httpfs_enable_credential_refresh": "false",
+        "memory_limit": "7.4 GiB",
+        "secret_directory": "/Users/yorrickjansen/work/data/openalex-duckdb-slicing-20261113/empty-secrets",
+        "threads": "8"
+      }
+    }
+  },
+  "baseline_download": {
+    "s3_get_payload_bytes": 390189187,
+    "download_and_file_fsync_seconds": 104.37262166570872,
+    "cpu_seconds": 3.351742,
+    "sha256": "0b7caaea2c5ea83455ce016be5f6c4f0a1c08438ec91dd21d5e480e587986db8",
+    "count": 1,
+    "no_authentication": true,
+    "includes": "GetObject, writing local file, SHA256 streaming and fsync",
+    "not_includes": "SDK creation and HEAD request"
+  },
+  "layout_and_disabled_cache_ranges": {
+    "full_http_get_payload_bytes": 494008109,
+    "full_http_get_requests": 453,
+    "unique_requested_source_bytes": 390189183,
+    "overlapping_or_repeated_range_bytes": 103818926,
+    "byte_ranges_union": [
+      [
+        4,
+        390189186
+      ]
+    ],
+    "exact_duplicate_range_count": 0,
+    "source_bytes": 390189187,
+    "source_rows": 400000,
+    "selected_2018_rows": 17644,
+    "selected_row_fraction": 0.04411,
+    "source_top_level_columns": 51,
+    "source_physical_columns": 200,
+    "footer_and_trailer_bytes": 151473,
+    "row_groups": [
+      {
+        "rows": 118740,
+        "publication_year_min": 1590,
+        "publication_year_max": 2026,
+        "id_year_column_compressed_bytes": 1214729,
+        "all_column_compressed_bytes": 116391259,
+        "has_any_column_page_index": true
+      },
+      {
+        "rows": 117640,
+        "publication_year_min": 1462,
+        "publication_year_max": 2026,
+        "id_year_column_compressed_bytes": 1203362,
+        "all_column_compressed_bytes": 114648158,
+        "has_any_column_page_index": true
+      },
+      {
+        "rows": 118200,
+        "publication_year_min": 1513,
+        "publication_year_max": 2025,
+        "id_year_column_compressed_bytes": 1205602,
+        "all_column_compressed_bytes": 114454295,
+        "has_any_column_page_index": true
+      },
+      {
+        "rows": 45420,
+        "publication_year_min": 1400,
+        "publication_year_max": 2025,
+        "id_year_column_compressed_bytes": 465367,
+        "all_column_compressed_bytes": 44250894,
+        "has_any_column_page_index": true
+      }
+    ],
+    "interpretation": "Row-group retained compressed bytes describe this layout, not a universal lower bound: page-level filtering or other readers may behave differently. Payload sums include overlaps, exclude protocol overhead, and require network cross-check."
+  },
+  "network_reconciliation": {
+    "selected_secret": [
+      [
+        "openalex_anonymous"
+      ]
+    ],
+    "secret_metadata": [
+      [
+        "openalex_anonymous",
+        "config",
+        false
+      ]
+    ],
+    "os_unique_flow_peak_bytes_in": 487878722,
+    "os_process_peak_bytes_in": 495856504,
+    "os_process_last_bytes_in": 495856504,
+    "flow_count": 57,
+    "successful_get_payload_bytes": 494008109,
+    "scope": "Continuous nettop snapshots at1s per flow, starting before S3 access. Max counters retain flows that later close; snapshots can still miss short-lived flows; OS bytes include protocol overhead. Raw connection addresses stay local.",
+    "os_flow_to_http_payload_ratio": 0.98759253767634
+  },
+  "local_repartition": {
+    "runs": [
+      {
+        "run": 1,
+        "copy_seconds": 3.726508959196508,
+        "cpu_seconds": 12.632465,
+        "average_busy_cores": 3.389892561193185,
+        "peak_process_rss_bytes": 5219270656,
+        "rows_copied": 400000,
+        "files": 269,
+        "year_partitions": 269,
+        "output_bytes": 299222293,
+        "year2018_files": 1,
+        "year2018_bytes": 13575966,
+        "http_requests": 0,
+        "scope": "Cached local source, one pass copying all400000records/all51columns; no remote reads. Partition column is also stored in each Parquet file.",
+        "all_id_year_values_match": true,
+        "all_2018_record_values_match": true
+      },
+      {
+        "run": 2,
+        "copy_seconds": 3.7640970004722476,
+        "cpu_seconds": 13.366635,
+        "average_busy_cores": 3.5510867542263145,
+        "peak_process_rss_bytes": 5842305024,
+        "rows_copied": 400000,
+        "files": 269,
+        "year_partitions": 269,
+        "output_bytes": 299242927,
+        "year2018_files": 1,
+        "year2018_bytes": 13578060,
+        "http_requests": 0,
+        "scope": "Cached local source, one pass copying all400000records/all51columns; no remote reads. Partition column is also stored in each Parquet file.",
+        "all_id_year_values_match": true,
+        "all_2018_record_values_match": true
+      },
+      {
+        "run": 3,
+        "copy_seconds": 4.025662958621979,
+        "cpu_seconds": 14.681907,
+        "average_busy_cores": 3.6470780467487898,
+        "peak_process_rss_bytes": 5506990080,
+        "rows_copied": 400000,
+        "files": 269,
+        "year_partitions": 269,
+        "output_bytes": 299230218,
+        "year2018_files": 1,
+        "year2018_bytes": 13574821,
+        "http_requests": 0,
+        "scope": "Cached local source, one pass copying all400000records/all51columns; no remote reads. Partition column is also stored in each Parquet file.",
+        "all_id_year_values_match": true,
+        "all_2018_record_values_match": true
+      }
+    ],
+    "source_id_year_qa": {
+      "rows": 400000,
+      "canonical_multiset_sha256": "eaee51276ff0fb770943b529b8688a81e686a80497c2418f7db85749bb140ac2",
+      "columns": [
+        "id",
+        "publication_year"
+      ]
+    },
+    "all_source_full_value_qa_run1": {
+      "rows": 400000,
+      "canonical_multiset_sha256": "1a5aea85344b6993bac8cbe757907418ee42fdfbb168fc8c010d5df395ec7aa7",
+      "columns": [
+        "abstract_inverted_index",
+        "apc_list",
+        "apc_paid",
+        "authors_count",
+        "authorships",
+        "awards",
+        "best_oa_location",
+        "biblio",
+        "citation_normalized_percentile",
+        "cited_by_count",
+        "cited_by_percentile_year",
+        "concepts",
+        "corresponding_author_ids",
+        "corresponding_institution_ids",
+        "countries_distinct_count",
+        "counts_by_year",
+        "created_date",
+        "display_name",
+        "doi",
+        "funders",
+        "fwci",
+        "has_content",
+        "has_fulltext",
+        "id",
+        "ids",
+        "indexed_in",
+        "institutions",
+        "institutions_distinct_count",
+        "is_paratext",
+        "is_retracted",
+        "is_xpac",
+        "keywords",
+        "language",
+        "locations",
+        "locations_count",
+        "mesh",
+        "open_access",
+        "primary_location",
+        "primary_topic",
+        "publication_date",
+        "publication_year",
+        "referenced_works",
+        "referenced_works_count",
+        "related_works",
+        "study_designs",
+        "sustainable_development_goals",
+        "title",
+        "topics",
+        "type",
+        "updated_date",
+        "volume"
+      ]
+    },
+    "all_id_year_values_match_all3": true,
+    "all_2018_record_values_match_all3": true,
+    "full400000_record_values_checked_in_run1_only": true
+  },
+  "api": {
+    "runs": [
+      {
+        "repeat": 1,
+        "requested_count": 17644,
+        "returned_rows": 15705,
+        "returned_distinct_ids": 15701,
+        "duplicate_row_count": 4,
+        "all_returned_publication_year_2018": false,
+        "pages_completed": 177,
+        "total_pages": 177,
+        "export_wall_seconds": 37.30797508265823,
+        "process_cpu_seconds": 1.6409180000000003,
+        "peak_rss_bytes": 500236288,
+        "successful_http_body_bytes": 19330963,
+        "decoded_response_bytes": 128534023,
+        "records_jsonl_bytes": 116695270,
+        "free_budget_cost_usd_from_api": 0.0177,
+        "free_budget_total_across_repeats": 0.01769999999999995,
+        "all_requests_anonymous": true,
+        "concurrency": 4,
+        "request_start_spacing_seconds": 0.21,
+        "connection_pooling": true,
+        "error": null,
+        "returned_id_multiset_sha256": "226cd0e471cb1e6ba6251aae1a7f93b1bb01020d61738dba43aa064f781c086d",
+        "scope": "Known IDs, no discovery/cursor cost. Current API values and fields differ from fixed snapshot. JSONL output; not the same Parquet schema. Metered cost consumes anonymous free allowance, not paid credits or AWS. Timed path includes HTTP, gzip decompression, JSON parsing and JSONL writing.",
+        "exact_requested_id_matches": 15232,
+        "missing_original_ids": 2412,
+        "other_returned_ids": 469,
+        "records_jsonl_sha256": "a9cca482abc399a13163ad033e270d5760030c1b33636e5cf6ad79d631e60cfa",
+        "current_year_distribution": {
+          "2018": 15671,
+          "2017": 8,
+          "2019": 9,
+          "2015": 2,
+          "2020": 4,
+          "2026": 1,
+          "2025": 1,
+          "2009": 1,
+          "2011": 1,
+          "2000": 1,
+          "1925": 1,
+          "1892": 1,
+          "1927": 1,
+          "2012": 1,
+          "1982": 1,
+          "1946": 1
+        },
+        "complete_pages_no_truncation": true,
+        "api_field_count": 52
+      },
+      {
+        "repeat": 2,
+        "requested_count": 17644,
+        "returned_rows": 15705,
+        "returned_distinct_ids": 15701,
+        "duplicate_row_count": 4,
+        "all_returned_publication_year_2018": false,
+        "pages_completed": 177,
+        "total_pages": 177,
+        "export_wall_seconds": 37.3739052079618,
+        "process_cpu_seconds": 1.7339659999999997,
+        "peak_rss_bytes": 503087104,
+        "successful_http_body_bytes": 19333798,
+        "decoded_response_bytes": 128534019,
+        "records_jsonl_bytes": 116695270,
+        "free_budget_cost_usd_from_api": 0.0177,
+        "free_budget_total_across_repeats": 0.03539999999999999,
+        "all_requests_anonymous": true,
+        "concurrency": 4,
+        "request_start_spacing_seconds": 0.21,
+        "connection_pooling": true,
+        "error": null,
+        "returned_id_multiset_sha256": "226cd0e471cb1e6ba6251aae1a7f93b1bb01020d61738dba43aa064f781c086d",
+        "scope": "Known IDs, no discovery/cursor cost. Current API values and fields differ from fixed snapshot. JSONL output; not the same Parquet schema. Metered cost consumes anonymous free allowance, not paid credits or AWS. Timed path includes HTTP, gzip decompression, JSON parsing and JSONL writing.",
+        "exact_requested_id_matches": 15232,
+        "missing_original_ids": 2412,
+        "other_returned_ids": 469,
+        "records_jsonl_sha256": "3e8f9f23d8286f197ed469c1aab01ca9d0d633e42aa238093bd6ca6d4e4352bd",
+        "current_year_distribution": {
+          "2018": 15671,
+          "2017": 8,
+          "2019": 9,
+          "2015": 2,
+          "2020": 4,
+          "2026": 1,
+          "2025": 1,
+          "2009": 1,
+          "2011": 1,
+          "2000": 1,
+          "1925": 1,
+          "1892": 1,
+          "1927": 1,
+          "2012": 1,
+          "1982": 1,
+          "1946": 1
+        },
+        "complete_pages_no_truncation": true,
+        "api_field_count": 52
+      },
+      {
+        "repeat": 3,
+        "requested_count": 17644,
+        "returned_rows": 15705,
+        "returned_distinct_ids": 15701,
+        "duplicate_row_count": 4,
+        "all_returned_publication_year_2018": false,
+        "pages_completed": 177,
+        "total_pages": 177,
+        "export_wall_seconds": 37.21751108299941,
+        "process_cpu_seconds": 1.7166020000000004,
+        "peak_rss_bytes": 503267328,
+        "successful_http_body_bytes": 19335849,
+        "decoded_response_bytes": 128534021,
+        "records_jsonl_bytes": 116695270,
+        "free_budget_cost_usd_from_api": 0.0177,
+        "free_budget_total_across_repeats": 0.053100000000000494,
+        "all_requests_anonymous": true,
+        "concurrency": 4,
+        "request_start_spacing_seconds": 0.21,
+        "connection_pooling": true,
+        "error": null,
+        "returned_id_multiset_sha256": "226cd0e471cb1e6ba6251aae1a7f93b1bb01020d61738dba43aa064f781c086d",
+        "scope": "Known IDs, no discovery/cursor cost. Current API values and fields differ from fixed snapshot. JSONL output; not the same Parquet schema. Metered cost consumes anonymous free allowance, not paid credits or AWS. Timed path includes HTTP, gzip decompression, JSON parsing and JSONL writing.",
+        "exact_requested_id_matches": 15232,
+        "missing_original_ids": 2412,
+        "other_returned_ids": 469,
+        "records_jsonl_sha256": "1f5acc6e81143d169da86ce784ccf88c7a67cafb88d8e45345aab065e20dfbaa",
+        "current_year_distribution": {
+          "2018": 15671,
+          "2017": 8,
+          "2019": 9,
+          "2015": 2,
+          "2020": 4,
+          "2026": 1,
+          "2025": 1,
+          "2009": 1,
+          "2011": 1,
+          "2000": 1,
+          "1925": 1,
+          "1892": 1,
+          "1927": 1,
+          "2012": 1,
+          "1982": 1,
+          "1946": 1
+        },
+        "complete_pages_no_truncation": true,
+        "api_field_count": 52
+      }
+    ],
+    "median_export_seconds": 37.30797508265823,
+    "free_budget_consumed_usd": 0.0531,
+    "anonymous": true,
+    "not_equal_coverage_or_values_to_snapshot": true,
+    "discovery_cost_excluded": true,
+    "request_start_spacing_seconds": 0.21,
+    "configured_max_connections": 4
+  },
+  "claims": {
+    "narrow_transfer_target_10_percent_met": true,
+    "full_transfer_target_25_percent_met": false,
+    "default_full_cache_target_1_02_object_met": true,
+    "no_aws_account_or_cloud_compute": true,
+    "parquet_output_verified": true,
+    "source_all_2018_values_verified": true,
+    "local_os_caches_not_cleared": true,
+    "api_maximum_throughput_not_measured": true
+  }
+}

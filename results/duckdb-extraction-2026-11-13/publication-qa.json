@@ -1,0 +1,19 @@
+{
+  "executed_cases": 21,
+  "all_extra_value_qa_archived": true,
+  "logged_requests": 3706,
+  "observed_request_header_names": [
+    "host",
+    "if-match",
+    "range",
+    "user-agent"
+  ],
+  "concurrent_observation_first_requests": {
+    "s3_full-4": "2026-11-13 15:48:21.514938-05",
+    "s3_narrow-4": "2026-11-13 15:48:22.649059-05"
+  },
+  "api_receipts": 531,
+  "archived_scripts_match_executed": true,
+  "local_links_exist": 16,
+  "no_private_ipv4_or_aws_access_key_patterns_in_results": true
+}
