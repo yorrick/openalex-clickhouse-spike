@@ -1,0 +1,35 @@
+{
+  "html_sha256": "66a67c1efe2ce9871cbdbe83d5c983568111ce8601693d56636472155aa70be7",
+  "payload_equal": true,
+  "profile_viewport_checks": 615,
+  "exact_sql_viewport_checks": 552,
+  "viewports": [
+    {
+      "width": 1440,
+      "all205_profiles_real_controls_exact_sql": true,
+      "no_page_overflow": true,
+      "utf8_and_standards": true,
+      "keyboard": true,
+      "flow_nodes": true
+    },
+    {
+      "width": 1000,
+      "all205_profiles_real_controls_exact_sql": true,
+      "no_page_overflow": true,
+      "utf8_and_standards": true,
+      "keyboard": true,
+      "flow_nodes": true
+    },
+    {
+      "width": 390,
+      "all205_profiles_real_controls_exact_sql": true,
+      "no_page_overflow": true,
+      "utf8_and_standards": true,
+      "keyboard": true,
+      "flow_nodes": true
+    }
+  ],
+  "clipboard_mock_success_and_denied": true,
+  "javascript_errors": [],
+  "scope": "Local real headless Chrome on the authored HTML, not a hosted sharing/access claim."
+}

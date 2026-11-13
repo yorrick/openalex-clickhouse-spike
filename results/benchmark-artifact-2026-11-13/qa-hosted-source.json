@@ -1,0 +1,14 @@
+{
+  "checked_at_utc": "2026-11-13T17:29:37.263746+00:00",
+  "artifact_url": "https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H",
+  "version": 6,
+  "version_id": "1794590930-82c1",
+  "source_html_sha256": "66a67c1efe2ce9871cbdbe83d5c983568111ce8601693d56636472155aa70be7",
+  "hosted_html_sha256": "0cf6c32d225ab904444c7c6bd537f71d39fd1c62ce9c6c728f57eb8b0f3178b0",
+  "hosted_html_bytes": 1308184,
+  "source_html_verbatim_in_hosted_html": true,
+  "payload_equal": true,
+  "records": 205,
+  "sql_bodies_exact": 184,
+  "scope": "Native Artifact read saved the hosted HTML locally. Exact payload/SQL comparison, not anonymous access or browser-render verification of the hosted page."
+}

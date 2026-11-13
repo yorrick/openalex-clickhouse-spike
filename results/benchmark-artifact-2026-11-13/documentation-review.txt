@@ -1,0 +1,30 @@
+Documentation review: docs/benchmark-artifact.md (worktree benchmark-artifact-200m)
+Reviewer: Claude (claude-opus-5-5), artifact author session c594d02e-affb-4d7b-8db9-71404f56bb14. Leaf review; no other AI or agents used.
+Scope: documentation claims checked against the payload, the QA, review and publication receipts, and the versioned results directory. No HTML or publication changes. The PostgreSQL experiment was not reviewed or rerun.
+
+VERDICT: PASS WITH ONE MINOR WORDING CORRECTION (non-blocking)
+
+Verified claims:
+- Same URL, private sharing kept. publication.json and qa-hosted-source.json: version 6, id 1794590930-82c1, owned by the user, private. No anonymous access claimed.
+- Content scope. The payload has 2m/10m/32m (original EC2 and historical local CH), local PostgreSQL, 100m local, and paired EC2 200m: 205 records.
+- Inspector features (cohort, family, engine, seed and profile selection; exact SQL; SHA-256; requested and effective settings; individual observations; medians; plans; fingerprints; CPU, memory and I/O; separate labels for failure, timeout, not-run and historical) match the built UI and the author QA harness.
+- 200m: ClickHouse has 6 of 7 families below the 60 s warm median, PostgreSQL 3 of 7. PostgreSQL wins q05 and q06 (indexed citation lookups). ClickHouse q03 failed with exception 241 and has no median. Athena uses raw Parquet views, not CTAS.
+- About 76 GB: storage.conditional_full_bytes = 75.967 GB, for the selected 42-column schema with fixed complete dimensions. It is not a RAM or latency estimate.
+- Fourteen PostgreSQL indexes: 14 in schemas.postgres_200m_indexes. Athena DDL: 13 statements for 200m.
+- 200m volumes deleted without snapshots: payload retention.observed and cleanup_200m. The artifact states this in the dataflow and methods sections.
+- Linked docs ec2-200m-benchmark.md and benchmark-data-retention.md exist.
+- The versioned results directory holds the HTML, payload, template, build_artifact.py, build_payload.py, Chrome QA scripts and results, review prompts and outputs, and the receipts. athena-200m-executions.json holds 53 GetQueryExecution receipts. The 200m Athena records link to it at commit 7dc30e0.
+- Reproducibility: in a scratch copy, the results directory's template, payload, payload-integrity.json and build_artifact.py rebuild to SHA-256 66a67c1efe2ce9871cbdbe83d5c983568111ce8601693d56636472155aa70be7, identical to the published source. build_artifact.py uses only the Python standard library.
+- Author model claude-opus-5-5 and effort high agree with provenance.json and publication.json. Published through the native Artifact tool to the existing URL.
+- Codex reviews: review-output.txt is BLOCKED (focus, mobile arrows, historical footer). correction-review-output.txt is PASS after those corrections.
+- Chrome QA (qa-browser.json, qa-secondary.json, html SHA 66a67c1e...): 205 profiles at widths 1440, 1000 and 390; 615 profile/viewport checks; 552 exact-SQL checks (184 x 3); keyboard; mocked clipboard success and denial; 36 tuning links; five legacy arms; schemas and Athena DDL; no JS errors.
+- Post-publication integrity: qa-hosted-source.json and publication.json both record the hosted HTML 0cf6c32d... containing the source bytes verbatim.
+
+Correction (minor):
+1. "The dataflow nodes expose schemas, fourteen PostgreSQL indexes, the ClickHouse reverse projection and Athena DDL." The dataflow nodes expose the 14 PostgreSQL index names, the by_cited projection DDL and the 13 Athena DDL statements. The full table schemas (PostgreSQL tables and index DDL, ClickHouse 200m and original-series schemas) are in section 6 "Dataset, fields and schema", not in the dataflow nodes. Suggested wording: "The dataflow nodes expose the fourteen PostgreSQL indexes, the ClickHouse reverse projection and the Athena DDL; full schemas are in the dataset section."
+
+Notes (not errors):
+- "Both commands exited zero": exit codes are recorded in provenance.json. review-cli.log and correction-review-cli.log are in the working directory but not in the versioned results directory, so the exit codes rest on provenance.json.
+- The exact CLI invocation "claude --model claude-opus-5-5 --effort high" cannot be confirmed from inside the session. Model and effort agree with the recorded provenance.
+- The doc names the ClickHouse q03 failure. PostgreSQL q03 also has no valid result at 200m (timeout at 300 s). That is accurate by omission; adding it would mirror the artifact's "q03 unresolved in both engines".
+- "No new database or AWS experiment" agrees with provenance.json and with this author's work. Root's own actions were not independently audited.

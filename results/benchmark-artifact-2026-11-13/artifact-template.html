@@ -1,0 +1,1207 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>OpenAlex query benchmark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {
+  --bg: #f7f7f4; --panel: #ffffff; --panel-2: #efefe9; --fg: #1b1d1f; --fg-2: #41474d; --fg-3: #5b626a;
+  --rule: #d2d2ca; --rule-2: #e4e4dd; --accent: #1f4f9c; --accent-soft: #e5edf9;
+  --pg: #2b5797; --ch: #0b6b63; --at: #8a5200; --lo: #5b626a;
+  --ok: #1a6e34; --ok-soft: #e3f2e7; --bad: #a8201a; --bad-soft: #fbe9e7; --warn: #7a4a00; --warn-soft: #fbf0dc;
+  --code-bg: #f3f3ee;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121416; --panel: #1a1d20; --panel-2: #23272b; --fg: #e6e8ea; --fg-2: #c3c8cd; --fg-3: #a0a8b0;
+    --rule: #3a4046; --rule-2: #2b3035; --accent: #93b8ff; --accent-soft: #1c2940;
+    --pg: #9bbcf2; --ch: #5ccabb; --at: #f0b45a; --lo: #a0a8b0;
+    --ok: #79d494; --ok-soft: #173322; --bad: #ff9a90; --bad-soft: #3a1714; --warn: #f2c26b; --warn-soft: #362812;
+    --code-bg: #15181b; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121416; --panel: #1a1d20; --panel-2: #23272b; --fg: #e6e8ea; --fg-2: #c3c8cd; --fg-3: #a0a8b0;
+  --rule: #3a4046; --rule-2: #2b3035; --accent: #93b8ff; --accent-soft: #1c2940;
+  --pg: #9bbcf2; --ch: #5ccabb; --at: #f0b45a; --lo: #a0a8b0;
+  --ok: #79d494; --ok-soft: #173322; --bad: #ff9a90; --bad-soft: #3a1714; --warn: #f2c26b; --warn-soft: #362812;
+  --code-bg: #15181b; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 12px; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 56px; overflow-wrap: anywhere; }
+/* Long URLs, hashes and ids may wrap anywhere in running text so they never widen the page.
+   Tables keep normal wrapping and scroll inside their own .tw container instead. */
+table { overflow-wrap: normal; }
+.dt code, .dt .mono, .dt td.wrap, .dt a { overflow-wrap: anywhere; }
+/* Grid and flex children default to min-width:auto (their content width); allow them to shrink. */
+header.top > *, section > *, main > *, .flow > *, .inspector > *, .ins-head > *, .ins-sec > *, .fcol > *, .tcard > *, .ndetail > *, .callout > *, .statebar > *, .srcs > *, .two > *, .kf > *, dl.defs dd, dl.defs dt { min-width: 0; }
+.wrap { max-width: 1280px; margin-inline: auto; min-width: 0; }
+a { color: var(--accent); text-underline-offset: 0.18em; }
+code, .mono { font-family: var(--mono); font-size: 0.9em; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.vh { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; }
+p { margin: 0; }
+ul { margin: 0; padding-left: 20px; }
+li + li { margin-top: 3px; }
+
+header.top { padding-block: 26px 18px; display: grid; gap: 10px; }
+.kicker { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.03em; color: var(--fg-3); }
+h1 { font-size: clamp(1.3rem, 2.4vw, 1.8rem); font-weight: 600; max-width: 60ch; }
+.sub { color: var(--fg-2); max-width: 96ch; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.88rem; }
+nav.toc a { color: var(--fg-2); }
+.status-line { display: flex; flex-wrap: wrap; gap: 6px; font-size: 0.8rem; }
+.status-line .chip, .tlist .chip { white-space: normal; }
+
+section { padding-block: 30px; border-top: 1px solid var(--rule); display: grid; gap: 16px; min-width: 0; }
+.sec-head { display: flex; align-items: baseline; gap: 12px; }
+.sec-num { font-family: var(--mono); color: var(--fg-3); font-size: 0.9rem; }
+h2 { font-size: 1.3rem; font-weight: 600; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+h4 { font-size: 0.95rem; font-weight: 600; }
+.lead { color: var(--fg-2); max-width: 96ch; }
+.note { color: var(--fg-2); font-size: 0.86rem; max-width: 110ch; }
+.nr { color: var(--fg-3); font-style: italic; font-family: var(--sans); font-size: 0.92em; }
+
+.chip { display: inline-block; font-size: 0.74rem; line-height: 1.5; padding: 0 7px; border-radius: 3px; border: 1px solid var(--rule); color: var(--fg-2); background: var(--panel); white-space: nowrap; }
+.chip.bad { border-color: var(--bad); color: var(--bad); background: var(--bad-soft); }
+.chip.ok { border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+.chip.warn { border-color: var(--warn); color: var(--warn); background: var(--warn-soft); }
+.chip.acc { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+/* controls */
+.ctl-row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: flex-end; }
+.ctl { display: grid; gap: 3px; min-width: 0; max-width: 100%; }
+.ins-head .ctl { flex: 1 1 14rem; }
+.ins-head .ctl select { width: 100%; }
+.ctl label { font-size: 0.8rem; font-weight: 600; color: var(--fg-2); }
+select { font: inherit; font-size: 0.92rem; padding: 6px 8px; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); color: var(--fg); max-width: 100%; min-width: 0; min-height: 36px; text-overflow: ellipsis; }
+select:disabled { color: var(--fg-3); background: var(--panel-2); }
+button { font: inherit; }
+.btn { font-size: 0.82rem; font-weight: 500; padding: 5px 12px; border-radius: 5px; border: 1px solid var(--rule); background: var(--panel); color: var(--fg); cursor: pointer; min-height: 32px; }
+.btn:hover { border-color: var(--fg-3); }
+.btn:disabled { cursor: not-allowed; color: var(--fg-3); background: var(--panel-2); }
+
+/* setup cards */
+.setups { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.setup { border: 1px solid var(--rule); border-left-width: 4px; border-radius: 5px; background: var(--panel); padding: 8px 11px; font-size: 0.82rem; display: grid; gap: 2px; min-width: 0; }
+.setup b { font-size: 0.9rem; }
+.setup .hw { font-family: var(--mono); font-size: 0.78rem; color: var(--fg-2); }
+.setup .sn { color: var(--fg-3); }
+.e-postgres_local, .e-postgres_ec2 { border-left-color: var(--pg); }
+.e-clickhouse_local, .e-clickhouse_ec2 { border-left-color: var(--ch); }
+.e-athena { border-left-color: var(--at); }
+.callout { border: 1px solid var(--warn); background: var(--warn-soft); color: var(--fg); border-radius: 5px; padding: 9px 12px; font-size: 0.86rem; display: grid; gap: 4px; }
+.callout b { color: var(--warn); }
+.callout.bad { border-color: var(--bad); background: var(--bad-soft); }
+.callout.bad b { color: var(--bad); }
+.callout.info { border-color: var(--accent); background: var(--accent-soft); }
+.callout.info b { color: var(--accent); }
+
+/* tables */
+.tw { overflow-x: auto; min-width: 0; max-width: 100%; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+caption { text-align: left; font-size: 0.82rem; color: var(--fg-3); padding-bottom: 6px; caption-side: top; }
+th, td { text-align: left; vertical-align: top; }
+.num { text-align: right; white-space: nowrap; font-family: var(--mono); font-size: 0.84rem; }
+.dt { width: 100%; font-size: 0.85rem; }
+.dt th, .dt td { padding: 5px 9px; border-bottom: 1px solid var(--rule-2); }
+.dt thead th { font-size: 0.76rem; font-weight: 600; color: var(--fg-3); border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.dt tbody th { font-weight: 500; }
+.dt tfoot th, .dt tfoot td { border-top: 1px solid var(--rule); border-bottom: 0; font-weight: 600; }
+.dt code { font-size: 0.8rem; overflow-wrap: anywhere; }
+.dt td.wrap { min-width: 16ch; }
+.dt .mono { overflow-wrap: anywhere; }
+
+.qtable { width: 100%; font-size: 0.9rem; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; border-collapse: separate; border-spacing: 0; }
+.qtable thead th { font-size: 0.78rem; font-weight: 600; color: var(--fg-2); padding: 8px 8px; border-bottom: 1px solid var(--rule); vertical-align: bottom; background: var(--panel-2); min-width: 128px; }
+.qtable thead th:first-child { min-width: 170px; }
+.qtable thead th .hw { display: block; font-weight: 400; font-family: var(--mono); font-size: 0.7rem; color: var(--fg-3); }
+.qtable thead th.e-postgres_local, .qtable thead th.e-postgres_ec2 { box-shadow: inset 0 3px 0 var(--pg); }
+.qtable thead th.e-clickhouse_local, .qtable thead th.e-clickhouse_ec2 { box-shadow: inset 0 3px 0 var(--ch); }
+.qtable thead th.e-athena { box-shadow: inset 0 3px 0 var(--at); }
+.qtable tbody th, .qtable tbody td, .qtable tfoot th, .qtable tfoot td { padding: 5px 6px; border-bottom: 1px solid var(--rule-2); vertical-align: middle; }
+.qtable tfoot th, .qtable tfoot td { border-bottom: 0; background: var(--panel-2); font-size: 0.82rem; }
+.qtable tbody th .qid { font-family: var(--mono); font-size: 0.8rem; color: var(--fg-3); margin-right: 4px; }
+.qtable tbody th .qn { font-weight: 600; }
+.qtable tbody th .qd { display: block; font-weight: 400; font-size: 0.76rem; color: var(--fg-3); max-width: 34ch; }
+.cell { display: grid; gap: 1px; width: 100%; text-align: left; padding: 6px 8px; border: 1px solid var(--rule); border-radius: 5px; background: var(--bg); color: var(--fg); cursor: pointer; min-height: 44px; }
+.cell:hover { border-color: var(--fg-3); }
+.cell[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.cell .v { font-family: var(--mono); font-size: 0.92rem; font-weight: 600; white-space: nowrap; }
+.cell .t { font-size: 0.72rem; color: var(--fg-3); line-height: 1.3; }
+.cell.st-timeout .v, .cell.st-failed .v { color: var(--bad); }
+.cell.st-not_run .v { color: var(--fg-3); }
+.cell.st-historical .v { color: var(--lo); font-weight: 500; }
+.cell .u60 { color: var(--ok); }
+.cell .o60 { color: var(--fg-2); }
+
+/* inspector */
+.inspector { background: var(--panel); border: 1px solid var(--rule); border-top: 4px solid var(--accent); border-radius: 6px; padding: 16px clamp(12px, 2vw, 22px) 22px; display: grid; gap: 18px; min-width: 0; }
+.inspector:focus { outline: none; }
+.ins-kick { font-size: 0.76rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); }
+.ins-head { display: grid; gap: 10px; }
+.ins-head h3 { font-size: 1.2rem; }
+.ins-head h3 .qid { font-family: var(--mono); color: var(--fg-3); font-weight: 500; margin-right: 6px; }
+.ins-head h3 .co { display: block; font-size: 0.86rem; font-weight: 500; color: var(--fg-2); margin-top: 3px; }
+.statebar { font-size: 0.86rem; padding: 8px 11px; border-radius: 5px; background: var(--panel-2); border: 1px solid var(--rule); display: grid; gap: 3px; }
+.statebar b { font-family: var(--mono); font-weight: 600; }
+.ins-sec { display: grid; gap: 10px; min-width: 0; padding-top: 14px; border-top: 1px solid var(--rule-2); }
+.kf { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin: 0; }
+.kf > div { border: 1px solid var(--rule-2); border-radius: 5px; padding: 7px 10px; background: var(--bg); min-width: 0; }
+.kf dt { font-size: 0.76rem; color: var(--fg-3); }
+.kf dd { margin: 0; font-family: var(--mono); font-size: 1rem; font-weight: 500; overflow-wrap: anywhere; }
+.kf dd.sm { font-family: var(--sans); font-size: 0.76rem; font-weight: 400; color: var(--fg-3); }
+.kf dd.bad { color: var(--bad); }
+.kf dd.ok { color: var(--ok); }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; align-items: start; }
+.two > * { min-width: 0; }
+
+figure.sql { margin: 0; border: 1px solid var(--rule); border-radius: 6px; background: var(--code-bg); min-width: 0; display: grid; }
+figure.sql figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 10px 7px 12px; border-bottom: 1px solid var(--rule); background: var(--panel); font-size: 0.86rem; font-weight: 600; border-radius: 6px 6px 0 0; }
+figure.sql.big pre.code { max-height: 38rem; font-size: 13px; }
+pre.code { margin: 0; padding: 12px 14px; overflow: auto; max-height: 26rem; font-family: var(--mono); font-size: 12.5px; line-height: 1.5; white-space: pre; tab-size: 4; color: var(--fg); min-width: 0; }
+pre.err { margin: 0; padding: 10px 12px; overflow: auto; max-height: 16rem; font-family: var(--mono); font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--bad-soft); color: var(--fg); border: 1px solid var(--bad); border-radius: 5px; }
+pre.plan { margin: 0; padding: 10px 12px; overflow: auto; max-height: 24rem; font-family: var(--mono); font-size: 12px; white-space: pre; background: var(--code-bg); border: 1px solid var(--rule); border-radius: 5px; }
+.sqlmeta { font-size: 0.78rem; color: var(--fg-2); padding: 7px 12px; border-top: 1px solid var(--rule-2); background: var(--panel); overflow-wrap: anywhere; display: grid; gap: 2px; border-radius: 0 0 6px 6px; }
+.sqlmeta code { font-size: 0.76rem; }
+.copy-status { font-size: 0.8rem; font-weight: 500; }
+.copy-status.ok { color: var(--ok); }
+.copy-status.bad { color: var(--bad); }
+.nosql { padding: 14px; font-size: 0.9rem; color: var(--fg-2); display: grid; gap: 6px; }
+details { min-width: 0; }
+details > summary { cursor: pointer; font-size: 0.88rem; font-weight: 600; color: var(--fg-2); padding: 3px 0; }
+details > summary:focus-visible { outline: 2px solid var(--accent); }
+details[open] > summary { margin-bottom: 6px; }
+
+/* tuning */
+.tgrid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
+.tcard { border: 1px solid var(--rule); border-left-width: 4px; border-radius: 6px; background: var(--panel); padding: 10px 12px; display: grid; gap: 8px; min-width: 0; align-content: start; }
+.tcard h4 { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.tcard h4 .hw { font-weight: 400; font-size: 0.74rem; font-family: var(--mono); color: var(--fg-3); }
+.tcard .tn { font-size: 0.82rem; color: var(--fg-2); }
+.tlist { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.tlist li { margin: 0; border: 1px solid var(--rule-2); border-radius: 5px; padding: 6px 8px; display: grid; gap: 3px; background: var(--bg); }
+.tlist li.sel { border-color: var(--accent); background: var(--accent-soft); }
+.tlist .tl1 { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; justify-content: space-between; }
+.tlist .lbl { font-family: var(--mono); font-size: 0.84rem; font-weight: 600; overflow-wrap: anywhere; }
+.tlist .res { font-family: var(--mono); font-size: 0.84rem; white-space: nowrap; }
+.tlist .res.bad { color: var(--bad); }
+.tlist .set { font-family: var(--mono); font-size: 0.74rem; color: var(--fg-2); overflow-wrap: anywhere; }
+
+/* dataflow */
+.flow { display: grid; gap: 10px; }
+.lane { display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px; }
+.lane-label { font-size: 0.76rem; font-weight: 600; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.04em; width: 100%; }
+.node { display: grid; gap: 2px; text-align: left; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); color: var(--fg); cursor: pointer; min-width: 0; flex: 1 1 150px; max-width: 260px; min-height: 52px; }
+.node b { font-size: 0.86rem; }
+.node span { font-size: 0.74rem; color: var(--fg-3); font-family: var(--mono); }
+.node:hover { border-color: var(--fg-3); }
+.node[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.arrow { align-self: center; color: var(--fg-3); font-family: var(--mono); font-size: 1rem; flex: 0 0 auto; }
+.arrow .v { display: none; }
+.branch { display: grid; gap: 6px; flex: 1 1 170px; max-width: 280px; min-width: 0; }
+.branch .node { max-width: none; }
+.ndetail { border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
+
+/* feasibility */
+.feas { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.fcol { border: 1px solid var(--rule); border-top-width: 4px; border-radius: 6px; background: var(--panel); padding: 10px 13px; display: grid; gap: 8px; align-content: start; min-width: 0; font-size: 0.88rem; }
+.fcol.m { border-top-color: var(--ok); }
+.fcol.c { border-top-color: var(--warn); }
+.fcol.u { border-top-color: var(--bad); }
+.fcol h3 { font-size: 0.92rem; letter-spacing: 0.04em; }
+.fcol.m h3 { color: var(--ok); }
+.fcol.c h3 { color: var(--warn); }
+.fcol.u h3 { color: var(--bad); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.formula { font-family: var(--mono); font-size: 0.8rem; background: var(--code-bg); border: 1px solid var(--rule-2); border-radius: 5px; padding: 8px 10px; overflow-x: auto; white-space: pre; }
+.bigv { font-family: var(--mono); font-size: 1.15rem; font-weight: 600; }
+
+dl.defs { margin: 0; display: grid; gap: 8px; }
+dl.defs > div { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 16px; font-size: 0.88rem; padding-bottom: 8px; border-bottom: 1px solid var(--rule-2); }
+dl.defs dt { font-weight: 600; }
+dl.defs dd { margin: 0; color: var(--fg-2); min-width: 0; }
+@media (max-width: 640px) {
+  dl.defs > div { grid-template-columns: minmax(0, 1fr); }
+  .qtable thead th { min-width: 118px; }
+  .qtable thead th:first-child { min-width: 140px; }
+  .node, .branch { max-width: none; flex-basis: 100%; }
+  .arrow { width: 100%; text-align: center; }
+  .arrow .h { display: none; }
+  .arrow .v { display: inline; }
+}
+.srcs { display: grid; gap: 4px; font-size: 0.88rem; }
+</style>
+<div class="wrap">
+<header class="top">
+  <p class="kicker" id="kicker">OpenAlex snapshot 2026-06-26 &middot; benchmark runs 2026-11-06 to 2026-11-12 &middot; page data built 2026-11-13</p>
+  <h1>OpenAlex query benchmark: PostgreSQL, ClickHouse and Athena on five Works cohorts</h1>
+  <p class="sub">An engineering notebook of what was measured: seven query families, five nested Works cohorts from 2.00m to 200.31m, the exact SQL each engine ran, requested and effective settings, every recorded repeat, resource telemetry with its measurement scope, output hashes, tuning attempts including failures, storage, cost estimates and what remains unvalidated. Setups differ between cohorts; the differences are shown next to the numbers they affect.</p>
+  <div class="status-line" id="status-line"></div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#explorer">1. Query explorer</a>
+    <a href="#tuning">2. Tuning history</a>
+    <a href="#dataflow">3. Dataflow and retention</a>
+    <a href="#decision">4. Rationale</a>
+    <a href="#feasibility">5. Single-machine feasibility</a>
+    <a href="#dataset">6. Dataset, fields and schema</a>
+    <a href="#cost">7. Cost</a>
+    <a href="#methods">8. Methods and limits</a>
+    <a href="#sources">9. Sources</a>
+  </nav>
+</header>
+<main>
+
+<section id="explorer" aria-labelledby="h-explorer">
+  <div class="sec-head"><span class="sec-num">1</span><h2 id="h-explorer">Query explorer</h2></div>
+  <p class="lead">Pick a cohort. The table shows only the setups that actually ran at that cohort. Every cell is a button: activate it to open the inspector below with the exact SQL, settings, raw repeats, resources, QA and failures for that query and engine.</p>
+  <div class="ctl-row">
+    <div class="ctl">
+      <label for="cohort-select">Cohort (Works in nested subset)</label>
+      <select id="cohort-select"></select>
+    </div>
+  </div>
+  <p class="note" id="cohort-facts"></p>
+  <div class="setups" id="setup-cards"></div>
+  <div id="setup-callouts" class="flow"></div>
+  <div class="tw" id="family-table-wrap"></div>
+  <p class="note" id="table-note"></p>
+  <p id="ins-status" class="vh" aria-live="polite"></p>
+  <div id="inspector" class="inspector" role="region" aria-labelledby="ins-title" tabindex="-1"></div>
+</section>
+
+<section id="tuning" aria-labelledby="h-tuning">
+  <div class="sec-head"><span class="sec-num">2</span><h2 id="h-tuning">Tuning history</h2></div>
+  <p class="lead">Every native profile recorded for a query, side by side: the baseline, failed attempts, alternates and the profile the comparison table uses. Settings are listed as requested by the runner (client or session options, outside the SQL text). SQL that differs from the baseline is marked with its SHA-256 prefix. Each entry opens in the inspector.</p>
+  <div id="tuning-body" class="flow"></div>
+</section>
+
+<section id="dataflow" aria-labelledby="h-dataflow">
+  <div class="sec-head"><span class="sec-num">3</span><h2 id="h-dataflow">Dataflow and retention</h2></div>
+  <p class="lead">How the 200.31m run moved data, from the public snapshot to result QA. Each box is a button that shows the recorded setup, bytes, rows, method and what is retained now.</p>
+  <div class="flow" id="flow"></div>
+  <div class="ndetail" id="node-detail" aria-live="polite"></div>
+</section>
+
+<section id="decision" aria-labelledby="h-decision">
+  <div class="sec-head"><span class="sec-num">4</span><h2 id="h-decision">Rationale</h2></div>
+  <div id="decision-body" class="two"></div>
+</section>
+
+<section id="feasibility" aria-labelledby="h-feasibility">
+  <div class="sec-head"><span class="sec-num">5</span><h2 id="h-feasibility">Single-machine feasibility</h2></div>
+  <p class="lead">Three separate categories. Only the first column is measured. A compressed on-disk footprint is not query working memory.</p>
+  <div class="feas" id="feas-body"></div>
+</section>
+
+<section id="dataset" aria-labelledby="h-dataset">
+  <div class="sec-head"><span class="sec-num">6</span><h2 id="h-dataset">Dataset, fields and schema</h2></div>
+  <div id="dataset-body" class="flow"></div>
+</section>
+
+<section id="cost" aria-labelledby="h-cost">
+  <div class="sec-head"><span class="sec-num">7</span><h2 id="h-cost">Cost</h2></div>
+  <div id="cost-body" class="flow"></div>
+</section>
+
+<section id="methods" aria-labelledby="h-methods">
+  <div class="sec-head"><span class="sec-num">8</span><h2 id="h-methods">Methods and limits</h2></div>
+  <div id="methods-body" class="flow"></div>
+</section>
+
+<section id="sources" aria-labelledby="h-sources">
+  <div class="sec-head"><span class="sec-num">9</span><h2 id="h-sources">Sources</h2></div>
+  <div id="sources-body" class="srcs"></div>
+</section>
+</main>
+</div>
+<script type="application/json" id="payload">__PAYLOAD__</script>
+<script type="application/json" id="build">__BUILD__</script>
+<script>
+/* OpenAlex benchmark notebook. Vanilla JS, no dependencies. State and functions are exposed on window.OA for QA. */
+var FAMS = ["q01", "q02", "q03", "q04", "q05", "q06", "q07"];
+var GRAPH = { q05: true, q06: true };
+var FAMNAME = { q01: "Publication counts", q02: "Topic statistics", q03: "Author output", q04: "International collaboration", q05: "One-hop citations", q06: "Two-hop citations", q07: "Citations by year" };
+var FAMDESC = {
+  q01: "Works counted by publication_year, work_type, is_oa, is_xpac.",
+  q02: "works joined to work_topic: distinct works and summed citations per year and topic.",
+  q03: "work_author joined to works and authors: top 1,000 authors by distinct works.",
+  q04: "Distinct works per year and country pair, from work_institution and institutions.",
+  q05: "Outgoing and incoming citation neighbours of one fixed seed work.",
+  q06: "Distinct works two citation hops from one fixed seed work.",
+  q07: "citation_edge rows per citing_year and cited_work_id: top 1,000."
+};
+var ENG = [
+  { key: "postgres_local", label: "PostgreSQL local", kind: "postgres" },
+  { key: "clickhouse_local", label: "ClickHouse local", kind: "clickhouse" },
+  { key: "postgres_ec2", label: "PostgreSQL EC2", kind: "postgres" },
+  { key: "clickhouse_ec2", label: "ClickHouse EC2", kind: "clickhouse" },
+  { key: "athena", label: "Athena, raw Parquet", kind: "athena" }
+];
+var ENGL = {}; ENG.forEach(function (e) { ENGL[e.key] = e; });
+var COHORTS = ["2m", "10m", "32m", "100m", "200m"];
+var GIB = 1073741824, GB = 1e9;
+var NR = '<span class="nr">not recorded</span>';
+var LIMIT_S = 60;
+
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function isNum(v) { return typeof v === "number" && isFinite(v); }
+function fmtInt(n) { return isNum(n) ? Math.round(n).toLocaleString("en-US") : NR; }
+function trimNum(v, d) { return String(Number(v.toFixed(d))); }
+function fmtS(v) {
+  if (!isNum(v)) return NR;
+  if (v >= 1) return v.toFixed(3) + " s";
+  if (v >= 0.01) return v.toFixed(3) + " s";
+  return (v * 1000).toFixed(3) + " ms";
+}
+function fmtSText(v) { return isNum(v) ? fmtS(v) : "not recorded"; }
+function fmtExact(v) { return isNum(v) ? trimNum(v, 6) + " s" : NR; }
+function fmtGiB(b) { return isNum(b) ? (b / GIB).toFixed(2) + " GiB" : NR; }
+function fmtGB(b, d) { return isNum(b) ? (b / GB).toFixed(d == null ? 3 : d) + " GB" : NR; }
+function fmtNum(v, d) { return isNum(v) ? v.toFixed(d) : NR; }
+function pct(a, b) { return (a / b * 100).toFixed(2) + "%"; }
+function shortSha(h) { return h ? h.slice(0, 12) : ""; }
+
+/* ---------- model (pure, testable without a DOM) ---------- */
+function buildModel(P) {
+  var idx = {};
+  P.records.forEach(function (r, i) {
+    r._i = i;
+    var c = idx[r.cohort] || (idx[r.cohort] = {});
+    var e = c[r.engine_key] || (c[r.engine_key] = {});
+    (e[r.case_key] || (e[r.case_key] = [])).push(r);
+  });
+  function isBaselineLabel(r) { return r.label === r.case_key || r.label === r.family; }
+  Object.keys(idx).forEach(function (c) { Object.keys(idx[c]).forEach(function (e) { Object.keys(idx[c][e]).forEach(function (k) {
+    idx[c][e][k].sort(function (a, b) {
+      var ra = a.selected ? 0 : isBaselineLabel(a) ? 1 : 2, rb = b.selected ? 0 : isBaselineLabel(b) ? 1 : 2;
+      return ra - rb || a._i - b._i;
+    });
+  }); }); });
+  function engines(c) { return ENG.filter(function (e) { return idx[c] && idx[c][e.key]; }).map(function (e) { return e.key; }); }
+  function absentEngines(c) { return ENG.filter(function (e) { return !(idx[c] && idx[c][e.key]); }).map(function (e) { return e.key; }); }
+  function profiles(c, e, ck) { return (idx[c] && idx[c][e] && idx[c][e][ck]) || []; }
+  function selectedRec(c, e, ck) { return profiles(c, e, ck).filter(function (r) { return r.selected; })[0] || null; }
+  function byProfile(c, e, ck, pid) { return profiles(c, e, ck).filter(function (r) { return r.profile_id === pid; })[0] || null; }
+  function seeds(c) { return (P.cohorts[c] && P.cohorts[c].seeds) || []; }
+  function caseKey(c, e, f, seed) {
+    if (!GRAPH[f]) return f;
+    if (profiles(c, e, f).length) return f; /* historical family-level only */
+    return f + "-s" + seed;
+  }
+  function hasSeedCases(c, e, f) { return GRAPH[f] && !profiles(c, e, f).length; }
+  function setupOf(c, e) { var r = P.records.filter(function (x) { return x.cohort === c && x.engine_key === e; })[0]; return r ? r.setup : null; }
+  function role(r) {
+    var b = isBaselineLabel(r);
+    if (r.selected) return b ? "selected (baseline profile)" : "selected (tuned profile)";
+    if (b) return "baseline";
+    return "alternate";
+  }
+  var ORDER = { complete: 0, historical: 0, failed: 2, timeout: 2, not_run: 3, not_measured: 3, unknown: 3 };
+  function famValue(c, e, f) {
+    if (!(idx[c] && idx[c][e])) return { state: "absent" };
+    if (!hasSeedCases(c, e, f)) {
+      var r = selectedRec(c, e, f);
+      if (!r) return { state: "absent" };
+      return { state: r.state, value: (r.state === "complete" || r.state === "historical") ? r.median_seconds : null, rec: r, kind: r.state === "historical" ? "historical" : "single", seed: null };
+    }
+    var recs = seeds(c).map(function (s) { return selectedRec(c, e, f + "-s" + s); });
+    if (recs.some(function (r) { return !r; })) return { state: "absent" };
+    var allComplete = recs.every(function (r) { return r.state === "complete" && isNum(r.median_seconds); });
+    if (!allComplete) {
+      var worst = recs.slice().sort(function (a, b) { return (ORDER[b.state] || 3) - (ORDER[a.state] || 3); })[0];
+      return { state: worst.state, value: null, recs: recs, rec: worst, kind: "max3", seed: worst.seed };
+    }
+    var best = recs[0];
+    recs.forEach(function (r) { if (r.median_seconds > best.median_seconds) best = r; });
+    return { state: "complete", value: best.median_seconds, recs: recs, rec: best, kind: "max3", seed: best.seed };
+  }
+  function below60(c, e) {
+    var n = 0, valid = 0, other = {};
+    FAMS.forEach(function (f) {
+      var v = famValue(c, e, f);
+      if (v.state === "complete") { valid++; if (v.value < LIMIT_S) n++; }
+      else other[v.state] = (other[v.state] || 0) + 1;
+    });
+    return { n: n, valid: valid, of: FAMS.length, other: other };
+  }
+  function timeoutLimit(r) {
+    var eff = (r.settings && r.settings.effective) || {}, req = (r.settings && r.settings.requested) || {};
+    if (eff.statement_timeout) return Number(eff.statement_timeout) / 1000;
+    if (req.statement_timeout) return null;
+    if (req.max_execution_time) return Number(req.max_execution_time);
+    if (r.setup === "local_pg" || r.setup === "local_100") {
+      var d = (P.setups.local_pg.default_settings || []).filter(function (x) { return x[0] === "statement_timeout"; })[0];
+      if (d) return Number(d[1]) / 1000;
+    }
+    return null;
+  }
+  function errorText(r) {
+    if (typeof r.error === "string" && r.error) return r.error;
+    var e = (r.runs || []).map(function (x) { return x.error; }).filter(Boolean)[0];
+    return e ? (typeof e === "string" ? e : JSON.stringify(e)) : "";
+  }
+  function failureShort(r) {
+    var t = errorText(r);
+    if (/Code: 241|MEMORY_LIMIT_EXCEEDED/.test(t)) return "exception 241, query memory limit";
+    if (/could not resize shared memory/.test(t)) return "shared memory segment resize failed";
+    if (/statement timeout/.test(t)) return "statement timeout";
+    if (r.state === "not_run") return "not executed";
+    return t ? t.split("\n")[0].slice(0, 80) : "reason not recorded";
+  }
+  function athenaFor(c, ck) { return selectedRec(c, "athena", ck); }
+  function verification200(e, ck) {
+    if (!P.verification_200m) return null;
+    var k = e === "postgres_ec2" ? "postgres" : e === "clickhouse_ec2" ? "clickhouse" : null;
+    if (!k) return null;
+    return (P.verification_200m.completed_full_output_checks || []).filter(function (x) { return x.engine === k && x.case === ck; })[0] || null;
+  }
+  return { idx: idx, engines: engines, absentEngines: absentEngines, profiles: profiles, selectedRec: selectedRec, byProfile: byProfile,
+    seeds: seeds, caseKey: caseKey, hasSeedCases: hasSeedCases, setupOf: setupOf, role: role, famValue: famValue, below60: below60,
+    timeoutLimit: timeoutLimit, errorText: errorText, failureShort: failureShort, athenaFor: athenaFor, verification200: verification200,
+    isBaselineLabel: isBaselineLabel };
+}
+
+/* ---------- presentation helpers ---------- */
+function setupHw(P, s) {
+  var x = P.setups[s];
+  if (!x) return "setup not recorded";
+  if (s === "ec2_legacy") return "EC2 m7g.8xlarge, container " + x.container_cpus + " CPU / " + x.container_memory_gib + " GiB";
+  if (s === "ec2_200") return "EC2 m7g.4xlarge, container " + x.container_cpus + " CPU / " + x.container_memory_gib + " GiB";
+  if (s === "local_pg" || s === "local_100") return "Apple M5 Max, container " + x.container_cpus + " CPU / " + x.container_memory_gib + " GiB";
+  if (s === "local_ch_history") return "Historical laptop; CPU/RAM not recorded";
+  if (s === "athena") return "Managed, us-east-1; CPU/RAM not exposed";
+  return x.label;
+}
+function stateWord(st) {
+  return { complete: "COMPLETE", historical: "HISTORICAL, TIMING ONLY", failed: "FAILED", timeout: "TIMEOUT", not_run: "NOT RUN", not_measured: "NOT MEASURED", absent: "NO SETUP", unknown: "UNKNOWN" }[st] || String(st).toUpperCase();
+}
+function stateChip(st) {
+  var cls = st === "complete" ? "ok" : (st === "failed" || st === "timeout") ? "bad" : st === "historical" ? "warn" : "";
+  return '<span class="chip ' + cls + '">' + esc(stateWord(st)) + "</span>";
+}
+var PG_UNITS = { work_mem: "kB", shared_buffers: "8kB", effective_cache_size: "8kB", maintenance_work_mem: "kB", statement_timeout: "ms" };
+function settingVal(k, v, engineKind, effective) {
+  var s = esc(typeof v === "object" ? JSON.stringify(v) : String(v));
+  var n = Number(v);
+  if (engineKind === "clickhouse" && /memory|bytes/.test(k) && isFinite(n) && n >= 1048576) s += ' <span class="nr">(' + trimNum(n / GIB, 3) + " GiB)</span>";
+  if (engineKind === "postgres" && effective && PG_UNITS[k] && isFinite(n)) {
+    var u = PG_UNITS[k], b = u === "kB" ? n * 1024 : u === "8kB" ? n * 8192 : null;
+    s += ' <span class="nr">(' + (b != null ? esc(u) + " units = " + trimNum(b / GIB, 3) + " GiB" : esc(u)) + ")</span>";
+  }
+  return s;
+}
+function kvTable(obj, cap, kind, effective) {
+  var keys = obj ? Object.keys(obj) : [];
+  if (!keys.length) return '<p class="note">' + esc(cap) + ": " + NR + "</p>";
+  return '<div class="tw"><table class="dt"><caption>' + esc(cap) + '</caption><tbody>' + keys.map(function (k) {
+    return '<tr><th scope="row"><code>' + esc(k) + '</code></th><td class="mono">' + settingVal(k, obj[k], kind, effective) + "</td></tr>";
+  }).join("") + "</tbody></table></div>";
+}
+function metricVal(k, v) {
+  if (v === null || v === undefined) return NR;
+  if (typeof v === "object") {
+    return Object.keys(v).map(function (kk) { return esc(kk) + "=" + (isNum(v[kk]) ? (/bytes$/.test(kk) && v[kk] >= 1e6 ? fmtGB(v[kk]) : esc(trimNum(v[kk], 3))) : esc(JSON.stringify(v[kk]))); }).join(", ");
+  }
+  if (isNum(v) && /bytes/.test(k) && !/_s$/.test(k)) return esc(String(v)) + ' <span class="nr">(' + (v / GIB).toFixed(3) + " GiB)</span>";
+  if (isNum(v)) return esc(trimNum(v, 4));
+  return esc(String(v));
+}
+function metricsTable(obj, cap) {
+  var keys = obj ? Object.keys(obj).filter(function (k) { return k !== "scope"; }) : [];
+  if (!keys.length) return '<p class="note">' + esc(cap) + ": " + NR + "</p>";
+  return '<div class="tw"><table class="dt"><caption>' + esc(cap) + '</caption><tbody>' + keys.map(function (k) {
+    return '<tr><th scope="row"><code>' + esc(k) + '</code></th><td class="mono">' + metricVal(k, obj[k]) + "</td></tr>";
+  }).join("") + "</tbody></table></div>";
+}
+function planText(node, depth, out) {
+  if (!node || typeof node !== "object") return out;
+  var pad = new Array(depth + 1).join("  ");
+  var parts = [node["Node Type"] || "?"];
+  if (node["Join Type"]) parts.push(node["Join Type"] + " join");
+  if (node["Relation Name"]) parts.push("on " + node["Relation Name"]);
+  if (node["Index Name"]) parts.push("using " + node["Index Name"]);
+  var bits = [];
+  if (node["Plan Rows"] != null) bits.push("plan rows " + node["Plan Rows"]);
+  if (node["Actual Rows"] != null) bits.push("actual rows " + node["Actual Rows"]);
+  if (node["Actual Loops"] != null) bits.push("loops " + node["Actual Loops"]);
+  if (node["Workers Launched"] != null) bits.push("workers " + node["Workers Launched"] + "/" + node["Workers Planned"]);
+  if (node["Sort Method"]) bits.push("sort " + node["Sort Method"]);
+  if (node["Peak Memory Usage"] != null) bits.push("peak mem " + node["Peak Memory Usage"] + " kB");
+  if (node["Disk Usage"] != null) bits.push("disk " + node["Disk Usage"] + " kB");
+  if (node["Hash Batches"] != null) bits.push("hash batches " + node["Hash Batches"] + (node["Original Hash Batches"] != null ? " (orig " + node["Original Hash Batches"] + ")" : ""));
+  if (node["Temp Written Blocks"]) bits.push("temp written " + node["Temp Written Blocks"] + " blk");
+  if (node["Shared Read Blocks"] != null) bits.push("shared read " + node["Shared Read Blocks"] + " blk, hit " + node["Shared Hit Blocks"]);
+  out.push(pad + (depth ? "-> " : "") + parts.join(" ") + "  [" + bits.join("; ") + "]");
+  var keys = [];
+  if (node["Group Key"]) keys.push("group key: " + node["Group Key"].join(", "));
+  if (node["Sort Key"]) keys.push("sort key: " + node["Sort Key"].join(", "));
+  if (node["Presorted Key"]) keys.push("presorted: " + node["Presorted Key"].join(", "));
+  keys.forEach(function (k) { out.push(pad + "     " + k); });
+  (node.Plans || []).forEach(function (ch) { planText(ch, depth + 1, out); });
+  return out;
+}
+function kindLabel(r, run, i) {
+  var k = run.kind || ("run " + (i + 1));
+  if (k === "primer") return "primer (first observation of this profile; not a controlled cold-cache measurement)";
+  if (k === "separate_cold_observation_as_archived") return "separate cold observation, as archived (not a warm repeat; excluded from the median)";
+  if (i === 0 && !r.runs.some(function (x) { return x.kind === "primer"; })) return k + " (first recorded observation; no primer stored)";
+  return k;
+}
+
+/* ---------- app ---------- */
+function boot() {
+  var P = JSON.parse(document.getElementById("payload").textContent);
+  var BUILD = {};
+  try { BUILD = JSON.parse(document.getElementById("build").textContent); } catch (e) { BUILD = {}; }
+  var M = buildModel(P);
+  var S = { cohort: "200m", fam: "q01", engine: null, seed: {}, profile: null, node: "src", projWorks: P.storage.historical_full_works };
+  var CLIP = { text: null, sha: null };
+  var $ = function (id) { return document.getElementById(id); };
+
+  function defaultEngine(c) { var es = M.engines(c); return es.indexOf("clickhouse_ec2") >= 0 ? es[es.indexOf("clickhouse_ec2")] : es[0]; }
+  function curSeed(f) { var ss = M.seeds(S.cohort); var s = S.seed[f]; return ss.indexOf(s) >= 0 ? s : ss[0]; }
+  function curCase() { return M.caseKey(S.cohort, S.engine, S.fam, curSeed(S.fam)); }
+  function curRec() {
+    var ck = curCase();
+    return (S.profile && M.byProfile(S.cohort, S.engine, ck, S.profile)) || M.selectedRec(S.cohort, S.engine, ck) || M.profiles(S.cohort, S.engine, ck)[0] || null;
+  }
+
+  /* header status */
+  (function () {
+    var rs = P.review_status || {};
+    $("status-line").innerHTML =
+      '<span class="chip warn">Underlying 200m benchmark: draft; external review quota-blocked</span>' +
+      '<span class="chip">This page\u2019s own authorship and review are recorded separately</span>' +
+      '<span class="chip">Costs are estimates, not invoices</span>';
+    $("status-line").title = (rs.underlying_200m || "") + " " + (rs.artifact || "");
+  })();
+
+  /* cohort select */
+  $("cohort-select").innerHTML = COHORTS.map(function (c) {
+    var x = P.cohorts[c];
+    return '<option value="' + c + '"' + (c === S.cohort ? " selected" : "") + ">" + esc(x.label) + " Works (" + esc(fmtIntText(x.works)) + ")</option>";
+  }).join("");
+  function fmtIntText(n) { return Math.round(n).toLocaleString("en-US"); }
+  $("cohort-select").addEventListener("change", function () { setCohort(this.value); });
+
+  function setCohort(c) {
+    if (!P.cohorts[c]) return;
+    S.cohort = c; S.profile = null;
+    if (M.engines(c).indexOf(S.engine) < 0) S.engine = defaultEngine(c);
+    $("cohort-select").value = c;
+    renderCohort(); renderInspector();
+  }
+
+  function renderCohort() {
+    var c = S.cohort, x = P.cohorts[c], full = P.historical_full_snapshot.works;
+    var facts = "<b>" + esc(x.label) + "</b> Works = " + fmtInt(x.works) + " records, " + pct(x.works, full) + " of the 2026-06-26 snapshot denominator of " + fmtInt(full) + " Works. Raw selected input " + fmtGB(x.raw_bytes, 2) + ". " + x.columns + " selected columns. Run date " + esc(x.date) + ". " + esc(x.note);
+    if (x.core_works) facts += " Core Works " + fmtInt(x.core_works) + ", XPAC Works " + fmtInt(x.xpac_works) + ".";
+    $("cohort-facts").innerHTML = facts;
+    var es = M.engines(c);
+    $("setup-cards").innerHTML = es.map(function (e) {
+      var s = M.setupOf(c, e), st = P.setups[s] || {};
+      return '<div class="setup e-' + e + '"><b>' + esc(ENGL[e].label) + '</b><span class="hw">' + esc(setupHw(P, s)) + '</span><span class="sn">' + esc(st.label || s) + "</span></div>";
+    }).join("");
+    var absent = M.absentEngines(c);
+    var co = [];
+    if (absent.length) co.push('<div class="callout info"><b>Not run at this cohort</b><span>' + absent.map(function (e) { return esc(ENGL[e].label); }).join(", ") + ". No cells are shown or inferred for these setups.</span></div>");
+    if (c === "200m") co.push('<div class="callout info"><b>Hardware-matched native run</b><span>Only the 200.31m cohort ran PostgreSQL and ClickHouse on the same EC2 host type with the same container budget (m7g.4xlarge, 16 CPU / 32 GiB container, 1024 GiB gp3, engines sequential). Selected internal algorithms and worker settings still differ per engine.</span></div>');
+    if (c === "100m") co.push('<div class="callout"><b>Local, not EC2</b><span>100.09m native PostgreSQL and ClickHouse ran on a local Apple M5 Max (container 16 CPU / 32 GiB, Docker VM storage without a dedicated I/O floor). PostgreSQL built 12 of its indexes; citation indexes were stopped by an 80 GiB host disk guard, so PostgreSQL q05, q06 and q07 were not run. Athena is independent and managed.</span></div>');
+    if (["2m", "10m", "32m"].indexOf(c) >= 0) {
+      co.push('<div class="callout"><b>Different hardware per column</b><span>ClickHouse EC2 at this cohort used the original series: m7g.8xlarge with an 18 CPU / 50 GiB container and an older ClickHouse image and settings. The 200.31m EC2 run used 16 CPU / 32 GiB. PostgreSQL here ran locally (Apple M5 Max, 16 CPU / 32 GiB container). Columns are not a hardware-matched comparison.</span></div>');
+      co.push('<div class="callout"><b>ClickHouse local is timing-only history</b><span>These cells are historical family-level medians from an archived overview on a different local setup. Exact local SQL, per-seed values and repeats were not archived; the EC2 SQL is not substituted.</span></div>');
+    }
+    $("setup-callouts").innerHTML = co.join("");
+    renderTable();
+  }
+
+  function cellHtml(c, e, f) {
+    var v = M.famValue(c, e, f);
+    var pressed = (S.engine === e && S.fam === f) ? "true" : "false";
+    var main, tag = [], aria;
+    if (v.state === "absent") return '<td><span class="nr">no record</span></td>';
+    if (v.state === "complete") {
+      main = fmtS(v.value);
+      tag.push(v.value < LIMIT_S ? '<span class="u60">below 60 s</span>' : '<span class="o60">60 s or more</span>');
+      if (v.kind === "max3") tag.push("max of 3 seed medians");
+      if (v.rec && !M.isBaselineLabel(v.rec)) tag.push("profile " + esc(v.rec.label));
+      aria = fmtSText(v.value) + (v.kind === "max3" ? ", maximum of three seed medians" : ", warm median");
+    } else if (v.state === "historical") {
+      main = fmtS(v.value);
+      tag.push("historical median, timing only, no SQL");
+      aria = fmtSText(v.value) + ", historical timing only, exact SQL not recorded";
+    } else if (v.state === "timeout") {
+      var lim = M.timeoutLimit(v.rec);
+      main = "TIMEOUT";
+      tag.push(lim ? "cancelled at " + lim + " s limit; no median" : "limit not recorded; no median");
+      if (v.kind === "max3") tag.push("seed " + esc(v.seed));
+      if (v.rec && !M.isBaselineLabel(v.rec)) tag.push("profile " + esc(v.rec.label));
+      aria = "timeout, no median";
+    } else if (v.state === "failed") {
+      main = "FAILED";
+      var partial = (v.rec.runs || []).filter(function (r) { return isNum(r.seconds) && !r.exception_code && !r.error; }).length;
+      tag.push(esc(M.failureShort(v.rec)) + (partial ? "; " + partial + " partial timing" + (partial > 1 ? "s" : "") + ", no median" : "; no median"));
+      if (v.rec && !M.isBaselineLabel(v.rec)) tag.push("profile " + esc(v.rec.label));
+      aria = "failed, no valid median";
+    } else {
+      main = stateWord(v.state);
+      tag.push("SQL prepared, never executed");
+      aria = "not run";
+    }
+    var label = f + " " + FAMNAME[f] + ", " + ENGL[e].label + ": " + aria + ". Open in inspector.";
+    return '<td><button type="button" class="cell st-' + esc(v.state) + '" id="cell-' + f + "-" + e + '" data-family="' + f + '" data-engine="' + e + '" data-cohort="' + c + '" data-state="' + esc(v.state) + '"' + (isNum(v.value) ? ' data-value="' + v.value + '"' : "") + ' aria-pressed="' + pressed + '" aria-label="' + esc(label) + '"><span class="v">' + main + '</span><span class="t">' + tag.join("<br>") + "</span></button></td>";
+  }
+
+  function renderTable() {
+    var c = S.cohort, es = M.engines(c);
+    var h = '<table class="qtable" id="family-table" data-cohort="' + c + '"><caption>Warm medians at ' + esc(P.cohorts[c].label) + ' Works. q05 and q06 cells show the maximum of the three seed medians for that engine. Failed, timed-out and not-run cells have no median. Arrow keys move between cells.</caption><thead><tr><th scope="col">Query family</th>' +
+      es.map(function (e) { return '<th scope="col" class="e-' + e + '">' + esc(ENGL[e].label) + '<span class="hw">' + esc(setupHw(P, M.setupOf(c, e))) + "</span></th>"; }).join("") + "</tr></thead><tbody>";
+    FAMS.forEach(function (f) {
+      h += '<tr><th scope="row"><span class="qid">' + f + '</span><span class="qn">' + esc(FAMNAME[f]) + '</span><span class="qd">' + esc(FAMDESC[f]) + "</span></th>" + es.map(function (e) { return cellHtml(c, e, f); }).join("") + "</tr>";
+    });
+    h += '</tbody><tfoot><tr><th scope="row">Families with a warm median below 60 s</th>' + es.map(function (e) {
+      var b = M.below60(c, e), extra = Object.keys(b.other).map(function (k) { return b.other[k] + " " + stateWord(k).toLowerCase(); }).join(", ");
+      if (b.valid === 0 && b.other.historical === b.of) return '<td class="num" id="below60-' + e + '" data-n="" data-assessed="false"><span class="nr">not assessed<br>(historical timing-only)</span></td>';
+      return '<td class="num" id="below60-' + e + '" data-n="' + b.n + '" data-assessed="true">' + b.n + " / " + b.of + (extra ? '<br><span class="nr">' + esc(extra) + "</span>" : "") + "</td>";
+    }).join("") + "</tr></tfoot></table>";
+    $("family-table-wrap").innerHTML = h;
+    var note = "Native timings are warm server-side times (PostgreSQL EXPLAIN execution time without planning; ClickHouse query_log duration) and exclude result transfer. Athena values are service totals including queue, planning and output. A timeout or failure is never drawn as a number.";
+    if (c === "200m") {
+      var pg = M.below60(c, "postgres_ec2"), ch = M.below60(c, "clickhouse_ec2");
+      note = "At 200.31m, ClickHouse EC2 has " + ch.n + " of 7 families with a warm median below 60 s and PostgreSQL EC2 has " + pg.n + " of 7, with matched container budgets. ClickHouse q03 completed two timings (58.747 s, 58.056 s) and then failed with exception 241 at the 24 GiB limit, so it has no median. " + note;
+    }
+    $("table-note").textContent = note;
+  }
+
+  $("family-table-wrap").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button.cell"); if (!b) return;
+    openCell(b.getAttribute("data-family"), b.getAttribute("data-engine"), true);
+  });
+  $("family-table-wrap").addEventListener("keydown", function (ev) {
+    var b = ev.target.closest("button.cell"); if (!b) return;
+    var keys = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
+    var d = keys[ev.key]; if (!d) return;
+    var es = M.engines(S.cohort), fi = FAMS.indexOf(b.getAttribute("data-family")) + d[0], ei = es.indexOf(b.getAttribute("data-engine")) + d[1];
+    if (fi < 0 || fi >= FAMS.length || ei < 0 || ei >= es.length) return;
+    var t = $("cell-" + FAMS[fi] + "-" + es[ei]); if (t) { ev.preventDefault(); t.focus(); }
+  });
+
+  function openCell(f, e, scroll) {
+    S.fam = f; S.engine = e; S.profile = null;
+    var v = M.famValue(S.cohort, e, f);
+    if (GRAPH[f] && v.seed) S.seed[f] = v.seed;
+    document.querySelectorAll("button.cell").forEach(function (b) { b.setAttribute("aria-pressed", (b.getAttribute("data-family") === f && b.getAttribute("data-engine") === e) ? "true" : "false"); });
+    renderInspector();
+    $("ins-status").textContent = "Inspector shows " + f + " " + FAMNAME[f] + ", " + ENGL[e].label + ", " + P.cohorts[S.cohort].label + " cohort.";
+    if (scroll) {
+      var r = $("inspector").getBoundingClientRect();
+      if (r.top > window.innerHeight - 80 || r.top < 0) $("inspector").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  /* ---------- inspector ---------- */
+  function renderInspector() {
+    var c = S.cohort, e = S.engine, f = S.fam;
+    if (!e) { $("inspector").innerHTML = ""; return; }
+    var ck = curCase(), r = curRec(), fv = M.famValue(c, e, f), es = M.engines(c), kind = ENGL[e].kind;
+    var setup = r ? r.setup : M.setupOf(c, e);
+    var profs = M.profiles(c, e, ck);
+    var h = '<div class="ins-head"><p class="ins-kick">Inspector</p>' +
+      '<h3 id="ins-title"><span class="qid">' + f + "</span>" + esc(FAMNAME[f]) + '<span class="co">' + esc(ENGL[e].label) + " &middot; " + esc(P.cohorts[c].label) + " Works &middot; " + esc(setupHw(P, setup)) + "</span></h3>";
+    h += '<div class="ctl-row">' +
+      '<div class="ctl"><label for="engine-select">Engine and setup</label><select id="engine-select">' + es.map(function (x) { return '<option value="' + x + '"' + (x === e ? " selected" : "") + ">" + esc(ENGL[x].label) + "</option>"; }).join("") + "</select></div>" +
+      '<div class="ctl"><label for="profile-select">Profile</label><select id="profile-select"' + (profs.length < 2 ? ' aria-describedby="profile-hint"' : "") + ">" + profs.map(function (p) {
+        return '<option value="' + esc(p.profile_id) + '"' + (r && p.profile_id === r.profile_id ? " selected" : "") + ">" + esc(p.label) + " | " + esc(M.role(p)) + " | " + esc(stateWord(p.state).toLowerCase()) + (p.state === "complete" ? " " + esc(fmtSText(p.median_seconds)) : "") + "</option>";
+      }).join("") + "</select>" + (profs.length < 2 ? '<span class="nr" id="profile-hint">only one profile recorded</span>' : "") + "</div>";
+    if (M.hasSeedCases(c, e, f)) {
+      h += '<div class="ctl"><label for="seed-select">Graph seed work_id</label><select id="seed-select">' + M.seeds(c).map(function (s) {
+        var sr = M.selectedRec(c, e, f + "-s" + s);
+        return '<option value="' + s + '"' + (s === curSeed(f) ? " selected" : "") + ">" + s + (sr ? " | " + stateWord(sr.state).toLowerCase() + (sr.state === "complete" ? " " + fmtSText(sr.median_seconds) : "") : "") + (fv.seed === s && fv.state === "complete" ? " | family max" : "") + "</option>";
+      }).join("") + "</select></div>";
+    } else {
+      h += '<div class="ctl"><label for="seed-select">Graph seed</label><select id="seed-select" disabled><option>' + (GRAPH[f] ? "family-level only (no per-seed record)" : "not applicable (single case)") + "</option></select></div>";
+    }
+    h += "</div>";
+    if (!r) { $("inspector").innerHTML = h + '<p class="note">No record for this combination.</p></div>'; bindInspector(); return; }
+
+    /* state bar */
+    var sb = '<div class="statebar" id="ins-state" data-state="' + esc(r.state) + '" data-engine="' + e + '" data-profile="' + esc(r.profile_id) + '" data-case="' + esc(ck) + '" data-seed="' + esc(r.seed || "") + '">';
+    sb += "<span>Showing engine <b>" + esc(ENGL[e].label) + "</b>, profile <b>" + esc(r.label) + "</b> (" + esc(M.role(r)) + "), case <b>" + esc(ck) + "</b>" + (r.seed ? ", seed <b>" + esc(r.seed) + "</b>" : "") + ". State " + stateChip(r.state) + "</span>";
+    if (GRAPH[f] && M.hasSeedCases(c, e, f)) {
+      sb += "<span>Selected-seed warm median: <b>" + (r.state === "complete" ? fmtS(r.median_seconds) : "none (" + esc(stateWord(r.state).toLowerCase()) + ")") + "</b>. Graph family value used in the table (max of the three seed medians, selected profiles): <b>" + (fv.state === "complete" ? fmtS(fv.value) + "</b> from seed <b>" + esc(fv.seed) : esc(stateWord(fv.state).toLowerCase())) + "</b>.</span>";
+    }
+    if (!r.selected) sb += "<span>This profile is not the one used in the comparison table" + (M.selectedRec(c, e, ck) ? " (table uses <b>" + esc(M.selectedRec(c, e, ck).label) + "</b>)" : "") + ".</span>";
+    sb += "</div>";
+    h += sb + "</div>";
+
+    /* key facts */
+    var first = (r.runs || [])[0];
+    var warms = (r.runs || []).filter(function (x) { return /^warm/.test(x.kind || ""); });
+    h += '<dl class="kf">' +
+      "<div><dt>Warm median</dt><dd" + (r.state === "complete" || r.state === "historical" ? "" : ' class="bad"') + ' id="ins-median">' + (r.state === "complete" ? fmtS(r.median_seconds) : r.state === "historical" ? fmtS(r.median_seconds) : "none") + '</dd><dd class="sm">' + (r.state === "complete" ? "median of " + warms.length + " warm runs; exact " + fmtExact(r.median_seconds) : r.state === "historical" ? "historical overview median; repeats not archived" : esc(stateWord(r.state).toLowerCase()) + "; not converted to a number") + "</dd></div>" +
+      "<div><dt>First observation</dt><dd>" + (first && isNum(first.seconds) ? fmtS(first.seconds) : NR) + '</dd><dd class="sm">' + (first ? (first.kind === "primer" ? "first observation of this profile; not a controlled cold-cache measurement" : first.kind === "separate_cold_observation_as_archived" ? "separate cold observation as archived; not in the median" : esc(first.kind) + ", no separate primer stored") : "no runs recorded") + "</dd></div>" +
+      "<div><dt>Profile</dt><dd>" + esc(r.label) + '</dd><dd class="sm">' + esc(M.role(r)) + "; " + profs.length + " profile" + (profs.length > 1 ? "s" : "") + " recorded</dd></div>" +
+      "<div><dt>SQL status</dt><dd>" + esc(r.sql_status) + '</dd><dd class="sm">' + (r.sql_status === "exact_executed" ? "verbatim text sent to the engine" : r.sql_status === "not_executed" ? "prepared text, never executed here" : "exact text not archived") + "</dd></div>" +
+      "</dl>";
+
+    /* failure banner */
+    if (r.state !== "complete" && r.state !== "historical") {
+      var lim = M.timeoutLimit(r), err = M.errorText(r);
+      var okRuns = (r.runs || []).filter(function (x) { return isNum(x.seconds) && !x.exception_code && !x.error; });
+      var badRuns = (r.runs || []).filter(function (x) { return x.exception_code || x.error; });
+      var msg = r.state === "timeout" ? "Cancelled by the engine timeout" + (lim ? " at " + lim + " s" : " (limit not recorded)") + ". No completed run, so no median and no output QA." :
+        r.state === "not_run" ? "Not executed at this cohort. The SQL below is the prepared text; it was not run here and no timing exists." :
+        "Failed: " + esc(M.failureShort(r)) + ". " + (okRuns.length ? okRuns.length + " run" + (okRuns.length > 1 ? "s" : "") + " completed before the failure (" + okRuns.map(function (x) { return esc(x.kind) + " " + fmtS(x.seconds); }).join(", ") + "); these are partial observations, not a median. " : "") + (badRuns.length ? badRuns.map(function (x) { return esc(x.kind) + " raised exception " + esc(x.exception_code || "?") + (isNum(x.seconds) ? " after " + fmtS(x.seconds) : ""); }).join("; ") + ". " : "") + "No full-output QA.";
+      h += '<div class="callout bad" id="ins-failure"><b>' + esc(stateWord(r.state)) + "</b><span>" + msg + "</span>" + (err ? '<details><summary>Recorded error text</summary><pre class="err">' + esc(err) + "</pre></details>" : "") + "</div>";
+    }
+
+    /* SQL */
+    h += '<div class="ins-sec"><figure class="sql big" id="sql-figure"><figcaption><span>' + (r.sql ? (r.sql_status === "not_executed" ? "Exact SQL, prepared but NOT executed" : "Exact SQL, verbatim as executed") : "SQL") + '</span><span><button type="button" class="btn" id="copy-sql"' + (r.sql ? "" : " disabled") + ">Copy SQL</button> " + '<span class="copy-status" id="copy-status" role="status" aria-live="polite"></span></span></figcaption>';
+    if (r.sql) {
+      h += '<pre class="code" id="sql-body" tabindex="0" aria-label="Exact SQL for ' + esc(ck) + ", " + esc(ENGL[e].label) + '"></pre>';
+      h += '<div class="sqlmeta"><span>SHA-256 (from evidence): <code id="sql-sha">' + esc(r.sql_sha256) + '</code></span><span id="sql-sha-check">Recomputing SHA-256 in this browser\u2026</span><span>' + fmtInt(r.sql.length) + " characters. Settings are not part of this text; they are passed separately (below).</span></div>";
+    } else {
+      h += '<div class="nosql" id="sql-body" data-missing="true"><b>Exact SQL not recorded.</b><span>' + esc(r.note || "No SQL text exists in the evidence for this cell.") + "</span></div>";
+    }
+    h += "</figure></div>";
+
+    /* settings */
+    var req = (r.settings && r.settings.requested) || null, eff = (r.settings && r.settings.effective) || null;
+    var setH = "";
+    if (kind === "athena") {
+      setH = kvTable(r.settings, "Execution settings recorded for these Athena runs", kind, false) + '<p class="note">reuse=false means Athena result reuse was disabled for every repeat.</p>';
+    } else if (r.state === "historical") {
+      setH = '<p class="note">Settings: ' + NR + ". Historical timing-only cell.</p>";
+    } else {
+      var runEff = (r.runs || []).map(function (x) { return x.effective_settings; }).filter(function (x) { return x && Object.keys(x).length; });
+      var same = runEff.length && runEff.every(function (x) { return JSON.stringify(x) === JSON.stringify(runEff[0]); });
+      setH = '<div class="two"><div>' + kvTable(req, "Requested: passed by the runner as client or session options, not injected into the SQL text", kind, false) +
+        "</div><div>" + ((runEff.length && (!eff || !Object.keys(eff).length)) ? "" : kvTable(eff, "Effective: as reported by the engine for this profile", kind, true)) +
+        (runEff.length ? kvTable(runEff[0], "Effective per run from system.query_log Settings (" + (same ? "identical for all " + runEff.length + " logged runs" : "differs between runs; see each run") + ")", kind, false) : "") + "</div></div>";
+      if (kind === "postgres" && (!req || !Object.keys(req).length) && (!eff || !Object.keys(eff).length) && (setup === "local_pg")) {
+        setH += '<details><summary>Server defaults recorded for the local PostgreSQL setup</summary>' + kvTable(Object.fromEntries((P.setups.local_pg.default_settings || []).map(function (x) { return [x[0], x[1] + (x[2] ? " " + x[2] : "")]; })), "pg_settings snapshot for the local setup", kind, false) + "</details>";
+      }
+    }
+    h += '<div class="ins-sec" id="ins-settings"><h4>Execution settings</h4>' + setH + "</div>";
+
+    /* runs */
+    h += '<div class="ins-sec" id="ins-runs"><h4>Recorded runs</h4>' + runsTable(r, kind) + "</div>";
+
+    /* failure resources */
+    if (r.failure_resources && Object.keys(r.failure_resources).length) {
+      h += '<div class="ins-sec"><h4>Resources during the failed or cancelled attempt</h4>' + metricsTable(r.failure_resources, "Telemetry window for the attempt that did not complete") + '<p class="note">Scope: ' + esc(r.failure_resources.scope || "not recorded") + "</p></div>";
+    }
+
+    /* QA */
+    h += '<div class="ins-sec" id="ins-qa"><h4>Result QA</h4>' + qaHtml(r, c, e, ck) + "</div>";
+
+    /* plans */
+    var planRuns = (r.runs || []).filter(function (x) { return x.plan; });
+    if (planRuns.length) {
+      h += '<div class="ins-sec" id="ins-plans"><h4>Actual plan excerpts (compact, from EXPLAIN ANALYZE)</h4><p class="note">Compact excerpt of the recorded JSON plan: node type, rows, loops, workers, sort and hash details, buffer blocks. Planning time is reported separately and is not part of the timed execution.</p>' +
+        planRuns.map(function (x, i) {
+          return "<details" + (i === 0 ? " open" : "") + "><summary>" + esc(x.kind) + ": execution " + fmtS(x.seconds) + ", planning " + (isNum(x.planning_seconds) ? fmtS(x.planning_seconds) : "not recorded") + '</summary><pre class="plan">' + esc(planText(x.plan, 0, []).join("\n")) + "</pre>" + (x.explain_settings && Object.keys(x.explain_settings).length ? kvTable(x.explain_settings, "Non-default settings reported by EXPLAIN", kind, false) : "") + "</details>";
+        }).join("") + "</div>";
+    }
+
+    /* across cohorts */
+    h += '<div class="ins-sec"><h4>' + esc(f) + " across cohorts and setups</h4>" + acrossHtml(f) + "</div>";
+
+    /* source */
+    h += '<div class="ins-sec"><h4>Source evidence</h4><p class="note"><a href="' + esc(r.source) + '" target="_blank" rel="noopener">' + esc(r.source) + "</a></p>" + (r.note ? '<p class="note">' + esc(r.note) + "</p>" : "") + "</div>";
+
+    $("inspector").innerHTML = h;
+    if (r.sql) {
+      $("sql-body").textContent = r.sql;
+      checkSha(r.sql, r.sql_sha256, $("sql-sha-check"));
+    }
+    CLIP.text = r.sql || null; CLIP.sha = r.sql_sha256 || null;
+    bindInspector();
+  }
+
+  function runsTable(r, kind) {
+    var runs = r.runs || [];
+    if (!runs.length) return '<p class="note">No completed or partial runs recorded for this profile' + (r.state === "timeout" ? " (the attempt was cancelled; its telemetry window is shown below)" : r.state === "historical" ? " (historical median only)" : "") + ".</p>";
+    var cols = [
+      ["Run", function (x, i) { return esc(kindLabel(r, x, i)); }],
+      ["Seconds", function (x) { return isNum(x.seconds) ? fmtExact(x.seconds) : NR; }, "num"],
+      ["Query / execution ID", function (x) { return x.query_id ? '<code>' + esc(x.query_id) + "</code>" : NR; }]
+    ];
+    if (kind === "athena") {
+      cols.push(["Data scanned", function (x) { return isNum(x.data_scanned_bytes) ? fmtGB(x.data_scanned_bytes) : NR; }, "num"]);
+      cols.push(["Engine / queue / planning", function (x) { var s = x.statistics; return s ? (s.EngineExecutionTimeInMillis + " / " + s.QueryQueueTimeInMillis + " / " + s.QueryPlanningTimeInMillis + " ms") : NR; }, "num"]);
+      cols.push(["Rows / hash", function (x) { var rows = x.rows != null ? x.rows : x.result_rows; return (rows != null ? fmtInt(rows) : NR) + (x.canonical_sha256 ? ' <code>' + shortSha(x.canonical_sha256) + "</code>" : ""); }]);
+    } else {
+      cols.push(["CPU", function (x) { var s = x.resources || {}; var avg = s.average_busy_cores != null ? s.average_busy_cores : s.average_busy_cores_in_monitor_window != null ? s.average_busy_cores_in_monitor_window : s.average_cpu_cores; return (isNum(s.cpu_seconds) ? fmtNum(s.cpu_seconds, 1) + " CPU s" : "") + (isNum(avg) ? (isNum(s.cpu_seconds) ? "<br>" : "") + fmtNum(avg, 2) + " avg busy cores" : "") || NR; }, "num"]);
+      cols.push(["Container memory peak", function (x) { var s = x.resources || {}; if (isNum(s.memory_current_peak_bytes)) return fmtGiB(s.memory_current_peak_bytes) + " cgroup<br>anon " + fmtGiB(s.memory_anon_peak_bytes); if (isNum(s.container_sampled_peak_bytes)) return fmtGiB(s.container_sampled_peak_bytes) + " sampled<br>anon " + fmtGiB(s.container_sampled_peak_anon_bytes); return NR; }, "num"]);
+      cols.push(["Query memory peak", function (x) { var v = isNum(x.query_peak_memory_bytes) ? x.query_peak_memory_bytes : (x.resources && isNum(x.resources.query_peak_bytes) ? x.resources.query_peak_bytes : null); return v != null ? fmtGiB(v) : NR; }, "num"]);
+      cols.push(["Disk read / write", function (x) { var s = x.resources || {}; if (s.io_delta) return fmtGB(s.io_delta.rbytes, 2) + " / " + fmtGB(s.io_delta.wbytes, 2); if (isNum(s.physical_read_bytes)) return fmtGB(s.physical_read_bytes, 2) + " / " + fmtGB(s.physical_write_bytes, 2); return NR; }, "num"]);
+      cols.push(["Spill", function (x) { var pe = x.profile_events || {}, s = x.resources || {}; if (isNum(pe.ExternalProcessingCompressedBytesTotal)) return fmtGiB(pe.ExternalProcessingCompressedBytesTotal) + " compressed"; if (isNum(s.spill_compressed_bytes)) return fmtGiB(s.spill_compressed_bytes) + " compressed"; if (x.plan && x.plan["Temp Written Blocks"] != null) return fmtInt(x.plan["Temp Written Blocks"]) + " temp blk (plan root)"; return NR; }, "num"]);
+      cols.push(["Exception", function (x) { if (x.error || x.exception_code) return '<span class="chip bad">' + esc(x.exception_code != null ? "code " + x.exception_code : "error") + "</span>"; return x.exception_code === 0 ? "none (0)" : NR; }]);
+    }
+    var t = '<div class="tw"><table class="dt" id="runs-table"><caption>Every recorded observation for this profile. The warm median uses warm runs only.</caption><thead><tr>' + cols.map(function (cdef) { return '<th scope="col"' + (cdef[2] ? ' class="' + cdef[2] + '"' : "") + ">" + esc(cdef[0]) + "</th>"; }).join("") + "</tr></thead><tbody>";
+    runs.forEach(function (x, i) { t += '<tr data-kind="' + esc(x.kind || "") + '">' + cols.map(function (cdef) { return "<td" + (cdef[2] ? ' class="' + cdef[2] + '"' : "") + ">" + cdef[1](x, i) + "</td>"; }).join("") + "</tr>"; });
+    t += "</tbody></table></div>";
+    var scope = runs.map(function (x) { return x.resources && x.resources.scope; }).filter(Boolean)[0];
+    if (kind === "athena") scope = scope || "Athena service statistics per execution. CPU and RAM are not exposed by the service. Total time includes queue, planning and result output.";
+    else if (!scope && r.setup === "ec2_legacy") scope = "Scope text not stored with this record. Fields are sampled container telemetry (see telemetry_sample_count and telemetry_max_gap_seconds) plus ClickHouse query_log values.";
+    t += '<p class="note" id="measure-scope"><b>Measurement scope:</b> ' + (scope ? esc(scope) : NR) + " Values not present in the evidence are shown as not recorded, never as zero.</p>";
+    t += "<details><summary>All recorded metrics per run</summary>" + runs.map(function (x, i) {
+      var extra = {};
+      ["read_rows", "logical_read_bytes", "query_peak_memory_bytes", "exception_code", "planning_seconds", "data_scanned_bytes", "iteration", "total_seconds"].forEach(function (k) { if (x[k] !== undefined) extra[k] = x[k]; });
+      return "<h4>" + esc(kindLabel(r, x, i)) + "</h4>" + metricsTable(x.resources, "Resources") + (Object.keys(extra).length ? metricsTable(extra, "Engine-reported values") : "") +
+        (x.profile_events && Object.keys(x.profile_events).length ? metricsTable(x.profile_events, "Selected ClickHouse ProfileEvents") : "") +
+        (x.statistics ? metricsTable(x.statistics, "Athena statistics") : "") +
+        (x.effective_settings && Object.keys(x.effective_settings).length ? kvTable(x.effective_settings, "query_log Settings for this run", kind, false) : "") +
+        (x.error ? '<pre class="err">' + esc(typeof x.error === "string" ? x.error : JSON.stringify(x.error, null, 1)) + "</pre>" : "");
+    }).join("") + "</details>";
+    return t;
+  }
+
+  function qaHtml(r, c, e, ck) {
+    if (r.state === "historical") return '<p class="note">QA: ' + NR + ". Historical timing-only row.</p>";
+    var q = r.qa;
+    if (!q) return '<p class="note">No full-output QA: ' + (r.state === "complete" ? "QA not recorded." : "the profile did not produce a complete result.") + "</p>";
+    var rows = [];
+    rows.push(["Result rows", q.rows != null ? fmtInt(q.rows) : NR]);
+    rows.push(["Canonical result SHA-256", q.canonical_sha256 ? "<code>" + esc(q.canonical_sha256) + "</code>" : NR]);
+    if (q.matched != null) rows.push(["Matched expected reference", q.matched ? '<span class="chip ok">yes</span>' : '<span class="chip bad">no</span>']);
+    if (q.expected_rows != null) rows.push(["Expected rows", fmtInt(q.expected_rows)]);
+    if (q.expected_sha256) rows.push(["Expected SHA-256", "<code>" + esc(q.expected_sha256) + "</code>"]);
+    var fs = q.fetch_seconds != null ? q.fetch_seconds : q.client_fetch_seconds;
+    if (fs != null) rows.push(["Separate client fetch for QA", fmtExact(fs) + ' <span class="nr">(not part of the timed warm runs)</span>']);
+    if (e !== "athena") {
+      rows.push(["Saved fingerprint equals saved raw Athena fingerprint", q.recorded_fingerprint_matches_raw_athena === true ? '<span class="chip ok">yes</span> <span class="nr">(presentation-time join of stored hashes; not a rerun and not an external validation)</span>' : NR]);
+      var a = M.athenaFor(c, ck);
+      if (a && a.qa && a.qa.canonical_sha256 && q.canonical_sha256) rows.push(["Same hash as Athena at this cohort", a.qa.canonical_sha256 === q.canonical_sha256 ? '<span class="chip ok">equal</span>' : '<span class="chip bad">different</span>']);
+      var v = c === "200m" ? M.verification200(e, ck) : null;
+      if (c === "200m") rows.push(["200m verification record", v ? (v.matched_raw_athena ? '<span class="chip ok">matched raw Athena</span> ' : '<span class="chip bad">not matched</span> ') + fmtInt(v.rows) + " rows" : (r.selected ? NR : "applies to selected profiles only")]);
+    }
+    return '<div class="tw"><table class="dt"><tbody>' + rows.map(function (x) { return '<tr><th scope="row">' + x[0] + "</th><td>" + x[1] + "</td></tr>"; }).join("") + "</tbody></table></div>";
+  }
+
+  function acrossHtml(f) {
+    var t = '<div class="tw"><table class="dt" id="across-table"><caption>Family values for the selected profile of each setup. Different hardware, settings and SQL between cohorts mean these rows do not define a growth law.</caption><thead><tr><th scope="col">Cohort</th>' + ENG.map(function (e) { return '<th scope="col" class="num">' + esc(ENGL[e.key].label) + "</th>"; }).join("") + "</tr></thead><tbody>";
+    COHORTS.forEach(function (c) {
+      t += '<tr' + (c === S.cohort ? ' style="background:var(--accent-soft)"' : "") + '><th scope="row">' + esc(P.cohorts[c].label) + "</th>" + ENG.map(function (e) {
+        var v = M.famValue(c, e.key, f);
+        var txt = v.state === "absent" ? '<span class="nr">no setup</span>' : (v.state === "complete" || v.state === "historical") ? fmtS(v.value) + (v.state === "historical" ? ' <span class="nr">hist.</span>' : "") : '<span style="color:var(--bad)">' + esc(stateWord(v.state)) + "</span>";
+        return '<td class="num">' + txt + (v.state !== "absent" ? '<br><span class="nr">' + esc(setupHw(P, M.setupOf(c, e.key)).split(",")[0]) + "</span>" : "") + "</td>";
+      }).join("") + "</tr>";
+    });
+    return t + "</tbody></table></div>";
+  }
+
+  function bindInspector() {
+    var es = $("engine-select"), ps = $("profile-select"), ss = $("seed-select"), cp = $("copy-sql");
+    /* The inspector is rebuilt on every change; put focus back on the same control so keyboard users keep their place.
+       Only these select handlers refocus; opening the inspector from a query cell does not move focus. */
+    function refocus(id) { var el = $(id); if (el && !el.disabled && el.focus) el.focus({ preventScroll: true }); }
+    if (es) es.addEventListener("change", function () { S.engine = this.value; S.profile = null; syncPressed(); renderInspector(); refocus("engine-select"); });
+    if (ps) ps.addEventListener("change", function () { S.profile = this.value; renderInspector(); refocus("profile-select"); });
+    if (ss && !ss.disabled) ss.addEventListener("change", function () { S.seed[S.fam] = this.value; S.profile = null; renderInspector(); refocus("seed-select"); });
+    if (cp) cp.addEventListener("click", copySql);
+  }
+  function syncPressed() { document.querySelectorAll("button.cell").forEach(function (b) { b.setAttribute("aria-pressed", (b.getAttribute("data-family") === S.fam && b.getAttribute("data-engine") === S.engine) ? "true" : "false"); }); }
+
+  function copySql() {
+    var st = $("copy-status"), text = CLIP.text;
+    st.className = "copy-status";
+    if (!text) { st.className = "copy-status bad"; st.textContent = "Nothing to copy: exact SQL not recorded."; return; }
+    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") {
+      st.className = "copy-status bad"; st.textContent = "Copy failed: the Clipboard API is not available in this viewer. Nothing was copied."; return;
+    }
+    navigator.clipboard.writeText(text).then(function () {
+      st.className = "copy-status ok"; st.textContent = "Copied " + text.length.toLocaleString("en-US") + " characters (SHA-256 " + shortSha(CLIP.sha) + "\u2026).";
+    }, function (err) {
+      st.className = "copy-status bad"; st.textContent = "Copy failed: clipboard access was denied (" + (err && err.name ? err.name : "unknown error") + "). Nothing was copied.";
+    });
+  }
+
+  function checkSha(text, expected, el) {
+    if (!(window.crypto && crypto.subtle && window.TextEncoder)) { el.innerHTML = '<span class="nr">Browser SHA-256 check unavailable (Web Crypto not exposed here); evidence hash shown above.</span>'; return; }
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function (buf) {
+      var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return ("0" + b.toString(16)).slice(-2); }).join("");
+      if (!el.isConnected) return;
+      el.setAttribute("data-match", hex === expected ? "true" : "false");
+      el.innerHTML = hex === expected ? '<span class="chip ok">match</span> SHA-256 recomputed in this browser from the displayed text equals the evidence hash.' : '<span class="chip bad">MISMATCH</span> Browser SHA-256 <code>' + esc(hex) + "</code> differs from the evidence hash.";
+    }, function () { el.innerHTML = '<span class="nr">Browser SHA-256 check failed to run.</span>'; });
+  }
+
+  /* ---------- tuning ---------- */
+  var TNOTES = {
+    "200m|clickhouse_ec2|q02": "Hash join at the 24 GiB query limit failed with exception 241 while filling the right join side. The selected profile keeps the same SQL and switches join_algorithm to grace_hash with 16 initial buckets and max_bytes_in_join 3 GiB.",
+    "200m|clickhouse_ec2|q03": "Both profiles failed. With grace_hash (16 buckets, 3 GiB in-join), primer 58.747 s and warm1 58.056 s completed, then warm2 raised exception 241 at the 24 GiB limit. No valid median, no full-output QA.",
+    "200m|clickhouse_ec2|q04": "Hash profile failed with exception 241. The selected profile rewrites the SQL to country sets under the same settings.",
+    "200m|postgres_ec2|q02": "work_mem 2GB with enable_nestloop off failed at once: a parallel shared memory segment could not be resized. Retried with a 32 GiB /dev/shm ceiling inside the same 32 GiB container memory total and work_mem 512MB: cancelled at 300 s.",
+    "200m|postgres_ec2|q03": "Same sequence as q02: work_mem 2GB failed on shared memory resize; the shm 32 GiB plus work_mem 512MB retry was cancelled at 300 s.",
+    "200m|postgres_ec2|q07": "Original SQL with work_mem 512MB timed out. An ordered-count rewrite with enable_hashagg off also timed out at 300 s.",
+    "100m|clickhouse_local|q03": "Hash profile of the original SQL failed; the selected profile is a SQL rewrite (numeric top ids).",
+    "100m|postgres_local|q02": "Initial profile with work_mem 512MB timed out; targeted profile: work_mem 2GB, enable_nestloop off, different SQL.",
+    "100m|postgres_local|q03": "Initial profile reused the 32m author pre-aggregation SQL; targeted profile: work_mem 2GB, enable_nestloop off, different SQL.",
+    "100m|postgres_local|q04": "Initial profile with work_mem 512MB timed out; targeted profile: work_mem 2GB, enable_nestloop off, different SQL.",
+    "32m|postgres_local|q02": "work_mem raised from the 128MB server default to 512MB; same SQL.",
+    "32m|postgres_local|q03": "Original SQL timed out. Author pre-aggregation rewrite, then work_mem 512MB, then enable_nestloop off.",
+    "32m|postgres_local|q04": "Baseline timed out; work_mem 512MB completed with the same SQL.",
+    "32m|postgres_local|q07": "work_mem 512MB; same SQL.",
+    "10m|postgres_local|q03": "The original SQL stayed the selected profile; a control repeat and the pre-aggregation rewrite are recorded alongside.",
+    "2m|postgres_local|q03": "The original SQL stayed the selected profile; the pre-aggregation rewrite is recorded alongside."
+  };
+  function settingsChips(rec, base, kind) {
+    var req = (rec.settings && rec.settings.requested) || {}, breq = (base && base.settings && base.settings.requested) || {};
+    var keys = Object.keys(req);
+    if (rec === base || !base) {
+      if (!keys.length) return "no requested overrides (server defaults)";
+      return keys.map(function (k) { return k + "=" + fmtSet(k, req[k], kind); }).join(", ");
+    }
+    var diff = keys.filter(function (k) { return JSON.stringify(req[k]) !== JSON.stringify(breq[k]); });
+    var removed = Object.keys(breq).filter(function (k) { return !(k in req); });
+    var out = diff.map(function (k) { return k + "=" + fmtSet(k, req[k], kind); }).concat(removed.map(function (k) { return k + " unset"; }));
+    return out.length ? "changed vs baseline: " + out.join(", ") : "same requested settings as baseline";
+  }
+  function fmtSet(k, v, kind) { var n = Number(v); if (kind === "clickhouse" && /memory|bytes/.test(k) && isFinite(n) && n >= 1048576) return trimNum(n / GIB, 3) + "GiB"; return String(v); }
+  function renderTuning() {
+    var cards = [];
+    ["200m", "100m", "32m", "10m", "2m"].forEach(function (c) {
+      ["clickhouse_ec2", "postgres_ec2", "clickhouse_local", "postgres_local"].forEach(function (e) {
+        var cases = (M.idx[c] && M.idx[c][e]) || {};
+        Object.keys(cases).sort().forEach(function (ck) {
+          var ps = cases[ck]; if (ps.length < 2) return;
+          var base = ps.filter(function (p) { return M.isBaselineLabel(p); })[0] || ps[0];
+          var order = [base].concat(ps.filter(function (p) { return p !== base && !p.selected; })).concat(ps.filter(function (p) { return p !== base && p.selected; }));
+          var kind = ENGL[e].kind;
+          var li = order.map(function (p) {
+            var res = p.state === "complete" ? fmtS(p.median_seconds) : stateWord(p.state);
+            var sqlNote = p === base ? "SQL " + shortSha(p.sql_sha256) : (p.sql_sha256 === base.sql_sha256 ? "same SQL as baseline" : "different SQL " + shortSha(p.sql_sha256));
+            return '<li class="' + (p.selected ? "sel" : "") + '"><div class="tl1"><span class="lbl">' + esc(p.label) + ' <span class="chip' + (p.selected ? " acc" : "") + '">' + esc(M.role(p)) + '</span></span><span class="res' + (p.state === "complete" ? "" : " bad") + '">' + esc(res) + "</span></div>" +
+              '<span class="set">' + esc(settingsChips(p, base, kind)) + "</span><span class=\"set\">" + esc(sqlNote) + (p.state !== "complete" ? "; " + esc(M.failureShort(p)) : "") + "</span>" +
+              '<span><button type="button" class="btn topen" data-cohort="' + c + '" data-engine="' + e + '" data-case="' + esc(ck) + '" data-profile="' + esc(p.profile_id) + '">Open in inspector</button></span></li>';
+          }).join("");
+          var key = c + "|" + e + "|" + ck;
+          cards.push('<div class="tcard e-' + e + '" data-key="' + esc(key) + '"><h4>' + esc(P.cohorts[c].label) + " &middot; " + esc(ENGL[e].label) + " &middot; " + esc(ck) + ' <span class="hw">' + esc(setupHw(P, ps[0].setup)) + "</span></h4>" + (TNOTES[key] ? '<p class="tn">' + esc(TNOTES[key]) + "</p>" : "") + '<ol class="tlist">' + li + "</ol></div>");
+        });
+      });
+    });
+    /* legacy q02 arms */
+    var L = P.legacy_tuning, arms = ["original_a", "original_b", "memory24", "parallel_hash24", "preaggregate12"];
+    var baseSql = L.original_a.sql;
+    var lt = '<div class="tw"><table class="dt" id="legacy-tuning"><caption>q02 tuning arms at 31.89m, ClickHouse EC2 original series (m7g.8xlarge, container 18 CPU / 50 GiB, max_threads 18). Three warm runs per arm. Hardware differs from the 200.31m run.</caption><thead><tr><th scope="col">Arm</th><th scope="col">Role</th><th scope="col">join_algorithm</th><th scope="col" class="num">Query memory</th><th scope="col" class="num">Spill thresholds</th><th scope="col">SQL</th><th scope="col" class="num">Warm runs, s</th><th scope="col" class="num">Median</th><th scope="col" class="num">Query peak</th><th scope="col" class="num">Spill written</th><th scope="col">QA</th></tr></thead><tbody>';
+    var roles = { original_a: "control A", original_b: "control B (separate series)", memory24: "query limit 24 GiB and spill thresholds 8 GiB both changed", parallel_hash24: "join algorithm changed, at 24 GiB query / 8 GiB spill", preaggregate12: "SQL rewrite at 12 GiB / 4 GiB" };
+    arms.forEach(function (a) {
+      var x = L[a]; if (!x) return;
+      var rs = x.resources || [];
+      lt += '<tr><th scope="row"><code>' + esc(a) + "</code></th><td>" + esc(roles[a]) + "</td><td><code>" + esc(x.join_algorithm) + '</code></td><td class="num">' + esc(x.query_memory_gib) + ' GiB</td><td class="num">' + esc(x.spill_gib) + " GiB</td><td>" + (x.sql === baseSql ? "same as control A" : "rewritten") + ' <button type="button" class="btn larm" data-arm="' + a + '">Show SQL</button></td><td class="num">' + x.warm_seconds.map(function (s) { return s.toFixed(3); }).join(", ") + '</td><td class="num"><b>' + fmtS(x.median_seconds) + '</b></td><td class="num">' + (rs.length ? rs.map(function (q) { return fmtGiB(q.query_peak_bytes); }).join("<br>") : NR) + '</td><td class="num">' + (rs.length ? rs.map(function (q) { return fmtGiB(q.spill_compressed_bytes); }).join("<br>") : NR) + "</td><td>" + (x.qa ? (x.qa.matched ? '<span class="chip ok">matched</span> ' : '<span class="chip bad">not matched</span> ') + fmtInt(x.qa.rows) + " rows" : NR) + "</td></tr>";
+    });
+    var b32 = M.selectedRec("32m", "clickhouse_ec2", "q02");
+    lt += '<tr><th scope="row">31.89m cohort benchmark q02</th><td>separate series from the cohort benchmark run, not one of the five arms</td><td><code>' + esc(b32.settings.requested.join_algorithm) + '</code></td><td class="num">' + trimNum(b32.settings.requested.max_memory_usage / GIB, 2) + ' GiB</td><td class="num">' + trimNum(b32.settings.requested.max_bytes_before_external_group_by / GIB, 2) + ' GiB</td><td><button type="button" class="btn topen" data-cohort="32m" data-engine="clickhouse_ec2" data-case="q02" data-profile="' + esc(b32.profile_id) + '">Open in inspector</button></td><td class="num">' + b32.runs.filter(function (x) { return /^warm/.test(x.kind); }).map(function (x) { return x.seconds.toFixed(3); }).join(", ") + '</td><td class="num"><b>' + fmtS(b32.median_seconds) + '</b></td><td class="num">' + NR + '</td><td class="num">' + NR + "</td><td>" + (b32.qa && b32.qa.matched ? '<span class="chip ok">matched</span> ' + fmtInt(b32.qa.rows) + " rows" : NR) + "</td></tr></tbody></table></div>";
+    var legacy = '<div class="tcard e-clickhouse_ec2" style="grid-column:1/-1"><h4>31.89m &middot; ClickHouse EC2 original series &middot; q02 tuning arms <span class="hw">EC2 m7g.8xlarge, container 18 CPU / 50 GiB</span></h4><p class="tn">original_a (65.521 s) and original_b (65.033 s) are separate controls. memory24 changes both the query memory limit and the spill thresholds, and stays at 64.905 s. parallel_hash24 changes the join algorithm at 24 GiB query memory and 8 GiB spill thresholds: 5.640 s on the 18 CPU / 50 GiB container. These arms were not repeated on the 200.31m hardware.</p>' + lt + '<div id="legacy-sql"></div></div>';
+    $("tuning-body").innerHTML = '<div class="tgrid">' + legacy + cards.join("") + "</div>";
+  }
+  $("tuning-body").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button.topen");
+    if (b) { openProfile(b.getAttribute("data-cohort"), b.getAttribute("data-engine"), b.getAttribute("data-case"), b.getAttribute("data-profile")); return; }
+    var a = ev.target.closest("button.larm");
+    if (a) {
+      var arm = a.getAttribute("data-arm"), x = P.legacy_tuning[arm];
+      $("legacy-sql").innerHTML = '<figure class="sql" id="legacy-sql-figure" data-arm="' + esc(arm) + '"><figcaption><span>Exact SQL, arm ' + esc(arm) + '</span><span><button type="button" class="btn" id="copy-legacy">Copy SQL</button> <span class="copy-status" id="copy-legacy-status" role="status" aria-live="polite"></span></span></figcaption><pre class="code" id="legacy-sql-body" tabindex="0"></pre><div class="sqlmeta"><span>Requested settings: <code>' + esc(JSON.stringify(x.settings)) + "</code></span></div></figure>";
+      $("legacy-sql-body").textContent = x.sql;
+      $("copy-legacy").addEventListener("click", function () {
+        var st = $("copy-legacy-status");
+        if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") { st.className = "copy-status bad"; st.textContent = "Copy failed: the Clipboard API is not available in this viewer. Nothing was copied."; return; }
+        navigator.clipboard.writeText(x.sql).then(function () { st.className = "copy-status ok"; st.textContent = "Copied " + x.sql.length + " characters."; }, function (err) { st.className = "copy-status bad"; st.textContent = "Copy failed: clipboard access was denied (" + (err && err.name ? err.name : "unknown error") + "). Nothing was copied."; });
+      });
+      $("legacy-sql-body").focus();
+    }
+  });
+  function openProfile(c, e, ck, pid) {
+    var rec = M.byProfile(c, e, ck, pid); if (!rec) return;
+    setCohort(c);
+    S.engine = e; S.fam = rec.family; if (rec.seed) S.seed[rec.family] = rec.seed; S.profile = pid;
+    syncPressed(); renderInspector();
+    $("inspector").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("inspector").focus({ preventScroll: true });
+  }
+
+  /* ---------- dataflow ---------- */
+  function renderFlow() {
+    var c2 = P.cohorts["200m"], st = P.storage, H = P.historical_full_snapshot, V = P.verification_200m, CL = P.cleanup_200m;
+    var chObs = st.observed_200m, chTotal = chObs.storage.reduce(function (a, x) { return a + x.bytes_on_disk; }, 0), proj = chObs.projections[0].bytes_on_disk;
+    var pgS = st.postgres_200m.storage, pgIdx = pgS.tables.reduce(function (a, x) { return a + x.indexes_bytes; }, 0), pgHeap = pgS.tables.reduce(function (a, x) { return a + x.heap_bytes; }, 0);
+    var rows200 = Object.keys(c2.table_counts).reduce(function (a, k) { return a + c2.table_counts[k]; }, 0);
+    var views = c2.athena_views || [];
+    var N = {
+      src: { t: "OpenAlex public S3 snapshot", s: "2026-06-26, version-pinned", d: "<p>Public, CC0 OpenAlex snapshot, pinned by per-entity manifest SHA-256. Works manifest: " + fmtInt(H.works) + " records, " + fmtGB(H.works_bytes, 2) + ' listed, manifest <code>' + esc(shortSha(H.entities.works.manifest_sha256)) + "\u2026</code>. All 20 entities: " + fmtInt(H.all_entity_records) + " records, " + fmtGB(H.all_parquet_bytes, 2) + ".</p><p>Retention: public upstream; not controlled by this project.</p>" },
+      raw: { t: "Immutable raw cache", s: fmtGB(c2.raw_bytes, 2) + " at 200.31m", d: "<p>200.31m run: " + fmtGB(c2.raw_bytes, 2) + " raw input (" + fmtGB(c2.raw_work_bytes, 2) + " of it Works) on the run's 1024 GiB encrypted gp3 volume (6000 IOPS, 500 MiB/s). 955 Work objects; all 480 files of the prior 100m set were kept inside it. Read-only once copied.</p><p>Older series: a 120 GiB gp3 raw volume (3000 IOPS, 125 MiB/s), read-only during benchmarks.</p><p><b>Retained now:</b> only the older raw volume <code>" + esc(CL.retained_prior_raw_volume_preserved) + "</code> (estimated 9.60 USD/month). The 200m raw volume was deleted; no snapshot was taken.</p>" },
+      norm: { t: "Shared normalized Parquet", s: fmtGB(c2.normalized_bytes, 2) + ", 9 tables", d: "<p>One projection step writes the 9 normalized tables used by both native engines: " + fmtInt(rows200) + " rows at 200.31m, including " + fmtInt(c2.table_counts.citation_edge) + " citation edge rows; " + fmtGB(c2.normalized_bytes, 2) + ". " + c2.columns + " selected columns, not all OpenAlex fields.</p><p><b>Retained now:</b> deleted with the run volume; no snapshot.</p>" },
+      pg: { t: "PostgreSQL native + 14 indexes", s: fmtGB(pgS.database_bytes, 3) + " database", d: "<p>PostgreSQL 18.6 database: " + fmtGB(pgS.database_bytes, 3) + " (heap " + fmtGB(pgHeap, 3) + ", indexes " + fmtGB(pgIdx, 3) + "). Final data directory " + fmtGB(st.final_directories.apparent_directory_bytes.pgdata, 2) + " including WAL and logs. Durability on (fsync, full_page_writes). Stored on EBS gp3 during the test.</p><p>Indexes: " + st.postgres_200m.indexes.map(function (x) { return "<code>" + esc(x[0]) + "</code>"; }).join(", ") + ".</p><p><b>Retained now:</b> deleted; no snapshot.</p>" },
+      ch: { t: "ClickHouse native + reverse projection", s: fmtGB(chTotal, 3) + " active", d: "<p>ClickHouse 26.3.12.3 active parts: " + fmtGB(chTotal, 3) + ", including the " + fmtGB(proj, 3) + " <code>by_cited</code> reverse citation projection. Final data directory " + fmtGB(st.final_directories.apparent_directory_bytes.chdata, 2) + ". Stored on EBS gp3 during the test.</p><p><code>" + esc(P.schemas.clickhouse_projection) + "</code></p><p><b>Retained now:</b> deleted; no snapshot.</p>" },
+      qa: { t: "Exact result QA", s: "canonical result SHA-256", d: "<p>Every complete result is canonicalized and hashed. " + V.completed_full_output_checks.length + " completed selected native cases at 200.31m match raw Athena. " + V.native_observations_recomputed + " native observations and " + V.all_profile_trace_observations_recomputed + " profile trace observations recomputed independently; " + V.full_csv_results_reparsed + " full CSV results re-parsed; all 3572 source hash footers match.</p><p>Scope: " + esc(V.scope) + "</p>" },
+      s3: { t: "Same-version private S3 copy", s: "us-east-1, run bucket", d: "<p>The same snapshot version copied to a private run bucket for Athena. Athena reads S3 directly; no database volume is involved.</p><p><b>Retained now:</b> bucket deleted (absence check " + (CL.absence_checks.bucket ? "passed" : "failed") + ").</p>" },
+      ath: { t: "Raw Parquet Athena views", s: views.length + " DDL statements", d: "<p>External tables over raw Parquet plus views that repeat the normalization inside every query. This is not an optimized flattened CTAS layout. 200.31m billable scan, rounded: " + fmtGB(P.costs["200m"].athena_rounded_billable_bytes, 3) + ".</p><details><summary>All " + views.length + " Athena DDL statements</summary>" + views.map(function (v, i) { return '<pre class="code" aria-label="Athena DDL ' + (i + 1) + '">' + esc(v.sql) + "</pre>"; }).join("") + "</details><p><b>Retained now:</b> workgroup and Glue database deleted.</p>" },
+      aqa: { t: "Athena result QA", s: "same canonical hash", d: "<p>Athena results are canonicalized the same way. Each completed selected native case at 200.31m is compared with the raw Athena hash for the same case.</p>" }
+    };
+    function nb(k) { return '<button type="button" class="node" id="node-' + k + '" data-node="' + k + '" aria-pressed="' + (S.node === k) + '"><b>' + esc(N[k].t) + "</b><span>" + esc(N[k].s) + "</span></button>"; }
+    var ar = '<span class="arrow" aria-hidden="true"><span class="h">\u2192</span><span class="v">\u2193</span></span>';
+    $("flow").innerHTML = '<div class="lane" aria-label="Native engine path"><span class="lane-label">Native engines (EBS)</span>' + nb("src") + ar + nb("raw") + ar + nb("norm") + ar + '<div class="branch">' + nb("pg") + nb("ch") + "</div>" + ar + nb("qa") + "</div>" +
+      '<div class="lane" aria-label="Athena path"><span class="lane-label">Athena (scans S3)</span>' + nb("src").replace('id="node-src"', 'id="node-src-2"') + ar + nb("s3") + ar + nb("ath") + ar + nb("aqa") + "</div>";
+    $("node-detail").innerHTML = "<h3>" + esc(N[S.node].t) + "</h3>" + N[S.node].d;
+    renderFlow.N = N;
+  }
+  $("flow").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button.node"); if (!b) return;
+    S.node = b.getAttribute("data-node"); renderFlow();
+  });
+
+  /* ---------- rationale ---------- */
+  function renderDecision() {
+    var R = P.rationale, pg = M.below60("200m", "postgres_ec2"), ch = M.below60("200m", "clickhouse_ec2");
+    function fam(e, f) { var v = M.famValue("200m", e, f); return v.state === "complete" ? fmtS(v.value) : stateWord(v.state).toLowerCase(); }
+    $("decision-body").innerHTML =
+      '<div class="flow"><h3>Why OpenAlex</h3><ul>' + R.openalex.map(function (x) { return "<li>" + esc(x.claim) + ' <a href="' + esc(x.source) + '" target="_blank" rel="noopener">source</a></li>'; }).join("") + '</ul><p class="note">No comparison against other bibliographic catalogs was made in this work.</p></div>' +
+      '<div class="flow"><h3>Why ClickHouse for this workload</h3><p>At 200.31m with matched 16 CPU / 32 GiB containers, ClickHouse has <b>' + ch.n + " of 7</b> families with a warm median below 60 s; PostgreSQL has <b>" + pg.n + " of 7</b>.</p><ul>" +
+      "<li>PostgreSQL wins the indexed graph lookups: q05 " + fam("postgres_ec2", "q05") + " vs " + fam("clickhouse_ec2", "q05") + ", q06 " + fam("postgres_ec2", "q06") + " vs " + fam("clickhouse_ec2", "q06") + " (family max of three seeds). PostgreSQL q01 is " + fam("postgres_ec2", "q01") + " vs " + fam("clickhouse_ec2", "q01") + ".</li>" +
+      "<li>Aggregations: q02 PostgreSQL " + fam("postgres_ec2", "q02") + ", ClickHouse " + fam("clickhouse_ec2", "q02") + " (grace_hash); q04 PostgreSQL " + fam("postgres_ec2", "q04") + ", ClickHouse " + fam("clickhouse_ec2", "q04") + " (country-set SQL); q07 PostgreSQL " + fam("postgres_ec2", "q07") + ", ClickHouse " + fam("clickhouse_ec2", "q07") + ".</li>" +
+      "<li>Unresolved: q03 (author output) has no valid result in either engine at 200.31m. ClickHouse failed at the 24 GiB limit on warm2; PostgreSQL timed out.</li>" +
+      '</ul><p class="note">' + esc(R.clickhouse) + "</p></div>";
+  }
+
+  /* ---------- feasibility ---------- */
+  function renderFeas() {
+    var st = P.storage, chTotal = st.observed_200m.storage.reduce(function (a, x) { return a + x.bytes_on_disk; }, 0), proj = st.observed_200m.projections[0].bytes_on_disk;
+    var pgS = st.postgres_200m.storage, pgIdx = pgS.tables.reduce(function (a, x) { return a + x.indexes_bytes; }, 0);
+    var fixed = st.fixed_dimension_bytes, vari = st.variable_bytes_200m, ref = st.reference_works, full = st.historical_full_works;
+    $("feas-body").innerHTML =
+      '<div class="fcol m"><h3>MEASURED</h3><ul>' +
+      "<li>200.31m ClickHouse active storage <b>" + fmtGB(chTotal, 3) + "</b>, including " + fmtGB(proj, 3) + " reverse citation projection.</li>" +
+      "<li>200.31m PostgreSQL database <b>" + fmtGB(pgS.database_bytes, 3) + "</b>, including " + fmtGB(pgIdx, 3) + " of indexes.</li>" +
+      "<li>Both were physically built on one host: m7g.4xlarge (16 Graviton cores, 64 GiB host RAM), 16 CPU / 32 GiB container, 1024 GiB gp3.</li>" +
+      "<li>Memory pressure was real at this size: ClickHouse q03 (authors) failed at the 24 GiB query limit; PostgreSQL work_mem 2GB failed on shared memory.</li>" +
+      "<li>Measured selected warm medians are in the explorer; 6 of 7 ClickHouse and 3 of 7 PostgreSQL families are below 60 s.</li></ul></div>" +
+      '<div class="fcol c"><h3>CONDITIONAL PROJECTION</h3><p>Full historical June snapshot, selected 42-column schema, ClickHouse storage only:</p><div class="formula">fixed_dimensions + variable_200m \u00d7 fullWorks / 200m\n= ' + (fixed / GB).toFixed(3) + " GB + " + (vari / GB).toFixed(3) + " GB \u00d7 " + fmtIntText(full) + " / " + fmtIntText(ref) + "\n\u2248 " + (st.conditional_full_bytes / GB).toFixed(3) + ' GB</div>' +
+      "<p>Fixed dimensions (authors, institutions, sources, topics) are already complete at 200.31m, including all " + fmtIntText(P.storage.observed_200m.counts.authors) + " Authors, so they are not scaled again.</p>" +
+      '<label for="proj-slider"><b>Storage-only arithmetic for N Works</b></label><input type="range" id="proj-slider" min="' + ref + '" max="' + full + '" step="1" value="' + S.projWorks + '" aria-describedby="proj-out"><p id="proj-out" aria-live="polite"></p>' +
+      '<p class="note">Assumes Work-related tables scale linearly with Work count, constant row width and relationship density, the same compression and the same projection. It projects bytes on disk only: no timings, RAM or CPU are derived. ' + esc(st.projection_basis) + "</p></div>" +
+      '<div class="fcol u"><h3>UNVALIDATED</h3><ul>' +
+      "<li>Full-corpus query latency at 510.37m Works.</li><li>Minimum CPU and RAM for any latency target.</li><li>Cold-cache behaviour and concurrent multi-user SLA.</li><li>Richer fields beyond the 42 selected columns, and other entities.</li><li>Production sync, merges and deletions.</li>" +
+      "<li>A compressed disk footprint is not query working memory: even at 200.31m the author query failed at a 24 GiB query limit.</li></ul>" +
+      '<p class="note">Single-machine storage looks plausible. This page does not claim that the data fits in RAM, nor that a cluster will never be needed.</p></div>';
+    function upd() {
+      var n = Number($("proj-slider").value); S.projWorks = n;
+      var b = fixed + vari * n / ref;
+      $("proj-out").innerHTML = '<span class="bigv">' + (b / GB).toFixed(3) + " GB</span> for " + fmtIntText(n) + " Works (" + pct(n, full) + " of the snapshot). At 200.31m this equals the measured " + fmtGB(chTotal, 3) + ".";
+    }
+    $("proj-slider").addEventListener("input", upd); upd();
+  }
+
+  /* ---------- dataset ---------- */
+  function renderDataset() {
+    var H = P.historical_full_snapshot, FI = P.field_inventory, c2 = P.cohorts["200m"], c1 = P.cohorts["100m"];
+    var h = '<p class="lead">Snapshot 2026-06-26. Percentages use the historical snapshot denominator of <b>' + fmtInt(H.works) + "</b> Works, not a current API count. Historical API counts and XPAC counts are not interchangeable with this snapshot denominator.</p>";
+    h += '<div class="tw"><table class="dt" id="cohort-table"><caption>Cohorts: nested, nonrandom Works subsets with complete Authors, Institutions, Sources and Topics</caption><thead><tr><th scope="col">Cohort</th><th scope="col" class="num">Works</th><th scope="col" class="num">Share of snapshot</th><th scope="col" class="num">Raw selected input</th><th scope="col" class="num">ClickHouse active</th><th scope="col">Run date</th><th scope="col">Note</th></tr></thead><tbody>' +
+      COHORTS.map(function (c) { var x = P.cohorts[c]; var ch = x.ch_active_bytes || (c === "200m" ? P.storage.observed_200m.storage.reduce(function (a, y) { return a + y.bytes_on_disk; }, 0) : null);
+        return '<tr><th scope="row">' + esc(x.label) + '</th><td class="num">' + fmtInt(x.works) + '</td><td class="num">' + pct(x.works, H.works) + '</td><td class="num">' + fmtGB(x.raw_bytes, 2) + '</td><td class="num">' + (ch ? fmtGB(ch, 3) : NR) + "</td><td>" + esc(x.date) + '</td><td class="wrap">' + esc(x.note) + "</td></tr>"; }).join("") + "</tbody></table></div>";
+    var tabs = Object.keys(c2.table_counts);
+    var chMap = {}; P.storage.observed_200m.storage.forEach(function (x) { chMap[x.table] = x.bytes_on_disk; });
+    var pgMap = {}; P.storage.postgres_200m.storage.tables.forEach(function (x) { pgMap[x.table] = x; });
+    var tot = tabs.reduce(function (a, k) { return a + c2.table_counts[k]; }, 0), tot1 = tabs.reduce(function (a, k) { return a + c1.table_counts[k]; }, 0);
+    h += '<div class="tw"><table class="dt" id="table-counts"><caption>Normalized tables: exact loaded row counts and 200.31m storage</caption><thead><tr><th scope="col">Table</th><th scope="col" class="num">Rows 100.09m</th><th scope="col" class="num">Rows 200.31m</th><th scope="col" class="num">ClickHouse 200.31m</th><th scope="col" class="num">PostgreSQL heap 200.31m</th><th scope="col" class="num">PostgreSQL indexes 200.31m</th></tr></thead><tbody>' +
+      tabs.map(function (k) { var pg = pgMap[k] || {}; return '<tr><th scope="row"><code>' + esc(k) + '</code></th><td class="num">' + fmtInt(c1.table_counts[k]) + '</td><td class="num">' + fmtInt(c2.table_counts[k]) + '</td><td class="num">' + fmtGB(chMap[k]) + (k === "citation_edge" ? '<br><span class="nr">incl. projection</span>' : "") + '</td><td class="num">' + fmtGB(pg.heap_bytes) + '</td><td class="num">' + fmtGB(pg.indexes_bytes) + "</td></tr>"; }).join("") +
+      '</tbody><tfoot><tr><th scope="row">9 tables</th><td class="num">' + fmtInt(tot1) + '</td><td class="num">' + fmtInt(tot) + '</td><td class="num">' + fmtGB(Object.keys(chMap).reduce(function (a, k) { return a + chMap[k]; }, 0)) + '</td><td class="num" colspan="2">database ' + fmtGB(P.storage.postgres_200m.storage.database_bytes) + "</td></tr></tfoot></table></div>";
+    h += '<p class="note">200.31m: ' + fmtInt(tot) + " rows across nine tables, including " + fmtInt(c2.table_counts.citation_edge) + " citation edge rows. Fixed dimensions (authors " + fmtInt(c2.table_counts.authors) + ", institutions, sources, topics) are complete in every cohort.</p>";
+    /* legacy table storage */
+    h += "<details><summary>2.00m, 10.11m and 31.89m ClickHouse table storage (original EC2 series)</summary>" + ["2m", "10m", "32m"].map(function (c) {
+      var ts = P.cohorts[c].table_storage || [];
+      return '<div class="tw"><table class="dt"><caption>' + esc(P.cohorts[c].label) + '</caption><thead><tr><th scope="col">Table</th><th scope="col" class="num">Rows</th><th scope="col" class="num">Bytes</th><th scope="col" class="num">Uncompressed</th></tr></thead><tbody>' + ts.map(function (x) { return '<tr><th scope="row"><code>' + esc(x.table) + '</code></th><td class="num">' + fmtInt(x.rows) + '</td><td class="num">' + fmtGB(x.bytes) + '</td><td class="num">' + fmtGB(x.uncompressed_bytes) + "</td></tr>"; }).join("") + "</tbody></table></div>";
+    }).join("") + "</details>";
+    /* selected fields */
+    var selEnt = ["works", "authors", "institutions", "sources", "topics"];
+    h += "<h3>Selected source fields and the 42 normalized columns</h3>";
+    h += '<div class="tw"><table class="dt" id="selected-fields"><caption>Source fields read from the snapshot (retained or partly retained) per entity</caption><thead><tr><th scope="col">Entity</th><th scope="col" class="num">Records</th><th scope="col">Retained source paths</th></tr></thead><tbody>' + selEnt.map(function (k) {
+      var fs = FI[k].top_level_fields.filter(function (f) { return f.status !== "not_loaded"; });
+      return '<tr><th scope="row">' + esc(k) + '</th><td class="num">' + fmtInt(FI[k].records) + '</td><td class="wrap">' + fs.map(function (f) { return f.retained_paths.map(function (p) { return "<code>" + esc(p) + "</code>"; }).join(", ") + (f.status === "partly_retained" ? ' <span class="nr">(part of ' + esc(f.name) + ")</span>" : ""); }).join("; ") + "</td></tr>";
+    }).join("") + "</tbody></table></div>";
+    h += '<p class="note">Authors has three source fields (id, display_name, orcid); id produces two normalized columns (author_id and canonical_id), so the authors table has four columns. The nine normalized tables total 42 columns. Richer fields remain unvalidated.</p>';
+    /* 20 entity inventory */
+    var ents = Object.keys(FI);
+    h += '<details><summary>Field inventory for all ' + ents.length + " snapshot entities</summary>" + '<div class="tw"><table class="dt" id="field-inventory"><thead><tr><th scope="col">Entity</th><th scope="col" class="num">Records</th><th scope="col" class="num">Top-level fields</th><th scope="col" class="num">Retained</th><th scope="col" class="num">Partly</th><th scope="col" class="num">Not loaded</th><th scope="col">Fields</th></tr></thead><tbody>' + ents.map(function (k) {
+      var fs = FI[k].top_level_fields, cnt = function (s) { return fs.filter(function (f) { return f.status === s; }).length; };
+      return '<tr><th scope="row">' + esc(k) + '</th><td class="num">' + fmtInt(FI[k].records) + '</td><td class="num">' + fs.length + '</td><td class="num">' + cnt("retained") + '</td><td class="num">' + cnt("partly_retained") + '</td><td class="num">' + cnt("not_loaded") + '</td><td class="wrap" style="font-size:0.78rem">' + fs.map(function (f) { return f.status === "not_loaded" ? esc(f.name) : "<b>" + esc(f.name) + "</b>"; }).join(", ") + "</td></tr>";
+    }).join("") + '</tbody></table></div><p class="note">Bold names are retained or partly retained.</p></details>';
+    /* schemas */
+    h += "<h3>Schemas</h3>";
+    var sch = [["PostgreSQL 200.31m tables", P.schemas.postgres_200m], ["PostgreSQL 200.31m indexes (14)", P.schemas.postgres_200m_indexes.map(function (x) { return x[1] + ";"; }).join("\n")], ["ClickHouse 200.31m schema", P.schemas.clickhouse_200m], ["ClickHouse reverse citation projection", P.schemas.clickhouse_projection], ["ClickHouse original series schema (2.00m to 31.89m)", P.schemas.legacy_clickhouse]];
+    h += sch.map(function (x, i) { return "<details><summary>" + esc(x[0]) + '</summary><pre class="code schema" id="schema-' + i + '" tabindex="0"></pre></details>'; }).join("");
+    $("dataset-body").innerHTML = h;
+    sch.forEach(function (x, i) { $("schema-" + i).textContent = x[1]; });
+  }
+
+  /* ---------- cost ---------- */
+  function renderCost() {
+    var C = P.costs, c2 = C["200m"], L = C.legacy_ec2_2m_to_32m, a1 = C["100m_athena"];
+    var lines = { ec2: "EC2 m7g.4xlarge", public_ipv4: "Public IPv4", ebs_1056_gib: "EBS 1056 GiB gp3 (scratch + root)", ebs_extra_3000_iops: "EBS extra 3000 IOPS", ebs_extra_375_mib_s: "EBS extra 375 MiB/s", athena: "Athena scans" };
+    var h = '<div class="two"><div><div class="tw"><table class="dt" id="cost-200m"><caption>200.31m run estimate, ' + esc(c2.launch) + " to verified cleanup (" + c2.hours.toFixed(3) + ' h). Not an invoice.</caption><thead><tr><th scope="col">Line</th><th scope="col" class="num">USD</th></tr></thead><tbody>' +
+      Object.keys(c2.estimated_usd).map(function (k) { return '<tr><th scope="row">' + esc(lines[k] || k) + '</th><td class="num">' + c2.estimated_usd[k].toFixed(4) + "</td></tr>"; }).join("") +
+      '</tbody><tfoot><tr><th scope="row">Subtotal</th><td class="num">' + c2.subtotal_usd.toFixed(4) + '</td></tr><tr><th scope="row">Unreconciled S3 requests/storage/other allowance</th><td class="num">' + c2.unreconciled_s3_requests_storage_other_reserve_usd.toFixed(2) + '</td></tr><tr><th scope="row">Estimate with allowance</th><td class="num">' + c2.estimate_with_reserve_usd.toFixed(2) + "</td></tr></tfoot></table></div>" +
+      '<p class="note">Athena: ' + fmtGB(c2.athena_rounded_billable_bytes, 3) + " rounded billable at an assumed 5 USD per decimal TB = " + c2.estimated_usd.athena.toFixed(5) + " USD. Excludes: " + esc(c2.excludes) + "</p></div>" +
+      '<div><div class="tw"><table class="dt" id="cost-legacy"><caption>Original 2.00m / 10.11m / 31.89m EC2 experiment: one estimate for the whole experiment, not per cohort</caption><thead><tr><th scope="col">Run purpose</th><th scope="col">Type</th><th scope="col" class="num">USD upper</th></tr></thead><tbody>' +
+      L.rows.map(function (x) { return '<tr><th scope="row">' + esc(x.purpose) + "</th><td><code>" + esc(x.type) + '</code></td><td class="num">' + x.total_usd_upper.toFixed(4) + "</td></tr>"; }).join("") +
+      '</tbody><tfoot><tr><th scope="row" colspan="2">Athena scan fee (' + fmtGB(L.athena_rounded_bytes, 3) + ')</th><td class="num">' + L.athena_scan_fee_conservative.toFixed(4) + '</td></tr><tr><th scope="row" colspan="2">Other allowance</th><td class="num">' + L.other_allowance.toFixed(2) + '</td></tr><tr><th scope="row" colspan="2">Conservative total estimate</th><td class="num">' + L.total_conservative_estimate.toFixed(2) + "</td></tr></tfoot></table></div>" +
+      '<p class="note">Retained raw EBS: ' + L.retained_raw_ebs_gib + " GiB at about " + L.retained_raw_usd_month.toFixed(2) + " USD/month, ongoing and separate from both run estimates. Limitations: " + esc(L.limitations.join("; ")) + ".</p>" +
+      '<p class="note">100.09m: Athena scans ' + fmtGB(a1.bytes, 3) + " = " + a1.estimate_usd.toFixed(6) + " USD at the same assumption. " + esc(a1.other_costs) + " Local hardware and electricity for the local PostgreSQL and ClickHouse runs are unknown.</p></div></div>";
+    $("cost-body").innerHTML = h;
+  }
+
+  /* ---------- methods ---------- */
+  function renderMethods() {
+    var cnt = function (st) { return P.records.filter(function (r) { return r.sql_status === st; }).length; };
+    var defs = [
+      ["SQL coverage", P.records.length + " records: " + P.records.filter(function (r) { return r.sql; }).length + " carry exact SQL text, of which " + cnt("exact_executed") + " were executed and " + cnt("not_executed") + " were prepared but not executed (100.09m PostgreSQL graph and citation cases). " + cnt("not_recorded") + " historical timing-only records have no SQL text. The inspector labels each case accordingly."],
+      ["Timing scope", "Native warm timings are server-side and exclude result transfer. PostgreSQL uses EXPLAIN ANALYZE execution time, which excludes planning (planning time is listed separately). ClickHouse uses query_log duration. Athena uses the service total, which includes queue, planning and result output. These scopes differ, so cross-engine ratios are approximate."],
+      ["Repeats and medians", "Each case records a primer where stored, then three warm runs; the warm median uses warm runs only. For the original 2.00m/10.11m/31.89m ClickHouse EC2 series, the archived separate cold observation is listed as its own row and is not counted in the median. q05 and q06 run once per seed work_id (" + M.seeds("200m").join(", ") + "); the table shows the maximum of the three seed medians. A timeout, failure or partial run never becomes a median."],
+      ["Caches", "200.31m run: the OS page cache was cleared at each main engine phase boundary, not before each query. The ClickHouse grace-hash trial cleared it once before q02 and then ran q02, q03 and q04 in sequence. Engine-internal caches were not reset. No deliberate OS cache clearing is claimed for the local PostgreSQL 2.00m/10.11m/31.89m runs or other earlier runs. A primer is the first observation of a profile, not a controlled cold-cache measurement. The original ClickHouse EC2 series' archived separate cold observations are labelled as archived and kept out of medians."],
+      ["Settings", "Requested settings were passed as client or session options by the runner, outside the SQL text. Effective values are what the engine reported. Resource budgets (container CPU and memory) are listed with each setup."],
+      ["Hardware and growth", "Original 2.00m/10.11m/31.89m ClickHouse EC2: m7g.8xlarge, 18 CPU / 50 GiB container. 100.09m native: local Apple M5 Max, 16 CPU / 32 GiB. 200.31m native: EC2 m7g.4xlarge, 16 CPU / 32 GiB, the only hardware-matched native pair. Settings, hardware and SQL changes between cohorts prevent any isolated linear-growth inference."],
+      ["Athena layout", "Athena queries raw Parquet through views that repeat normalization on every query. This is not an optimized CTAS or flattened layout, so Athena times are an upper reference, not a tuned Athena result."],
+      ["Resource telemetry", "Each run shows its own measurement scope. cgroup memory includes file cache; shared memory overlaps file cache; short graph queries have coarse attribution; disk counters can include background activity in the window. Missing metrics are shown as not recorded, never as zero."],
+      ["Result QA", "Every complete result is canonicalized and SHA-256 hashed. At 200.31m all " + P.verification_200m.completed_full_output_checks.length + " completed selected native cases match raw Athena; " + P.verification_200m.all_profile_trace_observations_recomputed + " traces recomputed, " + P.verification_200m.full_csv_results_reparsed + " CSV fingerprints re-parsed, 3572 source hashes matched."],
+      ["Review status", esc(P.review_status.underlying_200m) + " The underlying 200m benchmark is not labelled peer-reviewed. Review of this page is separate."],
+      ["Retention", esc(P.retention.observed) + " Future policy (a decision, not implemented history): " + esc(P.retention.future_policy)]
+    ];
+    $("methods-body").innerHTML = '<dl class="defs">' + defs.map(function (d) { return "<div><dt>" + esc(d[0]) + "</dt><dd>" + d[1] + "</dd></div>"; }).join("") + "</dl>";
+  }
+  function renderSources() {
+    $("sources-body").innerHTML = P.sources.map(function (s) { return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + "</a>"; }).join("") +
+      '<a href="' + esc(P.legacy_source.results) + '" target="_blank" rel="noopener">Original EC2 series result files</a>' +
+      P.rationale.openalex.map(function (x) { return '<a href="' + esc(x.source) + '" target="_blank" rel="noopener">OpenAlex documentation: ' + esc(x.source.replace("https://", "")) + "</a>"; }).join("") +
+      '<p class="note">Payload SHA-256 <code>' + esc(BUILD.payload_sha256 || "not recorded") + "</code>, " + fmtInt(BUILD.payload_bytes) + " bytes, " + P.records.length + " records.</p>";
+  }
+
+  /* boot */
+  S.engine = defaultEngine(S.cohort);
+  renderCohort(); renderInspector(); renderTuning(); renderFlow(); renderDecision(); renderFeas(); renderDataset(); renderCost(); renderMethods(); renderSources();
+
+  window.OA = {
+    P: P, M: M, S: S, BUILD: BUILD,
+    setCohort: setCohort, openCell: openCell, openProfile: openProfile, renderInspector: renderInspector,
+    currentRecord: curRec, currentCase: curCase,
+    select: function (o) {
+      if (o.cohort) setCohort(o.cohort);
+      if (o.engine) S.engine = o.engine;
+      if (o.family) S.fam = o.family;
+      if (o.seed) S.seed[S.fam] = String(o.seed);
+      S.profile = o.profile || null;
+      syncPressed(); renderInspector(); return curRec();
+    }
+  };
+}
+if (typeof document !== "undefined" && document.getElementById && document.getElementById("payload")) {
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+}
+</script>

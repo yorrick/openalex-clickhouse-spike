@@ -1,0 +1,46 @@
+{
+  "payload_bytes": 1193397,
+  "payload_sha256": "0a267717d9acc1108ea1b38e2e975c31aa7c9b84ffcd29b504616f98cf023705",
+  "records": 205,
+  "exact_sql_records": 184,
+  "exact_executed_sql_records": 177,
+  "unexecuted_sql_definitions": 7,
+  "conditional_full_gb": 75.96719794555644,
+  "cohorts": {
+    "2m": {
+      "postgres_local": 11,
+      "clickhouse_local": 7,
+      "postgres_ec2": 0,
+      "clickhouse_ec2": 11,
+      "athena": 11
+    },
+    "10m": {
+      "postgres_local": 11,
+      "clickhouse_local": 7,
+      "postgres_ec2": 0,
+      "clickhouse_ec2": 11,
+      "athena": 11
+    },
+    "32m": {
+      "postgres_local": 11,
+      "clickhouse_local": 7,
+      "postgres_ec2": 0,
+      "clickhouse_ec2": 11,
+      "athena": 11
+    },
+    "100m": {
+      "postgres_local": 11,
+      "clickhouse_local": 11,
+      "postgres_ec2": 0,
+      "clickhouse_ec2": 0,
+      "athena": 11
+    },
+    "200m": {
+      "postgres_local": 0,
+      "clickhouse_local": 0,
+      "postgres_ec2": 11,
+      "clickhouse_ec2": 11,
+      "athena": 11
+    }
+  }
+}

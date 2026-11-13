@@ -1,6 +1,6 @@
 # Single-user resource benchmark results
 
-[Interactive results diagram, created and hosted by Claude](https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H).
+[Interactive results diagram, created and hosted by Claude](https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H). See the [November 2026 artifact update](../benchmark-artifact.md) for PostgreSQL, Athena and ClickHouse through 200m Works, with exact SQL and tuning profiles.
 
 [Separate local PostgreSQL comparison, 8 November](../postgres-local-benchmark.md):
 matching 2.00m and 10.11m Works cohorts, load/index times, query timings, resource

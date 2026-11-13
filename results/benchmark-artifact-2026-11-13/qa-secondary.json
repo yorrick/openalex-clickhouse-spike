@@ -1,0 +1,13 @@
+{
+  "html_sha256": "66a67c1efe2ce9871cbdbe83d5c983568111ce8601693d56636472155aa70be7",
+  "checks": {
+    "five_legacy_tuning_sql_bodies": true,
+    "tuning_links_to_exact_profiles": 36,
+    "engine_profile_seed_focus": true,
+    "historical_footer_unassessed": true,
+    "conditional_storage_slider": true,
+    "schema_indexes_projection_and_200m_athena_ddl_exact": true,
+    "mobile_visible_directional_connectors_and_expanded_data_fit": true
+  },
+  "javascript_errors": []
+}

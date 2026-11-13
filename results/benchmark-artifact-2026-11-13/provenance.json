@@ -1,0 +1,41 @@
+{
+  "scope": "Presentation update, no new database or AWS experiments",
+  "author": {
+    "cli": "claude",
+    "model": "claude-opus-5-5",
+    "effort": "high",
+    "interactive": true,
+    "session": "c594d02e-affb-4d7b-8db9-71404f56bb14",
+    "tool": "native Artifact publish and read"
+  },
+  "reviews": [
+    {
+      "command": "codex exec --model gpt-6-sol -c model_reasoning_effort=max --sandbox read-only --skip-git-repo-check --output-last-message review-output.txt - < review-prompt.md > review-cli.log 2>&1",
+      "exit_code": 0,
+      "verdict": "BLOCKED; verified focus, mobile arrows and historical-footer findings corrected by Claude"
+    },
+    {
+      "command": "codex exec --model gpt-6-sol -c model_reasoning_effort=high --sandbox read-only --skip-git-repo-check --output-last-message correction-review-output.txt - < correction-review-prompt.md > correction-review-cli.log 2>&1",
+      "exit_code": 0,
+      "verdict": "PASS"
+    }
+  ],
+  "qa_harness_corrections": [
+    "Compare immutable inline JSON rather than OA.P, which adds runtime _i indices.",
+    "Schema index display appends semicolon separators; compare the source-derived representation.",
+    "Athena DDL is exposed in the Athena dataflow node."
+  ],
+  "limits": [
+    "No new underlying PostgreSQL experiment review; existing blocked status retained.",
+    "Private sharing retained; no anonymous access claimed.",
+    "Native Artifact tool exists in interactive CLI mode, not the earlier print-mode probe."
+  ],
+  "published_source_html_sha256": "66a67c1efe2ce9871cbdbe83d5c983568111ce8601693d56636472155aa70be7",
+  "documentation_review": {
+    "reviewer": "claude-opus-5-5",
+    "effort": "high",
+    "cli_session": "c594d02e-affb-4d7b-8db9-71404f56bb14",
+    "verdict": "PASS with minor schema-location wording correction, verified and applied",
+    "completed": true
+  }
+}

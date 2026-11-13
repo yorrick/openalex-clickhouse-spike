@@ -1,0 +1,7 @@
+Final publication authorized by root. No further UI/data changes.
+
+Both real Chrome QA reports qa-browser.json and qa-secondary.json pass against artifact.html SHA-256 66a67c1efe2ce9871cbdbe83d5c983568111ce8601693d56636472155aa70be7. Independent correction-review-output.txt is PASS from Codex CLI GPT-6 Sol at high effort, after the initial max-effort review. The ledger commit 7dc30e093afd189cd03a706f8abf203ff1ccd1c5 is pushed, so new immutable source links resolve.
+
+Read those small reports and independently confirm the final HTML hash with a local command. Then use your native Artifact tool to publish the EXISTING artifact URL https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H from /Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact.html, label OpenAlex query benchmark. Description: Technical benchmark evidence for OpenAlex across ClickHouse, PostgreSQL and Athena, with exact SQL, tuning, resources, costs and limits. Do not create another URL, do not change sharing or audience, do not open a browser. Preserve its current private sharing state. The user explicitly requested this update.
+
+Use Artifact read afterwards to witness the hosted version, ownership and sharing state, and save the exact publish and read tool receipts in publication.json, alongside source SHA, final artifact version ID, same URL, model claude-opus-5-5 and effort high. Do not claim anonymous/public sharing works. Do not run or review underlying PostgreSQL experiments. Nothing else is authorized.

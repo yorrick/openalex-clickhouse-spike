@@ -1,0 +1,48 @@
+{
+  "published": true,
+  "url": "https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H",
+  "same_url_as_before": true,
+  "artifact_id": "003520a5-e01a-4e01-ab8a-d1e75b7be6be",
+  "previous_version_id": "1794174385-00c6",
+  "final_version_id": "1794590930-82c1",
+  "version_number": 6,
+  "label": "OpenAlex query benchmark",
+  "description": "Technical benchmark evidence for OpenAlex across ClickHouse, PostgreSQL and Athena, with exact SQL, tuning, resources, costs and limits.",
+  "source_file": "/Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact.html",
+  "source_sha256": "66a67c1efe2ce9871cbdbe83d5c983568111ce8601693d56636472155aa70be7",
+  "source_sha256_confirmed_locally_before_publish": true,
+  "source_bytes": 1307638,
+  "payload_sha256": "0a267717d9acc1108ea1b38e2e975c31aa7c9b84ffcd29b504616f98cf023705",
+  "template_sha256": "7539a714e47c9a0124a48c9fdf76503a9b0e012eb1f41079c27f98277f08ce5b",
+  "qa_reports_read": {
+    "qa-browser.json": "html_sha256 66a67c1e..., all viewports pass, no JS errors",
+    "qa-secondary.json": "html_sha256 66a67c1e..., all checks pass, no JS errors",
+    "correction-review-output.txt": "PASS"
+  },
+  "hosted_verification": {
+    "method": "Artifact read after publish; saved hosted HTML compared byte-wise with source",
+    "hosted_bytes": 1308184,
+    "hosted_sha256": "0cf6c32d225ab904444c7c6bd537f71d39fd1c62ce9c6c728f57eb8b0f3178b0",
+    "source_contained_verbatim": true,
+    "service_wrapper_prefix_bytes": 531,
+    "service_wrapper_suffix": "\\n</body></html>"
+  },
+  "ownership": "owned by you (the user)",
+  "sharing_state": "private (unchanged; no sharing or audience change was made). Anonymous or public access was not tested and is not claimed.",
+  "runtime_capabilities": "none declared; no contract pin",
+  "live_subscription_note": "The publish tool reported that it automatically began arming a live subscription in the background. No watch or comment action was requested or performed by the author.",
+  "receipts": {
+    "pre_publish_read_header": "[Artifact 003520a5-e01a-4e01-ab8a-d1e75b7be6be (version 1794174385-00c6) — owned by you, private (from the page's Share menu the user's plan and organization allow: anyone with the link — a public link can still be unavailable for what this page uses; the menu says why; email invites to people outside the organization are available); may include content not published from this session; 294.7KB total — full HTML saved to /Users/yorrickjansen/.claude/projects/-Users-yorrickjansen-work-data-openalex-artifact-20261113/c594d02e-affb-4d7b-8db9-71404f56bb14/tool-results/artifact-003520a5-1794174385-00c6.html — ... this version counts as viewed (version 1794174385-00c6: 301,793 bytes, 916 lines ...)]\n[Stored for the live version, as the artifact service holds it: no contract pin · no runtime capabilities declared.]",
+    "publish": "Published /Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact.html at https://claude.ai/artifact/12VD4Wi6EzKtA2mdABXp6H (Version 6, version id 1794590930-82c1)\n\nLive subscription: arming in the background — not connected yet, so this is not a watch until `status` shows it connected (you are told if it cannot connect, unless this turn is interrupted first). Once connected, this session keeps track of new versions of this artifact published elsewhere; a new version starts no turn and sends no notification; a comment on it sent to Claude reaches this session while this artifact's status row says auto-replies armed, and plain comments never notify — read them with the ArtifactComments tool, action \"read\" when asked.\n\nTo update: publish the same file path here (keeps this URL); from another conversation pass the URL as `url`, or that publish creates a separate artifact. This artifact is private: only its owner and the people the owner has given access can open the link. You cannot change sharing; that is done from the page's Share menu. If the page is meant for someone else, tell the user when you present the page that those people cannot open it until it is shared with them.\n\nThe files you sent are still on disk. For the next small change to this file, send it as `edits` on a publish of the same file_path (old_str/new_str pairs copied exactly from the file as it now stands): that one call changes the file and what is published together, with no Read and no Edit. To change several files, or to rewrite most of the page, Edit the files and publish them in the same response; if an Edit reports that it did not apply, correct it and publish again. If the file's text is no longer in this conversation, Read it first.",
+    "post_publish_read_header": "[Artifact 003520a5-e01a-4e01-ab8a-d1e75b7be6be (version 1794590930-82c1) — owned by you, private (from the page's Share menu the user's plan and organization allow: anyone with the link — a public link can still be unavailable for what this page uses; the menu says why; email invites to people outside the organization are available); 1.2MB total — full HTML saved to /Users/yorrickjansen/.claude/projects/-Users-yorrickjansen-work-data-openalex-artifact-20261113/c594d02e-affb-4d7b-8db9-71404f56bb14/tool-results/artifact-003520a5-1794590930-82c1.html — the head below is NOT the whole artifact: build any republish from that file; this version counts as viewed (version 1794590930-82c1: 1,308,184 bytes, 1,210 lines; ...)]\n[Stored for the live version, as the artifact service holds it: no contract pin · no runtime capabilities declared.]"
+  },
+  "model": "claude-opus-5-5",
+  "effort": "high",
+  "author_session": "c594d02e-affb-4d7b-8db9-71404f56bb14",
+  "not_done": [
+    "no browser opened",
+    "no sharing change",
+    "no new URL",
+    "no underlying PostgreSQL experiment run or review"
+  ]
+}

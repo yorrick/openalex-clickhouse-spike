@@ -1,0 +1,5 @@
+**BLOCKED on keyboard accessibility.** The corrected [template](/Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact-template.html:1) and built page now include doctype, UTF-8, and viewport declarations. The embedded payload matches the source: 205 records, 184 SQL bodies with no SHA mismatch, and all 162 complete medians use three warm runs.
+
+Changing an engine, profile, or seed [replaces the focused select](/Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact-template.html:901) when the inspector [rerenders](/Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact-template.html:819), without restoring keyboard focus. Two presentation caveats remain: the later [mobile CSS rule](/Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact-template.html:238) hides the vertical dataflow arrows, and the [target footer](/Users/yorrickjansen/work/data/openalex-artifact-20261113/artifact-template.html:671) shows `0/7` for timing-only local ClickHouse records whose warm target result is unassessed.
+
+`{"verdict":"BLOCKED","blockers":1,"caveats":2,"source_integrity":"PASS","files_changed":0}`
