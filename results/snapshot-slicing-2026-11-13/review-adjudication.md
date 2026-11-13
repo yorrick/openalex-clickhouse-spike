@@ -1,0 +1,7 @@
+# Review scope and adjudication
+
+Claude Code claude-opus-5-5 at high effort completed three bounded read-only reviews. The first checked manifest and official-source statements but could not locate footer/API filenames. The second received exact paths and passed their values; root also verified byte ranges, metadata totals and the raw API body's 1,144-byte file length. The third passed update-mutability claims and requested softer wording about signed reads, which was applied: zero charges were verified only for anonymous access, while signed GET billing rests on general owner-pays rules, not an observed invoice. No S3 Select request was issued.
+
+Accepted wording: manifest totals instead of live totals, and explicit AWS Open Data transfer sponsorship, which does not prove Select fee coverage. Rejected factual implication that the Requester Pays guide cannot support ordinary billing: its opening paragraph explicitly states the normal bucket-owner-pays rule. Rejected implication that the API slice was re-serialized: the probe wrote the received byte string directly with write_bytes, and its stored length is exactly 1,144. The follow-up reviewer correctly limited its own independent byte-count check.
+
+API counts are live response metadata, not a claim to have exported all results. The extra French/2026 receipt is one anonymous first-page record, with corpus=all; no full export, cursor paging or paid-account test was run. Footer ranges are three current shards, not an exhaustive partition/sorting audit or full-query benchmark.

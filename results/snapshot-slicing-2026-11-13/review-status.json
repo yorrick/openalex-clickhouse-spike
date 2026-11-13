@@ -1,0 +1,24 @@
+{
+  "reviewer": "Claude Code",
+  "model": "claude-opus-5-5",
+  "effort": "high",
+  "commands": [
+    {
+      "command": "source ~/.ssh/claude.sh\nclaude -p --model claude-opus-5-5 --effort high --tools Read,WebFetch --allowedTools Read,WebFetch --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' --add-dir /Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m < review-prompt.txt > review-output.txt 2> review-stderr.txt",
+      "exit_code": 0,
+      "completed": true
+    },
+    {
+      "command": "source ~/.ssh/claude.sh\nclaude -p --model claude-opus-5-5 --effort high --tools Read --allowedTools Read --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' --add-dir /Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m < review-followup-prompt.txt > review-followup-output.txt 2> review-followup-stderr.txt",
+      "exit_code": 0,
+      "completed": true
+    },
+    {
+      "command": "source ~/.ssh/claude.sh\nclaude -p --model claude-opus-5-5 --effort high --tools Read,WebFetch --allowedTools Read,WebFetch --setting-sources '' --strict-mcp-config --mcp-config '{\"mcpServers\":{}}' --add-dir /Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m < clarifications-review-prompt.txt > clarifications-review-output.txt 2> clarifications-review-stderr.txt",
+      "exit_code": 0,
+      "completed": true
+    }
+  ],
+  "verdict": "Source/data checks passed; signed-read wording correction applied",
+  "no_new_aws_compute_or_select": true
+}

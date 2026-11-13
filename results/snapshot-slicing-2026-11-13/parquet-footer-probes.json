@@ -1,0 +1,751 @@
+{
+  "scope": "Three current Works shards: smallest, median by file bytes, largest. Footer metadata only; not a row-value audit or proof of sorting/partitioning of every shard.",
+  "samples": [
+    {
+      "url": "https://openalex.s3.amazonaws.com/data/parquet/works/updated_date=2025-10-30/part_0000.parquet",
+      "object_bytes": 64058,
+      "manifest_records": 1,
+      "footer_rows": 1,
+      "row_groups": 1,
+      "bytes_downloaded": 47982,
+      "range_receipts": [
+        {
+          "status": 206,
+          "range": "bytes 64050-64057/64058",
+          "bytes": 8
+        },
+        {
+          "status": 206,
+          "range": "bytes 16076-64049/64058",
+          "bytes": 47974
+        }
+      ],
+      "selected_column_statistics": [
+        {
+          "rows": 1,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 67,
+              "min": "https://openalex.org/W4415713032",
+              "max": "https://openalex.org/W4415713032"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 35,
+              "min": "2024",
+              "max": "2024"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 43,
+              "min": "paratext",
+              "max": "paratext"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 63,
+              "min": "https://openalex.org/T12902",
+              "max": "https://openalex.org/T12902"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 39,
+              "min": "2025-10-30 23:43:00.088584+00:00",
+              "max": "2025-10-30 23:43:00.088584+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://openalex.s3.amazonaws.com/data/parquet/works/updated_date=2025-11-06/part_0004.parquet",
+      "object_bytes": 390189187,
+      "manifest_records": 400000,
+      "footer_rows": 400000,
+      "row_groups": 4,
+      "bytes_downloaded": 151473,
+      "range_receipts": [
+        {
+          "status": 206,
+          "range": "bytes 390189179-390189186/390189187",
+          "bytes": 8
+        },
+        {
+          "status": 206,
+          "range": "bytes 390037714-390189178/390189187",
+          "bytes": 151465
+        }
+      ],
+      "selected_column_statistics": [
+        {
+          "rows": 118740,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 1093685,
+              "min": "https://openalex.org/W1000093074",
+              "max": "https://openalex.org/W999912043"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 121044,
+              "min": "1590",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 51168,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 207878,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 2170,
+              "min": "2025-11-06 03:46:38.306776+00:00",
+              "max": "2025-11-06 23:20:22.142202+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 117640,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 1083451,
+              "min": "https://openalex.org/W100074749",
+              "max": "https://openalex.org/W99995513"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 119911,
+              "min": "1462",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 51311,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 205617,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 2257,
+              "min": "2025-11-06 03:46:38.306776+00:00",
+              "max": "2025-11-06 23:20:22.142202+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 118200,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 1085181,
+              "min": "https://openalex.org/W1000228722",
+              "max": "https://openalex.org/W999792249"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 120421,
+              "min": "1513",
+              "max": "2025"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 52030,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 206062,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 2046,
+              "min": "2025-11-06 03:46:38.306776+00:00",
+              "max": "2025-11-06 23:20:22.142202+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 45420,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 418439,
+              "min": "https://openalex.org/W10004189",
+              "max": "https://openalex.org/W998896182"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 46928,
+              "min": "1400",
+              "max": "2025"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 19862,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 89288,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 718,
+              "min": "2025-11-06 03:46:38.306776+00:00",
+              "max": "2025-11-06 23:17:08.748858+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://openalex.s3.amazonaws.com/data/parquet/works/updated_date=2026-09-30/part_0000.parquet",
+      "object_bytes": 1070341481,
+      "manifest_records": 400000,
+      "footer_rows": 400000,
+      "row_groups": 12,
+      "bytes_downloaded": 410037,
+      "range_receipts": [
+        {
+          "status": 206,
+          "range": "bytes 1070341473-1070341480/1070341481",
+          "bytes": 8
+        },
+        {
+          "status": 206,
+          "range": "bytes 1069931444-1070341472/1070341481",
+          "bytes": 410029
+        }
+      ],
+      "selected_column_statistics": [
+        {
+          "rows": 34730,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 318089,
+              "min": "https://openalex.org/W1000392690",
+              "max": "https://openalex.org/W996259299"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 22326,
+              "min": "1812",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 16655,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 72728,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 38099,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 344451,
+              "min": "https://openalex.org/W100465424",
+              "max": "https://openalex.org/W99604509"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 23326,
+              "min": "1817",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 18835,
+              "min": "article",
+              "max": "supplementary-materials"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 71956,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 35459,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 327969,
+              "min": "https://openalex.org/W1000102652",
+              "max": "https://openalex.org/W999964607"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 24580,
+              "min": "1821",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 17170,
+              "min": "article",
+              "max": "supplementary-materials"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 73779,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 35479,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 316598,
+              "min": "https://openalex.org/W100032227",
+              "max": "https://openalex.org/W99180305"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 18617,
+              "min": "1818",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 16696,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 73338,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 36188,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 334841,
+              "min": "https://openalex.org/W100021768",
+              "max": "https://openalex.org/W99755912"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 26897,
+              "min": "1815",
+              "max": "2027"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 17265,
+              "min": "article",
+              "max": "supplementary-materials"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 75190,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 37330,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 323566,
+              "min": "https://openalex.org/W2239864320",
+              "max": "https://openalex.org/W7214884073"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 18092,
+              "min": "1834",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 16936,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 70111,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 34586,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 313267,
+              "min": "https://openalex.org/W2004264047",
+              "max": "https://openalex.org/W7165245489"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 22257,
+              "min": "1830",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 15221,
+              "min": "article",
+              "max": "supplementary-materials"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 72537,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 35600,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 325557,
+              "min": "https://openalex.org/W100098528",
+              "max": "https://openalex.org/W99650518"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 22804,
+              "min": "1814",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 16403,
+              "min": "article",
+              "max": "supplementary-materials"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 73553,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 38880,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 357696,
+              "min": "https://openalex.org/W2102809804",
+              "max": "https://openalex.org/W907827245"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 34047,
+              "min": "1812",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 18033,
+              "min": "article",
+              "max": "supplementary-materials"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 73034,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 35098,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 321122,
+              "min": "https://openalex.org/W2102847021",
+              "max": "https://openalex.org/W7211624408"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 24562,
+              "min": "1674",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 16407,
+              "min": "article",
+              "max": "supplementary-materials"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 73184,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 37460,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 336783,
+              "min": "https://openalex.org/W100110690",
+              "max": "https://openalex.org/W999888635"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 26488,
+              "min": "1518",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 17142,
+              "min": "article",
+              "max": "standard"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 70591,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14521"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 107,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        },
+        {
+          "rows": 1091,
+          "columns": [
+            {
+              "path": "id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 10628,
+              "min": "https://openalex.org/W10151750",
+              "max": "https://openalex.org/W9897946"
+            },
+            {
+              "path": "publication_year",
+              "compression": "SNAPPY",
+              "compressed_bytes": 1256,
+              "min": "1908",
+              "max": "2026"
+            },
+            {
+              "path": "type",
+              "compression": "SNAPPY",
+              "compressed_bytes": 734,
+              "min": "article",
+              "max": "review"
+            },
+            {
+              "path": "primary_topic.id",
+              "compression": "SNAPPY",
+              "compressed_bytes": 5284,
+              "min": "https://openalex.org/T10001",
+              "max": "https://openalex.org/T14516"
+            },
+            {
+              "path": "updated_date",
+              "compression": "SNAPPY",
+              "compressed_bytes": 65,
+              "min": "2026-09-30 09:27:27.532063+00:00",
+              "max": "2026-09-30 09:27:27.532063+00:00"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

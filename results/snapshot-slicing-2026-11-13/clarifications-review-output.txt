@@ -1,0 +1,21 @@
+**Verdict: one wording fix needed in the AWS-account section. "Updates and file mutability" passes.**
+
+I read only the doc and the sync guide page. I ran no queries, used no credentials and wrote nothing.
+
+### Using an AWS account while keeping your bill at zero: one finding
+
+- **Supported:** Signing a request doesn't change who pays, and normally the bucket owner pays. This matches the Requester Pays guide. Saying the anonymous HTTP 200 shows no Requester Pays is needed is also sound, because Requester Pays doesn't allow anonymous access. Paying separately for copies in your own bucket or for AWS compute, and the S3 Select caveats, are correctly limited. Saying the download-fee sponsorship doesn't cover Select is fine.
+- **Overclaim (line 37, plus the heading):** "Cost-free local reads are established" goes beyond the evidence in a section about using an AWS account. The doc says no credentials were used. So zero cost was only observed for anonymous reads. For signed reads, it rests on AWS's general rule that the owner pays and on OpenAlex's sponsorship note. No signed read was made and no bill was checked. The heading "keeping your bill at zero" adds to the sense of a guarantee. Suggested replacement: "Anonymous reads were verified. For signed ordinary GETs, AWS's bucket-owner-pays default and the Open Data transfer sponsorship mean no S3 request or transfer charge to you is expected, but we didn't make a signed read or check a bill." Optionally soften the heading too, e.g. "…and what you would pay".
+
+### Updates and file mutability: PASS
+
+Every claim matches the sync guide:
+- Quarterly releases replace the bucket contents "in place".
+- Changed records move to newer partitions, and old partitions shrink.
+- Incremental sync takes partitions dated on or after the last snapshot (correctly "on or after") and upserts by ID.
+- File mirrors need `sync --delete`.
+- Deletions and merges are handled separately; the guide has deleted/merged ID logs for some entity types.
+- Some work fields don't advance `updated_date`, e.g. fwci and percentile.
+- Announced bulk changes need a reload.
+
+The section doesn't confuse immutable releases with file mirrors: it says outright that this isn't an append-only feed. A small optional point: "metrics" doesn't strictly cover `has_content`, one of the fields the guide lists, but that doesn't need a change.

@@ -1,0 +1,9 @@
+{
+  "manifest_totals_reconciled": true,
+  "footer_total_bytes": 609492,
+  "range_requests": 6,
+  "footer_row_counts_match_manifest": true,
+  "manifest_unchanged_after_probes": true,
+  "local_links_exist": true,
+  "no_new_paid_aws_compute_or_select": true
+}

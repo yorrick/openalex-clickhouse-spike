@@ -1,0 +1,24 @@
+**Partial pass.** I didn't find a material error in anything I could check. But I could only open the manifest evidence, not the footer or API evidence, so those numbers are still unchecked.
+
+**Checked and correct**
+- **Manifest numbers (line 9) match `results/snapshot-slicing-2026-11-13/manifest-summary.json`:**
+  - HTTP 200, dated 2026-10-14.
+  - 1,898 Parquet files across 396 partitions.
+  - File sizes run from 64,058 to 1,070,341,481 bytes, with a median of 390,096,720.
+  - Rows per file run from 1 to 400,000.
+  - Totals are 464,765,485 Works and 744,042,462,611 bytes. A SHA-256 is recorded, and no credentials were used.
+  - `works-manifest.json` agrees on the date and the Works count.
+- **Middle file:** with 1,898 files (an even number), the median is the average of the two middle files. A middle file of 390,189,187 bytes fits that.
+- **Update date vs publication year (lines 7, 11, 17):** this is correct and matches the snapshot page, which says each partition "holds the records that last changed on that date." The scope is suitably limited: the text says the three samples are neither an exhaustive sorting audit nor proof that every filter must scan every row group.
+- **S3 Select (line 23):** the API reference says "does not support anonymous access." The user guide says it is "no longer available to new customers," that existing customers can continue, and that it queries one object per request. All three claims are stated accurately.
+- **API allowance vs cost (lines 29–31):** the pricing page says a free key gives "$1 of usage per day" with "no payment method required." The authentication page says a key gives "10× the keyless budget," which matches the $0.10/day anonymous figure. The doc also correctly says the API is the live service, not the pinned snapshot.
+
+**Not checked**
+- The footer numbers (lines 15–17): six 206 responses, 609,492 bytes, four and twelve row groups, and the publication-year ranges.
+- The API receipt (line 29): 1,144 bytes and $0.0001.
+
+The tools I had can't list a directory, and none of the filenames I guessed existed. If those values matter, have someone check them against the saved footer and API JSON.
+
+**Optional wording fixes (minor)**
+- **Line 9:** "live totals" clashes with the snapshot-vs-live distinction drawn in line 31. "Manifest totals" would be clearer.
+- **Line 25:** the Requester Pays guide is about buckets where the requester pays, not the ordinary billing it's cited for. The snapshot page says the AWS Open Data program "covers the data-transfer fees" and that downloads need "no AWS account." It would be a more direct citation for why anonymous downloads are free.

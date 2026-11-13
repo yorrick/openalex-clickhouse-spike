@@ -1,0 +1,80 @@
+{
+  "files": {
+    "anonymous-api-probe-summary.json": {
+      "bytes": 1390,
+      "sha256": "518485e44331a652a7374f94e7b821f53748b77abfba0eaf23e2e82fdd613075"
+    },
+    "anonymous-api-slice.json": {
+      "bytes": 1144,
+      "sha256": "1eae574d594bdeb133d0f31305c6393c59829dad46151fad46446292364d4230"
+    },
+    "clarifications-review-output.txt": {
+      "bytes": 2374,
+      "sha256": "d202ff9fb5fa0ca0b96cf4057be14941d80ba637be5948da54d169bfdef3f961"
+    },
+    "clarifications-review-prompt.txt": {
+      "bytes": 1156,
+      "sha256": "6e820ac1d8cedbdb99a53aa67acf0942fd16be83e4746bf4db1096052368fb51"
+    },
+    "french-2026-api-slice.json": {
+      "bytes": 1192,
+      "sha256": "ff5a6156aef30f8c17c910a7f5cb621f8e78640d7ae19e657feac4db59a4c649"
+    },
+    "french-2026-api-summary.json": {
+      "bytes": 525,
+      "sha256": "9aede543577ed8ee867b4ad2dc849953adfc880aaa0d703701676a11f1ce2084"
+    },
+    "manifest-summary.json": {
+      "bytes": 1344,
+      "sha256": "3519f1931b4da3d0f467f37c935689e334eecf1ea5e82e5b66305ffbfa5f306b"
+    },
+    "parquet-footer-probes.json": {
+      "bytes": 23381,
+      "sha256": "c2909d3b31d602832c6163e5360292632615d0ef4217e68976fa101f0f516f8c"
+    },
+    "qa.json": {
+      "bytes": 257,
+      "sha256": "265a99874ff29398f382a60f75e1b762b34b38f2b4a50db9fd726eb479808804"
+    },
+    "review-adjudication.md": {
+      "bytes": 1549,
+      "sha256": "7920f6de465314765481866313f46e879cb1e846fe8c69d32b8034c01eaf78ac"
+    },
+    "review-followup-output.txt": {
+      "bytes": 2496,
+      "sha256": "23e75026282186b789108d234e2e8645e416f427ac59c7d69aa3f119ca818d47"
+    },
+    "review-followup-prompt.txt": {
+      "bytes": 1159,
+      "sha256": "3d0c3812aeb7de875ea7571ac166ed897b9590f740f9d8e838ac22038b2ca3de"
+    },
+    "review-output.txt": {
+      "bytes": 2663,
+      "sha256": "e9b024075aa725cca4c9d970add2631c3a3827de53fb96cb8d636546659af6d6"
+    },
+    "review-prompt.txt": {
+      "bytes": 1052,
+      "sha256": "7a7e2462da36624dd60557665a86b05a5c3527dbffa285e6549e856385e329d0"
+    },
+    "review-status.json": {
+      "bytes": 1559,
+      "sha256": "579290d1ec332b1fb8400190a31af389dc3e8f71950ee26ad9e79fe39d71b38c"
+    },
+    "sample-0-footer.bin": {
+      "bytes": 47982,
+      "sha256": "efabd27533474fb00195e44e9ec29dee92364d04d463c686bb5918844a4822cc"
+    },
+    "sample-1-footer.bin": {
+      "bytes": 151473,
+      "sha256": "fd7b14c3941c4302060fdc7faf3c5b53d13cef9447b76ff8ee11bf7027e7ef92"
+    },
+    "sample-2-footer.bin": {
+      "bytes": 410037,
+      "sha256": "e52285c526f3055fcfabad3453a27cdfb69c56fd60f4b75a437ed07b7cbd3675"
+    },
+    "works-manifest.json": {
+      "bytes": 370414,
+      "sha256": "ad25313b39e1f5eda9deb88bb64dddfe2820dd084799f8f407bf7f12ac6a794e"
+    }
+  }
+}

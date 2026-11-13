@@ -1,0 +1,5 @@
+Leaf read-only review, no other AI, queries, credentials or writes. Previous review was partial because filenames were unspecified; verify ONLY the previously unchecked numbers using these exact existing files:
+/Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m/results/snapshot-slicing-2026-11-13/parquet-footer-probes.json
+/Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m/results/snapshot-slicing-2026-11-13/anonymous-api-probe-summary.json
+/Users/yorrickjansen/work/openalex/.claude/worktrees/benchmark-artifact-200m/results/snapshot-slicing-2026-11-13/anonymous-api-slice.json
+Claims: six range responses HTTP206; total609492 downloaded footer/trailer bytes; middle file390189187bytes400000rows4groups; largest1070341481bytes400000rows12groups; middle group's first3publication_year bounds1590..2026,1462..2026,1513..2025. Anonymous API3resultsall2024,1144responsebytes,cost_usd0.0001againstfreedailybudget. Give bounded PASS or concrete findings. No need to rereview manifest, sources, design, full doc or benchmarks. These files were present before the previous review; no data values were amended.

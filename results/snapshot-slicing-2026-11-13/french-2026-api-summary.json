@@ -1,0 +1,15 @@
+{
+  "url": "https://api.openalex.org/works?filter=publication_year%3A2026%2Clanguage%3Afr&corpus=all&per_page=1&select=id%2Clanguage%2Cpublication_year",
+  "http_status": 200,
+  "anonymous": true,
+  "all_corpora_requested": true,
+  "matching_count_reported": 253846,
+  "sample_result": {
+    "id": "https://openalex.org/W4386655595",
+    "language": "fr",
+    "publication_year": 2026
+  },
+  "cost_usd_from_api": 0.0001,
+  "response_bytes": 1192,
+  "scope": "One first-page record only; full export/cursor paging not run."
+}

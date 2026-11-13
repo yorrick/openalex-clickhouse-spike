@@ -1,0 +1,44 @@
+{
+  "checked_at_utc": "2026-11-13T19:57:15.849338+00:00",
+  "url": "https://openalex.s3.amazonaws.com/data/parquet/works/manifest.json",
+  "http_status": 200,
+  "request_authentication": "none; urllib request contains no Authorization or AWS credential material",
+  "manifest_sha256": "ad25313b39e1f5eda9deb88bb64dddfe2820dd084799f8f407bf7f12ac6a794e",
+  "manifest_bytes": 370414,
+  "manifest_date": "2026-10-14",
+  "record_count": 464765485,
+  "content_length": 744042462611,
+  "file_count": 1898,
+  "partition_count": 396,
+  "partition_date_min": "2016-06-24",
+  "partition_date_max": "2026-10-14",
+  "file_bytes": {
+    "min": 64058,
+    "median": 390096720.0,
+    "max": 1070341481
+  },
+  "file_rows": {
+    "min": 1,
+    "median": 296591.5,
+    "max": 400000
+  },
+  "smallest_file": {
+    "url": "s3://openalex/data/parquet/works/updated_date=2025-10-30/part_0000.parquet",
+    "meta": {
+      "content_length": 64058,
+      "record_count": 1
+    }
+  },
+  "largest_file": {
+    "url": "s3://openalex/data/parquet/works/updated_date=2026-09-30/part_0000.parquet",
+    "meta": {
+      "content_length": 1070341481,
+      "record_count": 400000
+    }
+  },
+  "headers": {
+    "Last-Modified": "Wed, 14 Oct 2026 18:34:14 GMT",
+    "ETag": "\"7d5bad7c65c25e2e058097a7d79e0f5d\"",
+    "x-amz-version-id": "nHu2jb0rAmIhaDniW549..LzPhr2JSi."
+  }
+}

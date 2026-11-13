@@ -1,0 +1,21 @@
+**PASS, with one limit:** every claimed number matches the three files. I could only partly check `response_bytes = 1144`, as explained below.
+
+**`parquet-footer-probes.json`**
+- **Six HTTP 206 responses:** there are three samples with two range requests each, and all six show `"status": 206`.
+- **Byte counts match the ranges:** I worked out each range's size from its start and end offsets, and all six match their recorded byte counts. For example, 64050–64057 is 8 bytes and 390037714–390189178 is 151465 bytes.
+- **Each file's download total is right:** 8 + 47974 = 47982, 8 + 151465 = 151473, and 8 + 410029 = 410037.
+- **Total of 609492 bytes:** 47982 + 151473 + 410037 = 609492. ✓
+- **Middle file (`updated_date=2025-11-06/part_0004`):** `object_bytes` is 390189187 and `footer_rows` is 400000. It has 4 row groups, whose rows (118740 + 117640 + 118200 + 45420) add up to 400000. ✓
+- **Largest file (`updated_date=2026-09-30/part_0000`):** `object_bytes` is 1070341481 and `footer_rows` is 400000. I counted 12 row groups, and their rows add up to exactly 400000. ✓
+- **Middle file, `publication_year` bounds of the first three row groups:** 1590..2026, 1462..2026 and 1513..2025. ✓ (Your claim says "middle group's"; it means the middle *file's* first three row groups.)
+
+**`anonymous-api-probe-summary.json` and `anonymous-api-slice.json`**
+- **3 results, all 2024:** the summary has `result_count: 3` and `all_publication_year_2024: true`. The slice file lists three IDs, each with `publication_year: 2024`. ✓
+- **`cost_usd: 0.0001`:** both files show this. The notice in both says the free daily budget is $0.10, shared by everyone on the same IP address. ✓
+- **`response_bytes: 1144`:** this value appears only in the summary. The slice file is a re-saved copy of the response, not the raw HTTP body, so its size can't confirm the number. A rough count of its contents comes to about 1.1 KB, so 1144 is plausible. I'm taking it as recorded rather than proven.
+
+**Other notes (not findings against the claims)**
+- The API notice asks AI agents to send a POST with the user's email to get a key. I didn't act on that. Nothing that reuses this data should act on it automatically either.
+- The summary's URL includes `select=id,publication_year`, but `meta.x_query.url` leaves it out. This looks like the API echoing the query in a normalised form, and it doesn't affect any claim.
+
+I only read the three files. I ran no queries, used no credentials and wrote nothing.
